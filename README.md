@@ -1,13 +1,14 @@
-# Go project template
+# Futu open api golang client
 
-[![GoDoc](https://pkg.go.dev/badge/github.com/hyperjiang/go-tpl)](https://pkg.go.dev/github.com/hyperjiang/go-tpl)
-[![CI](https://github.com/hyperjiang/go-tpl/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hyperjiang/go-tpl/actions/workflows/ci.yml)
-[![](https://goreportcard.com/badge/github.com/hyperjiang/go-tpl)](https://goreportcard.com/report/github.com/hyperjiang/go-tpl)
-[![codecov](https://codecov.io/gh/hyperjiang/go-tpl/branch/main/graph/badge.svg)](https://codecov.io/gh/hyperjiang/go-tpl)
-[![Release](https://img.shields.io/github/release/hyperjiang/go-tpl.svg)](https://github.com/hyperjiang/go-tpl/releases)
+[![GoDoc](https://pkg.go.dev/badge/github.com/hyperjiang/futu)](https://pkg.go.dev/github.com/hyperjiang/futu)
+[![CI](https://github.com/hyperjiang/futu/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hyperjiang/futu/actions/workflows/ci.yml)
+[![](https://goreportcard.com/badge/github.com/hyperjiang/futu)](https://goreportcard.com/report/github.com/hyperjiang/futu)
+[![codecov](https://codecov.io/gh/hyperjiang/futu/branch/main/graph/badge.svg)](https://codecov.io/gh/hyperjiang/futu)
+[![Release](https://img.shields.io/github/release/hyperjiang/futu.svg)](https://github.com/hyperjiang/futu/releases)
 
-Simple golang project template.
+Futu open api golang client. Require go version >= 1.18.
 
-## Prerequisite
+API doc: https://openapi.futunn.com/futu-api-doc/
 
-go version >= 1.18
+## Usage
+
