@@ -1,6 +1,7 @@
 package futu_test
 
 import (
+	"fmt"
 	"os"
 	"testing"
 	"time"
@@ -40,7 +41,11 @@ func (ts *FutuTestSuite) TearDownSuite() {
 	}
 }
 
-func (ts *FutuTestSuite) TestGet() {
+func (ts *FutuTestSuite) TestGetGlobalState() {
 	should := require.New(ts.T())
-	should.NoError(nil)
+
+	res, err := ts.client.GetGlobalState()
+	should.NoError(err)
+
+	fmt.Println(res)
 }

@@ -26,9 +26,9 @@ type Client struct {
 	resChan chan response // response channel
 	closed  chan struct{} // indicate the client is closed
 	hub     *infra.DispatcherHub
+	ticker  *time.Ticker
 	connID  uint64
 	userID  uint64
-	ticker  *time.Ticker
 }
 
 // NewClient creates a new client.
@@ -91,38 +91,8 @@ func (client *Client) RegisterDispatcher(protoID uint32, sn uint32, ch *infra.Pr
 	client.hub.Register(protoID, sn, ch)
 }
 
-// nextSN returns the next serial number.
-func (client *Client) nextSN() uint32 {
-	return client.sn.Add(1)
-}
-
-func (client *Client) dial() error {
-	conn, err := net.Dial("tcp", client.Addr)
-	if err != nil {
-		log.Error().Err(err).Msg("dial failed")
-		return err
-	}
-
-	client.conn = conn
-
-	return nil
-}
-
-func (client *Client) listen() {
-	for {
-		select {
-		case <-client.closed:
-			return
-		case res := <-client.resChan:
-			log.Info().Uint32("proto_id", res.ProtoID).Uint32("sn", res.SerialNo).Msg("")
-			if err := client.hub.Dispatch(res.ProtoID, res.SerialNo, res.Body); err != nil {
-				log.Error().Err(err).Msg("dispatch error")
-			}
-		}
-	}
-}
-
-func (client *Client) request(protoID uint32, req proto.Message, resCh *infra.ProtobufChan) error {
+// Request sends a request to the server.
+func (client *Client) Request(protoID uint32, req proto.Message, resCh *infra.ProtobufChan) error {
 	var buf bytes.Buffer
 
 	b, err := proto.Marshal(req)
@@ -155,6 +125,37 @@ func (client *Client) request(protoID uint32, req proto.Message, resCh *infra.Pr
 	_, err = buf.WriteTo(client.conn)
 
 	return err
+}
+
+// nextSN returns the next serial number.
+func (client *Client) nextSN() uint32 {
+	return client.sn.Add(1)
+}
+
+func (client *Client) dial() error {
+	conn, err := net.Dial("tcp", client.Addr)
+	if err != nil {
+		log.Error().Err(err).Msg("dial failed")
+		return err
+	}
+
+	client.conn = conn
+
+	return nil
+}
+
+func (client *Client) listen() {
+	for {
+		select {
+		case <-client.closed:
+			return
+		case res := <-client.resChan:
+			log.Info().Uint32("proto_id", res.ProtoID).Uint32("sn", res.SerialNo).Msg("")
+			if err := client.hub.Dispatch(res.ProtoID, res.SerialNo, res.Body); err != nil {
+				log.Error().Err(err).Msg("dispatch error")
+			}
+		}
+	}
 }
 
 func (client *Client) read() error {
@@ -220,7 +221,7 @@ func (client *Client) initConnect() (*initconnect.S2C, error) {
 
 	ch := make(chan *initconnect.Response)
 
-	if err := client.request(protoid.InitConnect, req, infra.NewProtobufChan(ch)); err != nil {
+	if err := client.Request(protoid.InitConnect, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 
@@ -245,7 +246,7 @@ func (client *Client) keepAlive(ch chan *keepalive.Response) (int64, error) {
 		},
 	}
 
-	if err := client.request(protoid.KeepAlive, req, infra.NewProtobufChan(ch)); err != nil {
+	if err := client.Request(protoid.KeepAlive, req, infra.NewProtobufChan(ch)); err != nil {
 		return 0, err
 	}
 

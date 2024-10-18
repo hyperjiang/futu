@@ -12,3 +12,18 @@ API doc: https://openapi.futunn.com/futu-api-doc/
 
 ## Usage
 
+```bash
+go get -u github.com/hyperjiang/futu
+```
+
+```go
+import "github.com/hyperjiang/futu"
+
+client, err := futu.NewClient()
+if err != nil {
+    log.Fatal(err)
+}
+
+res, err := client.GetGlobalState()
+fmt.Println(res)
+```
