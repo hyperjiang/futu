@@ -13,28 +13,9 @@ import (
 	"github.com/hyperjiang/futu/infra"
 	"github.com/hyperjiang/futu/pb/initconnect"
 	"github.com/hyperjiang/futu/pb/keepalive"
+	"github.com/hyperjiang/futu/protoid"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/protobuf/proto"
-)
-
-const (
-	// ClientVersion is the version of the client.
-	ClientVersion int32 = 100
-)
-
-const (
-	ProtoIDInitConnect        = 1001 // 初始化连接
-	ProtoIDGetGlobalState     = 1002 // 获取全局状态
-	ProtoIDNotify             = 1003 // 系统通知推送
-	ProtoIDKeepAlive          = 1004 // 保活心跳
-	ProtoIDGetUserInfo        = 1005 // 获取用户信息
-	ProtoIDVerification       = 1006 // 请求或输入验证码
-	ProtoIDGetDelayStatistics = 1007 // 获取延迟统计
-)
-
-var (
-	ErrInterrupted   = errors.New("process is interrupted")
-	ErrChannelClosed = errors.New("channel is closed")
 )
 
 type Client struct {
@@ -48,23 +29,6 @@ type Client struct {
 	connID  uint64
 	userID  uint64
 	ticker  *time.Ticker
-}
-
-type futuHeader struct {
-	HeaderFlag   [2]byte  // 包头起始标志，固定为“FT”
-	ProtoID      uint32   // 协议 ID
-	ProtoFmtType uint8    // 协议格式类型，0 为 Protobuf 格式，1 为 Json 格式
-	ProtoVer     uint8    // 协议版本，用于迭代兼容，目前填 0
-	SerialNo     uint32   // 包序列号，用于对应请求包和回包，要求递增
-	BodyLen      uint32   // 包体长度
-	BodySHA1     [20]byte // 包体原始数据(解密后)的 SHA1 哈希值
-	Reserved     [8]byte  // 保留 8 字节扩展
-}
-
-type response struct {
-	ProtoID  uint32
-	SerialNo uint32
-	Body     []byte
 }
 
 // NewClient creates a new client.
@@ -256,7 +220,7 @@ func (client *Client) initConnect() (*initconnect.S2C, error) {
 
 	ch := make(chan *initconnect.Response)
 
-	if err := client.request(ProtoIDInitConnect, req, infra.NewProtobufChan(ch)); err != nil {
+	if err := client.request(protoid.InitConnect, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 
@@ -281,7 +245,7 @@ func (client *Client) keepAlive(ch chan *keepalive.Response) (int64, error) {
 		},
 	}
 
-	if err := client.request(ProtoIDKeepAlive, req, infra.NewProtobufChan(ch)); err != nil {
+	if err := client.request(protoid.KeepAlive, req, infra.NewProtobufChan(ch)); err != nil {
 		return 0, err
 	}
 
