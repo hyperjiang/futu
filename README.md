@@ -6,7 +6,7 @@
 [![codecov](https://codecov.io/gh/hyperjiang/futu/branch/main/graph/badge.svg)](https://codecov.io/gh/hyperjiang/futu)
 [![Release](https://img.shields.io/github/release/hyperjiang/futu.svg)](https://github.com/hyperjiang/futu/releases)
 
-Futu open api golang client. Require go version >= 1.18.
+Futu open api golang client. Require go version >= 1.21.
 
 API doc: https://openapi.futunn.com/futu-api-doc/
 
