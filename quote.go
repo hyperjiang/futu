@@ -4,6 +4,7 @@ import (
 	"github.com/hyperjiang/futu/infra"
 	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
+	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/protoid"
 )
 
@@ -38,6 +39,29 @@ func (client *Client) QotRequestHistoryKL(c2s *qotrequesthistorykl.C2S) (*qotreq
 
 	ch := make(chan *qotrequesthistorykl.Response)
 	if err := client.Request(protoid.QotRequestHistoryKL, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		close(ch)
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotStockFilter 获取条件选股
+func (client *Client) QotStockFilter(c2s *qotstockfilter.C2S) (*qotstockfilter.S2C, error) {
+	req := &qotstockfilter.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotstockfilter.Response)
+	if err := client.Request(protoid.QotStockFilter, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 
