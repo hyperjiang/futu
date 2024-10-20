@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/hyperjiang/futu/pb/qotcommon"
+	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/rs/zerolog/log"
@@ -82,5 +83,13 @@ func (ts *FutuTestSuite) TestQotStockFilter() {
 			Str("name", stock.GetName()).
 			Int32("market", stock.GetSecurity().GetMarket()).
 			Msg("")
+
+		snapshotC2S := &qotgetsecuritysnapshot.C2S{
+			SecurityList: []*qotcommon.Security{stock.GetSecurity()},
+		}
+
+		snapshot, err := ts.client.QotGetSecuritySnapshot(snapshotC2S)
+		should.NoError(err)
+		fmt.Println(snapshot.GetSnapshotList()[0])
 	}
 }

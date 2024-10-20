@@ -3,6 +3,7 @@ package futu
 import (
 	"github.com/hyperjiang/futu/infra"
 	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
+	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/protoid"
@@ -62,6 +63,29 @@ func (client *Client) QotStockFilter(c2s *qotstockfilter.C2S) (*qotstockfilter.S
 
 	ch := make(chan *qotstockfilter.Response)
 	if err := client.Request(protoid.QotStockFilter, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		close(ch)
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetSecuritySnapshot 获取股票快照
+func (client *Client) QotGetSecuritySnapshot(c2s *qotgetsecuritysnapshot.C2S) (*qotgetsecuritysnapshot.S2C, error) {
+	req := &qotgetsecuritysnapshot.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetsecuritysnapshot.Response)
+	if err := client.Request(protoid.QotGetSecuritySnapshot, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 
