@@ -3,7 +3,7 @@
 [![GoDoc](https://pkg.go.dev/badge/github.com/hyperjiang/futu)](https://pkg.go.dev/github.com/hyperjiang/futu)
 [![CI](https://github.com/hyperjiang/futu/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hyperjiang/futu/actions/workflows/ci.yml)
 [![](https://goreportcard.com/badge/github.com/hyperjiang/futu)](https://goreportcard.com/report/github.com/hyperjiang/futu)
-[![codecov](https://codecov.io/gh/hyperjiang/futu/branch/main/graph/badge.svg)](https://codecov.io/gh/hyperjiang/futu)
+[![codecov](https://codecov.io/gh/hyperjiang/futu/graph/badge.svg?token=iI7hyTEenz)](https://codecov.io/gh/hyperjiang/futu)
 [![Release](https://img.shields.io/github/release/hyperjiang/futu.svg)](https://github.com/hyperjiang/futu/releases)
 
 Futu open api golang client. Require go version >= 1.21.

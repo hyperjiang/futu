@@ -30,8 +30,8 @@ const (
 	QotGetSubInfo              = 3003 // 获取订阅信息
 	QotGetBasicQot             = 3004 // 获取股票基本报价
 	QotUpdateBasicQot          = 3005 // 推送股票基本报价
-	QotGetKL                   = 3006 // 获取 K 线
-	QotUpdateKL                = 3007 // 推送 K 线
+	QotGetKL                   = 3006 // 获取K线
+	QotUpdateKL                = 3007 // 推送K线
 	QotGetRT                   = 3008 // 获取分时
 	QotUpdateRT                = 3009 // 推送分时
 	QotGetTicker               = 3010 // 获取逐笔
@@ -41,8 +41,8 @@ const (
 	QotGetBroker               = 3014 // 获取经纪队列
 	QotUpdateBroker            = 3015 // 推送经纪队列
 	QotUpdatePriceReminder     = 3019 // 到价提醒通知
-	QotRequestHistoryKL        = 3103 // 在线获取单只股票一段历史 K 线
-	QotRequestHistoryKLQuota   = 3104 // 获取历史 K 线额度
+	QotRequestHistoryKL        = 3103 // 在线获取单只股票一段历史K线
+	QotRequestHistoryKLQuota   = 3104 // 获取历史K线额度
 	QotRequestRehab            = 3105 // 在线获取单只股票复权信息
 	QotGetStaticInfo           = 3202 // 获取股票静态信息
 	QotGetSecuritySnapshot     = 3203 // 获取股票快照

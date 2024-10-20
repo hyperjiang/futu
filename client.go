@@ -73,6 +73,16 @@ func NewClient(opts ...Option) (*Client, error) {
 	return client, nil
 }
 
+// GetConnID returns the connection ID.
+func (client *Client) GetConnID() uint64 {
+	return client.connID
+}
+
+// GetUserID returns the user ID.
+func (client *Client) GetUserID() uint64 {
+	return client.userID
+}
+
 // Close closes the client.
 func (client *Client) Close() error {
 	close(client.closed)
