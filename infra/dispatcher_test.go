@@ -46,5 +46,9 @@ func TestDispatcher(t *testing.T) {
 	err = hub.Dispatch(1002, 1, b) // dispatcher not found
 	should.Error(err)
 
+	hub.Register(1001, 0, infra.NewProtobufChan(ch2))
+	err = hub.Dispatch(1001, 3, b) // fallback to the default channel (sn = 0)
+	should.NoError(err)
+
 	hub.Close()
 }

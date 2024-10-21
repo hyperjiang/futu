@@ -1,23 +1,26 @@
 package futu
 
 const (
-	defaultAddr = ":11111"
-	defaultID   = "futu-go"
+	defaultAddr        = ":11111"
+	defaultID          = "futu-go"
+	defaultResChanSize = 100
 )
 
 // Options are futu client options.
 type Options struct {
-	Addr       string
-	ID         string
-	RecvNotify bool
+	Addr        string
+	ID          string
+	RecvNotify  bool
+	ResChanSize int
 }
 
 // NewOptions creates options with defaults.
 func NewOptions(opts ...Option) Options {
 	var options = Options{
-		Addr:       defaultAddr,
-		ID:         defaultID,
-		RecvNotify: true,
+		Addr:        defaultAddr,
+		ID:          defaultID,
+		RecvNotify:  true,
+		ResChanSize: defaultResChanSize,
 	}
 
 	for _, opt := range opts {
@@ -48,5 +51,12 @@ func WithAddr(addr string) Option {
 func WithRecvNotify(recvNotify bool) Option {
 	return func(o *Options) {
 		o.RecvNotify = recvNotify
+	}
+}
+
+// WithResChanSize sets response channel size.
+func WithResChanSize(size int) Option {
+	return func(o *Options) {
+		o.ResChanSize = size
 	}
 }

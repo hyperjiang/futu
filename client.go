@@ -13,6 +13,7 @@ import (
 	"github.com/hyperjiang/futu/infra"
 	"github.com/hyperjiang/futu/pb/initconnect"
 	"github.com/hyperjiang/futu/pb/keepalive"
+	"github.com/hyperjiang/futu/pb/notify"
 	"github.com/hyperjiang/futu/protoid"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/protobuf/proto"
@@ -21,24 +22,26 @@ import (
 type Client struct {
 	Options
 
-	conn    net.Conn
-	sn      atomic.Uint32 // serial number
-	resChan chan response // response channel
-	closed  chan struct{} // indicate the client is closed
-	hub     *infra.DispatcherHub
-	ticker  *time.Ticker
-	connID  uint64
-	userID  uint64
+	conn     net.Conn
+	sn       atomic.Uint32         // serial number
+	resChan  chan response         // response channel
+	closed   chan struct{}         // indicate the client is closed
+	notiChan chan *notify.Response // notification channel (1003)
+	hub      *infra.DispatcherHub
+	ticker   *time.Ticker
+	connID   uint64
+	userID   uint64
 }
 
 // NewClient creates a new client.
 func NewClient(opts ...Option) (*Client, error) {
 	client := &Client{
-		Options: NewOptions(opts...),
-		resChan: make(chan response, 100),
-		closed:  make(chan struct{}),
-		hub:     infra.NewDispatcherHub(),
+		Options:  NewOptions(opts...),
+		closed:   make(chan struct{}),
+		notiChan: make(chan *notify.Response),
+		hub:      infra.NewDispatcherHub(),
 	}
+	client.resChan = make(chan response, client.ResChanSize)
 
 	if err := client.dial(); err != nil {
 		return nil, err
@@ -69,6 +72,8 @@ func NewClient(opts ...Option) (*Client, error) {
 		client.ticker = time.NewTicker(time.Second * time.Duration(d))
 		go client.heartbeat()
 	}
+
+	// client.RegisterDispatcher(protoid.Notify, 0, infra.NewProtobufChan(client.notiChan))
 
 	return client, nil
 }
@@ -135,6 +140,11 @@ func (client *Client) Request(protoID uint32, req proto.Message, resCh *infra.Pr
 	_, err = buf.WriteTo(client.conn)
 
 	return err
+}
+
+// GetNotiChan returns the notification channel.
+func (client *Client) GetNotiChan() <-chan *notify.Response {
+	return client.notiChan
 }
 
 // nextSN returns the next serial number.

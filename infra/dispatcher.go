@@ -36,18 +36,25 @@ func (d *Dispatcher) Dispatch(sn uint32, body []byte) error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
-	if d.channels[sn] == nil {
+	ch := d.channels[sn]
+	if ch == nil {
+		ch = d.channels[0] // use the default channel for notifications
+	}
+
+	if ch == nil {
 		return fmt.Errorf("channel not found for sn %d", sn)
 	}
 
-	if err := d.channels[sn].Send(body); err != nil {
+	if err := ch.Send(body); err != nil {
 		return err
 	}
 
 	// deregister the channel after sending the response.
 	// we do not close the channel here, it's the responsibility of the caller.
 	// the caller can reuse the channel for next serial number if needed.
-	delete(d.channels, sn)
+	if sn != 0 {
+		delete(d.channels, sn)
+	}
 
 	return nil
 }

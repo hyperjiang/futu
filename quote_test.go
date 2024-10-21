@@ -7,10 +7,29 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
+	"github.com/hyperjiang/futu/pb/qotsub"
 	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
 )
+
+func (ts *FutuTestSuite) TestQotSub() {
+	should := require.New(ts.T())
+
+	security := &qotcommon.Security{
+		Market: (*int32)(qotcommon.QotMarket_QotMarket_HK_Security.Enum()),
+		Code:   proto.String("09988"),
+	}
+
+	c2s := &qotsub.C2S{
+		SecurityList: []*qotcommon.Security{security},
+		SubTypeList:  []int32{int32(qotcommon.SubType_SubType_Basic)},
+		IsSubOrUnSub: proto.Bool(true),
+	}
+
+	err := ts.client.QotSub(c2s)
+	should.NoError(err)
+}
 
 func (ts *FutuTestSuite) TestQotRequestHistoryKL() {
 	should := require.New(ts.T())

@@ -16,6 +16,7 @@ func TestOptions(t *testing.T) {
 	should.Equal(":11111", opts.Addr)
 	should.Equal("futu-go", opts.ID)
 	should.True(opts.RecvNotify)
+	should.Equal(100, opts.ResChanSize)
 
 	// override default options
 
@@ -23,9 +24,11 @@ func TestOptions(t *testing.T) {
 		futu.WithID("abc"),
 		futu.WithAddr(":8080"),
 		futu.WithRecvNotify(false),
+		futu.WithResChanSize(10),
 	)
 
 	should.Equal("abc", opts2.ID)
 	should.Equal(":8080", opts2.Addr)
 	should.False(opts2.RecvNotify)
+	should.Equal(10, opts2.ResChanSize)
 }

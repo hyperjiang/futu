@@ -8,7 +8,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-// TrdGetAccList 获取交易业务账户列表
+// TrdGetAccList 2001 - 获取交易业务账户列表
 func (client *Client) TrdGetAccList(c2s *trdgetacclist.C2S) (*trdgetacclist.S2C, error) {
 	c2s.UserID = proto.Uint64(client.GetUserID())
 
@@ -33,7 +33,7 @@ func (client *Client) TrdGetAccList(c2s *trdgetacclist.C2S) (*trdgetacclist.S2C,
 	}
 }
 
-// TrdGetFunds 查询账户资金
+// TrdGetFunds 2101 - 查询账户资金
 func (client *Client) TrdGetFunds(c2s *trdgetfunds.C2S) (*trdgetfunds.S2C, error) {
 	req := &trdgetfunds.Request{
 		C2S: c2s,
