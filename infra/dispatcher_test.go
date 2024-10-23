@@ -36,7 +36,7 @@ func TestDispatcher(t *testing.T) {
 	err := hub.Dispatch(1001, 1, []byte{1, 2, 3})
 	should.Error(err)
 
-	p := &common.PacketID{ConnID: proto.Uint64(2), SerialNo: proto.Uint32(99)}
+	p := &common.PacketID{ConnID: proto.Uint64(333), SerialNo: proto.Uint32(333)}
 	b, err := proto.Marshal(p)
 	should.NoError(err)
 	err = hub.Dispatch(1001, 1, b)
@@ -49,6 +49,20 @@ func TestDispatcher(t *testing.T) {
 	hub.Register(1001, 0, infra.NewProtobufChan(ch2))
 	err = hub.Dispatch(1001, 3, b) // fallback to the default channel (sn = 0)
 	should.NoError(err)
+
+	close(ch2)
+	err = hub.Dispatch(1001, 3, b)
+	should.NoError(err) // the panic is caught
+
+	p2 := &common.PacketID{ConnID: proto.Uint64(444), SerialNo: proto.Uint32(444)}
+	b2, err := proto.Marshal(p2)
+	should.NoError(err)
+
+	ch3 := make(chan *common.PacketID)
+	hub.Register(1001, 0, infra.NewProtobufChan(ch3))
+
+	err = hub.Dispatch(1001, 4, b2)
+	should.Error(err) // blocked and timeout
 
 	hub.Close()
 }
