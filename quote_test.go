@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/hyperjiang/futu/pb/qotcommon"
+	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
@@ -13,7 +14,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func (ts *FutuTestSuite) TestQotSub() {
+func (ts *FutuTestSuite) TestQotSubAndQotGetBasicQot() {
 	should := require.New(ts.T())
 
 	security := &qotcommon.Security{
@@ -29,6 +30,13 @@ func (ts *FutuTestSuite) TestQotSub() {
 
 	err := ts.client.QotSub(c2s)
 	should.NoError(err)
+
+	basicqotReq := &qotgetbasicqot.C2S{
+		SecurityList: []*qotcommon.Security{security},
+	}
+	s2c, err := ts.client.QotGetBasicQot(basicqotReq)
+	should.NoError(err)
+	fmt.Println(s2c.GetBasicQotList())
 }
 
 func (ts *FutuTestSuite) TestQotRequestHistoryKL() {

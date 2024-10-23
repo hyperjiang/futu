@@ -22,24 +22,22 @@ import (
 type Client struct {
 	Options
 
-	conn     net.Conn
-	sn       atomic.Uint32         // serial number
-	resChan  chan response         // response channel
-	closed   chan struct{}         // indicate the client is closed
-	notiChan chan *notify.Response // notification channel (1003)
-	hub      *infra.DispatcherHub
-	ticker   *time.Ticker
-	connID   uint64
-	userID   uint64
+	conn    net.Conn
+	sn      atomic.Uint32 // serial number
+	resChan chan response // response channel
+	closed  chan struct{} // indicate the client is closed
+	hub     *infra.DispatcherHub
+	ticker  *time.Ticker
+	connID  uint64
+	userID  uint64
 }
 
 // NewClient creates a new client.
 func NewClient(opts ...Option) (*Client, error) {
 	client := &Client{
-		Options:  NewOptions(opts...),
-		closed:   make(chan struct{}),
-		notiChan: make(chan *notify.Response),
-		hub:      infra.NewDispatcherHub(),
+		Options: NewOptions(opts...),
+		closed:  make(chan struct{}),
+		hub:     infra.NewDispatcherHub(),
 	}
 	client.resChan = make(chan response, client.ResChanSize)
 
@@ -73,7 +71,7 @@ func NewClient(opts ...Option) (*Client, error) {
 		go client.heartbeat()
 	}
 
-	// client.RegisterDispatcher(protoid.Notify, 0, infra.NewProtobufChan(client.notiChan))
+	go client.watchNotification()
 
 	return client, nil
 }
@@ -142,9 +140,15 @@ func (client *Client) Request(protoID uint32, req proto.Message, resCh *infra.Pr
 	return err
 }
 
-// GetNotiChan returns the notification channel.
-func (client *Client) GetNotiChan() <-chan *notify.Response {
-	return client.notiChan
+// watchNotification watches the notification.
+func (client *Client) watchNotification() {
+	ch := make(chan *notify.Response)
+	client.RegisterDispatcher(protoid.Notify, 0, infra.NewProtobufChan(ch))
+
+	for noti := range ch {
+		s2c := noti.GetS2C()
+		log.Info().Interface("s2c", s2c).Msg("notification")
+	}
 }
 
 // nextSN returns the next serial number.
