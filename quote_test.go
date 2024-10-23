@@ -5,38 +5,48 @@ import (
 
 	"github.com/hyperjiang/futu/pb/qotcommon"
 	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
+	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
+	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
-	"github.com/hyperjiang/futu/pb/qotsub"
 	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
 )
 
-func (ts *FutuTestSuite) TestQotSubAndQotGetBasicQot() {
+func (ts *FutuTestSuite) TestQotGetBasicQot() {
 	should := require.New(ts.T())
 
-	security := &qotcommon.Security{
-		Market: (*int32)(qotcommon.QotMarket_QotMarket_HK_Security.Enum()),
-		Code:   proto.String("09988"),
+	c2s := &qotgetbasicqot.C2S{
+		SecurityList: []*qotcommon.Security{alibaba},
 	}
-
-	c2s := &qotsub.C2S{
-		SecurityList: []*qotcommon.Security{security},
-		SubTypeList:  []int32{int32(qotcommon.SubType_SubType_Basic)},
-		IsSubOrUnSub: proto.Bool(true),
-	}
-
-	err := ts.client.QotSub(c2s)
-	should.NoError(err)
-
-	basicqotReq := &qotgetbasicqot.C2S{
-		SecurityList: []*qotcommon.Security{security},
-	}
-	s2c, err := ts.client.QotGetBasicQot(basicqotReq)
+	s2c, err := ts.client.QotGetBasicQot(c2s)
 	should.NoError(err)
 	fmt.Println(s2c.GetBasicQotList())
+}
+
+func (ts *FutuTestSuite) TestQotGetSubInfo() {
+	should := require.New(ts.T())
+
+	info, err := ts.client.QotGetSubInfo(&qotgetsubinfo.C2S{})
+	should.NoError(err)
+	fmt.Println(info)
+}
+
+func (ts *FutuTestSuite) TestQotGetKL() {
+	should := require.New(ts.T())
+
+	c2s := &qotgetkl.C2S{
+		RehabType: proto.Int32(int32(qotcommon.RehabType_RehabType_Forward)),
+		KlType:    proto.Int32(int32(qotcommon.KLType_KLType_Day)),
+		Security:  tencent,
+		ReqNum:    proto.Int32(3),
+	}
+
+	s2c, err := ts.client.QotGetKL(c2s)
+	should.NoError(err)
+	fmt.Println(s2c.GetKlList())
 }
 
 func (ts *FutuTestSuite) TestQotRequestHistoryKL() {
@@ -44,15 +54,11 @@ func (ts *FutuTestSuite) TestQotRequestHistoryKL() {
 
 	beginDate := "2024-10-01"
 	endDate := "2024-10-10"
-	security := &qotcommon.Security{
-		Market: (*int32)(qotcommon.QotMarket_QotMarket_HK_Security.Enum()),
-		Code:   proto.String("00700"),
-	}
 
 	c2s := &qotrequesthistorykl.C2S{
 		RehabType:   proto.Int32(int32(qotcommon.RehabType_RehabType_Forward)),
 		KlType:      proto.Int32(int32(qotcommon.KLType_KLType_Day)),
-		Security:    security,
+		Security:    tencent,
 		BeginTime:   proto.String(beginDate),
 		EndTime:     proto.String(endDate),
 		MaxAckKLNum: proto.Int32(3),

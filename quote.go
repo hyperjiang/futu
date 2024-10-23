@@ -3,7 +3,9 @@ package futu
 import (
 	"github.com/hyperjiang/futu/infra"
 	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
+	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
+	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/qotsub"
@@ -33,6 +35,29 @@ func (client *Client) QotSub(c2s *qotsub.C2S) error {
 	}
 }
 
+// QotGetSubInfo 3003 - 获取订阅状态
+func (client *Client) QotGetSubInfo(c2s *qotgetsubinfo.C2S) (*qotgetsubinfo.S2C, error) {
+	req := &qotgetsubinfo.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetsubinfo.Response)
+	if err := client.Request(protoid.QotGetSubInfo, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		close(ch)
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
 // QotGetBasicQot 3004 - 获取股票基本报价
 func (client *Client) QotGetBasicQot(c2s *qotgetbasicqot.C2S) (*qotgetbasicqot.S2C, error) {
 	req := &qotgetbasicqot.Request{
@@ -41,6 +66,29 @@ func (client *Client) QotGetBasicQot(c2s *qotgetbasicqot.C2S) (*qotgetbasicqot.S
 
 	ch := make(chan *qotgetbasicqot.Response)
 	if err := client.Request(protoid.QotGetBasicQot, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		close(ch)
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetKL 3005 - 获取K线
+func (client *Client) QotGetKL(c2s *qotgetkl.C2S) (*qotgetkl.S2C, error) {
+	req := &qotgetkl.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetkl.Response)
+	if err := client.Request(protoid.QotGetKL, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 

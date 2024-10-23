@@ -10,7 +10,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func (ts *FutuTestSuite) TestTrdGetAccListAndTrdGetFunds() {
+func (ts *FutuTestSuite) TestTrdGetAccList_TrdGetFunds() {
 	should := require.New(ts.T())
 
 	c2s := &trdgetacclist.C2S{
