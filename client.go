@@ -11,10 +11,12 @@ import (
 	"time"
 
 	"github.com/hyperjiang/futu/infra"
+	"github.com/hyperjiang/futu/pb/common"
 	"github.com/hyperjiang/futu/pb/initconnect"
 	"github.com/hyperjiang/futu/pb/keepalive"
 	"github.com/hyperjiang/futu/pb/notify"
 	"github.com/hyperjiang/futu/protoid"
+	"github.com/hyperjiang/rsa"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/protobuf/proto"
 )
@@ -30,6 +32,7 @@ type Client struct {
 	ticker  *time.Ticker
 	connID  uint64
 	userID  uint64
+	crypto  *infra.Crypto
 }
 
 // NewClient creates a new client.
@@ -66,6 +69,15 @@ func NewClient(opts ...Option) (*Client, error) {
 
 	client.connID = s2c.GetConnID()
 	client.userID = s2c.GetLoginUserID()
+
+	if client.PrivateKey != nil || client.PublicKey != nil {
+		client.crypto, err = infra.NewCrypto([]byte(s2c.GetConnAESKey()), []byte(s2c.GetAesCBCiv()))
+		if err != nil {
+			client.Close()
+			return nil, err
+		}
+	}
+
 	if d := s2c.GetKeepAliveInterval(); d > 0 {
 		client.ticker = time.NewTicker(time.Second * time.Duration(d))
 		go client.heartbeat()
@@ -112,6 +124,18 @@ func (client *Client) Request(protoID uint32, req proto.Message, resCh *infra.Pr
 	if err != nil {
 		return err
 	}
+	sha1Value := sha1.Sum(b)
+
+	if client.PublicKey != nil {
+		if protoID == protoid.InitConnect {
+			b, err = rsa.EncryptByPublicKey(b, client.PublicKey)
+			if err != nil {
+				return err
+			}
+		} else {
+			b = client.crypto.Encrypt(b)
+		}
+	}
 
 	sn := client.nextSN()
 
@@ -122,7 +146,7 @@ func (client *Client) Request(protoID uint32, req proto.Message, resCh *infra.Pr
 		ProtoVer:     0,
 		SerialNo:     sn,
 		BodyLen:      uint32(len(b)),
-		BodySHA1:     sha1.Sum(b),
+		BodySHA1:     sha1Value,
 	}
 
 	client.RegisterDispatcher(protoID, sn, resCh)
@@ -174,7 +198,7 @@ func (client *Client) listen() {
 		case <-client.closed:
 			return
 		case res := <-client.resChan:
-			log.Info().Uint32("proto_id", res.ProtoID).Uint32("sn", res.SerialNo).Msg("")
+			log.Info().Uint32("proto_id", res.ProtoID).Uint32("sn", res.SerialNo).Msg("listen")
 			if err := client.hub.Dispatch(res.ProtoID, res.SerialNo, res.Body); err != nil {
 				log.Error().Err(err).Msg("dispatch error")
 			}
@@ -202,6 +226,19 @@ func (client *Client) read() error {
 	if _, err := io.ReadFull(client.conn, b); err != nil {
 		return err
 	}
+
+	if client.PrivateKey != nil {
+		if h.ProtoID == protoid.InitConnect {
+			var err error
+			b, err = rsa.DecryptByPrivateKey(b, client.PrivateKey)
+			if err != nil {
+				return err
+			}
+		} else {
+			b = client.crypto.Decrypt(b)
+		}
+	}
+
 	// verify body
 	if h.BodySHA1 != sha1.Sum(b) {
 		return errors.New("sha1 sum error")
@@ -239,6 +276,7 @@ func (client *Client) initConnect() (*initconnect.S2C, error) {
 			ClientVer:           proto.Int32(ClientVersion),
 			ClientID:            proto.String(client.ID),
 			RecvNotify:          proto.Bool(client.RecvNotify),
+			PacketEncAlgo:       proto.Int32(int32(*common.PacketEncAlgo_PacketEncAlgo_AES_CBC.Enum())),
 			ProgrammingLanguage: proto.String("Go"),
 		},
 	}

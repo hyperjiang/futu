@@ -10,6 +10,8 @@ const (
 type Options struct {
 	Addr        string
 	ID          string
+	PrivateKey  []byte
+	PublicKey   []byte
 	RecvNotify  bool
 	ResChanSize int
 }
@@ -44,6 +46,20 @@ func WithID(id string) Option {
 func WithAddr(addr string) Option {
 	return func(o *Options) {
 		o.Addr = addr
+	}
+}
+
+// WithPrivateKey sets private key.
+func WithPrivateKey(privateKey []byte) Option {
+	return func(o *Options) {
+		o.PrivateKey = privateKey
+	}
+}
+
+// WithPublicKey sets public key.
+func WithPublicKey(publicKey []byte) Option {
+	return func(o *Options) {
+		o.PublicKey = publicKey
 	}
 }
 

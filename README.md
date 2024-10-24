@@ -27,3 +27,7 @@ if err != nil {
 res, err := client.GetGlobalState()
 fmt.Println(res)
 ```
+
+## Features
+
+- Support RSA and AES CBC Encryption and Decryption

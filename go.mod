@@ -5,6 +5,7 @@ go 1.21
 toolchain go1.23.2
 
 require (
+	github.com/hyperjiang/rsa v1.0.0
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.9.0
 	google.golang.org/protobuf v1.35.1
