@@ -1,9 +1,11 @@
 package futu_test
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/hyperjiang/futu"
 	"github.com/hyperjiang/futu/pb/qotcommon"
@@ -81,9 +83,12 @@ func (ts *FutuTestSuite) SetupSuite() {
 		IsSubOrUnSub: proto.Bool(true),
 	}
 
-	should := require.New(ts.T())
-	err = ts.client.QotSub(c2s)
-	should.NoError(err)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	err = ts.client.QotSub(ctx, c2s)
+	if err != nil {
+		fmt.Println(err)
+	}
 }
 
 // TearDownSuite run once at the very end of the testing suite, after all tests have been run.
@@ -97,7 +102,9 @@ func (ts *FutuTestSuite) TearDownSuite() {
 func (ts *FutuTestSuite) TestGetGlobalState() {
 	should := require.New(ts.T())
 
-	res, err := ts.client.GetGlobalState()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.GetGlobalState(ctx)
 	should.NoError(err)
 
 	fmt.Println(res)

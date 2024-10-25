@@ -24,7 +24,9 @@ if err != nil {
     log.Fatal(err)
 }
 
-res, err := client.GetGlobalState()
+ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+defer cancel()
+res, err := client.GetGlobalState(ctx)
 fmt.Println(res)
 ```
 

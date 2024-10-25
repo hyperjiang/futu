@@ -29,7 +29,6 @@ type Client struct {
 	resChan chan response // response channel
 	closed  chan struct{} // indicate the client is closed
 	hub     *infra.DispatcherHub
-	ticker  *time.Ticker
 	connID  uint64
 	userID  uint64
 	crypto  *infra.Crypto
@@ -78,9 +77,8 @@ func NewClient(opts ...Option) (*Client, error) {
 		}
 	}
 
-	if d := s2c.GetKeepAliveInterval(); d > 0 {
-		client.ticker = time.NewTicker(time.Second * time.Duration(d))
-		go client.heartbeat()
+	if interval := s2c.GetKeepAliveInterval(); interval > 0 {
+		go client.heartbeat(time.Second * time.Duration(interval))
 	}
 
 	go client.watchNotification()
@@ -213,7 +211,7 @@ func (client *Client) read() error {
 		}
 	}()
 
-	// read header
+	// read header, it will block until the header is read
 	var h futuHeader
 	if err := binary.Read(client.conn, binary.LittleEndian, &h); err != nil {
 		return err
@@ -221,7 +219,7 @@ func (client *Client) read() error {
 	if h.HeaderFlag != [2]byte{'F', 'T'} {
 		return errors.New("header flag error")
 	}
-	// read body
+	// read body, it will block until the body is read
 	b := make([]byte, h.BodyLen)
 	if _, err := io.ReadFull(client.conn, b); err != nil {
 		return err
@@ -262,9 +260,11 @@ func (client *Client) infiniteRead() {
 				// If the connection is closed, stop receiving data.
 				// io.EOF: The connection is closed by the remote end.
 				// net.ErrClosed: The connection is closed by the local end.
+				log.Error().Err(err).Msg("connection closed")
 				return
 			} else {
 				log.Error().Err(err).Msg("decode error")
+				return
 			}
 		}
 	}
@@ -282,6 +282,7 @@ func (client *Client) initConnect() (*initconnect.S2C, error) {
 	}
 
 	ch := make(chan *initconnect.Response)
+	defer close(ch)
 
 	if err := client.Request(protoid.InitConnect, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -294,14 +295,13 @@ func (client *Client) initConnect() (*initconnect.S2C, error) {
 		if !ok {
 			return nil, ErrChannelClosed
 		}
-		close(ch)
 		return resp.GetS2C(), infra.Error(resp)
 	}
 }
 
 // keepAlive sends a keep alive request.
 // The server will return the server timestamp in seconds.
-func (client *Client) keepAlive(ch chan *keepalive.Response) (int64, error) {
+func (client *Client) keepAlive(ch chan *keepalive.Response, ticker *time.Ticker) (int64, error) {
 	req := &keepalive.Request{
 		C2S: &keepalive.C2S{
 			Time: proto.Int64(time.Now().Unix()),
@@ -315,6 +315,8 @@ func (client *Client) keepAlive(ch chan *keepalive.Response) (int64, error) {
 	select {
 	case <-client.closed:
 		return 0, ErrInterrupted
+	case <-ticker.C:
+		return 0, ErrTimeout
 	case resp, ok := <-ch:
 		if !ok {
 			return 0, ErrChannelClosed
@@ -323,18 +325,20 @@ func (client *Client) keepAlive(ch chan *keepalive.Response) (int64, error) {
 	}
 }
 
-func (client *Client) heartbeat() {
+func (client *Client) heartbeat(d time.Duration) {
+	ticker := time.NewTicker(d)
+	defer ticker.Stop()
+
 	ch := make(chan *keepalive.Response)
+	defer close(ch)
 
 	for {
 		select {
 		case <-client.closed:
-			client.ticker.Stop()
-			close(ch)
 			log.Info().Msg("heartbeat stopped")
 			return
-		case <-client.ticker.C:
-			if _, err := client.keepAlive(ch); err != nil {
+		case <-ticker.C:
+			if _, err := client.keepAlive(ch, ticker); err != nil {
 				return
 			}
 		}

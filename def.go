@@ -25,6 +25,7 @@ type response struct {
 }
 
 var (
-	ErrInterrupted   = errors.New("process is interrupted")
 	ErrChannelClosed = errors.New("channel is closed")
+	ErrInterrupted   = errors.New("process is interrupted")
+	ErrTimeout       = errors.New("timeout")
 )

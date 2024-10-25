@@ -1,7 +1,9 @@
 package futu_test
 
 import (
+	"context"
 	"fmt"
+	"time"
 
 	"github.com/hyperjiang/futu/pb/qotcommon"
 	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
@@ -21,15 +23,18 @@ func (ts *FutuTestSuite) TestQotGetBasicQot() {
 	c2s := &qotgetbasicqot.C2S{
 		SecurityList: []*qotcommon.Security{alibaba},
 	}
-	s2c, err := ts.client.QotGetBasicQot(c2s)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	s2c, err := ts.client.QotGetBasicQot(ctx, c2s)
 	should.NoError(err)
 	fmt.Println(s2c.GetBasicQotList())
 }
 
 func (ts *FutuTestSuite) TestQotGetSubInfo() {
 	should := require.New(ts.T())
-
-	info, err := ts.client.QotGetSubInfo(&qotgetsubinfo.C2S{})
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	info, err := ts.client.QotGetSubInfo(ctx, &qotgetsubinfo.C2S{})
 	should.NoError(err)
 	fmt.Println(info)
 }
@@ -44,7 +49,9 @@ func (ts *FutuTestSuite) TestQotGetKL() {
 		ReqNum:    proto.Int32(3),
 	}
 
-	s2c, err := ts.client.QotGetKL(c2s)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	s2c, err := ts.client.QotGetKL(ctx, c2s)
 	should.NoError(err)
 	fmt.Println(s2c.GetKlList())
 }
@@ -64,7 +71,9 @@ func (ts *FutuTestSuite) TestQotRequestHistoryKL() {
 		MaxAckKLNum: proto.Int32(3),
 	}
 
-	res, err := ts.client.QotRequestHistoryKL(c2s)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotRequestHistoryKL(ctx, c2s)
 	should.NoError(err)
 	log.Info().Str("name", res.GetName()).Msg("QotRequestHistoryKL")
 
@@ -75,7 +84,9 @@ func (ts *FutuTestSuite) TestQotRequestHistoryKL() {
 	next := res.GetNextReqKey()
 	for len(next) > 0 {
 		c2s.NextReqKey = next
-		res, err = ts.client.QotRequestHistoryKL(c2s)
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		res, err = ts.client.QotRequestHistoryKL(ctx, c2s)
 		should.NoError(err)
 
 		for _, kl := range res.GetKlList() {
@@ -106,7 +117,9 @@ func (ts *FutuTestSuite) TestQotStockFilter() {
 		BaseFilterList: []*qotstockfilter.BaseFilter{f},
 	}
 
-	res, err := ts.client.QotStockFilter(c2s)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotStockFilter(ctx, c2s)
 	should.NoError(err)
 
 	fmt.Println(res.GetAllCount())
@@ -121,7 +134,9 @@ func (ts *FutuTestSuite) TestQotStockFilter() {
 			SecurityList: []*qotcommon.Security{stock.GetSecurity()},
 		}
 
-		snapshot, err := ts.client.QotGetSecuritySnapshot(snapshotC2S)
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		snapshot, err := ts.client.QotGetSecuritySnapshot(ctx, snapshotC2S)
 		should.NoError(err)
 		fmt.Println(snapshot.GetSnapshotList()[0])
 	}

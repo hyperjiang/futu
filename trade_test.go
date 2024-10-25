@@ -1,7 +1,9 @@
 package futu_test
 
 import (
+	"context"
 	"fmt"
+	"time"
 
 	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/hyperjiang/futu/pb/trdgetacclist"
@@ -17,7 +19,9 @@ func (ts *FutuTestSuite) TestTrdGetAccList_TrdGetFunds() {
 		TrdCategory: proto.Int32(int32(trdcommon.TrdCategory_TrdCategory_Security)),
 	}
 
-	res, err := ts.client.TrdGetAccList(c2s)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.TrdGetAccList(ctx, c2s)
 	should.NoError(err)
 
 	for _, acc := range res.GetAccList() {
@@ -33,7 +37,9 @@ func (ts *FutuTestSuite) TestTrdGetAccList_TrdGetFunds() {
 			Header: header,
 		}
 
-		res, err := ts.client.TrdGetFunds(c2s)
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		res, err := ts.client.TrdGetFunds(ctx, c2s)
 		should.NoError(err)
 		fmt.Println(res.GetFunds())
 	}
