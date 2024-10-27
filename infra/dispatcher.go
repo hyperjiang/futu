@@ -24,7 +24,7 @@ func (d *Dispatcher) Register(sn uint32, ch *ProtobufChan) {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
-	if d.channels[sn] != nil {
+	if sn > 0 && d.channels[sn] != nil {
 		d.channels[sn].Close() // close the old channel
 	}
 

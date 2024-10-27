@@ -24,22 +24,24 @@ import (
 type Client struct {
 	Options
 
-	conn    net.Conn
-	sn      atomic.Uint32 // serial number
-	resChan chan response // response channel
-	closed  chan struct{} // indicate the client is closed
-	hub     *infra.DispatcherHub
-	connID  uint64
-	userID  uint64
-	crypto  *infra.Crypto
+	conn               net.Conn
+	sn                 atomic.Uint32 // serial number
+	resChan            chan response // response channel
+	closed             chan struct{} // indicate the client is closed
+	hub                *infra.DispatcherHub
+	connID             uint64
+	userID             uint64
+	crypto             *infra.Crypto
+	notificationHandle Handler
 }
 
 // NewClient creates a new client.
 func NewClient(opts ...Option) (*Client, error) {
 	client := &Client{
-		Options: NewOptions(opts...),
-		closed:  make(chan struct{}),
-		hub:     infra.NewDispatcherHub(),
+		Options:            NewOptions(opts...),
+		closed:             make(chan struct{}),
+		hub:                infra.NewDispatcherHub(),
+		notificationHandle: defaultNotificationHandler,
 	}
 	client.resChan = make(chan response, client.ResChanSize)
 
@@ -162,14 +164,31 @@ func (client *Client) Request(protoID uint32, req proto.Message, resCh *infra.Pr
 	return err
 }
 
+// SetNotificationHandler sets the notification handler.
+func (client *Client) SetNotificationHandler(h Handler) *Client {
+	client.notificationHandle = h
+	return client
+}
+
 // watchNotification watches the notification.
 func (client *Client) watchNotification() {
 	ch := make(chan *notify.Response)
 	client.RegisterDispatcher(protoid.Notify, 0, infra.NewProtobufChan(ch))
 
-	for noti := range ch {
-		s2c := noti.GetS2C()
-		log.Info().Interface("s2c", s2c).Msg("notification")
+	for {
+		select {
+		case <-client.closed:
+			log.Info().Msg("notification stopped")
+			return
+		case noti, ok := <-ch:
+			if !ok {
+				log.Info().Msg("notification channel closed")
+				return
+			}
+			if err := client.notificationHandle(noti.GetS2C()); err != nil {
+				log.Error().Err(err).Msg("notification handle error")
+			}
+		}
 	}
 }
 
