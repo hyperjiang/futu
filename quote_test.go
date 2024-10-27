@@ -23,7 +23,7 @@ func (ts *FutuTestSuite) TestQotGetBasicQot() {
 	c2s := &qotgetbasicqot.C2S{
 		SecurityList: []*qotcommon.Security{alibaba},
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 	s2c, err := ts.client.QotGetBasicQot(ctx, c2s)
 	should.NoError(err)

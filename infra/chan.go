@@ -1,26 +1,16 @@
 package infra
 
 import (
-	"context"
-	"errors"
 	"reflect"
-	"time"
 
 	"github.com/rs/zerolog/log"
 	"google.golang.org/protobuf/proto"
 )
 
-const (
-	defaultRetryInterval = 1 * time.Millisecond
-	defaultTimeout       = 10 * time.Millisecond
-)
-
 // ProtobufChan is a wrapper for chan *T, T is a struct and *T implements proto.Message.
 type ProtobufChan struct {
-	v             reflect.Value
-	t             reflect.Type
-	timeout       time.Duration
-	retryInterval time.Duration
+	v reflect.Value
+	t reflect.Type
 }
 
 // NewProtobufChan creates a new ProtobufChan.
@@ -44,7 +34,7 @@ func NewProtobufChan(i any) *ProtobufChan {
 		return nil
 	}
 
-	return &ProtobufChan{v: reflect.ValueOf(i), t: st, timeout: defaultTimeout, retryInterval: defaultRetryInterval}
+	return &ProtobufChan{v: reflect.ValueOf(i), t: st}
 }
 
 // Send unmarshals b into a proto message and send it to the channel.
@@ -60,23 +50,9 @@ func (ch *ProtobufChan) Send(b []byte) error {
 		return err
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), ch.timeout)
-	defer cancel()
+	ch.v.Send(buf)
 
-	ticker := time.NewTicker(ch.retryInterval)
-	defer ticker.Stop()
-
-	// we use TrySend to avoid blocking
-	for {
-		select {
-		case <-ticker.C:
-			if sent := ch.v.TrySend(buf); sent {
-				return nil
-			}
-		case <-ctx.Done():
-			return errors.New("send failed due to timeout")
-		}
-	}
+	return nil
 }
 
 // Close closes the channel.
