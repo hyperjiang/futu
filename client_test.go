@@ -10,6 +10,7 @@ import (
 	"github.com/hyperjiang/futu"
 	"github.com/hyperjiang/futu/pb/qotcommon"
 	"github.com/hyperjiang/futu/pb/qotsub"
+	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/require"
@@ -25,6 +26,11 @@ var (
 	tencent = &qotcommon.Security{
 		Market: (*int32)(qotcommon.QotMarket_QotMarket_HK_Security.Enum()),
 		Code:   proto.String("00700"),
+	}
+	usAccount = &trdcommon.TrdHeader{
+		TrdEnv:    proto.Int32(int32(trdcommon.TrdEnv_TrdEnv_Simulate)),
+		AccID:     proto.Uint64(1619199),
+		TrdMarket: proto.Int32(int32(trdcommon.TrdMarket_TrdMarket_US)),
 	}
 )
 
