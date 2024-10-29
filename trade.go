@@ -7,6 +7,10 @@ import (
 	"github.com/hyperjiang/futu/pb/common"
 	"github.com/hyperjiang/futu/pb/trdgetacclist"
 	"github.com/hyperjiang/futu/pb/trdgetfunds"
+	"github.com/hyperjiang/futu/pb/trdgethistoryorderfilllist"
+	"github.com/hyperjiang/futu/pb/trdgethistoryorderlist"
+	"github.com/hyperjiang/futu/pb/trdgetorderfee"
+	"github.com/hyperjiang/futu/pb/trdgetorderfilllist"
 	"github.com/hyperjiang/futu/pb/trdgetorderlist"
 	"github.com/hyperjiang/futu/pb/trdmodifyorder"
 	"github.com/hyperjiang/futu/pb/trdplaceorder"
@@ -165,6 +169,106 @@ func (client *Client) TrdModifyOrder(ctx context.Context, c2s *trdmodifyorder.C2
 	ch := make(chan *trdmodifyorder.Response)
 	defer close(ch)
 	if err := client.Request(protoid.TrdModifyOrder, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// TrdGetOrderFillList 2211 - 获取成交列表
+func (client *Client) TrdGetOrderFillList(ctx context.Context, c2s *trdgetorderfilllist.C2S) (*trdgetorderfilllist.S2C, error) {
+	req := &trdgetorderfilllist.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *trdgetorderfilllist.Response)
+	defer close(ch)
+	if err := client.Request(protoid.TrdGetOrderFillList, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// TrdGetHistoryOrderList 2221 - 获取历史订单列表
+func (client *Client) TrdGetHistoryOrderList(ctx context.Context, c2s *trdgethistoryorderlist.C2S) (*trdgethistoryorderlist.S2C, error) {
+	req := &trdgethistoryorderlist.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *trdgethistoryorderlist.Response)
+	defer close(ch)
+	if err := client.Request(protoid.TrdGetHistoryOrderList, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// TrdGetHistoryOrderFillList 2222 - 获取历史成交列表
+func (client *Client) TrdGetHistoryOrderFillList(ctx context.Context, c2s *trdgethistoryorderfilllist.C2S) (*trdgethistoryorderfilllist.S2C, error) {
+	req := &trdgethistoryorderfilllist.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *trdgethistoryorderfilllist.Response)
+	defer close(ch)
+	if err := client.Request(protoid.TrdGetHistoryOrderFillList, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// TrdGetOrderFee 2225 - 获取交易费用
+func (client *Client) TrdGetOrderFee(ctx context.Context, c2s *trdgetorderfee.C2S) (*trdgetorderfee.S2C, error) {
+	req := &trdgetorderfee.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *trdgetorderfee.Response)
+	defer close(ch)
+	if err := client.Request(protoid.TrdGetOrderFee, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 

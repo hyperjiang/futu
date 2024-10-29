@@ -8,6 +8,10 @@ import (
 	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/hyperjiang/futu/pb/trdgetacclist"
 	"github.com/hyperjiang/futu/pb/trdgetfunds"
+	"github.com/hyperjiang/futu/pb/trdgethistoryorderfilllist"
+	"github.com/hyperjiang/futu/pb/trdgethistoryorderlist"
+	"github.com/hyperjiang/futu/pb/trdgetorderfee"
+	"github.com/hyperjiang/futu/pb/trdgetorderfilllist"
 	"github.com/hyperjiang/futu/pb/trdgetorderlist"
 	"github.com/hyperjiang/futu/pb/trdmodifyorder"
 	"github.com/hyperjiang/futu/pb/trdplaceorder"
@@ -58,7 +62,7 @@ func (ts *FutuTestSuite) TestTrdPlaceOrder() {
 		// OrderType: proto.Int32(int32(trdcommon.OrderType_OrderType_Market)),
 		OrderType: proto.Int32(int32(trdcommon.OrderType_OrderType_Normal)),
 		Code:      proto.String("AAPL"),
-		Price:     proto.Float64(234),
+		Price:     proto.Float64(230),
 		Qty:       proto.Float64(1),
 		SecMarket: proto.Int32(int32(trdcommon.TrdSecMarket_TrdSecMarket_US)),
 		Remark:    proto.String("test via futu go sdk"),
@@ -71,19 +75,21 @@ func (ts *FutuTestSuite) TestTrdPlaceOrder() {
 	should.NoError(err)
 	log.Info().Interface("order", res).Msg("place order")
 
-	// cancel the order
-	ctx2, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
+	if err == nil {
+		// cancel the order
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
 
-	c2s2 := &trdmodifyorder.C2S{
-		Header:        usAccount,
-		OrderID:       proto.Uint64(res.GetOrderID()),
-		ModifyOrderOp: proto.Int32(int32(trdcommon.ModifyOrderOp_ModifyOrderOp_Cancel)),
+		c2s := &trdmodifyorder.C2S{
+			Header:        usAccount,
+			OrderID:       proto.Uint64(res.GetOrderID()),
+			ModifyOrderOp: proto.Int32(int32(trdcommon.ModifyOrderOp_ModifyOrderOp_Cancel)),
+		}
+
+		res, err := ts.client.TrdModifyOrder(ctx, c2s)
+		should.NoError(err)
+		log.Info().Interface("order", res).Msg("cancel order")
 	}
-
-	res2, err := ts.client.TrdModifyOrder(ctx2, c2s2)
-	should.NoError(err)
-	log.Info().Interface("order", res2).Msg("cancel order")
 }
 
 func (ts *FutuTestSuite) TestTrdGetOrderList() {
@@ -100,6 +106,80 @@ func (ts *FutuTestSuite) TestTrdGetOrderList() {
 	res, err := ts.client.TrdGetOrderList(ctx, c2s)
 	should.NoError(err)
 	for _, order := range res.GetOrderList() {
-		fmt.Printf("order: %+v\n", order)
+		fmt.Printf("pending order: %+v\n", order)
 	}
+}
+
+func (ts *FutuTestSuite) TestTrdGetOrderFillList() {
+	should := require.New(ts.T())
+
+	c2s := &trdgetorderfilllist.C2S{
+		Header: usAccount,
+		// FilterConditions: &trdcommon.TrdFilterConditions{},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	res, err := ts.client.TrdGetOrderFillList(ctx, c2s)
+	should.Error(err) // 模拟交易不支持成交数据
+	for _, order := range res.GetOrderFillList() {
+		fmt.Printf("completed order: %+v\n", order)
+	}
+}
+
+func (ts *FutuTestSuite) TestTrdGetHistoryOrderList() {
+	should := require.New(ts.T())
+
+	c2s := &trdgethistoryorderlist.C2S{
+		Header: usAccount,
+		FilterConditions: &trdcommon.TrdFilterConditions{
+			BeginTime: proto.String(time.Now().AddDate(0, 0, -7).Format("2006-01-02 15:04:05")),
+			EndTime:   proto.String(time.Now().Format("2006-01-02 15:04:05")),
+		},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	res, err := ts.client.TrdGetHistoryOrderList(ctx, c2s)
+	should.NoError(err)
+
+	var orderIDs []string
+	for _, order := range res.GetOrderList() {
+		fmt.Printf("history order: %+v\n", order)
+		if order.GetOrderStatus() == int32(trdcommon.OrderStatus_OrderStatus_Filled_All) {
+			orderIDs = append(orderIDs, order.GetOrderIDEx())
+		}
+	}
+
+	if len(orderIDs) > 0 {
+		c2s := &trdgetorderfee.C2S{
+			Header:        usAccount,
+			OrderIdExList: orderIDs,
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+
+		_, err := ts.client.TrdGetOrderFee(ctx, c2s)
+		should.Error(err) // 暂时不支持模拟交易
+	}
+}
+
+func (ts *FutuTestSuite) TestTrdGetHistoryOrderFillList() {
+	should := require.New(ts.T())
+
+	c2s := &trdgethistoryorderfilllist.C2S{
+		Header: usAccount,
+		FilterConditions: &trdcommon.TrdFilterConditions{
+			BeginTime: proto.String(time.Now().AddDate(0, 0, -7).Format("2006-01-02 15:04:05")),
+			EndTime:   proto.String(time.Now().Format("2006-01-02 15:04:05")),
+		},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	_, err := ts.client.TrdGetHistoryOrderFillList(ctx, c2s)
+	should.Error(err) // 模拟交易不支持成交数据
 }
