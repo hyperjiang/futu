@@ -5,14 +5,18 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/hyperjiang/futu/pb/qotcommon"
 	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/hyperjiang/futu/pb/trdgetacclist"
 	"github.com/hyperjiang/futu/pb/trdgetfunds"
 	"github.com/hyperjiang/futu/pb/trdgethistoryorderfilllist"
 	"github.com/hyperjiang/futu/pb/trdgethistoryorderlist"
+	"github.com/hyperjiang/futu/pb/trdgetmarginratio"
+	"github.com/hyperjiang/futu/pb/trdgetmaxtrdqtys"
 	"github.com/hyperjiang/futu/pb/trdgetorderfee"
 	"github.com/hyperjiang/futu/pb/trdgetorderfilllist"
 	"github.com/hyperjiang/futu/pb/trdgetorderlist"
+	"github.com/hyperjiang/futu/pb/trdgetpositionlist"
 	"github.com/hyperjiang/futu/pb/trdmodifyorder"
 	"github.com/hyperjiang/futu/pb/trdplaceorder"
 	"github.com/rs/zerolog/log"
@@ -51,6 +55,42 @@ func (ts *FutuTestSuite) TestTrdGetAccList_TrdGetFunds() {
 		should.NoError(err)
 		fmt.Println(res.GetFunds())
 	}
+}
+
+func (ts *FutuTestSuite) TestTrdGetPositionList() {
+	should := require.New(ts.T())
+
+	c2s := &trdgetpositionlist.C2S{
+		Header: usAccount,
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	res, err := ts.client.TrdGetPositionList(ctx, c2s)
+	should.NoError(err)
+	for _, position := range res.GetPositionList() {
+		fmt.Printf("position: %+v\n", position)
+	}
+}
+
+func (ts *FutuTestSuite) TestTrdGetMaxTrdQtys() {
+	should := require.New(ts.T())
+
+	c2s := &trdgetmaxtrdqtys.C2S{
+		Header:    usAccount,
+		OrderType: proto.Int32(int32(trdcommon.OrderType_OrderType_Normal)),
+		Code:      proto.String("AAPL"),
+		Price:     proto.Float64(230),
+		SecMarket: proto.Int32(int32(trdcommon.TrdSecMarket_TrdSecMarket_US)),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	res, err := ts.client.TrdGetMaxTrdQtys(ctx, c2s)
+	should.NoError(err)
+	fmt.Println(res.GetMaxTrdQtys())
 }
 
 func (ts *FutuTestSuite) TestTrdPlaceOrder() {
@@ -182,4 +222,22 @@ func (ts *FutuTestSuite) TestTrdGetHistoryOrderFillList() {
 
 	_, err := ts.client.TrdGetHistoryOrderFillList(ctx, c2s)
 	should.Error(err) // 模拟交易不支持成交数据
+}
+
+func (ts *FutuTestSuite) TestTrdGetMarginRatio() {
+	should := require.New(ts.T())
+
+	c2s := &trdgetmarginratio.C2S{
+		Header:       usAccount,
+		SecurityList: []*qotcommon.Security{apple},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	res, err := ts.client.TrdGetMarginRatio(ctx, c2s)
+	should.NoError(err)
+	for _, item := range res.GetMarginRatioInfoList() {
+		fmt.Printf("margin ratio: %+v\n", item)
+	}
 }

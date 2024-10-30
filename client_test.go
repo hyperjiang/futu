@@ -27,6 +27,10 @@ var (
 		Market: (*int32)(qotcommon.QotMarket_QotMarket_HK_Security.Enum()),
 		Code:   proto.String("00700"),
 	}
+	apple = &qotcommon.Security{
+		Market: (*int32)(qotcommon.QotMarket_QotMarket_US_Security.Enum()),
+		Code:   proto.String("AAPL"),
+	}
 	usAccount = &trdcommon.TrdHeader{
 		TrdEnv:    proto.Int32(int32(trdcommon.TrdEnv_TrdEnv_Simulate)),
 		AccID:     proto.Uint64(1619199),
@@ -79,7 +83,7 @@ func (ts *FutuTestSuite) SetupSuite() {
 	}
 
 	c2s := &qotsub.C2S{
-		SecurityList: []*qotcommon.Security{alibaba, tencent},
+		SecurityList: []*qotcommon.Security{alibaba, tencent, apple},
 		SubTypeList: []int32{
 			int32(qotcommon.SubType_SubType_Basic),
 			int32(qotcommon.SubType_SubType_RT),

@@ -9,9 +9,12 @@ import (
 	"github.com/hyperjiang/futu/pb/trdgetfunds"
 	"github.com/hyperjiang/futu/pb/trdgethistoryorderfilllist"
 	"github.com/hyperjiang/futu/pb/trdgethistoryorderlist"
+	"github.com/hyperjiang/futu/pb/trdgetmarginratio"
+	"github.com/hyperjiang/futu/pb/trdgetmaxtrdqtys"
 	"github.com/hyperjiang/futu/pb/trdgetorderfee"
 	"github.com/hyperjiang/futu/pb/trdgetorderfilllist"
 	"github.com/hyperjiang/futu/pb/trdgetorderlist"
+	"github.com/hyperjiang/futu/pb/trdgetpositionlist"
 	"github.com/hyperjiang/futu/pb/trdmodifyorder"
 	"github.com/hyperjiang/futu/pb/trdplaceorder"
 	"github.com/hyperjiang/futu/pb/trdunlocktrade"
@@ -96,7 +99,57 @@ func (client *Client) TrdGetFunds(ctx context.Context, c2s *trdgetfunds.C2S) (*t
 	}
 }
 
-// TrdGetOrderList 2101 - 查询未完成订单
+// TrdGetPositionList 2102 - 查询持仓
+func (client *Client) TrdGetPositionList(ctx context.Context, c2s *trdgetpositionlist.C2S) (*trdgetpositionlist.S2C, error) {
+	req := &trdgetpositionlist.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *trdgetpositionlist.Response)
+	defer close(ch)
+	if err := client.Request(protoid.TrdGetPositionList, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// TrdGetMaxTrdQtys 2111 - 查询指定证券的最大可买可卖数量
+func (client *Client) TrdGetMaxTrdQtys(ctx context.Context, c2s *trdgetmaxtrdqtys.C2S) (*trdgetmaxtrdqtys.S2C, error) {
+	req := &trdgetmaxtrdqtys.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *trdgetmaxtrdqtys.Response)
+	defer close(ch)
+	if err := client.Request(protoid.TrdGetMaxTrdQtys, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// TrdGetOrderList 2201 - 查询未完成订单
 func (client *Client) TrdGetOrderList(ctx context.Context, c2s *trdgetorderlist.C2S) (*trdgetorderlist.S2C, error) {
 	req := &trdgetorderlist.Request{
 		C2S: c2s,
@@ -244,6 +297,31 @@ func (client *Client) TrdGetHistoryOrderFillList(ctx context.Context, c2s *trdge
 	ch := make(chan *trdgethistoryorderfilllist.Response)
 	defer close(ch)
 	if err := client.Request(protoid.TrdGetHistoryOrderFillList, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// TrdGetMarginRatio 2223 - 获取融资融券数据
+func (client *Client) TrdGetMarginRatio(ctx context.Context, c2s *trdgetmarginratio.C2S) (*trdgetmarginratio.S2C, error) {
+	req := &trdgetmarginratio.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *trdgetmarginratio.Response)
+	defer close(ch)
+	if err := client.Request(protoid.TrdGetMarginRatio, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 
