@@ -1,4 +1,4 @@
-package futu
+package client
 
 import (
 	"github.com/rs/zerolog/log"

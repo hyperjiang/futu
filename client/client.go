@@ -1,4 +1,4 @@
-package futu
+package client
 
 import (
 	"bytes"
@@ -21,6 +21,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+// Client is the client to connect to Futu OpenD.
 type Client struct {
 	Options
 
@@ -35,8 +36,8 @@ type Client struct {
 	notificationHandle Handler
 }
 
-// NewClient creates a new client.
-func NewClient(opts ...Option) (*Client, error) {
+// New creates a new client.
+func New(opts ...Option) (*Client, error) {
 	client := &Client{
 		Options:            NewOptions(opts...),
 		closed:             make(chan struct{}),

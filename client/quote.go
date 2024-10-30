@@ -1,4 +1,4 @@
-package futu
+package client
 
 import (
 	"context"

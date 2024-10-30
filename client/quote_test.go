@@ -1,4 +1,4 @@
-package futu_test
+package client_test
 
 import (
 	"context"
@@ -17,7 +17,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func (ts *FutuTestSuite) TestQotGetBasicQot() {
+func (ts *ClientTestSuite) TestQotGetBasicQot() {
 	should := require.New(ts.T())
 
 	c2s := &qotgetbasicqot.C2S{
@@ -30,7 +30,7 @@ func (ts *FutuTestSuite) TestQotGetBasicQot() {
 	fmt.Println(s2c.GetBasicQotList())
 }
 
-func (ts *FutuTestSuite) TestQotGetSubInfo() {
+func (ts *ClientTestSuite) TestQotGetSubInfo() {
 	should := require.New(ts.T())
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
@@ -39,7 +39,7 @@ func (ts *FutuTestSuite) TestQotGetSubInfo() {
 	fmt.Println(info)
 }
 
-func (ts *FutuTestSuite) TestQotGetKL() {
+func (ts *ClientTestSuite) TestQotGetKL() {
 	should := require.New(ts.T())
 
 	c2s := &qotgetkl.C2S{
@@ -56,7 +56,7 @@ func (ts *FutuTestSuite) TestQotGetKL() {
 	fmt.Println(s2c.GetKlList())
 }
 
-func (ts *FutuTestSuite) TestQotRequestHistoryKL() {
+func (ts *ClientTestSuite) TestQotRequestHistoryKL() {
 	should := require.New(ts.T())
 
 	beginDate := "2024-10-01"
@@ -97,7 +97,7 @@ func (ts *FutuTestSuite) TestQotRequestHistoryKL() {
 	}
 }
 
-func (ts *FutuTestSuite) TestQotStockFilter() {
+func (ts *ClientTestSuite) TestQotStockFilter() {
 	should := require.New(ts.T())
 
 	var begin int32 = 0

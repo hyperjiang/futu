@@ -1,4 +1,4 @@
-package futu_test
+package client_test
 
 import (
 	"context"
@@ -24,7 +24,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func (ts *FutuTestSuite) TestTrdGetAccList_TrdGetFunds() {
+func (ts *ClientTestSuite) TestTrdGetAccList_TrdGetFunds() {
 	should := require.New(ts.T())
 
 	c2s := &trdgetacclist.C2S{
@@ -57,7 +57,7 @@ func (ts *FutuTestSuite) TestTrdGetAccList_TrdGetFunds() {
 	}
 }
 
-func (ts *FutuTestSuite) TestTrdGetPositionList() {
+func (ts *ClientTestSuite) TestTrdGetPositionList() {
 	should := require.New(ts.T())
 
 	c2s := &trdgetpositionlist.C2S{
@@ -74,7 +74,7 @@ func (ts *FutuTestSuite) TestTrdGetPositionList() {
 	}
 }
 
-func (ts *FutuTestSuite) TestTrdGetMaxTrdQtys() {
+func (ts *ClientTestSuite) TestTrdGetMaxTrdQtys() {
 	should := require.New(ts.T())
 
 	c2s := &trdgetmaxtrdqtys.C2S{
@@ -93,7 +93,7 @@ func (ts *FutuTestSuite) TestTrdGetMaxTrdQtys() {
 	fmt.Println(res.GetMaxTrdQtys())
 }
 
-func (ts *FutuTestSuite) TestTrdPlaceOrder() {
+func (ts *ClientTestSuite) TestTrdPlaceOrder() {
 	should := require.New(ts.T())
 
 	c2s := &trdplaceorder.C2S{
@@ -132,7 +132,7 @@ func (ts *FutuTestSuite) TestTrdPlaceOrder() {
 	}
 }
 
-func (ts *FutuTestSuite) TestTrdGetOrderList() {
+func (ts *ClientTestSuite) TestTrdGetOrderList() {
 	should := require.New(ts.T())
 
 	c2s := &trdgetorderlist.C2S{
@@ -150,7 +150,7 @@ func (ts *FutuTestSuite) TestTrdGetOrderList() {
 	}
 }
 
-func (ts *FutuTestSuite) TestTrdGetOrderFillList() {
+func (ts *ClientTestSuite) TestTrdGetOrderFillList() {
 	should := require.New(ts.T())
 
 	c2s := &trdgetorderfilllist.C2S{
@@ -168,7 +168,7 @@ func (ts *FutuTestSuite) TestTrdGetOrderFillList() {
 	}
 }
 
-func (ts *FutuTestSuite) TestTrdGetHistoryOrderList() {
+func (ts *ClientTestSuite) TestTrdGetHistoryOrderList() {
 	should := require.New(ts.T())
 
 	c2s := &trdgethistoryorderlist.C2S{
@@ -206,7 +206,7 @@ func (ts *FutuTestSuite) TestTrdGetHistoryOrderList() {
 	}
 }
 
-func (ts *FutuTestSuite) TestTrdGetHistoryOrderFillList() {
+func (ts *ClientTestSuite) TestTrdGetHistoryOrderFillList() {
 	should := require.New(ts.T())
 
 	c2s := &trdgethistoryorderfilllist.C2S{
@@ -224,7 +224,7 @@ func (ts *FutuTestSuite) TestTrdGetHistoryOrderFillList() {
 	should.Error(err) // 模拟交易不支持成交数据
 }
 
-func (ts *FutuTestSuite) TestTrdGetMarginRatio() {
+func (ts *ClientTestSuite) TestTrdGetMarginRatio() {
 	should := require.New(ts.T())
 
 	c2s := &trdgetmarginratio.C2S{

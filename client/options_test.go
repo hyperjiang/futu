@@ -1,9 +1,9 @@
-package futu_test
+package client_test
 
 import (
 	"testing"
 
-	"github.com/hyperjiang/futu"
+	"github.com/hyperjiang/futu/client"
 	"github.com/stretchr/testify/require"
 )
 
@@ -11,7 +11,7 @@ func TestOptions(t *testing.T) {
 	should := require.New(t)
 
 	// default options
-	opts := futu.NewOptions()
+	opts := client.NewOptions()
 
 	should.Equal(":11111", opts.Addr)
 	should.Equal("futu-go", opts.ID)
@@ -22,13 +22,13 @@ func TestOptions(t *testing.T) {
 
 	// override default options
 
-	opts2 := futu.NewOptions(
-		futu.WithID("abc"),
-		futu.WithAddr(":8080"),
-		futu.WithPrivateKey([]byte("123")),
-		futu.WithPublicKey([]byte("123")),
-		futu.WithRecvNotify(false),
-		futu.WithResChanSize(10),
+	opts2 := client.NewOptions(
+		client.WithID("abc"),
+		client.WithAddr(":8080"),
+		client.WithPrivateKey([]byte("123")),
+		client.WithPublicKey([]byte("123")),
+		client.WithRecvNotify(false),
+		client.WithResChanSize(10),
 	)
 
 	should.Equal("abc", opts2.ID)

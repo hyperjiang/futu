@@ -1,4 +1,4 @@
-package futu_test
+package client_test
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/hyperjiang/futu"
+	"github.com/hyperjiang/futu/client"
 	"github.com/hyperjiang/futu/pb/qotcommon"
 	"github.com/hyperjiang/futu/pb/qotsub"
 	"github.com/hyperjiang/futu/pb/trdcommon"
@@ -60,23 +60,23 @@ VkYeATk9GXjpCQi1qxjRAkEA2jPfclINKKKfVPjys7R6Juq9sBFqJSmhcFYae8Xd
 ywQCvmZiU66RGeo6pCSwdH0h4NeQ8w48SjhmRqswNKKr8g==
 -----END RSA PRIVATE KEY-----`)
 
-type FutuTestSuite struct {
+type ClientTestSuite struct {
 	suite.Suite
-	client *futu.Client
+	client *client.Client
 }
 
-// TestFutuTestSuite runs the http client test suite
-func TestFutuTestSuite(t *testing.T) {
+// TestClientTestSuite runs the http client test suite
+func TestClientTestSuite(t *testing.T) {
 	log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
-	suite.Run(t, new(FutuTestSuite))
+	suite.Run(t, new(ClientTestSuite))
 }
 
 // SetupSuite run once at the very start of the testing suite, before any tests are run.
-func (ts *FutuTestSuite) SetupSuite() {
+func (ts *ClientTestSuite) SetupSuite() {
 	var err error
-	ts.client, err = futu.NewClient(
-		futu.WithPrivateKey(priKey),
-		futu.WithPublicKey(pubKey),
+	ts.client, err = client.New(
+		client.WithPrivateKey(priKey),
+		client.WithPublicKey(pubKey),
 	)
 	if err != nil {
 		ts.T().SkipNow()
@@ -102,14 +102,14 @@ func (ts *FutuTestSuite) SetupSuite() {
 }
 
 // TearDownSuite run once at the very end of the testing suite, after all tests have been run.
-func (ts *FutuTestSuite) TearDownSuite() {
+func (ts *ClientTestSuite) TearDownSuite() {
 	// time.Sleep(10 * time.Minute)
 	if ts.client != nil {
 		ts.client.Close()
 	}
 }
 
-func (ts *FutuTestSuite) TestGetGlobalState() {
+func (ts *ClientTestSuite) TestGetGlobalState() {
 	should := require.New(ts.T())
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
