@@ -19,7 +19,7 @@ const (
 	TrdModifyOrder             = 2205 // 修改订单
 	TrdUpdateOrder             = 2208 // 推送订单状态变动通知
 	TrdGetOrderFillList        = 2211 // 获取成交列表
-	TrdUpdateOrderFill         = 2218 // 推送成交通知
+	TrdUpdateOrderFill         = 2218 // 推送成交通知。该接口只支持实盘交易，不支持模拟交易。
 	TrdGetHistoryOrderList     = 2221 // 获取历史订单列表
 	TrdGetHistoryOrderFillList = 2222 // 获取历史成交列表
 	TrdGetMarginRatio          = 2223 // 获取融资融券数据

@@ -52,6 +52,7 @@ func (d *Dispatcher) Dispatch(sn uint32, body []byte) error {
 	// deregister the channel after sending the response.
 	// we do not close the channel here, it's the responsibility of the caller.
 	// the caller can reuse the channel for next serial number if needed.
+	// sn = 0 is used for notifications, we do not deregister it.
 	if sn != 0 {
 		delete(d.channels, sn)
 	}

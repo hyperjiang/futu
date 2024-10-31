@@ -16,6 +16,8 @@ import (
 	"github.com/hyperjiang/futu/pb/initconnect"
 	"github.com/hyperjiang/futu/pb/keepalive"
 	"github.com/hyperjiang/futu/pb/notify"
+	"github.com/hyperjiang/futu/pb/trdupdateorder"
+	"github.com/hyperjiang/futu/pb/trdupdateorderfill"
 	"github.com/hyperjiang/futu/protoid"
 	"github.com/hyperjiang/rsa"
 	"github.com/rs/zerolog/log"
@@ -177,21 +179,46 @@ func (client *Client) getHandler(protoID uint32) Handler {
 
 // watchNotification watches the push notification.
 func (client *Client) watchNotification() {
-	ch := make(chan *notify.Response, 1)
-	client.registerDispatcher(protoid.Notify, 0, infra.NewProtobufChan(ch))
+	// no need to close the channels in this function,
+	// because they will be closed by the dispatcher hub when the client is closed.
+	notiCh := make(chan *notify.Response, 1)
+	client.registerDispatcher(protoid.Notify, 0, infra.NewProtobufChan(notiCh))
+
+	updateOrderCh := make(chan *trdupdateorder.Response, 1)
+	client.registerDispatcher(protoid.TrdUpdateOrder, 0, infra.NewProtobufChan(updateOrderCh))
+
+	updateOrderFillCh := make(chan *trdupdateorderfill.Response, 1)
+	client.registerDispatcher(protoid.TrdUpdateOrderFill, 0, infra.NewProtobufChan(updateOrderFillCh))
 
 	for {
 		select {
 		case <-client.closed:
-			log.Info().Msg("notification stopped")
+			log.Info().Msg("stop watching notification")
 			return
-		case noti, ok := <-ch:
+		case resp, ok := <-notiCh:
 			if !ok {
 				log.Info().Msg("notification channel closed")
-				return
+				break
 			}
-			if err := client.getHandler(protoid.Notify)(noti.GetS2C()); err != nil {
+			if err := client.getHandler(protoid.Notify)(resp.GetS2C()); err != nil {
 				log.Error().Err(err).Msg("notification handle error")
+			}
+
+		case resp, ok := <-updateOrderCh:
+			if !ok {
+				log.Info().Msg("update order channel closed")
+				break
+			}
+			if err := client.getHandler(protoid.TrdUpdateOrder)(resp.GetS2C()); err != nil {
+				log.Error().Err(err).Msg("update order handle error")
+			}
+		case resp, ok := <-updateOrderFillCh:
+			if !ok {
+				log.Info().Msg("update order fill channel closed")
+				break
+			}
+			if err := client.getHandler(protoid.TrdUpdateOrderFill)(resp.GetS2C()); err != nil {
+				log.Error().Err(err).Msg("update order fill handle error")
 			}
 		}
 	}

@@ -6,11 +6,9 @@
 [![codecov](https://codecov.io/gh/hyperjiang/futu/graph/badge.svg?token=iI7hyTEenz)](https://codecov.io/gh/hyperjiang/futu)
 [![Release](https://img.shields.io/github/release/hyperjiang/futu.svg)](https://github.com/hyperjiang/futu/releases)
 
-Futu open api golang client. Require go version >= 1.21.
+富途牛牛 OpenAPI Golang 客户端，要求Golang版本 >= 1.21
 
-API doc: https://openapi.futunn.com/futu-api-doc/
-
-做最好用的富途牛牛 OpenAPI Golang 客户端。
+Futu Open API 官方文档: https://openapi.futunn.com/futu-api-doc/
 
 ## 代码目录说明
 
@@ -21,11 +19,7 @@ API doc: https://openapi.futunn.com/futu-api-doc/
 - `pb`: 基于 protobuf 文件生成的 golang 代码
 - `protoid`: 接口ID常量列表
 
-## Usage
-
-```bash
-go get -u github.com/hyperjiang/futu
-```
+## 使用说明
 
 ```go
 import "github.com/hyperjiang/futu"
@@ -41,9 +35,15 @@ res, err := client.GetGlobalState(ctx)
 fmt.Println(res)
 ```
 
-## Features
+对于系统推送过来的数据，需要调用`RegisterHandler(protoID uint32, h Handler)`来注册自己的处理逻辑。
+如果没有设置，SDK会使用默认的Handler，只打印收到的消息的日志。
+可以设置推送Handler的ID如下：
+- protoid.Notify // 1003
+- protoid.TrdUpdateOrder // 2208
 
-### 基础功能
+## 支持的功能
+
+### 基础功能（用户无需调用）
 - [x] 支持使用RSA加解密
 - [x] 初始化连接
 - [x] 获取全局状态
@@ -101,9 +101,9 @@ fmt.Println(res)
 - [x] TrdGetOrderList            = 2201 // 获取订单列表
 - [x] TrdPlaceOrder              = 2202 // 下单
 - [x] TrdModifyOrder             = 2205 // 修改订单
-- [ ] TrdUpdateOrder             = 2208 // 推送订单状态变动通知
+- [x] TrdUpdateOrder             = 2208 // 推送订单状态变动通知
 - [x] TrdGetOrderFillList        = 2211 // 获取成交列表
-- [ ] TrdUpdateOrderFill         = 2218 // 推送成交通知
+- [x] TrdUpdateOrderFill         = 2218 // 推送成交通知
 - [x] TrdGetHistoryOrderList     = 2221 // 获取历史订单列表
 - [x] TrdGetHistoryOrderFillList = 2222 // 获取历史成交列表
 - [x] TrdGetMarginRatio          = 2223 // 获取融资融券数据
