@@ -17,6 +17,7 @@ import (
 	"github.com/hyperjiang/futu/pb/trdgetpositionlist"
 	"github.com/hyperjiang/futu/pb/trdmodifyorder"
 	"github.com/hyperjiang/futu/pb/trdplaceorder"
+	"github.com/hyperjiang/futu/pb/trdsubaccpush"
 	"github.com/hyperjiang/futu/pb/trdunlocktrade"
 	"github.com/hyperjiang/futu/protoid"
 	"google.golang.org/protobuf/proto"
@@ -30,7 +31,7 @@ func (client *Client) TrdGetAccList(ctx context.Context, c2s *trdgetacclist.C2S)
 		C2S: c2s,
 	}
 
-	ch := make(chan *trdgetacclist.Response)
+	ch := make(chan *trdgetacclist.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdGetAccList, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -55,7 +56,7 @@ func (client *Client) TrdUnlockTrade(ctx context.Context, c2s *trdunlocktrade.C2
 		C2S: c2s,
 	}
 
-	ch := make(chan *trdunlocktrade.Response)
+	ch := make(chan *trdunlocktrade.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdUnlockTrade, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -74,13 +75,38 @@ func (client *Client) TrdUnlockTrade(ctx context.Context, c2s *trdunlocktrade.C2
 	}
 }
 
+// TrdSubAccPush 2008 - 订阅业务账户的交易推送数据，该接口的S2C返回的是空
+func (client *Client) TrdSubAccPush(ctx context.Context, c2s *trdsubaccpush.C2S) error {
+	req := &trdsubaccpush.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *trdsubaccpush.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.TrdSubAccPush, req, infra.NewProtobufChan(ch)); err != nil {
+		return err
+	}
+
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-client.closed:
+		return ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return ErrChannelClosed
+		}
+		return infra.Error(resp)
+	}
+}
+
 // TrdGetFunds 2101 - 查询账户资金
 func (client *Client) TrdGetFunds(ctx context.Context, c2s *trdgetfunds.C2S) (*trdgetfunds.S2C, error) {
 	req := &trdgetfunds.Request{
 		C2S: c2s,
 	}
 
-	ch := make(chan *trdgetfunds.Response)
+	ch := make(chan *trdgetfunds.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdGetFunds, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -105,7 +131,7 @@ func (client *Client) TrdGetPositionList(ctx context.Context, c2s *trdgetpositio
 		C2S: c2s,
 	}
 
-	ch := make(chan *trdgetpositionlist.Response)
+	ch := make(chan *trdgetpositionlist.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdGetPositionList, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -130,7 +156,7 @@ func (client *Client) TrdGetMaxTrdQtys(ctx context.Context, c2s *trdgetmaxtrdqty
 		C2S: c2s,
 	}
 
-	ch := make(chan *trdgetmaxtrdqtys.Response)
+	ch := make(chan *trdgetmaxtrdqtys.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdGetMaxTrdQtys, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -155,7 +181,7 @@ func (client *Client) TrdGetOrderList(ctx context.Context, c2s *trdgetorderlist.
 		C2S: c2s,
 	}
 
-	ch := make(chan *trdgetorderlist.Response)
+	ch := make(chan *trdgetorderlist.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdGetOrderList, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -187,7 +213,7 @@ func (client *Client) TrdPlaceOrder(ctx context.Context, c2s *trdplaceorder.C2S)
 		C2S: c2s,
 	}
 
-	ch := make(chan *trdplaceorder.Response)
+	ch := make(chan *trdplaceorder.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdPlaceOrder, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -219,7 +245,7 @@ func (client *Client) TrdModifyOrder(ctx context.Context, c2s *trdmodifyorder.C2
 		C2S: c2s,
 	}
 
-	ch := make(chan *trdmodifyorder.Response)
+	ch := make(chan *trdmodifyorder.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdModifyOrder, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -244,7 +270,7 @@ func (client *Client) TrdGetOrderFillList(ctx context.Context, c2s *trdgetorderf
 		C2S: c2s,
 	}
 
-	ch := make(chan *trdgetorderfilllist.Response)
+	ch := make(chan *trdgetorderfilllist.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdGetOrderFillList, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -269,7 +295,7 @@ func (client *Client) TrdGetHistoryOrderList(ctx context.Context, c2s *trdgethis
 		C2S: c2s,
 	}
 
-	ch := make(chan *trdgethistoryorderlist.Response)
+	ch := make(chan *trdgethistoryorderlist.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdGetHistoryOrderList, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -294,7 +320,7 @@ func (client *Client) TrdGetHistoryOrderFillList(ctx context.Context, c2s *trdge
 		C2S: c2s,
 	}
 
-	ch := make(chan *trdgethistoryorderfilllist.Response)
+	ch := make(chan *trdgethistoryorderfilllist.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdGetHistoryOrderFillList, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -319,7 +345,7 @@ func (client *Client) TrdGetMarginRatio(ctx context.Context, c2s *trdgetmarginra
 		C2S: c2s,
 	}
 
-	ch := make(chan *trdgetmarginratio.Response)
+	ch := make(chan *trdgetmarginratio.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdGetMarginRatio, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -344,7 +370,7 @@ func (client *Client) TrdGetOrderFee(ctx context.Context, c2s *trdgetorderfee.C2
 		C2S: c2s,
 	}
 
-	ch := make(chan *trdgetorderfee.Response)
+	ch := make(chan *trdgetorderfee.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdGetOrderFee, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err

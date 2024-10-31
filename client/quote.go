@@ -20,7 +20,7 @@ func (client *Client) QotSub(ctx context.Context, c2s *qotsub.C2S) error {
 		C2S: c2s,
 	}
 
-	ch := make(chan *qotsub.Response)
+	ch := make(chan *qotsub.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.QotSub, req, infra.NewProtobufChan(ch)); err != nil {
 		return err
@@ -45,7 +45,7 @@ func (client *Client) QotGetSubInfo(ctx context.Context, c2s *qotgetsubinfo.C2S)
 		C2S: c2s,
 	}
 
-	ch := make(chan *qotgetsubinfo.Response)
+	ch := make(chan *qotgetsubinfo.Response, 1)
 	defer close(ch)
 
 	if err := client.Request(protoid.QotGetSubInfo, req, infra.NewProtobufChan(ch)); err != nil {
@@ -71,7 +71,7 @@ func (client *Client) QotGetBasicQot(ctx context.Context, c2s *qotgetbasicqot.C2
 		C2S: c2s,
 	}
 
-	ch := make(chan *qotgetbasicqot.Response)
+	ch := make(chan *qotgetbasicqot.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.QotGetBasicQot, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -96,7 +96,7 @@ func (client *Client) QotGetKL(ctx context.Context, c2s *qotgetkl.C2S) (*qotgetk
 		C2S: c2s,
 	}
 
-	ch := make(chan *qotgetkl.Response)
+	ch := make(chan *qotgetkl.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.QotGetKL, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -121,7 +121,7 @@ func (client *Client) QotRequestHistoryKL(ctx context.Context, c2s *qotrequesthi
 		C2S: c2s,
 	}
 
-	ch := make(chan *qotrequesthistorykl.Response)
+	ch := make(chan *qotrequesthistorykl.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.QotRequestHistoryKL, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -146,7 +146,7 @@ func (client *Client) QotGetSecuritySnapshot(ctx context.Context, c2s *qotgetsec
 		C2S: c2s,
 	}
 
-	ch := make(chan *qotgetsecuritysnapshot.Response)
+	ch := make(chan *qotgetsecuritysnapshot.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.QotGetSecuritySnapshot, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
@@ -171,7 +171,7 @@ func (client *Client) QotStockFilter(ctx context.Context, c2s *qotstockfilter.C2
 		C2S: c2s,
 	}
 
-	ch := make(chan *qotstockfilter.Response)
+	ch := make(chan *qotstockfilter.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.QotStockFilter, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err

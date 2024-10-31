@@ -7,6 +7,7 @@ import (
 	"errors"
 	"io"
 	"net"
+	"sync"
 	"sync/atomic"
 	"time"
 
@@ -25,24 +26,24 @@ import (
 type Client struct {
 	Options
 
-	conn               net.Conn
-	sn                 atomic.Uint32 // serial number
-	resChan            chan response // response channel
-	closed             chan struct{} // indicate the client is closed
-	hub                *infra.DispatcherHub
-	connID             uint64
-	userID             uint64
-	crypto             *infra.Crypto
-	notificationHandle Handler
+	conn     net.Conn
+	sn       atomic.Uint32 // serial number
+	resChan  chan response // response channel
+	closed   chan struct{} // indicate the client is closed
+	hub      *infra.DispatcherHub
+	connID   uint64
+	userID   uint64
+	crypto   *infra.Crypto
+	handlers sync.Map // push notification handlers
 }
 
 // New creates a new client.
 func New(opts ...Option) (*Client, error) {
 	client := &Client{
-		Options:            NewOptions(opts...),
-		closed:             make(chan struct{}),
-		hub:                infra.NewDispatcherHub(),
-		notificationHandle: defaultNotificationHandler,
+		Options:  NewOptions(opts...),
+		closed:   make(chan struct{}),
+		hub:      infra.NewDispatcherHub(),
+		handlers: sync.Map{},
 	}
 	client.resChan = make(chan response, client.ResChanSize)
 
@@ -112,11 +113,6 @@ func (client *Client) Close() error {
 	return client.conn.Close()
 }
 
-// RegisterDispatcher registers a dispatcher.
-func (client *Client) RegisterDispatcher(protoID uint32, sn uint32, ch *infra.ProtobufChan) {
-	client.hub.Register(protoID, sn, ch)
-}
-
 // Request sends a request to the server.
 func (client *Client) Request(protoID uint32, req proto.Message, resCh *infra.ProtobufChan) error {
 	var buf bytes.Buffer
@@ -150,7 +146,7 @@ func (client *Client) Request(protoID uint32, req proto.Message, resCh *infra.Pr
 		BodySHA1:     sha1Value,
 	}
 
-	client.RegisterDispatcher(protoID, sn, resCh)
+	client.registerDispatcher(protoID, sn, resCh)
 
 	if err := binary.Write(&buf, binary.LittleEndian, &h); err != nil {
 		return err
@@ -165,16 +161,24 @@ func (client *Client) Request(protoID uint32, req proto.Message, resCh *infra.Pr
 	return err
 }
 
-// SetNotificationHandler sets the notification handler.
-func (client *Client) SetNotificationHandler(h Handler) *Client {
-	client.notificationHandle = h
+// RegisterHandler registers a handler for push notifications of the specified protoID.
+func (client *Client) RegisterHandler(protoID uint32, h Handler) *Client {
+	client.handlers.Store(protoID, h)
 	return client
 }
 
-// watchNotification watches the notification.
+func (client *Client) getHandler(protoID uint32) Handler {
+	if h, ok := client.handlers.Load(protoID); ok {
+		return h.(Handler)
+	}
+
+	return defaultHandler
+}
+
+// watchNotification watches the push notification.
 func (client *Client) watchNotification() {
-	ch := make(chan *notify.Response)
-	client.RegisterDispatcher(protoid.Notify, 0, infra.NewProtobufChan(ch))
+	ch := make(chan *notify.Response, 1)
+	client.registerDispatcher(protoid.Notify, 0, infra.NewProtobufChan(ch))
 
 	for {
 		select {
@@ -186,11 +190,15 @@ func (client *Client) watchNotification() {
 				log.Info().Msg("notification channel closed")
 				return
 			}
-			if err := client.notificationHandle(noti.GetS2C()); err != nil {
+			if err := client.getHandler(protoid.Notify)(noti.GetS2C()); err != nil {
 				log.Error().Err(err).Msg("notification handle error")
 			}
 		}
 	}
+}
+
+func (client *Client) registerDispatcher(protoID uint32, sn uint32, ch *infra.ProtobufChan) {
+	client.hub.Register(protoID, sn, ch)
 }
 
 // nextSN returns the next serial number.
@@ -301,7 +309,7 @@ func (client *Client) initConnect() (*initconnect.S2C, error) {
 		},
 	}
 
-	ch := make(chan *initconnect.Response)
+	ch := make(chan *initconnect.Response, 1)
 	defer close(ch)
 
 	if err := client.Request(protoid.InitConnect, req, infra.NewProtobufChan(ch)); err != nil {
@@ -349,7 +357,7 @@ func (client *Client) heartbeat(d time.Duration) {
 	ticker := time.NewTicker(d)
 	defer ticker.Stop()
 
-	ch := make(chan *keepalive.Response)
+	ch := make(chan *keepalive.Response, 1)
 	defer close(ch)
 
 	for {

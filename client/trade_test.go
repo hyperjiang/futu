@@ -19,6 +19,7 @@ import (
 	"github.com/hyperjiang/futu/pb/trdgetpositionlist"
 	"github.com/hyperjiang/futu/pb/trdmodifyorder"
 	"github.com/hyperjiang/futu/pb/trdplaceorder"
+	"github.com/hyperjiang/futu/pb/trdsubaccpush"
 	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
@@ -55,6 +56,20 @@ func (ts *ClientTestSuite) TestTrdGetAccList_TrdGetFunds() {
 		should.NoError(err)
 		fmt.Println(res.GetFunds())
 	}
+}
+
+func (ts *ClientTestSuite) TestTrdSubAccPush() {
+	should := require.New(ts.T())
+
+	c2s := &trdsubaccpush.C2S{
+		AccIDList: []uint64{usAccount.GetAccID()},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	err := ts.client.TrdSubAccPush(ctx, c2s)
+	should.NoError(err)
 }
 
 func (ts *ClientTestSuite) TestTrdGetPositionList() {

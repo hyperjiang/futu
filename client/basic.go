@@ -16,7 +16,7 @@ func (client *Client) GetGlobalState(ctx context.Context) (*getglobalstate.S2C, 
 			UserID: proto.Uint64(client.userID),
 		},
 	}
-	ch := make(chan *getglobalstate.Response)
+	ch := make(chan *getglobalstate.Response, 1)
 	defer close(ch)
 
 	if err := client.Request(protoid.GetGlobalState, req, infra.NewProtobufChan(ch)); err != nil {

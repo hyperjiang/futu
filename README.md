@@ -94,7 +94,7 @@ fmt.Println(res)
 ### 交易接口
 - [x] TrdGetAccList              = 2001 // 获取交易业务账户列表
 - [x] TrdUnlockTrade             = 2005 // 解锁或锁定交易
-- [ ] TrdSubAccPush              = 2008 // 订阅业务账户的交易推送数据
+- [x] TrdSubAccPush              = 2008 // 订阅业务账户的交易推送数据
 - [x] TrdGetFunds                = 2101 // 获取账户资金
 - [x] TrdGetPositionList         = 2102 // 获取账户持仓
 - [x] TrdGetMaxTrdQtys           = 2111 // 获取最大交易数量
