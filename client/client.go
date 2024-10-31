@@ -16,6 +16,13 @@ import (
 	"github.com/hyperjiang/futu/pb/initconnect"
 	"github.com/hyperjiang/futu/pb/keepalive"
 	"github.com/hyperjiang/futu/pb/notify"
+	"github.com/hyperjiang/futu/pb/qotupdatebasicqot"
+	"github.com/hyperjiang/futu/pb/qotupdatebroker"
+	"github.com/hyperjiang/futu/pb/qotupdatekl"
+	"github.com/hyperjiang/futu/pb/qotupdateorderbook"
+	"github.com/hyperjiang/futu/pb/qotupdatepricereminder"
+	"github.com/hyperjiang/futu/pb/qotupdatert"
+	"github.com/hyperjiang/futu/pb/qotupdateticker"
 	"github.com/hyperjiang/futu/pb/trdupdateorder"
 	"github.com/hyperjiang/futu/pb/trdupdateorderfill"
 	"github.com/hyperjiang/futu/protoid"
@@ -178,11 +185,11 @@ func (client *Client) getHandler(protoID uint32) Handler {
 }
 
 // watchNotification watches the push notification.
+// no need to close the channels in this function,
+// because they will be closed by the dispatcher hub when the client is closed.
 func (client *Client) watchNotification() {
-	// no need to close the channels in this function,
-	// because they will be closed by the dispatcher hub when the client is closed.
-	notiCh := make(chan *notify.Response, 1)
-	client.registerDispatcher(protoid.Notify, 0, infra.NewProtobufChan(notiCh))
+	notifyCh := make(chan *notify.Response, 1)
+	client.registerDispatcher(protoid.Notify, 0, infra.NewProtobufChan(notifyCh))
 
 	updateOrderCh := make(chan *trdupdateorder.Response, 1)
 	client.registerDispatcher(protoid.TrdUpdateOrder, 0, infra.NewProtobufChan(updateOrderCh))
@@ -190,12 +197,33 @@ func (client *Client) watchNotification() {
 	updateOrderFillCh := make(chan *trdupdateorderfill.Response, 1)
 	client.registerDispatcher(protoid.TrdUpdateOrderFill, 0, infra.NewProtobufChan(updateOrderFillCh))
 
+	updateBasicQotCh := make(chan *qotupdatebasicqot.Response, 1)
+	client.registerDispatcher(protoid.QotUpdateBasicQot, 0, infra.NewProtobufChan(updateBasicQotCh))
+
+	updateKLCh := make(chan *qotupdatekl.Response, 1)
+	client.registerDispatcher(protoid.QotUpdateKL, 0, infra.NewProtobufChan(updateKLCh))
+
+	updateRT := make(chan *qotupdatert.Response, 1)
+	client.registerDispatcher(protoid.QotUpdateRT, 0, infra.NewProtobufChan(updateRT))
+
+	updateTicker := make(chan *qotupdateticker.Response, 1)
+	client.registerDispatcher(protoid.QotUpdateTicker, 0, infra.NewProtobufChan(updateTicker))
+
+	updateOrderBook := make(chan *qotupdateorderbook.Response, 1)
+	client.registerDispatcher(protoid.QotUpdateOrderBook, 0, infra.NewProtobufChan(updateOrderBook))
+
+	updateBroker := make(chan *qotupdatebroker.Response, 1)
+	client.registerDispatcher(protoid.QotUpdateBroker, 0, infra.NewProtobufChan(updateBroker))
+
+	updatePriceReminder := make(chan *qotupdatepricereminder.Response, 1)
+	client.registerDispatcher(protoid.QotUpdatePriceReminder, 0, infra.NewProtobufChan(updatePriceReminder))
+
 	for {
 		select {
 		case <-client.closed:
 			log.Info().Msg("stop watching notification")
 			return
-		case resp, ok := <-notiCh:
+		case resp, ok := <-notifyCh:
 			if !ok {
 				log.Info().Msg("notification channel closed")
 				break
@@ -219,6 +247,62 @@ func (client *Client) watchNotification() {
 			}
 			if err := client.getHandler(protoid.TrdUpdateOrderFill)(resp.GetS2C()); err != nil {
 				log.Error().Err(err).Msg("update order fill handle error")
+			}
+		case resp, ok := <-updateBasicQotCh:
+			if !ok {
+				log.Info().Msg("update basic qot channel closed")
+				break
+			}
+			if err := client.getHandler(protoid.QotUpdateBasicQot)(resp.GetS2C()); err != nil {
+				log.Error().Err(err).Msg("update basic quote handle error")
+			}
+		case resp, ok := <-updateKLCh:
+			if !ok {
+				log.Info().Msg("update KL channel closed")
+				break
+			}
+			if err := client.getHandler(protoid.QotUpdateKL)(resp.GetS2C()); err != nil {
+				log.Error().Err(err).Msg("update KL handle error")
+			}
+		case resp, ok := <-updateRT:
+			if !ok {
+				log.Info().Msg("update RT channel closed")
+				break
+			}
+			if err := client.getHandler(protoid.QotUpdateRT)(resp.GetS2C()); err != nil {
+				log.Error().Err(err).Msg("update RT handle error")
+			}
+		case resp, ok := <-updateTicker:
+			if !ok {
+				log.Info().Msg("update ticker channel closed")
+				break
+			}
+			if err := client.getHandler(protoid.QotUpdateTicker)(resp.GetS2C()); err != nil {
+				log.Error().Err(err).Msg("update ticker handle error")
+			}
+		case resp, ok := <-updateOrderBook:
+			if !ok {
+				log.Info().Msg("update order book channel closed")
+				break
+			}
+			if err := client.getHandler(protoid.QotUpdateOrderBook)(resp.GetS2C()); err != nil {
+				log.Error().Err(err).Msg("update order book handle error")
+			}
+		case resp, ok := <-updateBroker:
+			if !ok {
+				log.Info().Msg("update broker channel closed")
+				break
+			}
+			if err := client.getHandler(protoid.QotUpdateBroker)(resp.GetS2C()); err != nil {
+				log.Error().Err(err).Msg("update broker handle error")
+			}
+		case resp, ok := <-updatePriceReminder:
+			if !ok {
+				log.Info().Msg("update price reminder channel closed")
+				break
+			}
+			if err := client.getHandler(protoid.QotUpdatePriceReminder)(resp.GetS2C()); err != nil {
+				log.Error().Err(err).Msg("update price reminder handle error")
 			}
 		}
 	}

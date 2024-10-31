@@ -20,7 +20,7 @@ brew install protc-gen-go
 
 ### 3. Rename package
 
-Replace `github.com/hyperjiang/futu` with `github.com/hyperjiang/futu` in all the proto files.
+Replace `github.com/futuopen/ftapi4go` with `github.com/hyperjiang/futu` in all the proto files.
 
 ### 4. Generate the codes
 

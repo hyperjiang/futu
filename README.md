@@ -12,7 +12,7 @@ Futu Open API 官方文档: https://openapi.futunn.com/futu-api-doc/
 
 ## 代码目录说明
 
-- 根目录: 提供用户友好的客户端
+- `根目录`: 提供用户友好的客户端
 - `client`: 基础客户端，拥有所有功能，需要用pb定义的结构体传参，可以直接使用，但是使用起来略繁琐
 - `.proto`: protobuf 定义文件
 - `infra`: 底层支持库，使用者无需关心
@@ -37,9 +37,17 @@ fmt.Println(res)
 
 对于系统推送过来的数据，需要调用`RegisterHandler(protoID uint32, h Handler)`来注册自己的处理逻辑。
 如果没有设置，SDK会使用默认的Handler，只打印收到的消息的日志。
-可以设置推送Handler的ID如下：
+可以设置推送Handler的协议ID如下：
 - protoid.Notify // 1003
 - protoid.TrdUpdateOrder // 2208
+- protoid.TrdUpdateOrderFill // 2218
+- protoid.QotUpdateBasicQot // 3005
+- protoid.QotUpdateKL // 3007
+- protoid.QotUpdateRT // 3009
+- protoid.QotUpdateTicker // 3011
+- protoid.QotUpdateOrderBook // 3013
+- protoid.QotUpdateBroker // 3015
+- protoid.QotUpdatePriceReminder // 3019
 
 ## 支持的功能
 
@@ -54,18 +62,18 @@ fmt.Println(res)
 - [x] QotSub                     = 3001 // 订阅或者反订阅
 - [x] QotGetSubInfo              = 3003 // 获取订阅信息
 - [x] QotGetBasicQot             = 3004 // 获取股票基本报价
-- [ ] QotUpdateBasicQot          = 3005 // 推送股票基本报价
+- [x] QotUpdateBasicQot          = 3005 // 推送股票基本报价
 - [x] QotGetKL                   = 3006 // 获取K线
-- [ ] QotUpdateKL                = 3007 // 推送K线
+- [x] QotUpdateKL                = 3007 // 推送K线
 - [ ] QotGetRT                   = 3008 // 获取分时
-- [ ] QotUpdateRT                = 3009 // 推送分时
+- [x] QotUpdateRT                = 3009 // 推送分时
 - [ ] QotGetTicker               = 3010 // 获取逐笔
-- [ ] QotUpdateTicker            = 3011 // 推送逐笔
+- [x] QotUpdateTicker            = 3011 // 推送逐笔
 - [ ] QotGetOrderBook            = 3012 // 获取买卖盘
-- [ ] QotUpdateOrderBook         = 3013 // 推送买卖盘
+- [x] QotUpdateOrderBook         = 3013 // 推送买卖盘
 - [ ] QotGetBroker               = 3014 // 获取经纪队列
-- [ ] QotUpdateBroker            = 3015 // 推送经纪队列
-- [ ] QotUpdatePriceReminder     = 3019 // 到价提醒通知
+- [x] QotUpdateBroker            = 3015 // 推送经纪队列
+- [x] QotUpdatePriceReminder     = 3019 // 到价提醒通知
 - [x] QotRequestHistoryKL        = 3103 // 在线获取单只股票一段历史K线
 - [ ] QotRequestHistoryKLQuota   = 3104 // 获取历史K线额度
 - [ ] QotRequestRehab            = 3105 // 在线获取单只股票复权信息
