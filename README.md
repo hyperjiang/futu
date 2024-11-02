@@ -21,6 +21,8 @@ Futu Open API 官方文档: https://openapi.futunn.com/futu-api-doc/
 
 ## 使用说明
 
+参考单元测试，里面每个接口都有用例。
+
 ```go
 import "github.com/hyperjiang/futu"
 
@@ -52,7 +54,7 @@ fmt.Println(res)
 ## 支持的功能
 
 ### 基础功能（用户无需调用）
-- [x] 支持使用RSA加解密
+- [x] 支持使用RSA和AES加解密
 - [x] 初始化连接
 - [x] 获取全局状态
 - [x] 事件通知推送
@@ -75,9 +77,9 @@ fmt.Println(res)
 - [x] QotUpdateBroker            = 3015 // 推送经纪队列
 - [x] QotUpdatePriceReminder     = 3019 // 到价提醒通知
 - [x] QotRequestHistoryKL        = 3103 // 在线获取单只股票一段历史K线
-- [ ] QotRequestHistoryKLQuota   = 3104 // 获取历史K线额度
-- [ ] QotRequestRehab            = 3105 // 在线获取单只股票复权信息
-- [ ] QotGetStaticInfo           = 3202 // 获取股票静态信息
+- [x] QotRequestHistoryKLQuota   = 3104 // 获取历史K线额度
+- [x] QotRequestRehab            = 3105 // 在线获取单只股票复权信息
+- [x] QotGetStaticInfo           = 3202 // 获取股票静态信息
 - [x] QotGetSecuritySnapshot     = 3203 // 获取股票快照
 - [ ] QotGetPlateSet             = 3204 // 获取板块集合下的板块
 - [ ] QotGetPlateSecurity        = 3205 // 获取板块下的股票

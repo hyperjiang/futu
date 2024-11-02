@@ -8,6 +8,6 @@ import (
 type Handler func(s2c interface{}) error
 
 func defaultHandler(s2c interface{}) error {
-	log.Info().Interface("s2c", s2c).Msg("push")
+	log.Info().Interface("s2c", s2c).Msg("notification")
 	return nil
 }

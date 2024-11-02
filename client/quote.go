@@ -10,9 +10,12 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
+	"github.com/hyperjiang/futu/pb/qotgetstaticinfo"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
+	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
+	"github.com/hyperjiang/futu/pb/qotrequestrehab"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/qotsub"
 	"github.com/hyperjiang/futu/protoid"
@@ -228,6 +231,81 @@ func (client *Client) QotRequestHistoryKL(ctx context.Context, c2s *qotrequesthi
 	ch := make(chan *qotrequesthistorykl.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.QotRequestHistoryKL, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotRequestHistoryKLQuota 3104 - 获取历史K线额度使用明细
+func (client *Client) QotRequestHistoryKLQuota(ctx context.Context, c2s *qotrequesthistoryklquota.C2S) (*qotrequesthistoryklquota.S2C, error) {
+	req := &qotrequesthistoryklquota.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotrequesthistoryklquota.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotRequestHistoryKLQuota, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotRequestRehab 3105 - 获取股票的复权因子
+func (client *Client) QotRequestRehab(ctx context.Context, c2s *qotrequestrehab.C2S) (*qotrequestrehab.S2C, error) {
+	req := &qotrequestrehab.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotrequestrehab.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotRequestRehab, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetStaticInfo 3202 - 获取股票静态信息
+func (client *Client) QotGetStaticInfo(ctx context.Context, c2s *qotgetstaticinfo.C2S) (*qotgetstaticinfo.S2C, error) {
+	req := &qotgetstaticinfo.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetstaticinfo.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetStaticInfo, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 

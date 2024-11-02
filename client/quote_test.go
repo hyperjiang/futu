@@ -2,7 +2,6 @@ package client_test
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/hyperjiang/futu/pb/qotcommon"
@@ -12,9 +11,12 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
+	"github.com/hyperjiang/futu/pb/qotgetstaticinfo"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
+	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
+	"github.com/hyperjiang/futu/pb/qotrequestrehab"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/require"
@@ -31,7 +33,7 @@ func (ts *ClientTestSuite) TestQotGetBasicQot() {
 	defer cancel()
 	s2c, err := ts.client.QotGetBasicQot(ctx, c2s)
 	should.NoError(err)
-	fmt.Println(s2c.GetBasicQotList())
+	log.Info().Interface("data", s2c.GetBasicQotList()).Msg("QotGetBasicQot")
 }
 
 func (ts *ClientTestSuite) TestQotGetSubInfo() {
@@ -40,7 +42,7 @@ func (ts *ClientTestSuite) TestQotGetSubInfo() {
 	defer cancel()
 	info, err := ts.client.QotGetSubInfo(ctx, &qotgetsubinfo.C2S{})
 	should.NoError(err)
-	fmt.Println(info)
+	log.Info().Str("data", info.String()).Msg("QotGetSubInfo")
 }
 
 func (ts *ClientTestSuite) TestQotGetKL() {
@@ -57,7 +59,7 @@ func (ts *ClientTestSuite) TestQotGetKL() {
 	defer cancel()
 	s2c, err := ts.client.QotGetKL(ctx, c2s)
 	should.NoError(err)
-	fmt.Println(s2c.GetKlList())
+	log.Info().Interface("data", s2c.GetKlList()).Msg("QotGetKL")
 }
 
 func (ts *ClientTestSuite) TestQotGetRT() {
@@ -72,7 +74,7 @@ func (ts *ClientTestSuite) TestQotGetRT() {
 	s2c, err := ts.client.QotGetRT(ctx, c2s)
 	should.NoError(err)
 	should.Equal(tencent.GetCode(), s2c.GetSecurity().GetCode())
-	fmt.Println(s2c.GetName(), "实时分时数据", len(s2c.GetRtList()))
+	log.Info().Str("stock", s2c.GetName()).Int("num", len(s2c.GetRtList())).Msg("QotGetRT")
 }
 
 func (ts *ClientTestSuite) TestQotGetTicker() {
@@ -88,7 +90,7 @@ func (ts *ClientTestSuite) TestQotGetTicker() {
 	s2c, err := ts.client.QotGetTicker(ctx, c2s)
 	should.NoError(err)
 	should.Equal(tencent.GetCode(), s2c.GetSecurity().GetCode())
-	fmt.Println(s2c.GetName(), "实时逐笔数据", len(s2c.GetTickerList()))
+	log.Info().Str("stock", s2c.GetName()).Int("num", len(s2c.GetTickerList())).Msg("QotGetTicker")
 }
 
 func (ts *ClientTestSuite) TestQotGetOrderBook() {
@@ -104,13 +106,15 @@ func (ts *ClientTestSuite) TestQotGetOrderBook() {
 	s2c, err := ts.client.QotGetOrderBook(ctx, c2s)
 	should.NoError(err)
 	should.Equal(tencent.GetCode(), s2c.GetSecurity().GetCode())
-	fmt.Println(s2c.GetName(), "实时卖盘", len(s2c.GetOrderBookAskList()))
+	log.Info().Str("stock", s2c.GetName()).
+		Int("实时卖盘", len(s2c.GetOrderBookAskList())).
+		Int("实时买盘", len(s2c.GetOrderBookBidList())).
+		Msg("QotGetOrderBook")
 	for _, ask := range s2c.GetOrderBookAskList() {
-		fmt.Println(ask)
+		log.Info().Interface("data", ask).Msg("实时卖盘")
 	}
-	fmt.Println(s2c.GetName(), "实时买盘", len(s2c.GetOrderBookBidList()))
 	for _, bid := range s2c.GetOrderBookBidList() {
-		fmt.Println(bid)
+		log.Info().Interface("data", bid).Msg("实时买盘")
 	}
 }
 
@@ -126,13 +130,15 @@ func (ts *ClientTestSuite) TestQotGetBroker() {
 	s2c, err := ts.client.QotGetBroker(ctx, c2s)
 	should.NoError(err)
 	should.Equal(tencent.GetCode(), s2c.GetSecurity().GetCode())
-	fmt.Println(s2c.GetName(), "实时经纪卖盘", len(s2c.GetBrokerAskList()))
+	log.Info().Str("stock", s2c.GetName()).
+		Int("实时经纪卖盘", len(s2c.GetBrokerAskList())).
+		Int("实时经纪买盘", len(s2c.GetBrokerBidList())).
+		Msg("QotGetBroker")
 	for _, ask := range s2c.GetBrokerAskList() {
-		fmt.Println(ask)
+		log.Info().Interface("data", ask).Msg("实时经纪卖盘")
 	}
-	fmt.Println(s2c.GetName(), "实时经纪买盘", len(s2c.GetBrokerBidList()))
 	for _, bid := range s2c.GetBrokerBidList() {
-		fmt.Println(bid)
+		log.Info().Interface("data", bid).Msg("实时经纪买盘")
 	}
 }
 
@@ -177,6 +183,47 @@ func (ts *ClientTestSuite) TestQotRequestHistoryKL() {
 	}
 }
 
+func (ts *ClientTestSuite) TestQotRequestHistoryKLQuota() {
+	should := require.New(ts.T())
+	c2s := &qotrequesthistoryklquota.C2S{
+		BGetDetail: proto.Bool(true),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotRequestHistoryKLQuota(ctx, c2s)
+	should.NoError(err)
+	log.Info().Str("data", res.String()).Msg("QotRequestHistoryKLQuota")
+}
+
+func (ts *ClientTestSuite) TestQotRequestRehab() {
+	should := require.New(ts.T())
+	c2s := &qotrequestrehab.C2S{
+		Security: tencent,
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotRequestRehab(ctx, c2s)
+	should.NoError(err)
+	log.Info().Interface("data", res.GetRehabList()).Msg("QotRequestRehab")
+}
+
+func (ts *ClientTestSuite) TestQotGetStaticInfo() {
+	should := require.New(ts.T())
+	c2s := &qotgetstaticinfo.C2S{
+		// Market:       proto.Int32(int32(qotcommon.QotMarket_QotMarket_HK_Security)),
+		// SecType:      proto.Int32(int32(qotcommon.SecurityType_SecurityType_Eqty)),
+		SecurityList: []*qotcommon.Security{alibaba, tencent},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+	res, err := ts.client.QotGetStaticInfo(ctx, c2s)
+	should.NoError(err)
+	log.Info().Interface("data", res.GetStaticInfoList()).Msg("QotGetStaticInfo")
+}
+
 func (ts *ClientTestSuite) TestQotStockFilter() {
 	should := require.New(ts.T())
 
@@ -202,7 +249,7 @@ func (ts *ClientTestSuite) TestQotStockFilter() {
 	res, err := ts.client.QotStockFilter(ctx, c2s)
 	should.NoError(err)
 
-	fmt.Println(res.GetAllCount())
+	log.Info().Int32("count", res.GetAllCount()).Msg("QotStockFilter")
 
 	for _, stock := range res.GetDataList() {
 		log.Info().Str("code", stock.GetSecurity().GetCode()).
@@ -218,6 +265,6 @@ func (ts *ClientTestSuite) TestQotStockFilter() {
 		defer cancel()
 		snapshot, err := ts.client.QotGetSecuritySnapshot(ctx, snapshotC2S)
 		should.NoError(err)
-		fmt.Println(snapshot.GetSnapshotList()[0])
+		log.Info().Interface("data", snapshot.GetSnapshotList()[0]).Msg("QotGetSecuritySnapshot")
 	}
 }

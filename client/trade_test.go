@@ -54,7 +54,7 @@ func (ts *ClientTestSuite) TestTrdGetAccList_TrdGetFunds() {
 		defer cancel()
 		res, err := ts.client.TrdGetFunds(ctx, c2s)
 		should.NoError(err)
-		fmt.Println(res.GetFunds())
+		log.Info().Interface("data", res.GetFunds()).Msg("TrdGetFunds")
 	}
 }
 
@@ -85,7 +85,7 @@ func (ts *ClientTestSuite) TestTrdGetPositionList() {
 	res, err := ts.client.TrdGetPositionList(ctx, c2s)
 	should.NoError(err)
 	for _, position := range res.GetPositionList() {
-		fmt.Printf("position: %+v\n", position)
+		log.Info().Interface("position", position).Msg("TrdGetPositionList")
 	}
 }
 
@@ -105,7 +105,7 @@ func (ts *ClientTestSuite) TestTrdGetMaxTrdQtys() {
 
 	res, err := ts.client.TrdGetMaxTrdQtys(ctx, c2s)
 	should.NoError(err)
-	fmt.Println(res.GetMaxTrdQtys())
+	log.Info().Interface("data", res.GetMaxTrdQtys()).Msg("TrdGetMaxTrdQtys")
 }
 
 func (ts *ClientTestSuite) TestTrdPlaceOrder() {
@@ -161,7 +161,7 @@ func (ts *ClientTestSuite) TestTrdGetOrderList() {
 	res, err := ts.client.TrdGetOrderList(ctx, c2s)
 	should.NoError(err)
 	for _, order := range res.GetOrderList() {
-		fmt.Printf("pending order: %+v\n", order)
+		log.Info().Interface("pending order", order).Msg("TrdGetOrderList")
 	}
 }
 
@@ -179,7 +179,7 @@ func (ts *ClientTestSuite) TestTrdGetOrderFillList() {
 	res, err := ts.client.TrdGetOrderFillList(ctx, c2s)
 	should.Error(err) // 模拟交易不支持成交数据
 	for _, order := range res.GetOrderFillList() {
-		fmt.Printf("completed order: %+v\n", order)
+		log.Info().Interface("completed order", order).Msg("TrdGetOrderFillList")
 	}
 }
 
@@ -202,7 +202,8 @@ func (ts *ClientTestSuite) TestTrdGetHistoryOrderList() {
 
 	var orderIDs []string
 	for _, order := range res.GetOrderList() {
-		fmt.Printf("history order: %+v\n", order)
+		log.Info().Interface("history order", order).Msg("GetOrderList")
+
 		if order.GetOrderStatus() == int32(trdcommon.OrderStatus_OrderStatus_Filled_All) {
 			orderIDs = append(orderIDs, order.GetOrderIDEx())
 		}
@@ -253,6 +254,6 @@ func (ts *ClientTestSuite) TestTrdGetMarginRatio() {
 	res, err := ts.client.TrdGetMarginRatio(ctx, c2s)
 	should.NoError(err)
 	for _, item := range res.GetMarginRatioInfoList() {
-		fmt.Printf("margin ratio: %+v\n", item)
+		log.Info().Interface("margin ratio", item).Msg("GetMarginRatioInfoList")
 	}
 }
