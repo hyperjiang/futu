@@ -65,13 +65,13 @@ fmt.Println(res)
 - [x] QotUpdateBasicQot          = 3005 // 推送股票基本报价
 - [x] QotGetKL                   = 3006 // 获取K线
 - [x] QotUpdateKL                = 3007 // 推送K线
-- [ ] QotGetRT                   = 3008 // 获取分时
+- [x] QotGetRT                   = 3008 // 获取分时
 - [x] QotUpdateRT                = 3009 // 推送分时
-- [ ] QotGetTicker               = 3010 // 获取逐笔
+- [x] QotGetTicker               = 3010 // 获取逐笔
 - [x] QotUpdateTicker            = 3011 // 推送逐笔
-- [ ] QotGetOrderBook            = 3012 // 获取买卖盘
+- [x] QotGetOrderBook            = 3012 // 获取买卖盘
 - [x] QotUpdateOrderBook         = 3013 // 推送买卖盘
-- [ ] QotGetBroker               = 3014 // 获取经纪队列
+- [x] QotGetBroker               = 3014 // 获取经纪队列
 - [x] QotUpdateBroker            = 3015 // 推送经纪队列
 - [x] QotUpdatePriceReminder     = 3019 // 到价提醒通知
 - [x] QotRequestHistoryKL        = 3103 // 在线获取单只股票一段历史K线

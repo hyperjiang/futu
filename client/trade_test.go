@@ -112,12 +112,12 @@ func (ts *ClientTestSuite) TestTrdPlaceOrder() {
 	should := require.New(ts.T())
 
 	c2s := &trdplaceorder.C2S{
-		Header:  usAccount,
-		TrdSide: proto.Int32(int32(trdcommon.TrdSide_TrdSide_Buy)),
-		// OrderType: proto.Int32(int32(trdcommon.OrderType_OrderType_Market)),
-		OrderType: proto.Int32(int32(trdcommon.OrderType_OrderType_Normal)),
-		Code:      proto.String("AAPL"),
-		Price:     proto.Float64(230),
+		Header:    usAccount,
+		TrdSide:   proto.Int32(int32(trdcommon.TrdSide_TrdSide_Buy)),
+		OrderType: proto.Int32(int32(trdcommon.OrderType_OrderType_Market)),
+		// OrderType: proto.Int32(int32(trdcommon.OrderType_OrderType_Normal)),
+		Code: proto.String("AAPL"),
+		// Price:     proto.Float64(230),
 		Qty:       proto.Float64(1),
 		SecMarket: proto.Int32(int32(trdcommon.TrdSecMarket_TrdSecMarket_US)),
 		Remark:    proto.String("test via futu go sdk"),

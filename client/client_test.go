@@ -83,12 +83,15 @@ func (ts *ClientTestSuite) SetupSuite() {
 	}
 
 	c2s := &qotsub.C2S{
-		SecurityList: []*qotcommon.Security{alibaba, tencent, apple},
+		SecurityList: []*qotcommon.Security{alibaba, tencent},
 		SubTypeList: []int32{
 			int32(qotcommon.SubType_SubType_Basic),
 			int32(qotcommon.SubType_SubType_RT),
 			int32(qotcommon.SubType_SubType_KL_Day),
 			int32(qotcommon.SubType_SubType_KL_3Min),
+			int32(qotcommon.SubType_SubType_Ticker),
+			int32(qotcommon.SubType_SubType_OrderBook),
+			int32(qotcommon.SubType_SubType_Broker),
 		},
 		IsSubOrUnSub: proto.Bool(true),
 	}

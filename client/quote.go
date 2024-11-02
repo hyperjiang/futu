@@ -5,9 +5,13 @@ import (
 
 	"github.com/hyperjiang/futu/infra"
 	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
+	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
+	"github.com/hyperjiang/futu/pb/qotgetorderbook"
+	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
+	"github.com/hyperjiang/futu/pb/qotgetticker"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/qotsub"
@@ -65,7 +69,7 @@ func (client *Client) QotGetSubInfo(ctx context.Context, c2s *qotgetsubinfo.C2S)
 	}
 }
 
-// QotGetBasicQot 3004 - 获取股票基本报价
+// QotGetBasicQot 3004 - 获取已订阅股票的实时报价
 func (client *Client) QotGetBasicQot(ctx context.Context, c2s *qotgetbasicqot.C2S) (*qotgetbasicqot.S2C, error) {
 	req := &qotgetbasicqot.Request{
 		C2S: c2s,
@@ -90,7 +94,7 @@ func (client *Client) QotGetBasicQot(ctx context.Context, c2s *qotgetbasicqot.C2
 	}
 }
 
-// QotGetKL 3005 - 获取K线
+// QotGetKL 3005 - 获取已订阅股票的实时K线数据
 func (client *Client) QotGetKL(ctx context.Context, c2s *qotgetkl.C2S) (*qotgetkl.S2C, error) {
 	req := &qotgetkl.Request{
 		C2S: c2s,
@@ -99,6 +103,106 @@ func (client *Client) QotGetKL(ctx context.Context, c2s *qotgetkl.C2S) (*qotgetk
 	ch := make(chan *qotgetkl.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.QotGetKL, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetRT 3008 - 获取已订阅股票的实时分时数据
+func (client *Client) QotGetRT(ctx context.Context, c2s *qotgetrt.C2S) (*qotgetrt.S2C, error) {
+	req := &qotgetrt.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetrt.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetRT, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetTicker 3010 - 获取已订阅股票的实时逐笔
+func (client *Client) QotGetTicker(ctx context.Context, c2s *qotgetticker.C2S) (*qotgetticker.S2C, error) {
+	req := &qotgetticker.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetticker.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetTicker, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetOrderBook 3012 - 获取已订阅股票的实时摆盘
+func (client *Client) QotGetOrderBook(ctx context.Context, c2s *qotgetorderbook.C2S) (*qotgetorderbook.S2C, error) {
+	req := &qotgetorderbook.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetorderbook.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetOrderBook, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetBroker 3014 - 获取已订阅股票的实时经纪队列
+func (client *Client) QotGetBroker(ctx context.Context, c2s *qotgetbroker.C2S) (*qotgetbroker.S2C, error) {
+	req := &qotgetbroker.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetbroker.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetBroker, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 

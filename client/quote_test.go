@@ -7,9 +7,13 @@ import (
 
 	"github.com/hyperjiang/futu/pb/qotcommon"
 	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
+	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
+	"github.com/hyperjiang/futu/pb/qotgetorderbook"
+	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
+	"github.com/hyperjiang/futu/pb/qotgetticker"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/rs/zerolog/log"
@@ -54,6 +58,82 @@ func (ts *ClientTestSuite) TestQotGetKL() {
 	s2c, err := ts.client.QotGetKL(ctx, c2s)
 	should.NoError(err)
 	fmt.Println(s2c.GetKlList())
+}
+
+func (ts *ClientTestSuite) TestQotGetRT() {
+	should := require.New(ts.T())
+
+	c2s := &qotgetrt.C2S{
+		Security: tencent,
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	s2c, err := ts.client.QotGetRT(ctx, c2s)
+	should.NoError(err)
+	should.Equal(tencent.GetCode(), s2c.GetSecurity().GetCode())
+	fmt.Println(s2c.GetName(), "实时分时数据", len(s2c.GetRtList()))
+}
+
+func (ts *ClientTestSuite) TestQotGetTicker() {
+	should := require.New(ts.T())
+
+	c2s := &qotgetticker.C2S{
+		Security:  tencent,
+		MaxRetNum: proto.Int32(100),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	s2c, err := ts.client.QotGetTicker(ctx, c2s)
+	should.NoError(err)
+	should.Equal(tencent.GetCode(), s2c.GetSecurity().GetCode())
+	fmt.Println(s2c.GetName(), "实时逐笔数据", len(s2c.GetTickerList()))
+}
+
+func (ts *ClientTestSuite) TestQotGetOrderBook() {
+	should := require.New(ts.T())
+
+	c2s := &qotgetorderbook.C2S{
+		Security: tencent,
+		Num:      proto.Int32(10),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	s2c, err := ts.client.QotGetOrderBook(ctx, c2s)
+	should.NoError(err)
+	should.Equal(tencent.GetCode(), s2c.GetSecurity().GetCode())
+	fmt.Println(s2c.GetName(), "实时卖盘", len(s2c.GetOrderBookAskList()))
+	for _, ask := range s2c.GetOrderBookAskList() {
+		fmt.Println(ask)
+	}
+	fmt.Println(s2c.GetName(), "实时买盘", len(s2c.GetOrderBookBidList()))
+	for _, bid := range s2c.GetOrderBookBidList() {
+		fmt.Println(bid)
+	}
+}
+
+func (ts *ClientTestSuite) TestQotGetBroker() {
+	should := require.New(ts.T())
+
+	c2s := &qotgetbroker.C2S{
+		Security: tencent,
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	s2c, err := ts.client.QotGetBroker(ctx, c2s)
+	should.NoError(err)
+	should.Equal(tencent.GetCode(), s2c.GetSecurity().GetCode())
+	fmt.Println(s2c.GetName(), "实时经纪卖盘", len(s2c.GetBrokerAskList()))
+	for _, ask := range s2c.GetBrokerAskList() {
+		fmt.Println(ask)
+	}
+	fmt.Println(s2c.GetName(), "实时经纪买盘", len(s2c.GetBrokerBidList()))
+	for _, bid := range s2c.GetBrokerBidList() {
+		fmt.Println(bid)
+	}
 }
 
 func (ts *ClientTestSuite) TestQotRequestHistoryKL() {
