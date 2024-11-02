@@ -9,6 +9,8 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
+	"github.com/hyperjiang/futu/pb/qotgetplatesecurity"
+	"github.com/hyperjiang/futu/pb/qotgetplateset"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
 	"github.com/hyperjiang/futu/pb/qotgetstaticinfo"
@@ -217,11 +219,44 @@ func (ts *ClientTestSuite) TestQotGetStaticInfo() {
 		SecurityList: []*qotcommon.Security{alibaba, tencent},
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	res, err := ts.client.QotGetStaticInfo(ctx, c2s)
 	should.NoError(err)
 	log.Info().Interface("data", res.GetStaticInfoList()).Msg("QotGetStaticInfo")
+}
+
+func (ts *ClientTestSuite) TestQotGetPlateSet() {
+	should := require.New(ts.T())
+	c2s := &qotgetplateset.C2S{
+		Market:       proto.Int32(int32(qotcommon.QotMarket_QotMarket_HK_Security)),
+		PlateSetType: proto.Int32(int32(qotcommon.PlateSetType_PlateSetType_Industry)),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotGetPlateSet(ctx, c2s)
+	should.NoError(err)
+	for _, plate := range res.GetPlateInfoList() {
+		plate.GetPlate()
+		log.Info().Str("name", plate.GetName()).
+			Int32("type", plate.GetPlateType()).
+			Interface("plate", plate.GetPlate()).
+			Msg("QotGetPlateSet")
+	}
+}
+
+func (ts *ClientTestSuite) TestQotGetPlateSecurity() {
+	should := require.New(ts.T())
+	c2s := &qotgetplatesecurity.C2S{
+		Plate: tobacco,
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotGetPlateSecurity(ctx, c2s)
+	should.NoError(err)
+	log.Info().Interface("data", res.GetStaticInfoList()).Msg("QotGetPlateSecurity")
 }
 
 func (ts *ClientTestSuite) TestQotStockFilter() {
@@ -237,10 +272,9 @@ func (ts *ClientTestSuite) TestQotStockFilter() {
 	}
 
 	c2s := &qotstockfilter.C2S{
-		Begin:  &begin,
-		Num:    &num,
-		Market: (*int32)(qotcommon.QotMarket_QotMarket_HK_Security.Enum()),
-		// Plate:          &qotcommon.Security{Code: proto.String("Motherboard"), Market: (*int32)(qotcommon.QotMarket_QotMarket_HK_Security.Enum())},
+		Begin:          &begin,
+		Num:            &num,
+		Market:         (*int32)(qotcommon.QotMarket_QotMarket_HK_Security.Enum()),
 		BaseFilterList: []*qotstockfilter.BaseFilter{f},
 	}
 

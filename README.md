@@ -81,8 +81,8 @@ fmt.Println(res)
 - [x] QotRequestRehab            = 3105 // 在线获取单只股票复权信息
 - [x] QotGetStaticInfo           = 3202 // 获取股票静态信息
 - [x] QotGetSecuritySnapshot     = 3203 // 获取股票快照
-- [ ] QotGetPlateSet             = 3204 // 获取板块集合下的板块
-- [ ] QotGetPlateSecurity        = 3205 // 获取板块下的股票
+- [x] QotGetPlateSet             = 3204 // 获取板块集合下的板块
+- [x] QotGetPlateSecurity        = 3205 // 获取板块下的股票
 - [ ] QotGetReference            = 3206 // 获取正股相关股票
 - [ ] QotGetOwnerPlate           = 3207 // 获取股票所属板块
 - [ ] QotGetOptionChain          = 3209 // 获取期权链

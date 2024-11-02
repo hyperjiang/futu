@@ -20,16 +20,20 @@ import (
 
 var (
 	alibaba = &qotcommon.Security{
-		Market: (*int32)(qotcommon.QotMarket_QotMarket_HK_Security.Enum()),
+		Market: proto.Int32(int32(qotcommon.QotMarket_QotMarket_HK_Security)),
 		Code:   proto.String("09988"),
 	}
 	tencent = &qotcommon.Security{
-		Market: (*int32)(qotcommon.QotMarket_QotMarket_HK_Security.Enum()),
+		Market: proto.Int32(int32(qotcommon.QotMarket_QotMarket_HK_Security)),
 		Code:   proto.String("00700"),
 	}
 	apple = &qotcommon.Security{
-		Market: (*int32)(qotcommon.QotMarket_QotMarket_US_Security.Enum()),
+		Market: proto.Int32(int32(qotcommon.QotMarket_QotMarket_US_Security)),
 		Code:   proto.String("AAPL"),
+	}
+	tobacco = &qotcommon.Security{
+		Market: proto.Int32(int32(qotcommon.QotMarket_QotMarket_HK_Security)),
+		Code:   proto.String("LIST1356"),
 	}
 	usAccount = &trdcommon.TrdHeader{
 		TrdEnv:    proto.Int32(int32(trdcommon.TrdEnv_TrdEnv_Simulate)),

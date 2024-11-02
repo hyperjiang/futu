@@ -8,6 +8,8 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
+	"github.com/hyperjiang/futu/pb/qotgetplatesecurity"
+	"github.com/hyperjiang/futu/pb/qotgetplateset"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
 	"github.com/hyperjiang/futu/pb/qotgetstaticinfo"
@@ -331,6 +333,56 @@ func (client *Client) QotGetSecuritySnapshot(ctx context.Context, c2s *qotgetsec
 	ch := make(chan *qotgetsecuritysnapshot.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.QotGetSecuritySnapshot, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetPlateSet 3204 - 获取板块列表
+func (client *Client) QotGetPlateSet(ctx context.Context, c2s *qotgetplateset.C2S) (*qotgetplateset.S2C, error) {
+	req := &qotgetplateset.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetplateset.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetPlateSet, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetPlateSecurity 3205 - 获取指定板块内的股票列表，获取股指的成分股
+func (client *Client) QotGetPlateSecurity(ctx context.Context, c2s *qotgetplatesecurity.C2S) (*qotgetplatesecurity.S2C, error) {
+	req := &qotgetplatesecurity.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetplatesecurity.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetPlateSecurity, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 
