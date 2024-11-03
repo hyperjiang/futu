@@ -7,14 +7,18 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
+	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
+	"github.com/hyperjiang/futu/pb/qotgetownerplate"
 	"github.com/hyperjiang/futu/pb/qotgetplatesecurity"
 	"github.com/hyperjiang/futu/pb/qotgetplateset"
+	"github.com/hyperjiang/futu/pb/qotgetreference"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
 	"github.com/hyperjiang/futu/pb/qotgetstaticinfo"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
+	"github.com/hyperjiang/futu/pb/qotgetwarrant"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
@@ -383,6 +387,106 @@ func (client *Client) QotGetPlateSecurity(ctx context.Context, c2s *qotgetplates
 	ch := make(chan *qotgetplatesecurity.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.QotGetPlateSecurity, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetReference 3206 - 获取证券的关联数据，如：获取正股相关窝轮、获取期货相关合约
+func (client *Client) QotGetReference(ctx context.Context, c2s *qotgetreference.C2S) (*qotgetreference.S2C, error) {
+	req := &qotgetreference.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetreference.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetReference, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetOwnerPlate 3207 - 获取股票所属板块
+func (client *Client) QotGetOwnerPlate(ctx context.Context, c2s *qotgetownerplate.C2S) (*qotgetownerplate.S2C, error) {
+	req := &qotgetownerplate.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetownerplate.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetOwnerPlate, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetOptionChain 3209 - 获取期权链
+func (client *Client) QotGetOptionChain(ctx context.Context, c2s *qotgetoptionchain.C2S) (*qotgetoptionchain.S2C, error) {
+	req := &qotgetoptionchain.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetoptionchain.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetOptionChain, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetWarrant 3210 - 筛选窝轮（仅用于香港市场）
+func (client *Client) QotGetWarrant(ctx context.Context, c2s *qotgetwarrant.C2S) (*qotgetwarrant.S2C, error) {
+	req := &qotgetwarrant.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetwarrant.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetWarrant, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 

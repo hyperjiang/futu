@@ -39,6 +39,9 @@ func (ts *ClientTestSuite) TestTrdGetAccList_TrdGetFunds() {
 
 	for _, acc := range res.GetAccList() {
 		fmt.Printf("acc: %+v\n", acc)
+		if acc.GetTrdEnv() != int32(trdcommon.TrdEnv_TrdEnv_Simulate) {
+			continue
+		}
 
 		header := &trdcommon.TrdHeader{
 			TrdEnv:    proto.Int32(int32(acc.GetTrdEnv())), // trdcommon.TrdEnv_TrdEnv_Simulate
@@ -153,6 +156,7 @@ func (ts *ClientTestSuite) TestTrdGetOrderList() {
 	c2s := &trdgetorderlist.C2S{
 		Header: usAccount,
 		// FilterConditions: &trdcommon.TrdFilterConditions{},
+		FilterStatusList: []int32{int32(trdcommon.OrderStatus_OrderStatus_Submitted)},
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -192,6 +196,7 @@ func (ts *ClientTestSuite) TestTrdGetHistoryOrderList() {
 			BeginTime: proto.String(time.Now().AddDate(0, 0, -7).Format("2006-01-02 15:04:05")),
 			EndTime:   proto.String(time.Now().Format("2006-01-02 15:04:05")),
 		},
+		FilterStatusList: []int32{int32(trdcommon.OrderStatus_OrderStatus_Filled_All)},
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -200,13 +205,10 @@ func (ts *ClientTestSuite) TestTrdGetHistoryOrderList() {
 	res, err := ts.client.TrdGetHistoryOrderList(ctx, c2s)
 	should.NoError(err)
 
-	var orderIDs []string
+	var orderIDs []string // 已成交的订单ID
 	for _, order := range res.GetOrderList() {
 		log.Info().Interface("history order", order).Msg("GetOrderList")
-
-		if order.GetOrderStatus() == int32(trdcommon.OrderStatus_OrderStatus_Filled_All) {
-			orderIDs = append(orderIDs, order.GetOrderIDEx())
-		}
+		orderIDs = append(orderIDs, order.GetOrderIDEx())
 	}
 
 	if len(orderIDs) > 0 {

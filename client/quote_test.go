@@ -8,14 +8,18 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
+	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
+	"github.com/hyperjiang/futu/pb/qotgetownerplate"
 	"github.com/hyperjiang/futu/pb/qotgetplatesecurity"
 	"github.com/hyperjiang/futu/pb/qotgetplateset"
+	"github.com/hyperjiang/futu/pb/qotgetreference"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
 	"github.com/hyperjiang/futu/pb/qotgetstaticinfo"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
+	"github.com/hyperjiang/futu/pb/qotgetwarrant"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
@@ -257,6 +261,75 @@ func (ts *ClientTestSuite) TestQotGetPlateSecurity() {
 	res, err := ts.client.QotGetPlateSecurity(ctx, c2s)
 	should.NoError(err)
 	log.Info().Interface("data", res.GetStaticInfoList()).Msg("QotGetPlateSecurity")
+}
+
+func (ts *ClientTestSuite) TestQotGetReference() {
+	should := require.New(ts.T())
+	c2s := &qotgetreference.C2S{
+		Security:      tencent,
+		ReferenceType: proto.Int32(int32(qotgetreference.ReferenceType_ReferenceType_Warrant)),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+	res, err := ts.client.QotGetReference(ctx, c2s)
+	should.NoError(err)
+	log.Info().Int("num", len(res.GetStaticInfoList())).Msg("QotGetReference")
+	// for _, info := range res.GetStaticInfoList() {
+	// 	log.Info().Interface("basic", info.GetBasic()).
+	// 		Interface("future", info.GetFutureExData()).
+	// 		Interface("warrant", info.GetWarrantExData()).
+	// 		Interface("option", info.GetOptionExData()).
+	// 		Msg("QotGetReference")
+	// }
+}
+
+func (ts *ClientTestSuite) TestQotGetOwnerPlate() {
+	should := require.New(ts.T())
+	c2s := &qotgetownerplate.C2S{
+		SecurityList: []*qotcommon.Security{tencent},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotGetOwnerPlate(ctx, c2s)
+	should.NoError(err)
+	log.Info().Interface("data", res.GetOwnerPlateList()).Msg("QotGetOwnerPlate")
+}
+
+func (ts *ClientTestSuite) TestQotGetOptionChain() {
+	should := require.New(ts.T())
+	c2s := &qotgetoptionchain.C2S{
+		Owner:     tencent,
+		BeginTime: proto.String(time.Now().AddDate(0, 0, -7).Format("2006-01-02 15:04:05")),
+		EndTime:   proto.String(time.Now().Format("2006-01-02 15:04:05")),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotGetOptionChain(ctx, c2s)
+	should.NoError(err)
+	log.Info().Interface("data", res.GetOptionChain()).Msg("QotGetOptionChain")
+}
+
+func (ts *ClientTestSuite) TestQotGetWarrant() {
+	should := require.New(ts.T())
+	c2s := &qotgetwarrant.C2S{
+		Owner:     tencent,
+		Begin:     proto.Int32(0),
+		Num:       proto.Int32(3),
+		SortField: proto.Int32(int32(qotcommon.SortField_SortField_Code)),
+		Ascend:    proto.Bool(true),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotGetWarrant(ctx, c2s)
+	should.NoError(err)
+	log.Info().Int32("count", res.GetAllCount()).Msg("QotGetWarrant")
+	for _, warrant := range res.GetWarrantDataList() {
+		log.Info().Interface("warrant", warrant).Msg("QotGetWarrant")
+	}
 }
 
 func (ts *ClientTestSuite) TestQotStockFilter() {
