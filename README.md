@@ -92,9 +92,9 @@ fmt.Println(res)
 - [x] QotGetUserSecurity         = 3213 // 获取自选股分组下的股票
 - [x] QotModifyUserSecurity      = 3214 // 修改自选股分组下的股票
 - [x] QotStockFilter             = 3215 // 获取条件选股
-- [ ] QotGetIpoList              = 3217 // 获取新股
-- [ ] QotGetFutureInfo           = 3218 // 获取期货合约资料
-- [ ] QotRequestTradeDate        = 3219 // 获取市场交易日，在线拉取不在本地计算
+- [x] QotGetIpoList              = 3217 // 获取新股
+- [x] QotGetFutureInfo           = 3218 // 获取期货合约资料
+- [x] QotRequestTradeDate        = 3219 // 获取市场交易日，在线拉取不在本地计算
 - [ ] QotSetPriceReminder        = 3220 // 设置到价提醒
 - [ ] QotGetPriceReminder        = 3221 // 获取到价提醒
 - [x] QotGetUserSecurityGroup    = 3222 // 获取自选股分组列表

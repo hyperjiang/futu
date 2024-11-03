@@ -8,6 +8,8 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetcapitaldistribution"
 	"github.com/hyperjiang/futu/pb/qotgetcapitalflow"
+	"github.com/hyperjiang/futu/pb/qotgetfutureinfo"
+	"github.com/hyperjiang/futu/pb/qotgetipolist"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
@@ -27,6 +29,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
+	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/qotsub"
 	"github.com/hyperjiang/futu/protoid"
@@ -617,6 +620,81 @@ func (client *Client) QotStockFilter(ctx context.Context, c2s *qotstockfilter.C2
 	ch := make(chan *qotstockfilter.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.QotStockFilter, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetIpoList 3217 - 获取指定市场的IPO信息
+func (client *Client) QotGetIpoList(ctx context.Context, c2s *qotgetipolist.C2S) (*qotgetipolist.S2C, error) {
+	req := &qotgetipolist.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetipolist.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetIpoList, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetFutureInfo 3218 - 获取期货合约资料
+func (client *Client) QotGetFutureInfo(ctx context.Context, c2s *qotgetfutureinfo.C2S) (*qotgetfutureinfo.S2C, error) {
+	req := &qotgetfutureinfo.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetfutureinfo.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetFutureInfo, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotRequestTradeDate 3219 - 请求指定市场/指定标的的交易日历
+func (client *Client) QotRequestTradeDate(ctx context.Context, c2s *qotrequesttradedate.C2S) (*qotrequesttradedate.S2C, error) {
+	req := &qotrequesttradedate.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotrequesttradedate.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotRequestTradeDate, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 

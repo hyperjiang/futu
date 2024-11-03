@@ -9,6 +9,8 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetcapitaldistribution"
 	"github.com/hyperjiang/futu/pb/qotgetcapitalflow"
+	"github.com/hyperjiang/futu/pb/qotgetfutureinfo"
+	"github.com/hyperjiang/futu/pb/qotgetipolist"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
@@ -28,6 +30,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
+	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/require"
@@ -435,6 +438,54 @@ func (ts *ClientTestSuite) TestQotStockFilter() {
 		should.NoError(err)
 		log.Info().Interface("data", snapshot.GetSnapshotList()[0]).Msg("QotGetSecuritySnapshot")
 	}
+}
+
+func (ts *ClientTestSuite) TestQotGetIpoList() {
+	should := require.New(ts.T())
+	c2s := &qotgetipolist.C2S{
+		Market: proto.Int32(int32(qotcommon.QotMarket_QotMarket_HK_Security)),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotGetIpoList(ctx, c2s)
+	should.NoError(err)
+	for _, ipo := range res.GetIpoList() {
+		log.Info().Interface("data", ipo).Msg("QotGetIpoList")
+	}
+}
+
+func (ts *ClientTestSuite) TestQotGetFutureInfo() {
+	future := &qotcommon.Security{
+		Market: proto.Int32(int32(qotcommon.QotMarket_QotMarket_HK_Security)),
+		Code:   proto.String("TCHmain"), // 腾讯主连
+	}
+
+	should := require.New(ts.T())
+	c2s := &qotgetfutureinfo.C2S{
+		SecurityList: []*qotcommon.Security{future},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotGetFutureInfo(ctx, c2s)
+	should.NoError(err)
+	log.Info().Interface("data", res).Msg("QotGetFutureInfo")
+}
+
+func (ts *ClientTestSuite) TestQotRequestTradeDate() {
+	should := require.New(ts.T())
+	c2s := &qotrequesttradedate.C2S{
+		Market:    proto.Int32(int32(qotcommon.QotMarket_QotMarket_HK_Security)),
+		BeginTime: proto.String("2024-11-01"),
+		EndTime:   proto.String("2024-11-10"),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotRequestTradeDate(ctx, c2s)
+	should.NoError(err)
+	log.Info().Interface("data", res.GetTradeDateList()).Msg("QotRequestTradeDate")
 }
 
 func (ts *ClientTestSuite) TestQotGetUserSecurityGroup() {
