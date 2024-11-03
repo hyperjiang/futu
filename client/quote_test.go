@@ -7,6 +7,8 @@ import (
 	"github.com/hyperjiang/futu/pb/qotcommon"
 	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
+	"github.com/hyperjiang/futu/pb/qotgetcapitaldistribution"
+	"github.com/hyperjiang/futu/pb/qotgetcapitalflow"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
@@ -19,7 +21,10 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetstaticinfo"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
+	"github.com/hyperjiang/futu/pb/qotgetusersecurity"
+	"github.com/hyperjiang/futu/pb/qotgetusersecuritygroup"
 	"github.com/hyperjiang/futu/pb/qotgetwarrant"
+	"github.com/hyperjiang/futu/pb/qotmodifyusersecurity"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
@@ -332,6 +337,62 @@ func (ts *ClientTestSuite) TestQotGetWarrant() {
 	}
 }
 
+func (ts *ClientTestSuite) TestQotGetCapitalFlow() {
+	should := require.New(ts.T())
+	c2s := &qotgetcapitalflow.C2S{
+		Security:   tencent,
+		PeriodType: proto.Int32(int32(qotcommon.PeriodType_PeriodType_DAY)),
+		BeginTime:  proto.String("2024-11-01"),
+		EndTime:    proto.String("2024-11-02"),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+	defer cancel()
+	res, err := ts.client.QotGetCapitalFlow(ctx, c2s)
+	should.NoError(err)
+	log.Info().Interface("data", res.GetFlowItemList()).Msg("QotGetCapitalFlow")
+}
+
+func (ts *ClientTestSuite) TestQotGetCapitalDistribution() {
+	should := require.New(ts.T())
+	c2s := &qotgetcapitaldistribution.C2S{
+		Security: tencent,
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotGetCapitalDistribution(ctx, c2s)
+	should.NoError(err)
+	log.Info().Interface("data", res).Msg("QotGetCapitalDistribution")
+}
+
+func (ts *ClientTestSuite) TestQotGetUserSecurity() {
+	should := require.New(ts.T())
+	c2s := &qotgetusersecurity.C2S{
+		GroupName: proto.String("特别关注"),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotGetUserSecurity(ctx, c2s)
+	should.NoError(err)
+	log.Info().Int("count", len(res.GetStaticInfoList())).Msg("QotGetUserSecurity")
+}
+
+func (ts *ClientTestSuite) TestQotModifyUserSecurity() {
+	should := require.New(ts.T())
+	c2s := &qotmodifyusersecurity.C2S{
+		GroupName:    proto.String("特别关注"),
+		SecurityList: []*qotcommon.Security{alibaba},
+		Op:           proto.Int32(int32(qotmodifyusersecurity.ModifyUserSecurityOp_ModifyUserSecurityOp_Add)),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	err := ts.client.QotModifyUserSecurity(ctx, c2s)
+	should.Error(err) // 仅支持修改自定义分组，不支持修改系统分组
+}
+
 func (ts *ClientTestSuite) TestQotStockFilter() {
 	should := require.New(ts.T())
 
@@ -374,4 +435,17 @@ func (ts *ClientTestSuite) TestQotStockFilter() {
 		should.NoError(err)
 		log.Info().Interface("data", snapshot.GetSnapshotList()[0]).Msg("QotGetSecuritySnapshot")
 	}
+}
+
+func (ts *ClientTestSuite) TestQotGetUserSecurityGroup() {
+	should := require.New(ts.T())
+	c2s := &qotgetusersecuritygroup.C2S{
+		GroupType: proto.Int32(int32(qotgetusersecuritygroup.GroupType_GroupType_Custom)),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotGetUserSecurityGroup(ctx, c2s)
+	should.NoError(err)
+	log.Info().Interface("data", res.GetGroupList()).Msg("QotGetUserSecurityGroup")
 }

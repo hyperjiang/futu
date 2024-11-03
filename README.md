@@ -39,7 +39,7 @@ fmt.Println(res)
 
 对于系统推送过来的数据，需要调用`RegisterHandler(protoID uint32, h Handler)`来注册自己的处理逻辑。
 如果没有设置，SDK会使用默认的Handler，只打印收到的消息的日志。
-可以设置推送Handler的协议ID如下：
+可以设置推送Handler的协议ID如下:
 - protoid.Notify // 1003
 - protoid.TrdUpdateOrder // 2208
 - protoid.TrdUpdateOrderFill // 2218
@@ -87,17 +87,17 @@ fmt.Println(res)
 - [x] QotGetOwnerPlate           = 3207 // 获取股票所属板块
 - [x] QotGetOptionChain          = 3209 // 获取期权链
 - [x] QotGetWarrant              = 3210 // 获取窝轮
-- [ ] QotGetCapitalFlow          = 3211 // 获取资金流向
-- [ ] QotGetCapitalDistribution  = 3212 // 获取资金分布
-- [ ] QotGetUserSecurity         = 3213 // 获取自选股分组下的股票
-- [ ] QotModifyUserSecurity      = 3214 // 修改自选股分组下的股票
+- [x] QotGetCapitalFlow          = 3211 // 获取资金流向
+- [x] QotGetCapitalDistribution  = 3212 // 获取资金分布
+- [x] QotGetUserSecurity         = 3213 // 获取自选股分组下的股票
+- [x] QotModifyUserSecurity      = 3214 // 修改自选股分组下的股票
 - [x] QotStockFilter             = 3215 // 获取条件选股
 - [ ] QotGetIpoList              = 3217 // 获取新股
 - [ ] QotGetFutureInfo           = 3218 // 获取期货合约资料
 - [ ] QotRequestTradeDate        = 3219 // 获取市场交易日，在线拉取不在本地计算
 - [ ] QotSetPriceReminder        = 3220 // 设置到价提醒
 - [ ] QotGetPriceReminder        = 3221 // 获取到价提醒
-- [ ] QotGetUserSecurityGroup    = 3222 // 获取自选股分组列表
+- [x] QotGetUserSecurityGroup    = 3222 // 获取自选股分组列表
 - [ ] QotGetMarketState          = 3223 // 获取指定品种的市场状态
 - [ ] QotGetOptionExpirationDate = 3224 // 获取期权到期日
 

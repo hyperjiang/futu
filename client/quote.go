@@ -6,6 +6,8 @@ import (
 	"github.com/hyperjiang/futu/infra"
 	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
+	"github.com/hyperjiang/futu/pb/qotgetcapitaldistribution"
+	"github.com/hyperjiang/futu/pb/qotgetcapitalflow"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
@@ -18,7 +20,10 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetstaticinfo"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
+	"github.com/hyperjiang/futu/pb/qotgetusersecurity"
+	"github.com/hyperjiang/futu/pb/qotgetusersecuritygroup"
 	"github.com/hyperjiang/futu/pb/qotgetwarrant"
+	"github.com/hyperjiang/futu/pb/qotmodifyusersecurity"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
@@ -503,6 +508,106 @@ func (client *Client) QotGetWarrant(ctx context.Context, c2s *qotgetwarrant.C2S)
 	}
 }
 
+// QotGetCapitalFlow 3211 - 获取资金流向
+func (client *Client) QotGetCapitalFlow(ctx context.Context, c2s *qotgetcapitalflow.C2S) (*qotgetcapitalflow.S2C, error) {
+	req := &qotgetcapitalflow.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetcapitalflow.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetCapitalFlow, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetCapitalDistribution 3212 - 获取资金分布
+func (client *Client) QotGetCapitalDistribution(ctx context.Context, c2s *qotgetcapitaldistribution.C2S) (*qotgetcapitaldistribution.S2C, error) {
+	req := &qotgetcapitaldistribution.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetcapitaldistribution.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetCapitalDistribution, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetUserSecurity 3213 - 获取指定分组的自选股列表
+func (client *Client) QotGetUserSecurity(ctx context.Context, c2s *qotgetusersecurity.C2S) (*qotgetusersecurity.S2C, error) {
+	req := &qotgetusersecurity.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetusersecurity.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetUserSecurity, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotModifyUserSecurity 3214 - 修改自选股分组下的股票，该接口的S2C返回的是空
+func (client *Client) QotModifyUserSecurity(ctx context.Context, c2s *qotmodifyusersecurity.C2S) error {
+	req := &qotmodifyusersecurity.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotmodifyusersecurity.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotModifyUserSecurity, req, infra.NewProtobufChan(ch)); err != nil {
+		return err
+	}
+
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-client.closed:
+		return ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return ErrChannelClosed
+		}
+		return infra.Error(resp)
+	}
+}
+
 // QotStockFilter 3215 - 获取条件选股
 func (client *Client) QotStockFilter(ctx context.Context, c2s *qotstockfilter.C2S) (*qotstockfilter.S2C, error) {
 	req := &qotstockfilter.Request{
@@ -512,6 +617,31 @@ func (client *Client) QotStockFilter(ctx context.Context, c2s *qotstockfilter.C2
 	ch := make(chan *qotstockfilter.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.QotStockFilter, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetUserSecurityGroup 3222 - 获取自选股分组列表
+func (client *Client) QotGetUserSecurityGroup(ctx context.Context, c2s *qotgetusersecuritygroup.C2S) (*qotgetusersecuritygroup.S2C, error) {
+	req := &qotgetusersecuritygroup.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetusersecuritygroup.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetUserSecurityGroup, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 
