@@ -98,8 +98,8 @@ fmt.Println(res)
 - [x] QotSetPriceReminder        = 3220 // 设置到价提醒
 - [x] QotGetPriceReminder        = 3221 // 获取到价提醒
 - [x] QotGetUserSecurityGroup    = 3222 // 获取自选股分组列表
-- [ ] QotGetMarketState          = 3223 // 获取指定品种的市场状态
-- [ ] QotGetOptionExpirationDate = 3224 // 获取期权到期日
+- [x] QotGetMarketState          = 3223 // 获取指定品种的市场状态
+- [x] QotGetOptionExpirationDate = 3224 // 获取期权到期日
 
 ### 交易接口
 - [x] TrdGetAccList              = 2001 // 获取交易业务账户列表

@@ -12,7 +12,9 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetfutureinfo"
 	"github.com/hyperjiang/futu/pb/qotgetipolist"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
+	"github.com/hyperjiang/futu/pb/qotgetmarketstate"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
+	"github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
 	"github.com/hyperjiang/futu/pb/qotgetownerplate"
 	"github.com/hyperjiang/futu/pb/qotgetplatesecurity"
@@ -532,4 +534,30 @@ func (ts *ClientTestSuite) TestQotGetUserSecurityGroup() {
 	res, err := ts.client.QotGetUserSecurityGroup(ctx, c2s)
 	should.NoError(err)
 	log.Info().Interface("data", res.GetGroupList()).Msg("QotGetUserSecurityGroup")
+}
+
+func (ts *ClientTestSuite) TestQotGetMarketState() {
+	should := require.New(ts.T())
+	c2s := &qotgetmarketstate.C2S{
+		SecurityList: []*qotcommon.Security{tencent},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotGetMarketState(ctx, c2s)
+	should.NoError(err)
+	log.Info().Interface("data", res.GetMarketInfoList()).Msg("QotGetMarketState")
+}
+
+func (ts *ClientTestSuite) TestQotGetOptionExpirationDate() {
+	should := require.New(ts.T())
+	c2s := &qotgetoptionexpirationdate.C2S{
+		Owner: tencent,
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotGetOptionExpirationDate(ctx, c2s)
+	should.NoError(err)
+	log.Info().Interface("data", res.GetDateList()).Msg("QotGetOptionExpirationDate")
 }

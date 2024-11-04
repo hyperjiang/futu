@@ -11,7 +11,9 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetfutureinfo"
 	"github.com/hyperjiang/futu/pb/qotgetipolist"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
+	"github.com/hyperjiang/futu/pb/qotgetmarketstate"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
+	"github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
 	"github.com/hyperjiang/futu/pb/qotgetownerplate"
 	"github.com/hyperjiang/futu/pb/qotgetplatesecurity"
@@ -785,5 +787,55 @@ func (client *Client) QotGetUserSecurityGroup(ctx context.Context, c2s *qotgetus
 			return nil, ErrChannelClosed
 		}
 		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetMarketState 3223 - 获取指定标的的市场状态
+func (client *Client) QotGetMarketState(ctx context.Context, c2s *qotgetmarketstate.C2S) (*qotgetmarketstate.S2C, error) {
+	req := &qotgetmarketstate.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetmarketstate.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetMarketState, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	case <-client.closed:
+		return nil, ErrInterrupted
+	}
+}
+
+// QotGetOptionExpirationDate 3224 - 获取期权到期日
+func (client *Client) QotGetOptionExpirationDate(ctx context.Context, c2s *qotgetoptionexpirationdate.C2S) (*qotgetoptionexpirationdate.S2C, error) {
+	req := &qotgetoptionexpirationdate.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetoptionexpirationdate.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetOptionExpirationDate, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	case <-client.closed:
+		return nil, ErrInterrupted
 	}
 }

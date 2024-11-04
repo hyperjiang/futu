@@ -256,6 +256,6 @@ func (ts *ClientTestSuite) TestTrdGetMarginRatio() {
 	res, err := ts.client.TrdGetMarginRatio(ctx, c2s)
 	should.NoError(err)
 	for _, item := range res.GetMarginRatioInfoList() {
-		log.Info().Interface("margin ratio", item).Msg("GetMarginRatioInfoList")
+		log.Info().Interface("margin ratio", item).Msg("TrdGetMarginRatio")
 	}
 }
