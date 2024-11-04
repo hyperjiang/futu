@@ -95,8 +95,8 @@ fmt.Println(res)
 - [x] QotGetIpoList              = 3217 // 获取新股
 - [x] QotGetFutureInfo           = 3218 // 获取期货合约资料
 - [x] QotRequestTradeDate        = 3219 // 获取市场交易日，在线拉取不在本地计算
-- [ ] QotSetPriceReminder        = 3220 // 设置到价提醒
-- [ ] QotGetPriceReminder        = 3221 // 获取到价提醒
+- [x] QotSetPriceReminder        = 3220 // 设置到价提醒
+- [x] QotGetPriceReminder        = 3221 // 获取到价提醒
 - [x] QotGetUserSecurityGroup    = 3222 // 获取自选股分组列表
 - [ ] QotGetMarketState          = 3223 // 获取指定品种的市场状态
 - [ ] QotGetOptionExpirationDate = 3224 // 获取期权到期日

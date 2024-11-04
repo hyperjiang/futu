@@ -16,6 +16,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetownerplate"
 	"github.com/hyperjiang/futu/pb/qotgetplatesecurity"
 	"github.com/hyperjiang/futu/pb/qotgetplateset"
+	"github.com/hyperjiang/futu/pb/qotgetpricereminder"
 	"github.com/hyperjiang/futu/pb/qotgetreference"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
@@ -30,6 +31,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
 	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
+	"github.com/hyperjiang/futu/pb/qotsetpricereminder"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/qotsub"
 	"github.com/hyperjiang/futu/protoid"
@@ -695,6 +697,56 @@ func (client *Client) QotRequestTradeDate(ctx context.Context, c2s *qotrequesttr
 	ch := make(chan *qotrequesttradedate.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.QotRequestTradeDate, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotSetPriceReminder 3220 - 新增、删除、修改、启用、禁用指定股票的到价提醒
+func (client *Client) QotSetPriceReminder(ctx context.Context, c2s *qotsetpricereminder.C2S) (*qotsetpricereminder.S2C, error) {
+	req := &qotsetpricereminder.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotsetpricereminder.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotSetPriceReminder, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetPriceReminder 3221 - 获取对指定股票/指定市场设置的到价提醒列表
+func (client *Client) QotGetPriceReminder(ctx context.Context, c2s *qotgetpricereminder.C2S) (*qotgetpricereminder.S2C, error) {
+	req := &qotgetpricereminder.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *qotgetpricereminder.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetPriceReminder, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 

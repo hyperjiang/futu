@@ -17,6 +17,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetownerplate"
 	"github.com/hyperjiang/futu/pb/qotgetplatesecurity"
 	"github.com/hyperjiang/futu/pb/qotgetplateset"
+	"github.com/hyperjiang/futu/pb/qotgetpricereminder"
 	"github.com/hyperjiang/futu/pb/qotgetreference"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
@@ -31,6 +32,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
 	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
+	"github.com/hyperjiang/futu/pb/qotsetpricereminder"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/require"
@@ -477,8 +479,8 @@ func (ts *ClientTestSuite) TestQotRequestTradeDate() {
 	should := require.New(ts.T())
 	c2s := &qotrequesttradedate.C2S{
 		Market:    proto.Int32(int32(qotcommon.QotMarket_QotMarket_HK_Security)),
-		BeginTime: proto.String("2024-11-01"),
-		EndTime:   proto.String("2024-11-10"),
+		BeginTime: proto.String(time.Now().Format("2006-01-02")),
+		EndTime:   proto.String(time.Now().Add(time.Hour * 24 * 7).Format("2006-01-02")),
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
@@ -486,6 +488,37 @@ func (ts *ClientTestSuite) TestQotRequestTradeDate() {
 	res, err := ts.client.QotRequestTradeDate(ctx, c2s)
 	should.NoError(err)
 	log.Info().Interface("data", res.GetTradeDateList()).Msg("QotRequestTradeDate")
+}
+
+func (ts *ClientTestSuite) TestQotSetPriceReminder() {
+	should := require.New(ts.T())
+	c2s := &qotsetpricereminder.C2S{
+		Security: tencent,
+		Op:       proto.Int32(int32(qotsetpricereminder.SetPriceReminderOp_SetPriceReminderOp_Add)),
+		Type:     proto.Int32(int32(qotcommon.PriceReminderType_PriceReminderType_PriceDown)),
+		Freq:     proto.Int32(int32(qotcommon.PriceReminderFreq_PriceReminderFreq_OnlyOnce)),
+		Value:    proto.Float64(300),
+		Note:     proto.String("go sdk"),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotSetPriceReminder(ctx, c2s)
+	should.NoError(err)
+	log.Info().Interface("data", res).Msg("QotSetPriceReminder")
+}
+
+func (ts *ClientTestSuite) TestQotGetPriceReminder() {
+	should := require.New(ts.T())
+	c2s := &qotgetpricereminder.C2S{
+		Market: proto.Int32(int32(qotcommon.QotMarket_QotMarket_HK_Security)),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	res, err := ts.client.QotGetPriceReminder(ctx, c2s)
+	should.NoError(err)
+	log.Info().Interface("data", res.GetPriceReminderList()).Msg("QotGetPriceReminder")
 }
 
 func (ts *ClientTestSuite) TestQotGetUserSecurityGroup() {
