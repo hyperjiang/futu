@@ -36,3 +36,24 @@ func GetMarketName(id int32) string {
 
 	return "Unknown"
 }
+
+// 订阅类型
+const (
+	SubType_None       = int32(qotcommon.SubType_SubType_None)
+	SubType_Basic      = int32(qotcommon.SubType_SubType_Basic)
+	SubType_OrderBook  = int32(qotcommon.SubType_SubType_OrderBook)
+	SubType_Ticker     = int32(qotcommon.SubType_SubType_Ticker)
+	SubType_RT         = int32(qotcommon.SubType_SubType_RT)
+	SubType_KL_Day     = int32(qotcommon.SubType_SubType_KL_Day)
+	SubType_KL_5Min    = int32(qotcommon.SubType_SubType_KL_5Min)
+	SubType_KL_15Min   = int32(qotcommon.SubType_SubType_KL_15Min)
+	SubType_KL_30Min   = int32(qotcommon.SubType_SubType_KL_30Min)
+	SubType_KL_60Min   = int32(qotcommon.SubType_SubType_KL_60Min)
+	SubType_KL_1Min    = int32(qotcommon.SubType_SubType_KL_1Min)
+	SubType_KL_Week    = int32(qotcommon.SubType_SubType_KL_Week)
+	SubType_KL_Month   = int32(qotcommon.SubType_SubType_KL_Month)
+	SubType_Broker     = int32(qotcommon.SubType_SubType_Broker)
+	SubType_KL_Qurater = int32(qotcommon.SubType_SubType_KL_Qurater)
+	SubType_KL_Year    = int32(qotcommon.SubType_SubType_KL_Year)
+	SubType_KL_3Min    = int32(qotcommon.SubType_SubType_KL_3Min)
+)

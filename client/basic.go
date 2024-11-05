@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-// GetGlobalState gets the global state.
+// GetGlobalState 1002 - gets the global state.
 func (client *Client) GetGlobalState(ctx context.Context) (*getglobalstate.S2C, error) {
 	req := &getglobalstate.Request{
 		C2S: &getglobalstate.C2S{

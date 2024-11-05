@@ -170,7 +170,7 @@ func (client *Client) Request(protoID uint32, req proto.Message, resCh *infra.Pr
 	return err
 }
 
-// RegisterHandler registers a handler for push notifications of the specified protoID.
+// RegisterHandler registers a handler for notifications of a specified protoID.
 func (client *Client) RegisterHandler(protoID uint32, h Handler) *Client {
 	client.handlers.Store(protoID, h)
 	return client
