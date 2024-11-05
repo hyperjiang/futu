@@ -28,11 +28,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Test
-        run: go test -race -coverprofile=coverage.txt -covermode=atomic $(go list ./infra/...)
+        run: go test -race -coverprofile=coverage.txt -covermode=atomic $(go list ./infra/... ./adapt/...)
         if: runner.os != 'Windows'
 
       - name: Test Windows
-        run: go test -race $(go list ./infra/...)
+        run: go test -race $(go list ./infra/... ./adapt/...)
         if: runner.os == 'Windows'
 
       - name: Upload coverage to Codecov

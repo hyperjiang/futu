@@ -21,7 +21,11 @@ Futu Open API 官方文档: https://openapi.futunn.com/futu-api-doc/
 
 ## 使用说明
 
-参考单元测试，里面每个接口都有用例。
+本SDK跟`FutuOpenD`的通信协议格式是protobuf，使用`FutuOpenD`的默认配置即可，不要改成json格式。
+
+具体用法可以参考单元测试，里面每个接口都有用例。
+
+以下是一个简单示例：
 
 ```go
 import "github.com/hyperjiang/futu"
