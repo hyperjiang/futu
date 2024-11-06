@@ -9,18 +9,12 @@ import (
 	"github.com/hyperjiang/futu/adapt"
 	"github.com/hyperjiang/futu/client"
 	"github.com/hyperjiang/futu/pb/notify"
-	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/hyperjiang/futu/protoid"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"google.golang.org/protobuf/proto"
-)
-
-var (
-	tobacco   = adapt.NewSecurity("HK.LIST1356")
-	usAccount = adapt.NewTestingTradeAccount(1619199, trdcommon.TrdMarket_TrdMarket_US)
 )
 
 var pubKey = []byte(`-----BEGIN RSA PUBLIC KEY-----
@@ -138,4 +132,108 @@ func (ts *SDKTestSuite) TestGetKL() {
 	for _, kl := range res.GetKlList() {
 		log.Info().Interface("kline", kl).Msg("GetKL")
 	}
+}
+
+func (ts *SDKTestSuite) TestGetRT() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetRT("HK.09988")
+	should.NoError(err)
+	should.Equal("09988", res.GetSecurity().GetCode())
+	log.Info().Str("stock", res.GetName()).Int("num", len(res.GetRtList())).Msg("GetRT")
+}
+
+func (ts *SDKTestSuite) TestGetTicker() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetTicker("HK.09988")
+	should.NoError(err)
+	should.Equal("09988", res.GetSecurity().GetCode())
+	log.Info().Str("stock", res.GetName()).Int("num", len(res.GetTickerList())).Msg("GetTicker")
+}
+
+func (ts *SDKTestSuite) TestGetOrderBook() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetOrderBook("HK.09988")
+	should.NoError(err)
+	should.Equal("09988", res.GetSecurity().GetCode())
+	log.Info().Str("stock", res.GetName()).
+		Int("实时卖盘", len(res.GetOrderBookAskList())).
+		Int("实时买盘", len(res.GetOrderBookBidList())).
+		Msg("GetOrderBook")
+	for _, ask := range res.GetOrderBookAskList() {
+		log.Info().Interface("data", ask).Msg("实时卖盘")
+	}
+	for _, bid := range res.GetOrderBookBidList() {
+		log.Info().Interface("data", bid).Msg("实时买盘")
+	}
+}
+
+func (ts *SDKTestSuite) TestGetBroker() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetBroker("HK.09988")
+	should.NoError(err)
+	should.Equal("09988", res.GetSecurity().GetCode())
+
+	log.Info().Str("stock", res.GetName()).
+		Int("实时经纪卖盘", len(res.GetBrokerAskList())).
+		Int("实时经纪买盘", len(res.GetBrokerBidList())).
+		Msg("GetBroker")
+	for _, ask := range res.GetBrokerAskList() {
+		log.Info().Interface("data", ask).Msg("实时经纪卖盘")
+	}
+	for _, bid := range res.GetBrokerBidList() {
+		log.Info().Interface("data", bid).Msg("实时经纪买盘")
+	}
+}
+
+func (ts *SDKTestSuite) TestRequestHistoryKL() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.RequestHistoryKL(
+		"HK.09988",
+		adapt.KLType_Day,
+		"2024-10-01",
+		"2024-10-15",
+		adapt.With("rehabType", adapt.RehabType_Forward),
+		adapt.With("maxAckKLNum", 3), // 每次只取3条，模拟分页
+	)
+	should.NoError(err)
+	should.Equal("09988", res.GetSecurity().GetCode())
+
+	for _, kl := range res.GetKlList() {
+		log.Info().Str("date", kl.GetTime()).Str("stock", res.GetName()).Float64("close", kl.GetClosePrice()).Msg("RequestHistoryKL")
+	}
+
+	next := res.GetNextReqKey()
+	for len(next) > 0 {
+		res, err = ts.sdk.RequestHistoryKL(
+			"HK.09988",
+			adapt.KLType_Day,
+			"2024-10-01",
+			"2024-10-15",
+			adapt.With("rehabType", adapt.RehabType_Forward),
+			adapt.With("maxAckKLNum", 3),
+			adapt.With("nextReqKey", next),
+		)
+		should.NoError(err)
+
+		for _, kl := range res.GetKlList() {
+			log.Info().Str("date", kl.GetTime()).Str("stock", res.GetName()).Float64("close", kl.GetClosePrice()).Msg("RequestHistoryKL")
+		}
+
+		next = res.GetNextReqKey()
+	}
+}
+
+func (ts *SDKTestSuite) TestRequestHistoryKLQuota() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.RequestHistoryKLQuota(
+		adapt.With("bGetDetail", true), // 可选：返回详细拉取过的历史纪录
+	)
+	should.NoError(err)
+	log.Info().Interface("result", res).Msg("RequestHistoryKLQuota")
 }

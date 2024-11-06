@@ -8,8 +8,14 @@ import (
 	"github.com/hyperjiang/futu/client"
 	"github.com/hyperjiang/futu/pb/getglobalstate"
 	"github.com/hyperjiang/futu/pb/qotcommon"
+	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
+	"github.com/hyperjiang/futu/pb/qotgetorderbook"
+	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
+	"github.com/hyperjiang/futu/pb/qotgetticker"
+	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
+	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 )
 
 const defaultTimeout = time.Second * 5
@@ -96,4 +102,68 @@ func (sdk *SDK) GetKL(code string, klType int32, opts ...adapt.Option) (*qotgetk
 	defer cancel()
 
 	return sdk.GetKLWithContext(ctx, code, klType, opts...)
+}
+
+// GetRT 3008 - gets real-time data.
+//
+// code: security code
+func (sdk *SDK) GetRT(code string) (*qotgetrt.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetRTWithContext(ctx, code)
+}
+
+// GetTicker 3010 - gets ticker data.
+//
+// code: security code
+func (sdk *SDK) GetTicker(code string, opts ...adapt.Option) (*qotgetticker.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetTickerWithContext(ctx, code, opts...)
+}
+
+// GetOrderBook 3012 - gets order book data.
+//
+// code: security code
+func (sdk *SDK) GetOrderBook(code string, opts ...adapt.Option) (*qotgetorderbook.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOrderBookWithContext(ctx, code, opts...)
+}
+
+// GetBroker 3014 - gets broker data.
+//
+// code: security code
+func (sdk *SDK) GetBroker(code string) (*qotgetbroker.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetBrokerWithContext(ctx, code)
+}
+
+// RequestHistoryKL 3103 - requests the history K-line data.
+//
+// code: security code
+//
+// klType: K-line type
+//
+// begin: begin time, format: "yyyy-MM-dd"
+//
+// end: end time, format: "yyyy-MM-dd"
+func (sdk *SDK) RequestHistoryKL(code string, klType int32, begin string, end string, opts ...adapt.Option) (*qotrequesthistorykl.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.RequestHistoryKLWithContext(ctx, code, klType, begin, end, opts...)
+}
+
+// RequestHistoryKLQuota 3104 - requests the history K-line quota.
+func (sdk *SDK) RequestHistoryKLQuota(opts ...adapt.Option) (*qotrequesthistoryklquota.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.RequestHistoryKLQuotaWithContext(ctx, opts...)
 }
