@@ -12,7 +12,7 @@ Futu Open API 官方文档: https://openapi.futunn.com/futu-api-doc/
 
 ## 代码目录说明
 
-- `根目录`: 提供用户友好的客户端SDK
+- `根目录`: 提供用户友好的客户端SDK，是对底层的`client`包做了一层用法包装
 - `client`: 基础客户端，拥有所有功能，需要用pb定义的结构体传参，可以直接使用，但是使用起来略繁琐
 - `.proto`: protobuf 定义文件
 - `adapt`: protobuf 结构体和普通类型的适配层
@@ -25,6 +25,8 @@ Futu Open API 官方文档: https://openapi.futunn.com/futu-api-doc/
 本SDK跟`FutuOpenD`的通信协议格式是protobuf，使用`FutuOpenD`的默认配置即可，不要改成json格式。
 
 具体用法可以参考单元测试，里面每个接口都有用例。
+
+方法设计的原则是，必传参数显式要求传递，可选参数放在可变参数`adapt.Option`传递。
 
 以下是一个简单示例：
 

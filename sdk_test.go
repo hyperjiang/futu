@@ -68,8 +68,8 @@ func (ts *SDKTestSuite) SetupSuite() {
 	}
 
 	err = ts.sdk.Subscribe(
-		adapt.With("securityList", adapt.NewSecurities([]string{"HK.09988", "HK.00700"})),
-		adapt.With("subTypeList", []int32{
+		[]string{"HK.09988", "HK.00700"},
+		[]int32{
 			adapt.SubType_Basic,
 			adapt.SubType_RT,
 			adapt.SubType_KL_Day,
@@ -77,8 +77,8 @@ func (ts *SDKTestSuite) SetupSuite() {
 			adapt.SubType_Ticker,
 			adapt.SubType_OrderBook,
 			adapt.SubType_Broker,
-		}),
-		adapt.With("isSubOrUnSub", true),
+		},
+		true,
 	)
 	if err != nil {
 		fmt.Println(err)
@@ -107,12 +107,35 @@ func (ts *SDKTestSuite) TestGetGlobalState() {
 	fmt.Println(res)
 }
 
-func (ts *SDKTestSuite) TestQotGetBasicQot() {
+func (ts *SDKTestSuite) TestGetSubInfo() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetSubInfo()
+	should.NoError(err)
+	log.Info().Interface("result", res).Msg("GetSubInfo")
+}
+
+func (ts *SDKTestSuite) TestGetBasicQot() {
 	should := require.New(ts.T())
 
 	res, err := ts.sdk.GetBasicQot([]string{"HK.00700", "HK.09988"})
 	should.NoError(err)
 	for _, qot := range res {
 		log.Info().Interface("qot", qot).Msg("GetBasicQot")
+	}
+}
+
+func (ts *SDKTestSuite) TestGetKL() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetKL(
+		"HK.09988",
+		adapt.KLType_Day,
+		adapt.With("rehabType", adapt.RehabType_Forward),
+		adapt.With("reqNum", 3),
+	)
+	should.NoError(err)
+	for _, kl := range res.GetKlList() {
+		log.Info().Interface("kline", kl).Msg("GetKL")
 	}
 }

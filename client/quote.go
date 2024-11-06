@@ -115,7 +115,7 @@ func (client *Client) QotGetBasicQot(ctx context.Context, c2s *qotgetbasicqot.C2
 	}
 }
 
-// QotGetKL 3005 - 获取已订阅股票的实时K线数据
+// QotGetKL 3006 - 获取已订阅股票的实时K线数据
 func (client *Client) QotGetKL(ctx context.Context, c2s *qotgetkl.C2S) (*qotgetkl.S2C, error) {
 	req := &qotgetkl.Request{
 		C2S: c2s,

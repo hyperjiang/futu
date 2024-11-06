@@ -41,6 +41,15 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+func (ts *ClientTestSuite) TestQotGetSubInfo() {
+	should := require.New(ts.T())
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	info, err := ts.client.QotGetSubInfo(ctx, &qotgetsubinfo.C2S{})
+	should.NoError(err)
+	log.Info().Str("data", info.String()).Msg("QotGetSubInfo")
+}
+
 func (ts *ClientTestSuite) TestQotGetBasicQot() {
 	should := require.New(ts.T())
 
@@ -52,15 +61,6 @@ func (ts *ClientTestSuite) TestQotGetBasicQot() {
 	s2c, err := ts.client.QotGetBasicQot(ctx, c2s)
 	should.NoError(err)
 	log.Info().Interface("data", s2c.GetBasicQotList()).Msg("QotGetBasicQot")
-}
-
-func (ts *ClientTestSuite) TestQotGetSubInfo() {
-	should := require.New(ts.T())
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-	info, err := ts.client.QotGetSubInfo(ctx, &qotgetsubinfo.C2S{})
-	should.NoError(err)
-	log.Info().Str("data", info.String()).Msg("QotGetSubInfo")
 }
 
 func (ts *ClientTestSuite) TestQotGetKL() {

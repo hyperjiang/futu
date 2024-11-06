@@ -9,6 +9,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestEmptyOption(t *testing.T) {
+	should := require.New(t)
+
+	opts := NewOptions()
+	var ta trdcommon.TrdHeader
+	err := opts.ToProto(&ta)
+	should.NoError(err)
+	should.Equal(int32(0), ta.GetTrdMarket())
+	should.Equal(uint64(0), ta.GetAccID())
+	should.Equal(int32(0), ta.GetTrdEnv())
+}
+
 func TestSimpleOption(t *testing.T) {
 	should := require.New(t)
 
