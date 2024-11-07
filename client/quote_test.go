@@ -312,8 +312,8 @@ func (ts *ClientTestSuite) TestQotGetOptionChain() {
 	should := require.New(ts.T())
 	c2s := &qotgetoptionchain.C2S{
 		Owner:     tencent,
-		BeginTime: proto.String(time.Now().AddDate(0, 0, -7).Format("2006-01-02 15:04:05")),
-		EndTime:   proto.String(time.Now().Format("2006-01-02 15:04:05")),
+		BeginTime: proto.String(time.Now().AddDate(0, 0, -7).Format("2006-01-02")),
+		EndTime:   proto.String(time.Now().Format("2006-01-02")),
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)

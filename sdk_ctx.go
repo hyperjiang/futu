@@ -9,13 +9,18 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
+	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
+	"github.com/hyperjiang/futu/pb/qotgetownerplate"
+	"github.com/hyperjiang/futu/pb/qotgetplatesecurity"
 	"github.com/hyperjiang/futu/pb/qotgetplateset"
+	"github.com/hyperjiang/futu/pb/qotgetreference"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
 	"github.com/hyperjiang/futu/pb/qotgetstaticinfo"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
+	"github.com/hyperjiang/futu/pb/qotgetwarrant"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
@@ -162,15 +167,15 @@ func (sdk *SDK) GetBrokerWithContext(ctx context.Context, code string) (*qotgetb
 //
 // klType: K-line type
 //
-// begin: begin time, format: "yyyy-MM-dd"
+// beginTime: begin time, format: "yyyy-MM-dd"
 //
-// end: end time, format: "yyyy-MM-dd"
-func (sdk *SDK) RequestHistoryKLWithContext(ctx context.Context, code string, klType int32, begin string, end string, opts ...adapt.Option) (*qotrequesthistorykl.S2C, error) {
+// endTime: end time, format: "yyyy-MM-dd"
+func (sdk *SDK) RequestHistoryKLWithContext(ctx context.Context, code string, klType int32, beginTime string, endTime string, opts ...adapt.Option) (*qotrequesthistorykl.S2C, error) {
 	o := adapt.NewOptions(opts...)
 	o["security"] = adapt.NewSecurity(code)
 	o["klType"] = klType
-	o["beginTime"] = begin
-	o["endTime"] = end
+	o["beginTime"] = beginTime
+	o["endTime"] = endTime
 
 	if _, ok := o["rehabType"]; !ok {
 		o["rehabType"] = adapt.RehabType_None
@@ -257,4 +262,112 @@ func (sdk *SDK) GetPlateSetWithContext(ctx context.Context, market int32, plateS
 	}
 
 	return s2c.GetPlateInfoList(), nil
+}
+
+// GetPlateSecurityWithContext 3205 - gets the plate securities with context.
+//
+// plateCode: plate code
+func (sdk *SDK) GetPlateSecurityWithContext(ctx context.Context, plateCode string, opts ...adapt.Option) ([]*qotcommon.SecurityStaticInfo, error) {
+	o := adapt.NewOptions(opts...)
+	o["plate"] = adapt.NewSecurity(plateCode)
+
+	var c2s qotgetplatesecurity.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	s2c, err := sdk.cli.QotGetPlateSecurity(ctx, &c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetStaticInfoList(), nil
+}
+
+// GetReferenceWithContext 3206 - gets the reference with context.
+//
+// code: security code
+//
+// refType: reference type
+func (sdk *SDK) GetReferenceWithContext(ctx context.Context, code string, refType int32) ([]*qotcommon.SecurityStaticInfo, error) {
+	c2s := &qotgetreference.C2S{
+		Security:      adapt.NewSecurity(code),
+		ReferenceType: proto.Int32(refType),
+	}
+
+	s2c, err := sdk.cli.QotGetReference(ctx, c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetStaticInfoList(), nil
+}
+
+// GetOwnerPlateWithContext 3207 - gets the owner plate with context.
+//
+// codes: security codes
+func (sdk *SDK) GetOwnerPlateWithContext(ctx context.Context, codes []string) ([]*qotgetownerplate.SecurityOwnerPlate, error) {
+	c2s := &qotgetownerplate.C2S{
+		SecurityList: adapt.NewSecurities(codes),
+	}
+
+	s2c, err := sdk.cli.QotGetOwnerPlate(ctx, c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetOwnerPlateList(), nil
+}
+
+// GetOptionChainWithContext 3209 - gets the option chain with context.
+//
+// code: security code
+//
+// beginTime: begin time, format: "yyyy-MM-dd"
+//
+// endTime: end time, format: "yyyy-MM-dd"
+func (sdk *SDK) GetOptionChainWithContext(ctx context.Context, code string, beginTime string, endTime string, opts ...adapt.Option) ([]*qotgetoptionchain.OptionChain, error) {
+	o := adapt.NewOptions(opts...)
+	o["owner"] = adapt.NewSecurity(code)
+	o["beginTime"] = beginTime
+	o["endTime"] = endTime
+
+	var c2s qotgetoptionchain.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	s2c, err := sdk.cli.QotGetOptionChain(ctx, &c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetOptionChain(), nil
+}
+
+// GetWarrantWithContext 3210 - gets the warrant with context, only available in Hong Kong market.
+// Sort by score in descending order by default.
+//
+// begin: begin index
+//
+// num: number of warrants
+func (sdk *SDK) GetWarrantWithContext(ctx context.Context, begin int32, num int32, opts ...adapt.Option) (*qotgetwarrant.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["begin"] = begin
+	o["num"] = num
+
+	if _, ok := o["sortField"]; !ok {
+		o["sortField"] = adapt.SortField_Score
+	}
+
+	if _, ok := o["ascend"]; !ok {
+		o["ascend"] = false
+	}
+
+	var c2s qotgetwarrant.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetWarrant(ctx, &c2s)
 }

@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/hyperjiang/futu/pb/qotcommon"
+	"github.com/hyperjiang/futu/pb/qotgetreference"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -215,4 +216,217 @@ const (
 
 	// PlateSetType_Other 其他板块，仅用于3207（获取股票所属板块）协议返回，不可作为其他协议的请求参数
 	PlateSetType_Other = int32(qotcommon.PlateSetType_PlateSetType_Other)
+)
+
+// 排序字段
+const (
+	// SortField_Unknow 未知排序字段
+	SortField_Unknow = int32(qotcommon.SortField_SortField_Unknow)
+
+	// SortField_Code 代码
+	SortField_Code = int32(qotcommon.SortField_SortField_Code)
+
+	// SortField_CurPrice 当前价格
+	SortField_CurPrice = int32(qotcommon.SortField_SortField_CurPrice)
+
+	// SortField_PriceChangeVal 价格变动值
+	SortField_PriceChangeVal = int32(qotcommon.SortField_SortField_PriceChangeVal)
+
+	// SortField_ChangeRate 涨跌幅
+	SortField_ChangeRate = int32(qotcommon.SortField_SortField_ChangeRate)
+
+	// SortField_Status 状态
+	SortField_Status = int32(qotcommon.SortField_SortField_Status)
+
+	// SortField_BidPrice 买价
+	SortField_BidPrice = int32(qotcommon.SortField_SortField_BidPrice)
+
+	// SortField_AskPrice 卖价
+	SortField_AskPrice = int32(qotcommon.SortField_SortField_AskPrice)
+
+	// SortField_BidVol 买量
+	SortField_BidVol = int32(qotcommon.SortField_SortField_BidVol)
+
+	// SortField_AskVol 卖量
+	SortField_AskVol = int32(qotcommon.SortField_SortField_AskVol)
+
+	// SortField_Volume 成交量
+	SortField_Volume = int32(qotcommon.SortField_SortField_Volume)
+
+	// SortField_Turnover 成交额
+	SortField_Turnover = int32(qotcommon.SortField_SortField_Turnover)
+
+	// SortField_Amplitude 振幅
+	SortField_Amplitude = int32(qotcommon.SortField_SortField_Amplitude)
+
+	// 以下排序字段只支持用于 Qot_GetWarrant 协议
+
+	// SortField_Score 综合评分
+	SortField_Score = int32(qotcommon.SortField_SortField_Score)
+
+	// SortField_Premium 溢价
+	SortField_Premium = int32(qotcommon.SortField_SortField_Premium)
+
+	// SortField_EffectiveLeverage 有效杠杆
+	SortField_EffectiveLeverage = int32(qotcommon.SortField_SortField_EffectiveLeverage)
+
+	// SortField_Delta 对冲值
+	SortField_Delta = int32(qotcommon.SortField_SortField_Delta)
+
+	// SortField_ImpliedVolatility 隐含波动率
+	SortField_ImpliedVolatility = int32(qotcommon.SortField_SortField_ImpliedVolatility)
+
+	// SortField_Type 类型
+	SortField_Type = int32(qotcommon.SortField_SortField_Type)
+
+	// SortField_StrikePrice 行使价
+	SortField_StrikePrice = int32(qotcommon.SortField_SortField_StrikePrice)
+
+	// SortField_BreakEvenPoint 打和点
+	SortField_BreakEvenPoint = int32(qotcommon.SortField_SortField_BreakEvenPoint)
+
+	// SortField_MaturityTime 到期时间
+	SortField_MaturityTime = int32(qotcommon.SortField_SortField_MaturityTime)
+
+	// SortField_ListTime 上市时间
+	SortField_ListTime = int32(qotcommon.SortField_SortField_ListTime)
+
+	// SortField_LastTradeTime 最后交易时间
+	SortField_LastTradeTime = int32(qotcommon.SortField_SortField_LastTradeTime)
+
+	// SortField_Leverage 杠杆比率
+	SortField_Leverage = int32(qotcommon.SortField_SortField_Leverage)
+
+	// SortField_InOutMoney 实际杠杆
+	SortField_InOutMoney = int32(qotcommon.SortField_SortField_InOutMoney)
+
+	// SortField_RecoveryPrice 回收价
+	SortField_RecoveryPrice = int32(qotcommon.SortField_SortField_RecoveryPrice)
+
+	// SortField_ChangePrice 涨跌价
+	SortField_ChangePrice = int32(qotcommon.SortField_SortField_ChangePrice)
+
+	// SortField_Change 涨跌幅
+	SortField_Change = int32(qotcommon.SortField_SortField_Change)
+
+	// SortField_StreetRate 街货比率
+	SortField_StreetRate = int32(qotcommon.SortField_SortField_StreetRate)
+
+	// SortField_StreetVol 街货量
+	SortField_StreetVol = int32(qotcommon.SortField_SortField_StreetVol)
+
+	// SortField_WarrantName 窝轮名称
+	SortField_WarrantName = int32(qotcommon.SortField_SortField_WarrantName)
+
+	// SortField_Issuer 发行人
+	SortField_Issuer = int32(qotcommon.SortField_SortField_Issuer)
+
+	// SortField_LotSize 每手数量
+	SortField_LotSize = int32(qotcommon.SortField_SortField_LotSize)
+
+	// SortField_IssueSize 发行量
+	SortField_IssueSize = int32(qotcommon.SortField_SortField_IssueSize)
+
+	// SortField_UpperStrikePrice 上限价
+	SortField_UpperStrikePrice = int32(qotcommon.SortField_SortField_UpperStrikePrice)
+
+	// SortField_LowerStrikePrice 下限价
+	SortField_LowerStrikePrice = int32(qotcommon.SortField_SortField_LowerStrikePrice)
+
+	// SortField_InLinePriceStatus 价格状态
+	SortField_InLinePriceStatus = int32(qotcommon.SortField_SortField_InLinePriceStatus)
+
+	// 以下排序字段只支持用于 Qot_GetPlateSecurity 协议，并仅支持美股
+
+	// SortField_PreCurPrice 盘前价格
+	SortField_PreCurPrice = int32(qotcommon.SortField_SortField_PreCurPrice)
+
+	// SortField_AfterCurPrice 盘后价格
+	SortField_AfterCurPrice = int32(qotcommon.SortField_SortField_AfterCurPrice)
+
+	// SortField_PrePriceChangeVal 盘前涨跌额
+	SortField_PrePriceChangeVal = int32(qotcommon.SortField_SortField_PrePriceChangeVal)
+
+	// SortField_AfterPriceChangeVal 盘后涨跌额
+	SortField_AfterPriceChangeVal = int32(qotcommon.SortField_SortField_AfterPriceChangeVal)
+
+	// SortField_PreChangeRate 盘前涨跌幅
+	SortField_PreChangeRate = int32(qotcommon.SortField_SortField_PreChangeRate)
+
+	// SortField_AfterChangeRate 盘后涨跌幅
+	SortField_AfterChangeRate = int32(qotcommon.SortField_SortField_AfterChangeRate)
+
+	// SortField_PreAmplitude 盘前振幅
+	SortField_PreAmplitude = int32(qotcommon.SortField_SortField_PreAmplitude)
+
+	// SortField_AfterAmplitude 盘后振幅
+	SortField_AfterAmplitude = int32(qotcommon.SortField_SortField_AfterAmplitude)
+
+	// SortField_PreTurnover 盘前成交额
+	SortField_PreTurnover = int32(qotcommon.SortField_SortField_PreTurnover)
+
+	// SortField_AfterTurnover 盘后成交额
+	SortField_AfterTurnover = int32(qotcommon.SortField_SortField_AfterTurnover)
+
+	// 以下排序字段只支持用于 Qot_GetPlateSecurity 协议，并仅支持期货
+
+	// SortField_LastSettlePrice 上次结算价
+	SortField_LastSettlePrice = int32(qotcommon.SortField_SortField_LastSettlePrice)
+
+	// SortField_Position 持仓量
+	SortField_Position = int32(qotcommon.SortField_SortField_Position)
+
+	// SortField_PositionChange 持仓量变化
+	SortField_PositionChange = int32(qotcommon.SortField_SortField_PositionChange)
+)
+
+// 参考类型
+const (
+	// ReferenceType_Unknow 未知
+	ReferenceType_Unknow = int32(qotgetreference.ReferenceType_ReferenceType_Unknow)
+
+	// ReferenceType_Warrant 正股相关的窝轮
+	ReferenceType_Warrant = int32(qotgetreference.ReferenceType_ReferenceType_Warrant)
+
+	// ReferenceType_Future 期货主连的相关合约
+	ReferenceType_Future = int32(qotgetreference.ReferenceType_ReferenceType_Future)
+)
+
+// 窝轮类型
+const (
+	// WarrantType_Unknown 未知
+	WarrantType_Unknown = int32(qotcommon.WarrantType_WarrantType_Unknown)
+
+	// WarrantType_Buy 认购
+	WarrantType_Buy = int32(qotcommon.WarrantType_WarrantType_Buy)
+
+	// WarrantType_Sell 认沽
+	WarrantType_Sell = int32(qotcommon.WarrantType_WarrantType_Sell)
+
+	// WarrantType_Bull 看涨型窝轮
+	WarrantType_Bull = int32(qotcommon.WarrantType_WarrantType_Bull)
+
+	// WarrantType_Bear 看跌型窝轮
+	WarrantType_Bear = int32(qotcommon.WarrantType_WarrantType_Bear)
+
+	// WarrantType_InLine 界内证
+	WarrantType_InLine = int32(qotcommon.WarrantType_WarrantType_InLine)
+)
+
+// 窝轮状态
+const (
+	// WarrantStatus_Unknow 未知
+	WarrantStatus_Unknow = int32(qotcommon.WarrantStatus_WarrantStatus_Unknow)
+
+	// WarrantStatus_Normal 正常
+	WarrantStatus_Normal = int32(qotcommon.WarrantStatus_WarrantStatus_Normal)
+
+	// WarrantStatus_Suspend 停牌
+	WarrantStatus_Suspend = int32(qotcommon.WarrantStatus_WarrantStatus_Suspend)
+
+	// WarrantStatus_StopTrade 终止交易
+	WarrantStatus_StopTrade = int32(qotcommon.WarrantStatus_WarrantStatus_StopTrade)
+
+	// WarrantStatus_PendingListing 待上市
+	WarrantStatus_PendingListing = int32(qotcommon.WarrantStatus_WarrantStatus_PendingListing)
 )

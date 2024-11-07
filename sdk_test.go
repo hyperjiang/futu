@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/hyperjiang/futu"
 	"github.com/hyperjiang/futu/adapt"
@@ -290,5 +291,61 @@ func (ts *SDKTestSuite) TestGetPlateSet() {
 			Int32("type", plate.GetPlateType()).
 			Interface("plate", plate.GetPlate()).
 			Msg("GetPlateSet")
+	}
+}
+
+func (ts *SDKTestSuite) TestGetPlateSecurity() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetPlateSecurity(
+		"HK.LIST1059",
+		adapt.With("sortField", adapt.SortField_Turnover),
+		adapt.With("ascend", false),
+	)
+	should.NoError(err)
+
+	for _, info := range res {
+		log.Info().Interface("info", info).Msg("GetPlateSecurity")
+	}
+}
+
+func (ts *SDKTestSuite) TestGetReference() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetReference("HK.09988", adapt.ReferenceType_Warrant)
+	should.NoError(err)
+	log.Info().Int("num", len(res)).Msg("GetReference")
+}
+
+func (ts *SDKTestSuite) TestGetOwnerPlate() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetOwnerPlate([]string{"HK.09988"})
+	should.NoError(err)
+	log.Info().Interface("data", res).Msg("GetOwnerPlate")
+}
+
+func (ts *SDKTestSuite) TestGetOptionChain() {
+	should := require.New(ts.T())
+
+	beginTime := time.Now().AddDate(0, 0, -7).Format("2006-01-02")
+	endTime := time.Now().Format("2006-01-02")
+
+	res, err := ts.sdk.GetOptionChain("HK.09988", beginTime, endTime)
+	should.NoError(err)
+	log.Info().Interface("data", res).Msg("GetOptionChain")
+}
+
+func (ts *SDKTestSuite) TestGetWarrant() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetWarrant(0, 3,
+		adapt.With("owner", adapt.NewSecurity("HK.00981")),
+		adapt.With("status", adapt.WarrantStatus_Normal),
+	)
+	should.NoError(err)
+	log.Info().Int32("count", res.GetAllCount()).Msg("GetWarrant")
+	for _, warrant := range res.GetWarrantDataList() {
+		log.Info().Interface("warrant", warrant).Msg("GetWarrant")
 	}
 }
