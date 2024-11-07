@@ -8,6 +8,8 @@ import (
 	"github.com/hyperjiang/futu/pb/qotcommon"
 	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
+	"github.com/hyperjiang/futu/pb/qotgetcapitaldistribution"
+	"github.com/hyperjiang/futu/pb/qotgetcapitalflow"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
@@ -20,7 +22,9 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetstaticinfo"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
+	"github.com/hyperjiang/futu/pb/qotgetusersecurity"
 	"github.com/hyperjiang/futu/pb/qotgetwarrant"
+	"github.com/hyperjiang/futu/pb/qotmodifyusersecurity"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
@@ -370,4 +374,67 @@ func (sdk *SDK) GetWarrantWithContext(ctx context.Context, begin int32, num int3
 	}
 
 	return sdk.cli.QotGetWarrant(ctx, &c2s)
+}
+
+// GetCapitalFlowWithContext 3211 - gets the capital flow with context.
+//
+// code: security code
+func (sdk *SDK) GetCapitalFlowWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetcapitalflow.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	if _, ok := o["periodType"]; !ok {
+		o["periodType"] = adapt.PeriodType_INTRADAY
+	}
+
+	var c2s qotgetcapitalflow.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetCapitalFlow(ctx, &c2s)
+}
+
+// GetCapitalDistributionWithContext 3212 - gets the capital distribution with context.
+//
+// code: security code
+func (sdk *SDK) GetCapitalDistributionWithContext(ctx context.Context, code string) (*qotgetcapitaldistribution.S2C, error) {
+	c2s := &qotgetcapitaldistribution.C2S{
+		Security: adapt.NewSecurity(code),
+	}
+
+	return sdk.cli.QotGetCapitalDistribution(ctx, c2s)
+}
+
+// GetUserSecurityWithContext 3213 - gets the user security with context.
+//
+// groupName: group name
+func (sdk *SDK) GetUserSecurityWithContext(ctx context.Context, groupName string) ([]*qotcommon.SecurityStaticInfo, error) {
+	c2s := &qotgetusersecurity.C2S{
+		GroupName: proto.String(groupName),
+	}
+
+	s2c, err := sdk.cli.QotGetUserSecurity(ctx, c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetStaticInfoList(), nil
+}
+
+// ModifyUserSecurityWithContext 3214 - modifies the user security with context.
+//
+// groupName: group name
+//
+// codes: security codes
+//
+// op: operation
+func (sdk *SDK) ModifyUserSecurityWithContext(ctx context.Context, groupName string, codes []string, op int32) error {
+	c2s := &qotmodifyusersecurity.C2S{
+		GroupName:    proto.String(groupName),
+		SecurityList: adapt.NewSecurities(codes),
+		Op:           proto.Int32(op),
+	}
+
+	return sdk.cli.QotModifyUserSecurity(ctx, c2s)
 }

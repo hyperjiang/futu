@@ -5,6 +5,7 @@ import (
 
 	"github.com/hyperjiang/futu/pb/qotcommon"
 	"github.com/hyperjiang/futu/pb/qotgetreference"
+	"github.com/hyperjiang/futu/pb/qotmodifyusersecurity"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -429,4 +430,37 @@ const (
 
 	// WarrantStatus_PendingListing 待上市
 	WarrantStatus_PendingListing = int32(qotcommon.WarrantStatus_WarrantStatus_PendingListing)
+)
+
+// 周期类型
+const (
+	// PeriodType_Unknown 未知
+	PeriodType_Unknown = int32(qotcommon.PeriodType_PeriodType_Unknown)
+
+	// PeriodType_INTRADAY 实时
+	PeriodType_INTRADAY = int32(qotcommon.PeriodType_PeriodType_INTRADAY)
+
+	// PeriodType_DAY 日
+	PeriodType_DAY = int32(qotcommon.PeriodType_PeriodType_DAY)
+
+	// PeriodType_WEEK 周
+	PeriodType_WEEK = int32(qotcommon.PeriodType_PeriodType_WEEK)
+
+	// PeriodType_MONTH 月
+	PeriodType_MONTH = int32(qotcommon.PeriodType_PeriodType_MONTH)
+)
+
+// 自选股操作类型
+const (
+	// ModifyUserSecurityOp_Unknown 未知
+	ModifyUserSecurityOp_Unknown = int32(qotmodifyusersecurity.ModifyUserSecurityOp_ModifyUserSecurityOp_Unknown)
+
+	// ModifyUserSecurityOp_Add 新增自选
+	ModifyUserSecurityOp_Add = int32(qotmodifyusersecurity.ModifyUserSecurityOp_ModifyUserSecurityOp_Add)
+
+	// ModifyUserSecurityOp_Del 删除自选
+	ModifyUserSecurityOp_Del = int32(qotmodifyusersecurity.ModifyUserSecurityOp_ModifyUserSecurityOp_Del)
+
+	// ModifyUserSecurityOp_MoveOut 移出分组
+	ModifyUserSecurityOp_MoveOut = int32(qotmodifyusersecurity.ModifyUserSecurityOp_ModifyUserSecurityOp_MoveOut)
 )

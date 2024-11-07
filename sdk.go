@@ -9,6 +9,8 @@ import (
 	"github.com/hyperjiang/futu/pb/getglobalstate"
 	"github.com/hyperjiang/futu/pb/qotcommon"
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
+	"github.com/hyperjiang/futu/pb/qotgetcapitaldistribution"
+	"github.com/hyperjiang/futu/pb/qotgetcapitalflow"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
@@ -268,4 +270,48 @@ func (sdk *SDK) GetWarrant(begin int32, num int32, opts ...adapt.Option) (*qotge
 	defer cancel()
 
 	return sdk.GetWarrantWithContext(ctx, begin, num, opts...)
+}
+
+// GetCapitalFlow 3211 - gets the capital flow.
+//
+// code: security code
+func (sdk *SDK) GetCapitalFlow(code string, opts ...adapt.Option) (*qotgetcapitalflow.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetCapitalFlowWithContext(ctx, code, opts...)
+}
+
+// GetCapitalDistribution 3212 - gets the capital distribution.
+//
+// code: security code
+func (sdk *SDK) GetCapitalDistribution(code string) (*qotgetcapitaldistribution.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetCapitalDistributionWithContext(ctx, code)
+}
+
+// GetUserSecurity 3213 - gets the user security.
+//
+// groupName: group name
+func (sdk *SDK) GetUserSecurity(groupName string) ([]*qotcommon.SecurityStaticInfo, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetUserSecurityWithContext(ctx, groupName)
+}
+
+// ModifyUserSecurity 3214 - modifies the user security.
+//
+// groupName: group name
+//
+// codes: security codes
+//
+// op: operation, 1 for add, 2 for delete
+func (sdk *SDK) ModifyUserSecurity(groupName string, codes []string, op int32) error {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.ModifyUserSecurityWithContext(ctx, groupName, codes, op)
 }

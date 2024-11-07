@@ -328,12 +328,12 @@ func (ts *SDKTestSuite) TestGetOwnerPlate() {
 func (ts *SDKTestSuite) TestGetOptionChain() {
 	should := require.New(ts.T())
 
-	beginTime := time.Now().AddDate(0, 0, -7).Format("2006-01-02")
+	beginTime := time.Now().AddDate(0, 0, -1).Format("2006-01-02")
 	endTime := time.Now().Format("2006-01-02")
 
 	res, err := ts.sdk.GetOptionChain("HK.09988", beginTime, endTime)
 	should.NoError(err)
-	log.Info().Interface("data", res).Msg("GetOptionChain")
+	log.Info().Int("num", len(res)).Msg("GetOptionChain")
 }
 
 func (ts *SDKTestSuite) TestGetWarrant() {
@@ -348,4 +348,44 @@ func (ts *SDKTestSuite) TestGetWarrant() {
 	for _, warrant := range res.GetWarrantDataList() {
 		log.Info().Interface("warrant", warrant).Msg("GetWarrant")
 	}
+}
+
+func (ts *SDKTestSuite) TestGetCapitalFlow() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetCapitalFlow(
+		"HK.09988",
+		adapt.With("beginTime", time.Now().AddDate(0, 0, -1).Format("2006-01-02")),
+		adapt.With("endTime", time.Now().Format("2006-01-02")),
+		adapt.With("periodType", adapt.PeriodType_DAY),
+	)
+	should.NoError(err)
+	log.Info().Interface("data", res).Msg("GetCapitalFlow")
+}
+
+func (ts *SDKTestSuite) TestGetCapitalDistribution() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetCapitalDistribution("HK.09988")
+	should.NoError(err)
+	log.Info().Interface("data", res).Msg("GetCapitalDistribution")
+}
+
+func (ts *SDKTestSuite) TestGetUserSecurity() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetUserSecurity("特别关注")
+	should.NoError(err)
+	log.Info().Int("count", len(res)).Msg("GetUserSecurity")
+}
+
+func (ts *SDKTestSuite) TestModifyUserSecurity() {
+	should := require.New(ts.T())
+
+	err := ts.sdk.ModifyUserSecurity(
+		"特别关注",
+		[]string{"HK.09988"},
+		adapt.ModifyUserSecurityOp_Add,
+	)
+	should.Error(err) // 仅支持修改自定义分组，不支持修改系统分组
 }
