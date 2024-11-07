@@ -28,6 +28,7 @@ func TestSimpleOption(t *testing.T) {
 		With("trdEnv", 1),
 		With("accID", 123),
 		With("trdMarket", 1),
+		WithSecurity("HK.00700"), // this should be ignored
 	)
 
 	var ta trdcommon.TrdHeader
@@ -54,7 +55,7 @@ func TestComplexOption(t *testing.T) {
 	should := require.New(t)
 
 	opts := NewOptions(
-		With("securityList", NewSecurities([]string{"HK.00700", "US.AAPL"})),
+		WithSecurities([]string{"HK.00700", "US.AAPL"}),
 	)
 
 	var c2s qotgetbasicqot.C2S
@@ -71,7 +72,7 @@ func TestComplexOption2(t *testing.T) {
 	should := require.New(t)
 
 	opts := NewOptions(
-		With("securityList", NewSecurities([]string{"HK.00700", "US.AAPL"})),
+		WithSecurities([]string{"HK.00700", "US.AAPL"}),
 		With("subTypeList", []int32{1, 2, 3}),
 		With("isSubOrUnSub", true),
 	)

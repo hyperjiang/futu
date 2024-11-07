@@ -60,6 +60,11 @@ func (ts *SDKTestSuite) SetupSuite() {
 	if err != nil {
 		ts.T().SkipNow()
 	}
+	ts.sdk.RegisterHandler(protoid.Notify, func(s2c proto.Message) error {
+		msg := s2c.(*notify.S2C)
+		log.Info().Interface("s2c", msg).Msg("custom handler")
+		return nil
+	})
 
 	err = ts.sdk.Subscribe(
 		[]string{"HK.09988", "HK.00700"},
@@ -77,12 +82,6 @@ func (ts *SDKTestSuite) SetupSuite() {
 	if err != nil {
 		fmt.Println(err)
 	}
-
-	ts.sdk.RegisterHandler(protoid.Notify, func(s2c proto.Message) error {
-		msg := s2c.(*notify.S2C)
-		log.Info().Interface("s2c", msg).Msg("custom handler")
-		return nil
-	})
 }
 
 // TearDownSuite run once at the very end of the testing suite, after all tests have been run.
@@ -236,4 +235,60 @@ func (ts *SDKTestSuite) TestRequestHistoryKLQuota() {
 	)
 	should.NoError(err)
 	log.Info().Interface("result", res).Msg("RequestHistoryKLQuota")
+}
+
+func (ts *SDKTestSuite) TestRequestRehab() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.RequestRehab("HK.09988")
+	should.NoError(err)
+
+	for _, rehab := range res.GetRehabList() {
+		log.Info().Interface("rehab", rehab).Msg("RequestRehab")
+	}
+}
+
+func (ts *SDKTestSuite) TestGetStaticInfo() {
+	should := require.New(ts.T())
+
+	// use securities to filter
+	res, err := ts.sdk.GetStaticInfo(adapt.WithSecurities([]string{"HK.09988", "HK.00700"}))
+	should.NoError(err)
+
+	for _, info := range res {
+		log.Info().Interface("info", info).Msg("GetStaticInfo by securities")
+	}
+
+	// use market and secType to filter
+	res2, err := ts.sdk.GetStaticInfo(
+		adapt.With("market", adapt.QotMarket_HK),
+		adapt.With("secType", adapt.SecurityType_Eqty),
+	)
+	should.NoError(err)
+	log.Info().Int("num", len(res2)).Msg("GetStaticInfo by market")
+}
+
+func (ts *SDKTestSuite) TestGetSecuritySnapshot() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetSecuritySnapshot([]string{"HK.09988", "HK.00700"})
+	should.NoError(err)
+
+	for _, snap := range res {
+		log.Info().Interface("snapshot", snap).Msg("GetSecuritySnapshot")
+	}
+}
+
+func (ts *SDKTestSuite) TestGetPlateSet() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetPlateSet(adapt.QotMarket_HK, adapt.PlateSetType_Industry)
+	should.NoError(err)
+
+	for _, plate := range res {
+		log.Info().Str("name", plate.GetName()).
+			Int32("type", plate.GetPlateType()).
+			Interface("plate", plate.GetPlate()).
+			Msg("GetPlateSet")
+	}
 }

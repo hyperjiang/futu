@@ -254,7 +254,6 @@ func (ts *ClientTestSuite) TestQotGetPlateSet() {
 	res, err := ts.client.QotGetPlateSet(ctx, c2s)
 	should.NoError(err)
 	for _, plate := range res.GetPlateInfoList() {
-		plate.GetPlate()
 		log.Info().Str("name", plate.GetName()).
 			Int32("type", plate.GetPlateType()).
 			Interface("plate", plate.GetPlate()).

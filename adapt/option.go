@@ -29,6 +29,16 @@ func With(k string, v any) Option {
 	}
 }
 
+// WithSecurity sets the security code.
+func WithSecurity(code string) Option {
+	return With("security", NewSecurity(code))
+}
+
+// WithSecurities sets the security list.
+func WithSecurities(codes []string) Option {
+	return With("securityList", NewSecurities(codes))
+}
+
 // ToProto converts options to proto message.
 func (o Options) ToProto(msg proto.Message) error {
 	b, err := json.Marshal(o)

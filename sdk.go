@@ -12,10 +12,12 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
+	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
+	"github.com/hyperjiang/futu/pb/qotrequestrehab"
 )
 
 const defaultTimeout = time.Second * 5
@@ -166,4 +168,42 @@ func (sdk *SDK) RequestHistoryKLQuota(opts ...adapt.Option) (*qotrequesthistoryk
 	defer cancel()
 
 	return sdk.RequestHistoryKLQuotaWithContext(ctx, opts...)
+}
+
+// RequestRehab 3105 - requests the rehab data.
+func (sdk *SDK) RequestRehab(code string) (*qotrequestrehab.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.RequestRehabWithContext(ctx, code)
+}
+
+// GetStaticInfo 3202 - gets the static information.
+func (sdk *SDK) GetStaticInfo(opts ...adapt.Option) ([]*qotcommon.SecurityStaticInfo, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetStaticInfoWithContext(ctx, opts...)
+}
+
+// GetSecuritySnapshot 3203 - gets the security snapshot.
+//
+// codes: security codes
+func (sdk *SDK) GetSecuritySnapshot(codes []string) ([]*qotgetsecuritysnapshot.Snapshot, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetSecuritySnapshotWithContext(ctx, codes)
+}
+
+// GetPlateSet 3204 - gets the plate set.
+//
+// market: market
+//
+// plateSetType: plate set type
+func (sdk *SDK) GetPlateSet(market int32, plateSetType int32) ([]*qotcommon.PlateInfo, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetPlateSetWithContext(ctx, market, plateSetType)
 }

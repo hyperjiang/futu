@@ -10,12 +10,17 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
+	"github.com/hyperjiang/futu/pb/qotgetplateset"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
+	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
+	"github.com/hyperjiang/futu/pb/qotgetstaticinfo"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
+	"github.com/hyperjiang/futu/pb/qotrequestrehab"
 	"github.com/hyperjiang/futu/pb/qotsub"
+	"google.golang.org/protobuf/proto"
 )
 
 // GetGlobalStateWithContext 1002 - gets the global state with context.
@@ -189,4 +194,67 @@ func (sdk *SDK) RequestHistoryKLQuotaWithContext(ctx context.Context, opts ...ad
 	}
 
 	return sdk.cli.QotRequestHistoryKLQuota(ctx, &c2s)
+}
+
+// RequestRehabWithContext 3105 - requests the rehab data with context.
+//
+// code: security code
+func (sdk *SDK) RequestRehabWithContext(ctx context.Context, code string) (*qotrequestrehab.S2C, error) {
+	c2s := &qotrequestrehab.C2S{
+		Security: adapt.NewSecurity(code),
+	}
+
+	return sdk.cli.QotRequestRehab(ctx, c2s)
+}
+
+// GetStaticInfoWithContext 3202 - gets the static information with context.
+func (sdk *SDK) GetStaticInfoWithContext(ctx context.Context, opts ...adapt.Option) ([]*qotcommon.SecurityStaticInfo, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetstaticinfo.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	res, err := sdk.cli.QotGetStaticInfo(ctx, &c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return res.GetStaticInfoList(), nil
+}
+
+// GetSecuritySnapshotWithContext 3203 - gets the security snapshot with context.
+//
+// codes: security codes
+func (sdk *SDK) GetSecuritySnapshotWithContext(ctx context.Context, codes []string) ([]*qotgetsecuritysnapshot.Snapshot, error) {
+	c2s := &qotgetsecuritysnapshot.C2S{
+		SecurityList: adapt.NewSecurities(codes),
+	}
+
+	s2c, err := sdk.cli.QotGetSecuritySnapshot(ctx, c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetSnapshotList(), nil
+}
+
+// GetPlateSetWithContext 3204 - gets the plate set with context.
+//
+// market: market
+//
+// plateSetType: plate set type
+func (sdk *SDK) GetPlateSetWithContext(ctx context.Context, market int32, plateSetType int32) ([]*qotcommon.PlateInfo, error) {
+	c2s := &qotgetplateset.C2S{
+		Market:       proto.Int32(market),
+		PlateSetType: proto.Int32(plateSetType),
+	}
+
+	s2c, err := sdk.cli.QotGetPlateSet(ctx, c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetPlateInfoList(), nil
 }
