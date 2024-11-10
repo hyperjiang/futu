@@ -3,6 +3,8 @@ package adapt
 import (
 	"testing"
 
+	"github.com/hyperjiang/futu/pb/qotcommon"
+	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/stretchr/testify/require"
 )
@@ -52,4 +54,99 @@ func TestNewTestingTradeAccount(t *testing.T) {
 	should.Equal(int32(1), ta.GetTrdMarket())
 	should.Equal(uint64(123), ta.GetAccID())
 	should.Equal(int32(0), ta.GetTrdEnv())
+}
+
+func TestNewBaseFilter(t *testing.T) {
+	should := require.New(t)
+
+	f := NewBaseFilter(
+		qotstockfilter.StockField_StockField_MarketVal,
+		10000000000,
+		0,
+		qotstockfilter.SortDir_SortDir_Ascend,
+	)
+	should.NotNil(f)
+	should.Equal(int32(qotstockfilter.StockField_StockField_MarketVal), f.GetFieldName())
+	should.Equal(float64(10000000000), f.GetFilterMin())
+	should.Equal(float64(0), f.GetFilterMax())
+	should.Equal(int32(qotstockfilter.SortDir_SortDir_Ascend), f.GetSortDir())
+	should.False(f.GetIsNoFilter())
+}
+
+func TestNewAccumulateFilter(t *testing.T) {
+	should := require.New(t)
+
+	f := NewAccumulateFilter(
+		qotstockfilter.AccumulateField_AccumulateField_TurnoverRate,
+		10,
+		50,
+		5,
+		qotstockfilter.SortDir_SortDir_Ascend,
+	)
+	should.NotNil(f)
+	should.Equal(int32(qotstockfilter.AccumulateField_AccumulateField_TurnoverRate), f.GetFieldName())
+	should.Equal(float64(10), f.GetFilterMin())
+	should.Equal(float64(50), f.GetFilterMax())
+	should.Equal(int32(5), f.GetDays())
+	should.Equal(int32(qotstockfilter.SortDir_SortDir_Ascend), f.GetSortDir())
+	should.False(f.GetIsNoFilter())
+}
+
+func TestNewFinancialFilter(t *testing.T) {
+	should := require.New(t)
+
+	f := NewFinancialFilter(
+		qotstockfilter.FinancialField_FinancialField_NetProfit,
+		10000000000,
+		0,
+		3,
+		qotstockfilter.SortDir_SortDir_Ascend,
+	)
+	should.NotNil(f)
+	should.Equal(int32(qotstockfilter.FinancialField_FinancialField_NetProfit), f.GetFieldName())
+	should.Equal(float64(10000000000), f.GetFilterMin())
+	should.Equal(float64(0), f.GetFilterMax())
+	should.Equal(int32(3), f.GetQuarter())
+	should.Equal(int32(qotstockfilter.SortDir_SortDir_Ascend), f.GetSortDir())
+	should.False(f.GetIsNoFilter())
+}
+
+func TestNewPatternFilter(t *testing.T) {
+	should := require.New(t)
+
+	f := NewPatternFilter(
+		qotstockfilter.PatternField_PatternField_MAAlignmentLong,
+		qotcommon.KLType_KLType_Day,
+		3,
+	)
+	should.NotNil(f)
+	should.Equal(int32(qotstockfilter.PatternField_PatternField_MAAlignmentLong), f.GetFieldName())
+	should.Equal(int32(qotcommon.KLType_KLType_Day), f.GetKlType())
+	should.Equal(int32(3), f.GetConsecutivePeriod())
+	should.False(f.GetIsNoFilter())
+}
+
+func TestNewCustomIndicatorFilter(t *testing.T) {
+	should := require.New(t)
+
+	f := NewCustomIndicatorFilter(
+		With("firstFieldName", qotstockfilter.CustomIndicatorField_CustomIndicatorField_Price),
+		With("secondFieldName", qotstockfilter.CustomIndicatorField_CustomIndicatorField_MA20),
+		With("relativePosition", qotstockfilter.RelativePosition_RelativePosition_More),
+		With("fieldValue", 10),
+		With("klType", qotcommon.KLType_KLType_Day),
+		With("firstFieldParaList", []int32{1, 4}),
+		With("secondFieldParaList", []int32{1, 4}),
+		With("consecutivePeriod", 3),
+	)
+	should.NotNil(f)
+	should.Equal(int32(qotstockfilter.CustomIndicatorField_CustomIndicatorField_Price), f.GetFirstFieldName())
+	should.Equal(int32(qotstockfilter.CustomIndicatorField_CustomIndicatorField_MA20), f.GetSecondFieldName())
+	should.Equal(int32(qotstockfilter.RelativePosition_RelativePosition_More), f.GetRelativePosition())
+	should.Equal(float64(10), f.GetFieldValue())
+	should.Equal(int32(qotcommon.KLType_KLType_Day), f.GetKlType())
+	should.Equal([]int32{1, 4}, f.GetFirstFieldParaList())
+	should.Equal([]int32{1, 4}, f.GetSecondFieldParaList())
+	should.Equal(int32(3), f.GetConsecutivePeriod())
+	should.False(f.GetIsNoFilter())
 }

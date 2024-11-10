@@ -23,6 +23,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
+	"github.com/hyperjiang/futu/pb/qotstockfilter"
 )
 
 const defaultTimeout = time.Second * 5
@@ -314,4 +315,14 @@ func (sdk *SDK) ModifyUserSecurity(groupName string, codes []string, op int32) e
 	defer cancel()
 
 	return sdk.ModifyUserSecurityWithContext(ctx, groupName, codes, op)
+}
+
+// StockFilter 3215 - filters the stocks.
+//
+// market: market
+func (sdk *SDK) StockFilter(market int32, opts ...adapt.Option) (*qotstockfilter.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.StockFilterWithContext(ctx, market, opts...)
 }

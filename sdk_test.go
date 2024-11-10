@@ -10,6 +10,7 @@ import (
 	"github.com/hyperjiang/futu/adapt"
 	"github.com/hyperjiang/futu/client"
 	"github.com/hyperjiang/futu/pb/notify"
+	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/protoid"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -388,4 +389,33 @@ func (ts *SDKTestSuite) TestModifyUserSecurity() {
 		adapt.ModifyUserSecurityOp_Add,
 	)
 	should.Error(err) // 仅支持修改自定义分组，不支持修改系统分组
+}
+
+func (ts *SDKTestSuite) TestStockFilter() {
+	should := require.New(ts.T())
+
+	// f := &qotstockfilter.BaseFilter{
+	// 	FieldName:  proto.Int32(int32(qotstockfilter.StockField_StockField_MarketVal)),
+	// 	FilterMin:  proto.Float64(10000000000),
+	// 	SortDir:    proto.Int32(int32(qotstockfilter.SortDir_SortDir_Ascend)),
+	// 	IsNoFilter: proto.Bool(false),
+	// }
+	f := adapt.NewBaseFilter(
+		qotstockfilter.StockField_StockField_MarketVal,
+		10000000000,
+		0,
+		qotstockfilter.SortDir_SortDir_Ascend,
+	)
+
+	res, err := ts.sdk.StockFilter(
+		adapt.QotMarket_HK,
+		adapt.With("begin", 0),
+		adapt.With("num", 10),
+		adapt.WithBaseFilters(f),
+	)
+	should.NoError(err)
+	log.Info().Int("count", int(res.GetAllCount())).Msg("StockFilter")
+	for _, stock := range res.GetDataList() {
+		log.Info().Interface("stock", stock).Msg("StockFilter")
+	}
 }

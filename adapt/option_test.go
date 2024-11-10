@@ -3,7 +3,9 @@ package adapt
 import (
 	"testing"
 
+	"github.com/hyperjiang/futu/pb/qotcommon"
 	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
+	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/qotsub"
 	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/stretchr/testify/require"
@@ -90,4 +92,44 @@ func TestComplexOption2(t *testing.T) {
 	should.False(c2s.GetIsRegOrUnRegPush())
 	should.False(c2s.GetIsFirstPush())
 	should.Empty(c2s.GetRegPushRehabTypeList())
+}
+
+func TestFilters(t *testing.T) {
+	should := require.New(t)
+
+	opts := NewOptions(
+		WithBaseFilters(
+			NewBaseFilter(qotstockfilter.StockField_StockField_MarketVal, 10000000000, 0, qotstockfilter.SortDir_SortDir_Ascend),
+		),
+		WithAccumulateFilters(
+			NewAccumulateFilter(qotstockfilter.AccumulateField_AccumulateField_TurnoverRate, 10, 50, 5, qotstockfilter.SortDir_SortDir_Ascend),
+		),
+		WithFinancialFilters(
+			NewFinancialFilter(qotstockfilter.FinancialField_FinancialField_NetProfit, 10000000000, 0, 3, qotstockfilter.SortDir_SortDir_Ascend),
+		),
+		WithPatternFilters(
+			NewPatternFilter(qotstockfilter.PatternField_PatternField_MAAlignmentLong, qotcommon.KLType_KLType_Day, 3),
+		),
+		WithCustomIndicatorFilters(
+			NewCustomIndicatorFilter(
+				With("firstFieldName", qotstockfilter.CustomIndicatorField_CustomIndicatorField_Price),
+				With("secondFieldName", qotstockfilter.CustomIndicatorField_CustomIndicatorField_MA20),
+				With("relativePosition", qotstockfilter.RelativePosition_RelativePosition_More),
+				With("fieldValue", 10),
+				With("klType", qotcommon.KLType_KLType_Day),
+				With("firstFieldParaList", []int32{1, 4}),
+				With("secondFieldParaList", []int32{1, 4}),
+				With("consecutivePeriod", 3),
+			),
+		),
+	)
+
+	var c2s qotstockfilter.C2S
+	err := opts.ToProto(&c2s)
+	should.NoError(err)
+	should.Len(c2s.GetBaseFilterList(), 1)
+	should.Len(c2s.GetAccumulateFilterList(), 1)
+	should.Len(c2s.GetFinancialFilterList(), 1)
+	should.Len(c2s.GetPatternFilterList(), 1)
+	should.Len(c2s.GetCustomIndicatorFilterList(), 1)
 }

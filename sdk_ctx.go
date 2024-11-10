@@ -28,6 +28,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
+	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/qotsub"
 	"google.golang.org/protobuf/proto"
 )
@@ -437,4 +438,27 @@ func (sdk *SDK) ModifyUserSecurityWithContext(ctx context.Context, groupName str
 	}
 
 	return sdk.cli.QotModifyUserSecurity(ctx, c2s)
+}
+
+// StockFilterWithContext 3215 - filters the stock with context.
+//
+// market: market
+func (sdk *SDK) StockFilterWithContext(ctx context.Context, market int32, opts ...adapt.Option) (*qotstockfilter.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["market"] = market
+
+	if _, ok := o["begin"]; !ok {
+		o["begin"] = 0
+	}
+
+	if _, ok := o["num"]; !ok {
+		o["num"] = 200
+	}
+
+	var c2s qotstockfilter.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotStockFilter(ctx, &c2s)
 }
