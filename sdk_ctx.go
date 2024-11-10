@@ -18,6 +18,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetownerplate"
 	"github.com/hyperjiang/futu/pb/qotgetplatesecurity"
 	"github.com/hyperjiang/futu/pb/qotgetplateset"
+	"github.com/hyperjiang/futu/pb/qotgetpricereminder"
 	"github.com/hyperjiang/futu/pb/qotgetreference"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
@@ -25,12 +26,14 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
 	"github.com/hyperjiang/futu/pb/qotgetusersecurity"
+	"github.com/hyperjiang/futu/pb/qotgetusersecuritygroup"
 	"github.com/hyperjiang/futu/pb/qotgetwarrant"
 	"github.com/hyperjiang/futu/pb/qotmodifyusersecurity"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
 	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
+	"github.com/hyperjiang/futu/pb/qotsetpricereminder"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/qotsub"
 	"google.golang.org/protobuf/proto"
@@ -523,4 +526,62 @@ func (sdk *SDK) RequestTradeDateWithContext(ctx context.Context, market int32, c
 	}
 
 	return s2c.GetTradeDateList(), nil
+}
+
+// SetPriceReminderWithContext 3220 - sets the price reminder with context.
+//
+// code: security code
+//
+// op: operation
+func (sdk *SDK) SetPriceReminderWithContext(ctx context.Context, code string, op int32, opts ...adapt.Option) (int64, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+	o["op"] = op
+
+	var c2s qotsetpricereminder.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return 0, err
+	}
+
+	s2c, err := sdk.cli.QotSetPriceReminder(ctx, &c2s)
+	if err != nil {
+		return 0, err
+	}
+
+	return s2c.GetKey(), nil
+}
+
+// GetPriceReminderWithContext 3221 - gets the price reminder with context.
+//
+// code: security code
+//
+// market: market, if security is set, this param is ignored
+func (sdk *SDK) GetPriceReminderWithContext(ctx context.Context, code string, market int32) ([]*qotgetpricereminder.PriceReminder, error) {
+	c2s := &qotgetpricereminder.C2S{
+		Security: adapt.NewSecurity(code),
+		Market:   proto.Int32(market),
+	}
+
+	s2c, err := sdk.cli.QotGetPriceReminder(ctx, c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetPriceReminderList(), nil
+}
+
+// GetUserSecurityGroupWithContext 3222 - gets the user security group with context.
+//
+// groupType: group type
+func (sdk *SDK) GetUserSecurityGroupWithContext(ctx context.Context, groupType int32) ([]*qotgetusersecuritygroup.GroupData, error) {
+	c2s := &qotgetusersecuritygroup.C2S{
+		GroupType: proto.Int32(groupType),
+	}
+
+	s2c, err := sdk.cli.QotGetUserSecurityGroup(ctx, c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetGroupList(), nil
 }

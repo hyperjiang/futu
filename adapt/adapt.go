@@ -35,6 +35,11 @@ func NewSecurities(codes []string) []*qotcommon.Security {
 	return sa
 }
 
+// SecurityToCode converts a Security to a code string, e.g. "HK.00700".
+func SecurityToCode(s *qotcommon.Security) string {
+	return GetMarketName(s.GetMarket()) + "." + s.GetCode()
+}
+
 // NewTradeAccount creates a new TrdHeader for a real trade account.
 func NewTradeAccount(id uint64, market trdcommon.TrdMarket) *trdcommon.TrdHeader {
 	return &trdcommon.TrdHeader{

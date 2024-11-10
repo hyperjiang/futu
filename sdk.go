@@ -17,10 +17,12 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
 	"github.com/hyperjiang/futu/pb/qotgetownerplate"
+	"github.com/hyperjiang/futu/pb/qotgetpricereminder"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
+	"github.com/hyperjiang/futu/pb/qotgetusersecuritygroup"
 	"github.com/hyperjiang/futu/pb/qotgetwarrant"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
@@ -364,4 +366,38 @@ func (sdk *SDK) RequestTradeDate(market int32, code string, beginTime string, en
 	defer cancel()
 
 	return sdk.RequestTradeDateWithContext(ctx, market, code, beginTime, endTime)
+}
+
+// SetPriceReminder 3220 - sets the price reminder.
+//
+// code: security code
+//
+// op: operation, 1 for add, 2 for delete
+func (sdk *SDK) SetPriceReminder(code string, op int32, opts ...adapt.Option) (int64, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.SetPriceReminderWithContext(ctx, code, op, opts...)
+}
+
+// GetPriceReminder 3221 - gets the price reminder.
+//
+// code: security code
+//
+// market: market, if security is set, this param is ignored
+func (sdk *SDK) GetPriceReminder(code string, market int32) ([]*qotgetpricereminder.PriceReminder, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetPriceReminderWithContext(ctx, code, market)
+}
+
+// GetUserSecurityGroup 3222 - gets the user security group.
+//
+// groupType: group type
+func (sdk *SDK) GetUserSecurityGroup(groupType int32) ([]*qotgetusersecuritygroup.GroupData, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetUserSecurityGroupWithContext(ctx, groupType)
 }

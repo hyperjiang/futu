@@ -7,6 +7,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestNewSecurity(t *testing.T) {
@@ -34,6 +35,16 @@ func TestNewSecurities(t *testing.T) {
 	should.Len(sa, 1)
 	should.Equal(int32(1), sa[0].GetMarket())
 	should.Equal("00700", sa[0].GetCode())
+}
+
+func TestSecurityToCode(t *testing.T) {
+	should := require.New(t)
+
+	s := &qotcommon.Security{
+		Market: proto.Int32(int32(qotcommon.QotMarket_QotMarket_HK_Security)),
+		Code:   proto.String("00700"),
+	}
+	should.Equal("HK.00700", SecurityToCode(s))
 }
 
 func TestNewTradeAccount(t *testing.T) {

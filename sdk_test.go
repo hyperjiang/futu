@@ -446,3 +446,43 @@ func (ts *SDKTestSuite) TestRequestTradeDate() {
 	should.NoError(err)
 	log.Info().Interface("data", res).Msg("RequestTradeDate")
 }
+
+func (ts *SDKTestSuite) TestSetPriceReminder() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.SetPriceReminder(
+		"HK.09988",
+		adapt.SetPriceReminderOp_Add,
+		adapt.With("type", adapt.PriceReminderType_PriceDown),
+		adapt.With("freq", adapt.PriceReminderFreq_OnlyOnce),
+		adapt.With("value", 80),
+		adapt.With("note", "go sdk"),
+	)
+	should.NoError(err)
+	log.Info().Int64("result", res).Msg("SetPriceReminder")
+}
+
+func (ts *SDKTestSuite) TestGetPriceReminder() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetPriceReminder("", adapt.QotMarket_HK)
+	should.NoError(err)
+	log.Info().Interface("data", res).Msg("GetPriceReminder")
+
+	// remove all the reminders
+	for _, reminder := range res {
+		_, err := ts.sdk.SetPriceReminder(
+			adapt.SecurityToCode(reminder.GetSecurity()),
+			adapt.SetPriceReminderOp_DelAll,
+		)
+		should.NoError(err)
+	}
+}
+
+func (ts *SDKTestSuite) TestGetUserSecurityGroup() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetUserSecurityGroup(adapt.GroupType_System)
+	should.NoError(err)
+	log.Info().Interface("data", res).Msg("GetUserSecurityGroup")
+}

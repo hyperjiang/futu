@@ -5,7 +5,9 @@ import (
 
 	"github.com/hyperjiang/futu/pb/qotcommon"
 	"github.com/hyperjiang/futu/pb/qotgetreference"
+	"github.com/hyperjiang/futu/pb/qotgetusersecuritygroup"
 	"github.com/hyperjiang/futu/pb/qotmodifyusersecurity"
+	"github.com/hyperjiang/futu/pb/qotsetpricereminder"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -463,4 +465,109 @@ const (
 
 	// ModifyUserSecurityOp_MoveOut 移出分组
 	ModifyUserSecurityOp_MoveOut = int32(qotmodifyusersecurity.ModifyUserSecurityOp_ModifyUserSecurityOp_MoveOut)
+)
+
+// 到价提醒操作类型
+const (
+	// SetPriceReminderOp_Unknown 未知
+	SetPriceReminderOp_Unknown = int32(qotsetpricereminder.SetPriceReminderOp_SetPriceReminderOp_Unknown)
+
+	// SetPriceReminderOp_Add 添加价格提醒
+	SetPriceReminderOp_Add = int32(qotsetpricereminder.SetPriceReminderOp_SetPriceReminderOp_Add)
+
+	// SetPriceReminderOp_Del 删除价格提醒
+	SetPriceReminderOp_Del = int32(qotsetpricereminder.SetPriceReminderOp_SetPriceReminderOp_Del)
+
+	// SetPriceReminderOp_Enable 启用价格提醒
+	SetPriceReminderOp_Enable = int32(qotsetpricereminder.SetPriceReminderOp_SetPriceReminderOp_Enable)
+
+	// SetPriceReminderOp_Disable 禁用价格提醒
+	SetPriceReminderOp_Disable = int32(qotsetpricereminder.SetPriceReminderOp_SetPriceReminderOp_Disable)
+
+	// SetPriceReminderOp_Modify 修改价格提醒
+	SetPriceReminderOp_Modify = int32(qotsetpricereminder.SetPriceReminderOp_SetPriceReminderOp_Modify)
+
+	// SetPriceReminderOp_DelAll 删除该支股票下所有到价提醒
+	SetPriceReminderOp_DelAll = int32(qotsetpricereminder.SetPriceReminderOp_SetPriceReminderOp_DelAll)
+)
+
+// 到价提醒类型
+const (
+	// PriceReminderType_Unknown 未知
+	PriceReminderType_Unknown = int32(qotcommon.PriceReminderType_PriceReminderType_Unknown)
+
+	// PriceReminderType_PriceUp 价格涨到
+	PriceReminderType_PriceUp = int32(qotcommon.PriceReminderType_PriceReminderType_PriceUp)
+
+	// PriceReminderType_PriceDown 价格跌到
+	PriceReminderType_PriceDown = int32(qotcommon.PriceReminderType_PriceReminderType_PriceDown)
+
+	// PriceReminderType_ChangeRateUp 日涨幅超（该字段为百分比字段，设置时填 20 表示 20%）
+	PriceReminderType_ChangeRateUp = int32(qotcommon.PriceReminderType_PriceReminderType_ChangeRateUp)
+
+	// PriceReminderType_ChangeRateDown 日跌幅超（该字段为百分比字段，设置时填 20 表示 20%）
+	PriceReminderType_ChangeRateDown = int32(qotcommon.PriceReminderType_PriceReminderType_ChangeRateDown)
+
+	// PriceReminderType_5MinChangeRateUp 5分钟涨幅超（该字段为百分比字段，设置时填 20 表示 20%）
+	PriceReminderType_5MinChangeRateUp = int32(qotcommon.PriceReminderType_PriceReminderType_5MinChangeRateUp)
+
+	// PriceReminderType_5MinChangeRateDown 5分钟跌幅超（该字段为百分比字段，设置时填 20 表示 20%）
+	PriceReminderType_5MinChangeRateDown = int32(qotcommon.PriceReminderType_PriceReminderType_5MinChangeRateDown)
+
+	// PriceReminderType_VolumeUp 成交量超过
+	PriceReminderType_VolumeUp = int32(qotcommon.PriceReminderType_PriceReminderType_VolumeUp)
+
+	// PriceReminderType_TurnoverUp 成交额超过
+	PriceReminderType_TurnoverUp = int32(qotcommon.PriceReminderType_PriceReminderType_TurnoverUp)
+
+	// PriceReminderType_TurnoverRateUp 换手率超过（该字段为百分比字段，设置时填 20 表示 20%）
+	PriceReminderType_TurnoverRateUp = int32(qotcommon.PriceReminderType_PriceReminderType_TurnoverRateUp)
+
+	// PriceReminderType_BidPriceUp 买一价高于
+	PriceReminderType_BidPriceUp = int32(qotcommon.PriceReminderType_PriceReminderType_BidPriceUp)
+
+	// PriceReminderType_AskPriceDown 卖一价低于
+	PriceReminderType_AskPriceDown = int32(qotcommon.PriceReminderType_PriceReminderType_AskPriceDown)
+
+	// PriceReminderType_BidVolUp 买一量高于
+	PriceReminderType_BidVolUp = int32(qotcommon.PriceReminderType_PriceReminderType_BidVolUp)
+
+	// PriceReminderType_AskVolUp 卖一量高于
+	PriceReminderType_AskVolUp = int32(qotcommon.PriceReminderType_PriceReminderType_AskVolUp)
+
+	// PriceReminderType_3MinChangeRateUp 3分钟涨幅超（该字段为百分比字段，设置时填 20 表示 20%）
+	PriceReminderType_3MinChangeRateUp = int32(qotcommon.PriceReminderType_PriceReminderType_3MinChangeRateUp)
+
+	// PriceReminderType_3MinChangeRateDown 3分钟跌幅超（该字段为百分比字段，设置时填 20 表示 20%）
+	PriceReminderType_3MinChangeRateDown = int32(qotcommon.PriceReminderType_PriceReminderType_3MinChangeRateDown)
+)
+
+// 到价提醒频率
+const (
+	// PriceReminderFreq_Unknown 未知
+	PriceReminderFreq_Unknown = int32(qotcommon.PriceReminderFreq_PriceReminderFreq_Unknown)
+
+	// PriceReminderFreq_Always 持续提醒
+	PriceReminderFreq_Always = int32(qotcommon.PriceReminderFreq_PriceReminderFreq_Always)
+
+	// PriceReminderFreq_OnceADay 每天提醒一次
+	PriceReminderFreq_OnceADay = int32(qotcommon.PriceReminderFreq_PriceReminderFreq_OnceADay)
+
+	// PriceReminderFreq_OnlyOnce 仅提醒一次
+	PriceReminderFreq_OnlyOnce = int32(qotcommon.PriceReminderFreq_PriceReminderFreq_OnlyOnce)
+)
+
+// 自选分组类型
+const (
+	// GroupType_GroupType_Unknown 未知
+	GroupType_Unknown = int32(qotgetusersecuritygroup.GroupType_GroupType_Unknown)
+
+	// GroupType_GroupType_Custom 自定义分组
+	GroupType_Custom = int32(qotgetusersecuritygroup.GroupType_GroupType_Custom)
+
+	// GroupType_GroupType_System 系统分组
+	GroupType_System = int32(qotgetusersecuritygroup.GroupType_GroupType_System)
+
+	// GroupType_GroupType_All 全部分组
+	GroupType_All = int32(qotgetusersecuritygroup.GroupType_GroupType_All)
 )
