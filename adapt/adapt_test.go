@@ -62,13 +62,13 @@ func TestNewBaseFilter(t *testing.T) {
 	f := NewBaseFilter(
 		qotstockfilter.StockField_StockField_MarketVal,
 		10000000000,
-		0,
+		20000000000,
 		qotstockfilter.SortDir_SortDir_Ascend,
 	)
 	should.NotNil(f)
 	should.Equal(int32(qotstockfilter.StockField_StockField_MarketVal), f.GetFieldName())
 	should.Equal(float64(10000000000), f.GetFilterMin())
-	should.Equal(float64(0), f.GetFilterMax())
+	should.Equal(float64(20000000000), f.GetFilterMax())
 	should.Equal(int32(qotstockfilter.SortDir_SortDir_Ascend), f.GetSortDir())
 	should.False(f.GetIsNoFilter())
 }

@@ -419,3 +419,30 @@ func (ts *SDKTestSuite) TestStockFilter() {
 		log.Info().Interface("stock", stock).Msg("StockFilter")
 	}
 }
+
+func (ts *SDKTestSuite) TestGetIpoList() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetIpoList(adapt.QotMarket_HK)
+	should.NoError(err)
+
+	for _, ipo := range res {
+		log.Info().Interface("ipo", ipo).Msg("GetIpoList")
+	}
+}
+
+func (ts *SDKTestSuite) TestGetFutureInfo() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetFutureInfo([]string{"HK.TCHmain"})
+	should.NoError(err)
+	log.Info().Interface("data", res).Msg("GetFutureInfo")
+}
+
+func (ts *SDKTestSuite) TestRequestTradeDate() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.RequestTradeDate(adapt.QotMarket_HK, "", "2024-12-01", "2024-12-10")
+	should.NoError(err)
+	log.Info().Interface("data", res).Msg("RequestTradeDate")
+}

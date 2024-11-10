@@ -10,6 +10,8 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetcapitaldistribution"
 	"github.com/hyperjiang/futu/pb/qotgetcapitalflow"
+	"github.com/hyperjiang/futu/pb/qotgetfutureinfo"
+	"github.com/hyperjiang/futu/pb/qotgetipolist"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
@@ -28,6 +30,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
+	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/qotsub"
 	"google.golang.org/protobuf/proto"
@@ -461,4 +464,63 @@ func (sdk *SDK) StockFilterWithContext(ctx context.Context, market int32, opts .
 	}
 
 	return sdk.cli.QotStockFilter(ctx, &c2s)
+}
+
+// GetIpoListWithContext 3217 - gets the IPO list with context.
+//
+// market: market
+func (sdk *SDK) GetIpoListWithContext(ctx context.Context, market int32) ([]*qotgetipolist.IpoData, error) {
+	c2s := &qotgetipolist.C2S{
+		Market: proto.Int32(market),
+	}
+
+	s2c, err := sdk.cli.QotGetIpoList(ctx, c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetIpoList(), nil
+}
+
+// GetFutureInfoWithContext 3218 - gets the future information with context.
+//
+// codes: security codes
+func (sdk *SDK) GetFutureInfoWithContext(ctx context.Context, codes []string) ([]*qotgetfutureinfo.FutureInfo, error) {
+	c2s := &qotgetfutureinfo.C2S{
+		SecurityList: adapt.NewSecurities(codes),
+	}
+
+	s2c, err := sdk.cli.QotGetFutureInfo(ctx, c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetFutureInfoList(), nil
+}
+
+// RequestTradeDateWithContext 3219 - requests the trade date with context.
+//
+// market: market
+//
+// code: security code
+//
+// beginTime: begin time, format: "yyyy-MM-dd"
+//
+// endTime: end time, format: "yyyy-MM-dd"
+func (sdk *SDK) RequestTradeDateWithContext(ctx context.Context, market int32, code string, beginTime string, endTime string) ([]*qotrequesttradedate.TradeDate, error) {
+	c2s := &qotrequesttradedate.C2S{
+		Market:    proto.Int32(market),
+		BeginTime: proto.String(beginTime),
+		EndTime:   proto.String(endTime),
+	}
+	if code != "" {
+		c2s.Security = adapt.NewSecurity(code)
+	}
+
+	s2c, err := sdk.cli.QotRequestTradeDate(ctx, c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetTradeDateList(), nil
 }

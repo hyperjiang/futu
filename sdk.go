@@ -11,6 +11,8 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetcapitaldistribution"
 	"github.com/hyperjiang/futu/pb/qotgetcapitalflow"
+	"github.com/hyperjiang/futu/pb/qotgetfutureinfo"
+	"github.com/hyperjiang/futu/pb/qotgetipolist"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
@@ -23,6 +25,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
+	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 )
 
@@ -325,4 +328,40 @@ func (sdk *SDK) StockFilter(market int32, opts ...adapt.Option) (*qotstockfilter
 	defer cancel()
 
 	return sdk.StockFilterWithContext(ctx, market, opts...)
+}
+
+// GetIpoList 3217 - gets the IPO list.
+//
+// market: market
+func (sdk *SDK) GetIpoList(market int32) ([]*qotgetipolist.IpoData, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetIpoListWithContext(ctx, market)
+}
+
+// GetFutureInfo 3218 - gets the future information.
+//
+// codes: security codes
+func (sdk *SDK) GetFutureInfo(codes []string) ([]*qotgetfutureinfo.FutureInfo, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetFutureInfoWithContext(ctx, codes)
+}
+
+// RequestTradeDate 3219 - requests the trade date.
+//
+// market: market
+//
+// code: security code
+//
+// beginTime: begin time, format: "yyyy-MM-dd"
+//
+// endTime: end time, format: "yyyy-MM-dd"
+func (sdk *SDK) RequestTradeDate(market int32, code string, beginTime string, endTime string) ([]*qotrequesttradedate.TradeDate, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.RequestTradeDateWithContext(ctx, market, code, beginTime, endTime)
 }
