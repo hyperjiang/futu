@@ -486,3 +486,19 @@ func (ts *SDKTestSuite) TestGetUserSecurityGroup() {
 	should.NoError(err)
 	log.Info().Interface("data", res).Msg("GetUserSecurityGroup")
 }
+
+func (ts *SDKTestSuite) TestGetMarketState() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetMarketState([]string{"HK.09988"})
+	should.NoError(err)
+	log.Info().Interface("data", res).Msg("GetMarketState")
+}
+
+func (ts *SDKTestSuite) TestGetOptionExpirationDate() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetOptionExpirationDate("HK.09988")
+	should.NoError(err)
+	log.Info().Interface("data", res).Msg("GetOptionExpirationDate")
+}

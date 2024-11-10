@@ -14,7 +14,9 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetfutureinfo"
 	"github.com/hyperjiang/futu/pb/qotgetipolist"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
+	"github.com/hyperjiang/futu/pb/qotgetmarketstate"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
+	"github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
 	"github.com/hyperjiang/futu/pb/qotgetownerplate"
 	"github.com/hyperjiang/futu/pb/qotgetpricereminder"
@@ -400,4 +402,24 @@ func (sdk *SDK) GetUserSecurityGroup(groupType int32) ([]*qotgetusersecuritygrou
 	defer cancel()
 
 	return sdk.GetUserSecurityGroupWithContext(ctx, groupType)
+}
+
+// GetMarketState 3223 - gets the market state.
+//
+// codes: security codes
+func (sdk *SDK) GetMarketState(codes []string) ([]*qotgetmarketstate.MarketInfo, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetMarketStateWithContext(ctx, codes)
+}
+
+// GetOptionExpirationDate 3224 - gets the option expiration date.
+//
+// code: security code
+func (sdk *SDK) GetOptionExpirationDate(code string, opts ...adapt.Option) ([]*qotgetoptionexpirationdate.OptionExpirationDate, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionExpirationDateWithContext(ctx, code, opts...)
 }

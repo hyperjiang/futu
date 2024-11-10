@@ -13,7 +13,9 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetfutureinfo"
 	"github.com/hyperjiang/futu/pb/qotgetipolist"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
+	"github.com/hyperjiang/futu/pb/qotgetmarketstate"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
+	"github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
 	"github.com/hyperjiang/futu/pb/qotgetownerplate"
 	"github.com/hyperjiang/futu/pb/qotgetplatesecurity"
@@ -584,4 +586,40 @@ func (sdk *SDK) GetUserSecurityGroupWithContext(ctx context.Context, groupType i
 	}
 
 	return s2c.GetGroupList(), nil
+}
+
+// GetMarketStateWithContext 3223 - gets the market state with context.
+//
+// codes: security codes
+func (sdk *SDK) GetMarketStateWithContext(ctx context.Context, codes []string) ([]*qotgetmarketstate.MarketInfo, error) {
+	c2s := &qotgetmarketstate.C2S{
+		SecurityList: adapt.NewSecurities(codes),
+	}
+
+	s2c, err := sdk.cli.QotGetMarketState(ctx, c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetMarketInfoList(), nil
+}
+
+// GetOptionExpirationDateWithContext 3224 - gets the option expiration date with context.
+//
+// code: security code
+func (sdk *SDK) GetOptionExpirationDateWithContext(ctx context.Context, code string, opts ...adapt.Option) ([]*qotgetoptionexpirationdate.OptionExpirationDate, error) {
+	o := adapt.NewOptions(opts...)
+	o["owner"] = adapt.NewSecurity(code)
+
+	var c2s qotgetoptionexpirationdate.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	s2c, err := sdk.cli.QotGetOptionExpirationDate(ctx, &c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetDateList(), nil
 }
