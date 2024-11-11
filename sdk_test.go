@@ -102,6 +102,38 @@ func (ts *SDKTestSuite) TestGetGlobalState() {
 	fmt.Println(res)
 }
 
+func (ts *SDKTestSuite) TestGetAccList() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetAccList(adapt.With("trdCategory", adapt.TrdCategory_Security))
+	should.NoError(err)
+	for _, acc := range res {
+		log.Info().Interface("acc", acc).Msg("GetAccList")
+	}
+}
+
+func (ts *SDKTestSuite) TestUnlockTrade() {
+	should := require.New(ts.T())
+
+	err := ts.sdk.UnlockTrade(false, "", adapt.SecurityFirm_FutuSecurities)
+	should.NoError(err)
+}
+
+func (ts *SDKTestSuite) TestSubscribeAccPush() {
+	should := require.New(ts.T())
+
+	err := ts.sdk.SubscribeAccPush([]uint64{1619199})
+	should.NoError(err)
+}
+
+func (ts *SDKTestSuite) TestGetFunds() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetFunds(adapt.NewTestingTradeAccount(1619197, adapt.TrdMarket_HK))
+	should.NoError(err)
+	log.Info().Interface("data", res.GetFunds()).Msg("GetFunds")
+}
+
 func (ts *SDKTestSuite) TestGetSubInfo() {
 	should := require.New(ts.T())
 

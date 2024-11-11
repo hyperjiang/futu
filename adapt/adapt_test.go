@@ -5,7 +5,6 @@ import (
 
 	"github.com/hyperjiang/futu/pb/qotcommon"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
-	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
 )
@@ -50,7 +49,7 @@ func TestSecurityToCode(t *testing.T) {
 func TestNewTradeAccount(t *testing.T) {
 	should := require.New(t)
 
-	ta := NewTradeAccount(123, 1)
+	ta := NewTradeAccount(123, TrdMarket_HK)
 	should.NotNil(ta)
 	should.Equal(int32(1), ta.GetTrdMarket())
 	should.Equal(uint64(123), ta.GetAccID())
@@ -60,7 +59,7 @@ func TestNewTradeAccount(t *testing.T) {
 func TestNewTestingTradeAccount(t *testing.T) {
 	should := require.New(t)
 
-	ta := NewTestingTradeAccount(123, trdcommon.TrdMarket_TrdMarket_HK)
+	ta := NewTestingTradeAccount(123, TrdMarket_HK)
 	should.NotNil(ta)
 	should.Equal(int32(1), ta.GetTrdMarket())
 	should.Equal(uint64(123), ta.GetAccID())

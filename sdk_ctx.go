@@ -38,12 +38,75 @@ import (
 	"github.com/hyperjiang/futu/pb/qotsetpricereminder"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/qotsub"
+	"github.com/hyperjiang/futu/pb/trdcommon"
+	"github.com/hyperjiang/futu/pb/trdgetacclist"
+	"github.com/hyperjiang/futu/pb/trdgetfunds"
+	"github.com/hyperjiang/futu/pb/trdsubaccpush"
+	"github.com/hyperjiang/futu/pb/trdunlocktrade"
 	"google.golang.org/protobuf/proto"
 )
 
 // GetGlobalStateWithContext 1002 - gets the global state with context.
 func (sdk *SDK) GetGlobalStateWithContext(ctx context.Context) (*getglobalstate.S2C, error) {
 	return sdk.cli.GetGlobalState(ctx)
+}
+
+// GetAccListWithContext 2001 - gets the account list with context.
+func (sdk *SDK) GetAccListWithContext(ctx context.Context, opts ...adapt.Option) ([]*trdcommon.TrdAcc, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s trdgetacclist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	s2c, err := sdk.cli.TrdGetAccList(ctx, &c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetAccList(), nil
+}
+
+// UnlockTrade 2005 - unlocks or locks the trade.
+//
+// unlock: true for unlock, false for lock
+//
+// pwdMD5: MD5 of the password
+//
+// securityFirm: security firm
+func (sdk *SDK) UnlockTradeWithContext(ctx context.Context, unlock bool, pwdMD5 string, securityFirm int32) error {
+	c2s := &trdunlocktrade.C2S{
+		Unlock:       proto.Bool(unlock),
+		PwdMD5:       proto.String(pwdMD5),
+		SecurityFirm: proto.Int32(securityFirm),
+	}
+
+	return sdk.cli.TrdUnlockTrade(ctx, c2s)
+}
+
+// SubscribeAccPushWithContext 2008 - subscribes the trading account push data.
+//
+// accIDList: account ID list
+func (sdk *SDK) SubscribeAccPushWithContext(ctx context.Context, accIDList []uint64) error {
+	c2s := &trdsubaccpush.C2S{
+		AccIDList: accIDList,
+	}
+
+	return sdk.cli.TrdSubAccPush(ctx, c2s)
+}
+
+// GetFundsWithContext 2101 - gets the funds with context.
+func (sdk *SDK) GetFundsWithContext(ctx context.Context, header *trdcommon.TrdHeader, opts ...adapt.Option) (*trdgetfunds.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["header"] = header
+
+	var c2s trdgetfunds.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.TrdGetFunds(ctx, &c2s)
 }
 
 // SubscribeWithContext 3001 - subscribes or unsubscribes with context.

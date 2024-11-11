@@ -50,8 +50,9 @@ func (client *Client) TrdGetAccList(ctx context.Context, c2s *trdgetacclist.C2S)
 	}
 }
 
-// TrdUnlockTrade 2005 - 解锁或锁定交易
-func (client *Client) TrdUnlockTrade(ctx context.Context, c2s *trdunlocktrade.C2S) (*trdunlocktrade.S2C, error) {
+// TrdUnlockTrade 2005 - 解锁或锁定交易，该接口的S2C返回的是空。
+// 真实账户调用下单或改单撤单接口，需要先解锁交易；模拟账户无需解锁。
+func (client *Client) TrdUnlockTrade(ctx context.Context, c2s *trdunlocktrade.C2S) error {
 	req := &trdunlocktrade.Request{
 		C2S: c2s,
 	}
@@ -59,19 +60,19 @@ func (client *Client) TrdUnlockTrade(ctx context.Context, c2s *trdunlocktrade.C2
 	ch := make(chan *trdunlocktrade.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdUnlockTrade, req, infra.NewProtobufChan(ch)); err != nil {
-		return nil, err
+		return err
 	}
 
 	select {
 	case <-ctx.Done():
-		return nil, ctx.Err()
+		return ctx.Err()
 	case <-client.closed:
-		return nil, ErrInterrupted
+		return ErrInterrupted
 	case resp, ok := <-ch:
 		if !ok {
-			return nil, ErrChannelClosed
+			return ErrChannelClosed
 		}
-		return resp.GetS2C(), infra.Error(resp)
+		return infra.Error(resp)
 	}
 }
 

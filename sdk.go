@@ -31,6 +31,8 @@ import (
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
 	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
+	"github.com/hyperjiang/futu/pb/trdcommon"
+	"github.com/hyperjiang/futu/pb/trdgetfunds"
 )
 
 const defaultTimeout = time.Second * 5
@@ -75,6 +77,46 @@ func (sdk *SDK) GetGlobalState() (*getglobalstate.S2C, error) {
 	defer cancel()
 
 	return sdk.GetGlobalStateWithContext(ctx)
+}
+
+// GetAccList 2001 - gets the trading account list.
+func (sdk *SDK) GetAccList(opts ...adapt.Option) ([]*trdcommon.TrdAcc, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetAccListWithContext(ctx, opts...)
+}
+
+// UnlockTrade 2005 - unlocks or locks the trade.
+//
+// unlock: true for unlock, false for lock
+//
+// pwdMD5: MD5 of the password
+//
+// securityFirm: security firm
+func (sdk *SDK) UnlockTrade(unlock bool, pwdMD5 string, securityFirm int32) error {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.UnlockTradeWithContext(ctx, unlock, pwdMD5, securityFirm)
+}
+
+// SubscribeAccPush 2008 - subscribes the trading account push data.
+//
+// accIDList: account ID list
+func (sdk *SDK) SubscribeAccPush(accIDList []uint64) error {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.SubscribeAccPushWithContext(ctx, accIDList)
+}
+
+// GetFunds 2101 - gets the funds.
+func (sdk *SDK) GetFunds(header *trdcommon.TrdHeader, opts ...adapt.Option) (*trdgetfunds.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetFundsWithContext(ctx, header, opts...)
 }
 
 // Subscribe 3001 - subscribes or unsubscribes.

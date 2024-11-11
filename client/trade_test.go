@@ -20,6 +20,7 @@ import (
 	"github.com/hyperjiang/futu/pb/trdmodifyorder"
 	"github.com/hyperjiang/futu/pb/trdplaceorder"
 	"github.com/hyperjiang/futu/pb/trdsubaccpush"
+	"github.com/hyperjiang/futu/pb/trdunlocktrade"
 	"github.com/rs/zerolog/log"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
@@ -59,6 +60,22 @@ func (ts *ClientTestSuite) TestTrdGetAccList_TrdGetFunds() {
 		should.NoError(err)
 		log.Info().Interface("data", res.GetFunds()).Msg("TrdGetFunds")
 	}
+}
+
+func (ts *ClientTestSuite) TestTrdUnlockTrade() {
+	should := require.New(ts.T())
+
+	c2s := &trdunlocktrade.C2S{
+		Unlock:       proto.Bool(true),
+		PwdMD5:       proto.String("e6f1fefc4ef2b27ffd7524f27575aef2"),
+		SecurityFirm: proto.Int32(int32(trdcommon.SecurityFirm_SecurityFirm_FutuSecurities)),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	err := ts.client.TrdUnlockTrade(ctx, c2s)
+	should.NoError(err)
 }
 
 func (ts *ClientTestSuite) TestTrdSubAccPush() {
