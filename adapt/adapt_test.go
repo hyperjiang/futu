@@ -160,3 +160,22 @@ func TestNewCustomIndicatorFilter(t *testing.T) {
 	should.Equal(int32(3), f.GetConsecutivePeriod())
 	should.False(f.GetIsNoFilter())
 }
+
+func TestNewFilterConditions(t *testing.T) {
+	should := require.New(t)
+
+	fc := NewFilterConditions(
+		With("codeList", []string{"00700", "AAPL"}),
+		With("idList", []uint64{123, 456}),
+		With("beginTime", "2021-01-01"),
+		With("endTime", "2021-12-31"),
+		With("orderIDExList", []string{"123", "456"}),
+	)
+
+	should.NotNil(fc)
+	should.Len(fc.GetCodeList(), 2)
+	should.Len(fc.GetIdList(), 2)
+	should.Equal("2021-01-01", fc.GetBeginTime())
+	should.Equal("2021-12-31", fc.GetEndTime())
+	should.Len(fc.GetOrderIDExList(), 2)
+}

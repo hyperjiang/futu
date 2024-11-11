@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
+	"github.com/hyperjiang/futu/pb/trdcommon"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -72,6 +73,13 @@ func WithPatternFilters(filters ...*qotstockfilter.PatternFilter) Option {
 func WithCustomIndicatorFilters(filters ...*qotstockfilter.CustomIndicatorFilter) Option {
 	return func(o Options) {
 		o["customIndicatorFilterList"] = filters
+	}
+}
+
+// WithFilterConditions sets the filter conditions for trade.
+func WithFilterConditions(conditions *trdcommon.TrdFilterConditions) Option {
+	return func(o Options) {
+		o["filterConditions"] = conditions
 	}
 }
 

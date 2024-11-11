@@ -41,6 +41,8 @@ import (
 	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/hyperjiang/futu/pb/trdgetacclist"
 	"github.com/hyperjiang/futu/pb/trdgetfunds"
+	"github.com/hyperjiang/futu/pb/trdgetmaxtrdqtys"
+	"github.com/hyperjiang/futu/pb/trdgetpositionlist"
 	"github.com/hyperjiang/futu/pb/trdsubaccpush"
 	"github.com/hyperjiang/futu/pb/trdunlocktrade"
 	"google.golang.org/protobuf/proto"
@@ -97,7 +99,7 @@ func (sdk *SDK) SubscribeAccPushWithContext(ctx context.Context, accIDList []uin
 }
 
 // GetFundsWithContext 2101 - gets the funds with context.
-func (sdk *SDK) GetFundsWithContext(ctx context.Context, header *trdcommon.TrdHeader, opts ...adapt.Option) (*trdgetfunds.S2C, error) {
+func (sdk *SDK) GetFundsWithContext(ctx context.Context, header *trdcommon.TrdHeader, opts ...adapt.Option) (*trdcommon.Funds, error) {
 	o := adapt.NewOptions(opts...)
 	o["header"] = header
 
@@ -106,7 +108,62 @@ func (sdk *SDK) GetFundsWithContext(ctx context.Context, header *trdcommon.TrdHe
 		return nil, err
 	}
 
-	return sdk.cli.TrdGetFunds(ctx, &c2s)
+	s2c, err := sdk.cli.TrdGetFunds(ctx, &c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetFunds(), nil
+}
+
+// GetPositionListWithContext 2102 - gets the position list with context.
+func (sdk *SDK) GetPositionListWithContext(ctx context.Context, header *trdcommon.TrdHeader, opts ...adapt.Option) ([]*trdcommon.Position, error) {
+	o := adapt.NewOptions(opts...)
+	o["header"] = header
+
+	var c2s trdgetpositionlist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	s2c, err := sdk.cli.TrdGetPositionList(ctx, &c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetPositionList(), nil
+}
+
+// GetMaxTrdQtysWithContext 2111 - gets the maximum available trading quantities with context.
+//
+// header: trading header
+//
+// orderType: order type
+//
+// secMarket: security market
+//
+// code: security code, e.g. AAPL
+//
+// price: price
+func (sdk *SDK) GetMaxTrdQtysWithContext(ctx context.Context, header *trdcommon.TrdHeader, orderType int32, secMarket int32, code string, price float64, opts ...adapt.Option) (*trdcommon.MaxTrdQtys, error) {
+	o := adapt.NewOptions(opts...)
+	o["header"] = header
+	o["orderType"] = orderType
+	o["secMarket"] = secMarket
+	o["code"] = code
+	o["price"] = price
+
+	var c2s trdgetmaxtrdqtys.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	s2c, err := sdk.cli.TrdGetMaxTrdQtys(ctx, &c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetMaxTrdQtys(), nil
 }
 
 // SubscribeWithContext 3001 - subscribes or unsubscribes with context.

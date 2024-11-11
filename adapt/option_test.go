@@ -8,6 +8,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/qotsub"
 	"github.com/hyperjiang/futu/pb/trdcommon"
+	"github.com/hyperjiang/futu/pb/trdgetpositionlist"
 	"github.com/stretchr/testify/require"
 )
 
@@ -132,4 +133,29 @@ func TestFilters(t *testing.T) {
 	should.Len(c2s.GetFinancialFilterList(), 1)
 	should.Len(c2s.GetPatternFilterList(), 1)
 	should.Len(c2s.GetCustomIndicatorFilterList(), 1)
+}
+
+func TestFilterConditions(t *testing.T) {
+	should := require.New(t)
+
+	fc := NewFilterConditions(
+		With("codeList", []string{"00700", "AAPL"}),
+		With("idList", []uint64{123, 456}),
+		With("beginTime", "2021-01-01"),
+		With("endTime", "2021-12-31"),
+		With("orderIDExList", []string{"123", "456"}),
+	)
+
+	opts := NewOptions(
+		WithFilterConditions(fc),
+	)
+
+	var c2s trdgetpositionlist.C2S
+	err := opts.ToProto(&c2s)
+	should.NoError(err)
+	should.Len(c2s.GetFilterConditions().GetCodeList(), 2)
+	should.Len(c2s.GetFilterConditions().GetIdList(), 2)
+	should.Equal("2021-01-01", c2s.GetFilterConditions().GetBeginTime())
+	should.Equal("2021-12-31", c2s.GetFilterConditions().GetEndTime())
+	should.Len(c2s.GetFilterConditions().GetOrderIDExList(), 2)
 }

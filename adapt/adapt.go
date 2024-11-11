@@ -129,3 +129,12 @@ func NewCustomIndicatorFilter(opts ...Option) *qotstockfilter.CustomIndicatorFil
 
 	return &f
 }
+
+// NewFilterConditions creates a new TrdFilterConditions.
+func NewFilterConditions(opts ...Option) *trdcommon.TrdFilterConditions {
+	o := NewOptions(opts...)
+	var f trdcommon.TrdFilterConditions
+	_ = o.ToProto(&f)
+
+	return &f
+}

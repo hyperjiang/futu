@@ -32,7 +32,6 @@ import (
 	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/trdcommon"
-	"github.com/hyperjiang/futu/pb/trdgetfunds"
 )
 
 const defaultTimeout = time.Second * 5
@@ -112,11 +111,37 @@ func (sdk *SDK) SubscribeAccPush(accIDList []uint64) error {
 }
 
 // GetFunds 2101 - gets the funds.
-func (sdk *SDK) GetFunds(header *trdcommon.TrdHeader, opts ...adapt.Option) (*trdgetfunds.S2C, error) {
+func (sdk *SDK) GetFunds(header *trdcommon.TrdHeader, opts ...adapt.Option) (*trdcommon.Funds, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 	defer cancel()
 
 	return sdk.GetFundsWithContext(ctx, header, opts...)
+}
+
+// GetPositionList 2102 - gets the position list.
+func (sdk *SDK) GetPositionList(header *trdcommon.TrdHeader, opts ...adapt.Option) ([]*trdcommon.Position, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetPositionListWithContext(ctx, header, opts...)
+}
+
+// GetOrderList 2111 - gets the maximum available trading quantities.
+//
+// header: trading header
+//
+// orderType: order type
+//
+// secMarket: security market
+//
+// code: security code, e.g. AAPL
+//
+// price: price
+func (sdk *SDK) GetMaxTrdQtys(header *trdcommon.TrdHeader, orderType int32, secMarket int32, code string, price float64, opts ...adapt.Option) (*trdcommon.MaxTrdQtys, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetMaxTrdQtysWithContext(ctx, header, orderType, secMarket, code, price, opts...)
 }
 
 // Subscribe 3001 - subscribes or unsubscribes.

@@ -129,9 +129,33 @@ func (ts *SDKTestSuite) TestSubscribeAccPush() {
 func (ts *SDKTestSuite) TestGetFunds() {
 	should := require.New(ts.T())
 
-	res, err := ts.sdk.GetFunds(adapt.NewTestingTradeAccount(1619197, adapt.TrdMarket_HK))
+	res, err := ts.sdk.GetFunds(adapt.NewTestingTradeAccount(1619199, adapt.TrdMarket_US))
 	should.NoError(err)
-	log.Info().Interface("data", res.GetFunds()).Msg("GetFunds")
+	log.Info().Interface("data", res).Msg("GetFunds")
+}
+
+func (ts *SDKTestSuite) TestGetPositionList() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetPositionList(adapt.NewTestingTradeAccount(1619199, adapt.TrdMarket_US))
+	should.NoError(err)
+	for _, pos := range res {
+		log.Info().Interface("position", pos).Msg("GetPositionList")
+	}
+}
+
+func (ts *SDKTestSuite) TestGetMaxTrdQtys() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetMaxTrdQtys(
+		adapt.NewTestingTradeAccount(1619199, adapt.TrdMarket_US),
+		adapt.OrderType_Normal,
+		adapt.TrdSecMarket_US,
+		"AAPL",
+		200,
+	)
+	should.NoError(err)
+	log.Info().Interface("data", res).Msg("GetMaxTrdQtys")
 }
 
 func (ts *SDKTestSuite) TestGetSubInfo() {
