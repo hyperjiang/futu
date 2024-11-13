@@ -32,10 +32,16 @@ import (
 	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/trdcommon"
+	"github.com/hyperjiang/futu/pb/trdmodifyorder"
 	"github.com/hyperjiang/futu/pb/trdplaceorder"
 )
 
 const defaultTimeout = time.Second * 5
+
+const (
+	DateFormat = "2006-01-02"
+	TimeFormat = "2006-01-02 15:04:05"
+)
 
 // SDK is Futu SDK.
 type SDK struct {
@@ -169,6 +175,44 @@ func (sdk *SDK) PlaceOrder(header *trdcommon.TrdHeader, trdSide int32, orderType
 	defer cancel()
 
 	return sdk.PlaceOrderWithContext(ctx, header, trdSide, orderType, code, qty, price, opts...)
+}
+
+// ModifyOrder 2205 - modifies an order with context.
+//
+// header: trading header
+//
+// orderID: order ID, use 0 if forAll=true
+//
+// modifyOrderOp: modify order operation
+func (sdk *SDK) ModifyOrder(header *trdcommon.TrdHeader, orderID uint64, modifyOrderOp int32, opts ...adapt.Option) (*trdmodifyorder.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.ModifyOrderWithContext(ctx, header, orderID, modifyOrderOp, opts...)
+}
+
+// GetHistoryOrderList 2211 - gets the filled order list.
+func (sdk *SDK) GetOrderFillList(header *trdcommon.TrdHeader, opts ...adapt.Option) ([]*trdcommon.OrderFill, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOrderFillListWithContext(ctx, header, opts...)
+}
+
+// GetHistoryOrderList 2221 - gets the history order list.
+func (sdk *SDK) GetHistoryOrderList(header *trdcommon.TrdHeader, fc *trdcommon.TrdFilterConditions, opts ...adapt.Option) ([]*trdcommon.Order, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetHistoryOrderListWithContext(ctx, header, fc, opts...)
+}
+
+// GetHistoryOrderFillList 2222 - gets the history filled order list.
+func (sdk *SDK) GetHistoryOrderFillList(header *trdcommon.TrdHeader, fc *trdcommon.TrdFilterConditions, opts ...adapt.Option) ([]*trdcommon.OrderFill, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetHistoryOrderFillListWithContext(ctx, header, fc, opts...)
 }
 
 // Subscribe 3001 - subscribes or unsubscribes.

@@ -121,16 +121,6 @@ const (
 	SecurityFirm_FutuAU = int32(trdcommon.SecurityFirm_SecurityFirm_FutuAU)
 )
 
-// 持仓方向
-const (
-	// 未知方向
-	PositionSide_Unknown = int32(trdcommon.PositionSide_PositionSide_Unknown)
-	// 多仓，默认情况是多仓
-	PositionSide_Long = int32(trdcommon.PositionSide_PositionSide_Long)
-	// 空仓
-	PositionSide_Short = int32(trdcommon.PositionSide_PositionSide_Short)
-)
-
 // 订单类型
 const (
 	// OrderType_Unknown 未知订单类型
@@ -252,4 +242,25 @@ const (
 
 	// TrdSide_Sell 卖出
 	TrdSide_Sell = int32(trdcommon.TrdSide_TrdSide_Sell)
+)
+
+// 修改订单
+const (
+	// ModifyOrderOp_Unknown 未知
+	ModifyOrderOp_Unknown = int32(trdcommon.ModifyOrderOp_ModifyOrderOp_Unknown)
+
+	// ModifyOrderOp_Normal 修改订单的价格、数量等，即以前的改单
+	ModifyOrderOp_Normal = int32(trdcommon.ModifyOrderOp_ModifyOrderOp_Normal)
+
+	// ModifyOrderOp_Cancel 撤单
+	ModifyOrderOp_Cancel = int32(trdcommon.ModifyOrderOp_ModifyOrderOp_Cancel)
+
+	// ModifyOrderOp_Disable 失效
+	ModifyOrderOp_Disable = int32(trdcommon.ModifyOrderOp_ModifyOrderOp_Disable)
+
+	// ModifyOrderOp_Enable 生效
+	ModifyOrderOp_Enable = int32(trdcommon.ModifyOrderOp_ModifyOrderOp_Enable)
+
+	// ModifyOrderOp_Delete 删除
+	ModifyOrderOp_Delete = int32(trdcommon.ModifyOrderOp_ModifyOrderOp_Delete)
 )

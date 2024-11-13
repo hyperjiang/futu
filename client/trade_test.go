@@ -182,7 +182,7 @@ func (ts *ClientTestSuite) TestTrdGetOrderList() {
 	res, err := ts.client.TrdGetOrderList(ctx, c2s)
 	should.NoError(err)
 	for _, order := range res.GetOrderList() {
-		log.Info().Interface("pending order", order).Msg("TrdGetOrderList")
+		log.Info().Interface("open order", order).Msg("TrdGetOrderList")
 	}
 }
 
@@ -200,7 +200,7 @@ func (ts *ClientTestSuite) TestTrdGetOrderFillList() {
 	res, err := ts.client.TrdGetOrderFillList(ctx, c2s)
 	should.Error(err) // 模拟交易不支持成交数据
 	for _, order := range res.GetOrderFillList() {
-		log.Info().Interface("completed order", order).Msg("TrdGetOrderFillList")
+		log.Info().Interface("filled order", order).Msg("TrdGetOrderFillList")
 	}
 }
 

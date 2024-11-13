@@ -41,9 +41,13 @@ import (
 	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/hyperjiang/futu/pb/trdgetacclist"
 	"github.com/hyperjiang/futu/pb/trdgetfunds"
+	"github.com/hyperjiang/futu/pb/trdgethistoryorderfilllist"
+	"github.com/hyperjiang/futu/pb/trdgethistoryorderlist"
 	"github.com/hyperjiang/futu/pb/trdgetmaxtrdqtys"
+	"github.com/hyperjiang/futu/pb/trdgetorderfilllist"
 	"github.com/hyperjiang/futu/pb/trdgetorderlist"
 	"github.com/hyperjiang/futu/pb/trdgetpositionlist"
+	"github.com/hyperjiang/futu/pb/trdmodifyorder"
 	"github.com/hyperjiang/futu/pb/trdplaceorder"
 	"github.com/hyperjiang/futu/pb/trdsubaccpush"
 	"github.com/hyperjiang/futu/pb/trdunlocktrade"
@@ -211,6 +215,83 @@ func (sdk *SDK) PlaceOrderWithContext(ctx context.Context, header *trdcommon.Trd
 	}
 
 	return sdk.cli.TrdPlaceOrder(ctx, &c2s)
+}
+
+// ModifyOrderWithContext 2205 - modifies an order with context.
+//
+// header: trading header
+//
+// orderID: order ID, use 0 if forAll=true
+//
+// modifyOrderOp: modify order operation
+func (sdk *SDK) ModifyOrderWithContext(ctx context.Context, header *trdcommon.TrdHeader, orderID uint64, modifyOrderOp int32, opts ...adapt.Option) (*trdmodifyorder.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["header"] = header
+	o["orderID"] = orderID
+	o["modifyOrderOp"] = modifyOrderOp
+
+	var c2s trdmodifyorder.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.TrdModifyOrder(ctx, &c2s)
+}
+
+// GetOrderFillListWithContext 2211 - gets the filled order list with context.
+func (sdk *SDK) GetOrderFillListWithContext(ctx context.Context, header *trdcommon.TrdHeader, opts ...adapt.Option) ([]*trdcommon.OrderFill, error) {
+	o := adapt.NewOptions(opts...)
+	o["header"] = header
+
+	var c2s trdgetorderfilllist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	s2c, err := sdk.cli.TrdGetOrderFillList(ctx, &c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetOrderFillList(), nil
+}
+
+// GetHistoryOrderListWithContext 2221 - gets the history order list with context.
+func (sdk *SDK) GetHistoryOrderListWithContext(ctx context.Context, header *trdcommon.TrdHeader, fc *trdcommon.TrdFilterConditions, opts ...adapt.Option) ([]*trdcommon.Order, error) {
+	o := adapt.NewOptions(opts...)
+	o["header"] = header
+	o["filterConditions"] = fc
+
+	var c2s trdgethistoryorderlist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	s2c, err := sdk.cli.TrdGetHistoryOrderList(ctx, &c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetOrderList(), nil
+}
+
+// GetHistoryOrderFillListWithContext 2222 - gets the history filled order list with context.
+func (sdk *SDK) GetHistoryOrderFillListWithContext(ctx context.Context, header *trdcommon.TrdHeader, fc *trdcommon.TrdFilterConditions, opts ...adapt.Option) ([]*trdcommon.OrderFill, error) {
+	o := adapt.NewOptions(opts...)
+	o["header"] = header
+	o["filterConditions"] = fc
+
+	var c2s trdgethistoryorderfilllist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	s2c, err := sdk.cli.TrdGetHistoryOrderFillList(ctx, &c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetOrderFillList(), nil
 }
 
 // SubscribeWithContext 3001 - subscribes or unsubscribes with context.

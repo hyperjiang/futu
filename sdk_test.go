@@ -170,11 +170,11 @@ func (ts *SDKTestSuite) TestGetOpenOrderList() {
 	)
 	should.NoError(err)
 	for _, order := range res {
-		log.Info().Interface("order", order).Msg("GetOpenOrderList")
+		log.Info().Interface("open order", order).Msg("GetOpenOrderList")
 	}
 }
 
-func (ts *SDKTestSuite) TestPlaceOrder() {
+func (ts *SDKTestSuite) TestPlaceOrderAndModifyOrder() {
 	should := require.New(ts.T())
 
 	res, err := ts.sdk.PlaceOrder(
@@ -188,6 +188,54 @@ func (ts *SDKTestSuite) TestPlaceOrder() {
 	)
 	should.NoError(err)
 	log.Info().Interface("result", res).Msg("PlaceOrder")
+
+	// cancel the order
+	res2, err := ts.sdk.ModifyOrder(
+		ts.usAccount,
+		res.GetOrderID(),
+		adapt.ModifyOrderOp_Cancel,
+	)
+	should.NoError(err)
+	log.Info().Interface("result", res2).Msg("ModifyOrder")
+}
+
+func (ts *SDKTestSuite) TestGetOrderFillList() {
+	should := require.New(ts.T())
+
+	_, err := ts.sdk.GetOrderFillList(
+		ts.usAccount,
+	)
+	should.Error(err) // 模拟交易不支持成交数据
+}
+
+func (ts *SDKTestSuite) TestGetHistoryOrderList() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetHistoryOrderList(
+		ts.usAccount,
+		adapt.NewFilterConditions(
+			adapt.With("beginTime", time.Now().AddDate(0, 0, -7).Format(futu.TimeFormat)),
+			adapt.With("endTime", time.Now().Format(futu.TimeFormat)),
+		),
+		adapt.With("filterStatusList", []int32{adapt.OrderStatus_Filled_All}),
+	)
+	should.NoError(err)
+	for _, order := range res {
+		log.Info().Interface("history order", order).Msg("GetHistoryOrderList")
+	}
+}
+
+func (ts *SDKTestSuite) TestGetHistoryOrderFillList() {
+	should := require.New(ts.T())
+
+	_, err := ts.sdk.GetHistoryOrderFillList(
+		ts.usAccount,
+		adapt.NewFilterConditions(
+			adapt.With("beginTime", time.Now().AddDate(0, 0, -7).Format(futu.TimeFormat)),
+			adapt.With("endTime", time.Now().Format(futu.TimeFormat)),
+		),
+	)
+	should.Error(err) // 模拟交易不支持成交数据
 }
 
 func (ts *SDKTestSuite) TestGetSubInfo() {
@@ -417,8 +465,8 @@ func (ts *SDKTestSuite) TestGetOwnerPlate() {
 func (ts *SDKTestSuite) TestGetOptionChain() {
 	should := require.New(ts.T())
 
-	beginTime := time.Now().AddDate(0, 0, -1).Format("2006-01-02")
-	endTime := time.Now().Format("2006-01-02")
+	beginTime := time.Now().AddDate(0, 0, -1).Format(futu.DateFormat)
+	endTime := time.Now().Format(futu.DateFormat)
 
 	res, err := ts.sdk.GetOptionChain("HK.09988", beginTime, endTime)
 	should.NoError(err)
@@ -444,8 +492,8 @@ func (ts *SDKTestSuite) TestGetCapitalFlow() {
 
 	res, err := ts.sdk.GetCapitalFlow(
 		"HK.09988",
-		adapt.With("beginTime", time.Now().AddDate(0, 0, -1).Format("2006-01-02")),
-		adapt.With("endTime", time.Now().Format("2006-01-02")),
+		adapt.With("beginTime", time.Now().AddDate(0, 0, -1).Format(futu.TimeFormat)),
+		adapt.With("endTime", time.Now().Format(futu.TimeFormat)),
 		adapt.With("periodType", adapt.PeriodType_DAY),
 	)
 	should.NoError(err)
