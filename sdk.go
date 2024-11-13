@@ -32,6 +32,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/trdcommon"
+	"github.com/hyperjiang/futu/pb/trdgetmarginratio"
 	"github.com/hyperjiang/futu/pb/trdmodifyorder"
 	"github.com/hyperjiang/futu/pb/trdplaceorder"
 )
@@ -213,6 +214,22 @@ func (sdk *SDK) GetHistoryOrderFillList(header *trdcommon.TrdHeader, fc *trdcomm
 	defer cancel()
 
 	return sdk.GetHistoryOrderFillListWithContext(ctx, header, fc, opts...)
+}
+
+// GetMarginRatio 2223 - gets the margin ratio.
+func (sdk *SDK) GetMarginRatio(header *trdcommon.TrdHeader, codes []string) ([]*trdgetmarginratio.MarginRatioInfo, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetMarginRatioWithContext(ctx, header, codes)
+}
+
+// GetOrderFee 2225 - gets the order fee.
+func (sdk *SDK) GetOrderFee(header *trdcommon.TrdHeader, orderIdExList []string) ([]*trdcommon.OrderFee, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOrderFeeWithContext(ctx, header, orderIdExList)
 }
 
 // Subscribe 3001 - subscribes or unsubscribes.

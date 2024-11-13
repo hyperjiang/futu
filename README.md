@@ -28,6 +28,8 @@ Futu Open API 官方文档: https://openapi.futunn.com/futu-api-doc/
 
 方法设计的原则是，必填参数显式要求传递，可选参数放在可变参数`adapt.Option`传递。但有部分必填参数实际上可以有默认值，这种情况不会显式要求传递。
 
+每个接口都有一对方法，其中结尾有`WithContext`的方法是方便让使用者可以自己通过context设置超时时间，不带`WithContext`的方法使用了默认超时时间5s。
+
 以下是一个简单示例：
 
 ```go
@@ -126,4 +128,3 @@ fmt.Println(res)
 - [x] TrdGetHistoryOrderFillList = 2222 // 获取历史成交列表
 - [x] TrdGetMarginRatio          = 2223 // 获取融资融券数据
 - [x] TrdGetOrderFee             = 2225 // 获取订单费用
-

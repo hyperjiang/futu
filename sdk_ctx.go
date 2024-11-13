@@ -43,7 +43,9 @@ import (
 	"github.com/hyperjiang/futu/pb/trdgetfunds"
 	"github.com/hyperjiang/futu/pb/trdgethistoryorderfilllist"
 	"github.com/hyperjiang/futu/pb/trdgethistoryorderlist"
+	"github.com/hyperjiang/futu/pb/trdgetmarginratio"
 	"github.com/hyperjiang/futu/pb/trdgetmaxtrdqtys"
+	"github.com/hyperjiang/futu/pb/trdgetorderfee"
 	"github.com/hyperjiang/futu/pb/trdgetorderfilllist"
 	"github.com/hyperjiang/futu/pb/trdgetorderlist"
 	"github.com/hyperjiang/futu/pb/trdgetpositionlist"
@@ -292,6 +294,36 @@ func (sdk *SDK) GetHistoryOrderFillListWithContext(ctx context.Context, header *
 	}
 
 	return s2c.GetOrderFillList(), nil
+}
+
+// GetMarginRatioWithContext 2223 - gets the margin ratio with context.
+func (sdk *SDK) GetMarginRatioWithContext(ctx context.Context, header *trdcommon.TrdHeader, codes []string) ([]*trdgetmarginratio.MarginRatioInfo, error) {
+	c2s := &trdgetmarginratio.C2S{
+		Header:       header,
+		SecurityList: adapt.NewSecurities(codes),
+	}
+
+	s2c, err := sdk.cli.TrdGetMarginRatio(ctx, c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetMarginRatioInfoList(), nil
+}
+
+// GetOrderFeeWithContext 2225 - gets the order fee with context.
+func (sdk *SDK) GetOrderFeeWithContext(ctx context.Context, header *trdcommon.TrdHeader, orderIdExList []string) ([]*trdcommon.OrderFee, error) {
+	c2s := &trdgetorderfee.C2S{
+		Header:        header,
+		OrderIdExList: orderIdExList,
+	}
+
+	s2c, err := sdk.cli.TrdGetOrderFee(ctx, c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetOrderFeeList(), nil
 }
 
 // SubscribeWithContext 3001 - subscribes or unsubscribes with context.

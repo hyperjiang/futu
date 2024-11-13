@@ -110,7 +110,6 @@ func (ts *ClientTestSuite) SetupSuite() {
 
 // TearDownSuite run once at the very end of the testing suite, after all tests have been run.
 func (ts *ClientTestSuite) TearDownSuite() {
-	// time.Sleep(10 * time.Minute)
 	if ts.client != nil {
 		ts.client.Close()
 	}

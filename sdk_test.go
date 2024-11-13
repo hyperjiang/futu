@@ -238,6 +238,24 @@ func (ts *SDKTestSuite) TestGetHistoryOrderFillList() {
 	should.Error(err) // 模拟交易不支持成交数据
 }
 
+func (ts *SDKTestSuite) TestGetMarginRatio() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetMarginRatio(ts.usAccount, []string{"US.AAPL"})
+	should.NoError(err)
+	log.Info().Interface("margin ratio", res).Msg("GetMarginRatio")
+}
+
+func (ts *SDKTestSuite) TestGetOrderFee() {
+	should := require.New(ts.T())
+
+	_, err := ts.sdk.GetOrderFee(
+		ts.usAccount,
+		[]string{"123"},
+	)
+	should.Error(err) // 模拟交易不支持查询交易费用
+}
+
 func (ts *SDKTestSuite) TestGetSubInfo() {
 	should := require.New(ts.T())
 
