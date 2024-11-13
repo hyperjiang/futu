@@ -159,3 +159,18 @@ func TestFilterConditions(t *testing.T) {
 	should.Equal("2021-12-31", c2s.GetFilterConditions().GetEndTime())
 	should.Len(c2s.GetFilterConditions().GetOrderIDExList(), 2)
 }
+
+func TestSetCodeForTrade(t *testing.T) {
+	should := require.New(t)
+
+	opts := NewOptions()
+
+	opts = opts.SetCodeForTrade("HK.00700")
+	should.Equal("00700", opts["code"])
+	should.Equal(int32(1), opts["secMarket"])
+
+	opts2 := NewOptions()
+	opts2 = opts2.SetCodeForTrade("AAPL")
+	should.Equal("AAPL", opts2["code"])
+	should.Nil(opts2["secMarket"])
+}

@@ -11,6 +11,7 @@ import (
 	"github.com/hyperjiang/futu/client"
 	"github.com/hyperjiang/futu/pb/notify"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
+	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/hyperjiang/futu/protoid"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -43,7 +44,8 @@ ywQCvmZiU66RGeo6pCSwdH0h4NeQ8w48SjhmRqswNKKr8g==
 
 type SDKTestSuite struct {
 	suite.Suite
-	sdk *futu.SDK
+	sdk       *futu.SDK
+	usAccount *trdcommon.TrdHeader
 }
 
 // TestSDKTestSuite runs the http client test suite
@@ -67,6 +69,8 @@ func (ts *SDKTestSuite) SetupSuite() {
 		log.Info().Interface("s2c", msg).Msg("custom handler")
 		return nil
 	})
+
+	ts.usAccount = adapt.NewTestingTradeAccount(1619199, adapt.TrdMarket_US)
 
 	err = ts.sdk.Subscribe(
 		[]string{"HK.09988", "HK.00700"},
@@ -129,7 +133,7 @@ func (ts *SDKTestSuite) TestSubscribeAccPush() {
 func (ts *SDKTestSuite) TestGetFunds() {
 	should := require.New(ts.T())
 
-	res, err := ts.sdk.GetFunds(adapt.NewTestingTradeAccount(1619199, adapt.TrdMarket_US))
+	res, err := ts.sdk.GetFunds(ts.usAccount)
 	should.NoError(err)
 	log.Info().Interface("data", res).Msg("GetFunds")
 }
@@ -137,7 +141,7 @@ func (ts *SDKTestSuite) TestGetFunds() {
 func (ts *SDKTestSuite) TestGetPositionList() {
 	should := require.New(ts.T())
 
-	res, err := ts.sdk.GetPositionList(adapt.NewTestingTradeAccount(1619199, adapt.TrdMarket_US))
+	res, err := ts.sdk.GetPositionList(ts.usAccount)
 	should.NoError(err)
 	for _, pos := range res {
 		log.Info().Interface("position", pos).Msg("GetPositionList")
@@ -148,14 +152,42 @@ func (ts *SDKTestSuite) TestGetMaxTrdQtys() {
 	should := require.New(ts.T())
 
 	res, err := ts.sdk.GetMaxTrdQtys(
-		adapt.NewTestingTradeAccount(1619199, adapt.TrdMarket_US),
+		ts.usAccount,
 		adapt.OrderType_Normal,
-		adapt.TrdSecMarket_US,
-		"AAPL",
+		"US.AAPL",
 		200,
 	)
 	should.NoError(err)
 	log.Info().Interface("data", res).Msg("GetMaxTrdQtys")
+}
+
+func (ts *SDKTestSuite) TestGetOpenOrderList() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.GetOpenOrderList(
+		ts.usAccount,
+		adapt.With("filterStatusList", []int32{adapt.OrderStatus_Submitted}),
+	)
+	should.NoError(err)
+	for _, order := range res {
+		log.Info().Interface("order", order).Msg("GetOpenOrderList")
+	}
+}
+
+func (ts *SDKTestSuite) TestPlaceOrder() {
+	should := require.New(ts.T())
+
+	res, err := ts.sdk.PlaceOrder(
+		ts.usAccount,
+		adapt.TrdSide_Buy,
+		adapt.OrderType_Market,
+		"US.AAPL",
+		1, // quantity
+		0, // price, 市价订单不需要设置价格
+		adapt.With("remark", "go sdk"),
+	)
+	should.NoError(err)
+	log.Info().Interface("result", res).Msg("PlaceOrder")
 }
 
 func (ts *SDKTestSuite) TestGetSubInfo() {

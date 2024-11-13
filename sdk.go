@@ -32,6 +32,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/trdcommon"
+	"github.com/hyperjiang/futu/pb/trdplaceorder"
 )
 
 const defaultTimeout = time.Second * 5
@@ -132,16 +133,42 @@ func (sdk *SDK) GetPositionList(header *trdcommon.TrdHeader, opts ...adapt.Optio
 //
 // orderType: order type
 //
-// secMarket: security market
-//
-// code: security code, e.g. AAPL
+// code: security code, e.g. US.AAPL
 //
 // price: price
-func (sdk *SDK) GetMaxTrdQtys(header *trdcommon.TrdHeader, orderType int32, secMarket int32, code string, price float64, opts ...adapt.Option) (*trdcommon.MaxTrdQtys, error) {
+func (sdk *SDK) GetMaxTrdQtys(header *trdcommon.TrdHeader, orderType int32, code string, price float64, opts ...adapt.Option) (*trdcommon.MaxTrdQtys, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 	defer cancel()
 
-	return sdk.GetMaxTrdQtysWithContext(ctx, header, orderType, secMarket, code, price, opts...)
+	return sdk.GetMaxTrdQtysWithContext(ctx, header, orderType, code, price, opts...)
+}
+
+// GetOpenOrderList 2201 - gets the open order list.
+func (sdk *SDK) GetOpenOrderList(header *trdcommon.TrdHeader, opts ...adapt.Option) ([]*trdcommon.Order, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOpenOrderListWithContext(ctx, header, opts...)
+}
+
+// PlaceOrder 2202 - places an order.
+//
+// header: trading header
+//
+// trdSide: trading side
+//
+// orderType: order type
+//
+// code: security code, e.g. US.AAPL
+//
+// qty: quantity
+//
+// price: price
+func (sdk *SDK) PlaceOrder(header *trdcommon.TrdHeader, trdSide int32, orderType int32, code string, qty float64, price float64, opts ...adapt.Option) (*trdplaceorder.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.PlaceOrderWithContext(ctx, header, trdSide, orderType, code, qty, price, opts...)
 }
 
 // Subscribe 3001 - subscribes or unsubscribes.

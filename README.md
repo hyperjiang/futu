@@ -12,7 +12,7 @@ Futu Open API 官方文档: https://openapi.futunn.com/futu-api-doc/
 
 ## 代码目录说明
 
-- `根目录`: 提供用户友好的客户端SDK，是对底层的`client`包做了一层用法包装
+- `根目录`: 提供用户友好的客户端SDK，对底层的`client`包做了一层用法包装
 - `client`: 基础客户端，拥有所有功能，需要用pb定义的结构体传参，可以直接使用，但是使用起来略繁琐
 - `.proto`: protobuf 定义文件
 - `adapt`: protobuf 结构体和普通类型的适配层
@@ -43,7 +43,7 @@ fmt.Println(res)
 ```
 
 对于系统推送过来的数据，需要调用`RegisterHandler(protoID uint32, h Handler)`来注册自己的处理逻辑。
-如果没有设置，SDK会使用默认的Handler，只打印收到的消息的日志。
+如果没有设置，SDK会使用默认的Handler，只打印收到的消息到日志。
 可以设置推送Handler的协议ID如下:
 
 - protoid.Notify // 1003
@@ -57,7 +57,7 @@ fmt.Println(res)
 - protoid.QotUpdateBroker // 3015
 - protoid.QotUpdatePriceReminder // 3019
 
-设置其他ID没有任何作用，永远不可能触发到。
+设置其他ID没有任何作用，因为永远不可能触发到。
 
 ## 支持的功能
 

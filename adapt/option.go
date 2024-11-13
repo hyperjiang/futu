@@ -2,6 +2,7 @@ package adapt
 
 import (
 	"encoding/json"
+	"strings"
 
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/trdcommon"
@@ -91,4 +92,21 @@ func (o Options) ToProto(msg proto.Message) error {
 	}
 
 	return json.Unmarshal(b, msg)
+}
+
+// SetCodeForTrade sets the code for trade.
+func (o Options) SetCodeForTrade(code string) Options {
+	arr := strings.Split(code, ".")
+	if len(arr) == 2 {
+		if id := GetTrdMarketID(arr[0]); id > 0 {
+			o["secMarket"] = id
+			o["code"] = arr[1]
+		}
+	}
+
+	if _, ok := o["code"]; !ok {
+		o["code"] = code
+	}
+
+	return o
 }

@@ -42,7 +42,9 @@ import (
 	"github.com/hyperjiang/futu/pb/trdgetacclist"
 	"github.com/hyperjiang/futu/pb/trdgetfunds"
 	"github.com/hyperjiang/futu/pb/trdgetmaxtrdqtys"
+	"github.com/hyperjiang/futu/pb/trdgetorderlist"
 	"github.com/hyperjiang/futu/pb/trdgetpositionlist"
+	"github.com/hyperjiang/futu/pb/trdplaceorder"
 	"github.com/hyperjiang/futu/pb/trdsubaccpush"
 	"github.com/hyperjiang/futu/pb/trdunlocktrade"
 	"google.golang.org/protobuf/proto"
@@ -140,18 +142,15 @@ func (sdk *SDK) GetPositionListWithContext(ctx context.Context, header *trdcommo
 //
 // orderType: order type
 //
-// secMarket: security market
-//
 // code: security code, e.g. AAPL
 //
 // price: price
-func (sdk *SDK) GetMaxTrdQtysWithContext(ctx context.Context, header *trdcommon.TrdHeader, orderType int32, secMarket int32, code string, price float64, opts ...adapt.Option) (*trdcommon.MaxTrdQtys, error) {
+func (sdk *SDK) GetMaxTrdQtysWithContext(ctx context.Context, header *trdcommon.TrdHeader, orderType int32, code string, price float64, opts ...adapt.Option) (*trdcommon.MaxTrdQtys, error) {
 	o := adapt.NewOptions(opts...)
 	o["header"] = header
 	o["orderType"] = orderType
-	o["secMarket"] = secMarket
-	o["code"] = code
 	o["price"] = price
+	o.SetCodeForTrade(code)
 
 	var c2s trdgetmaxtrdqtys.C2S
 	if err := o.ToProto(&c2s); err != nil {
@@ -164,6 +163,54 @@ func (sdk *SDK) GetMaxTrdQtysWithContext(ctx context.Context, header *trdcommon.
 	}
 
 	return s2c.GetMaxTrdQtys(), nil
+}
+
+// GetOpenOrderListWithContext 2201 - gets the open order list with context.
+func (sdk *SDK) GetOpenOrderListWithContext(ctx context.Context, header *trdcommon.TrdHeader, opts ...adapt.Option) ([]*trdcommon.Order, error) {
+	o := adapt.NewOptions(opts...)
+	o["header"] = header
+
+	var c2s trdgetorderlist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	s2c, err := sdk.cli.TrdGetOrderList(ctx, &c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetOrderList(), nil
+}
+
+// PlaceOrderWithContext 2202 - places an order with context.
+//
+// header: trading header
+//
+// trdSide: trading side
+//
+// orderType: order type
+//
+// code: security code, e.g. US.AAPL
+//
+// qty: quantity
+//
+// price: price
+func (sdk *SDK) PlaceOrderWithContext(ctx context.Context, header *trdcommon.TrdHeader, trdSide int32, orderType int32, code string, qty float64, price float64, opts ...adapt.Option) (*trdplaceorder.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["header"] = header
+	o["trdSide"] = trdSide
+	o["orderType"] = orderType
+	o["qty"] = qty
+	o["price"] = price
+	o.SetCodeForTrade(code)
+
+	var c2s trdplaceorder.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.TrdPlaceOrder(ctx, &c2s)
 }
 
 // SubscribeWithContext 3001 - subscribes or unsubscribes with context.

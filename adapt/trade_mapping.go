@@ -1,6 +1,10 @@
 package adapt
 
-import "github.com/hyperjiang/futu/pb/trdcommon"
+import (
+	"strings"
+
+	"github.com/hyperjiang/futu/pb/trdcommon"
+)
 
 // 交易市场，主要用于交易协议公共参数头和交易业务账户结构
 const (
@@ -44,7 +48,7 @@ const (
 	TrdMarket_US_Fund = int32(trdcommon.TrdMarket_TrdMarket_US_Fund)
 )
 
-// 证券交易所枚举，主要用于下单
+// 证券交易市场枚举，主要用于下单
 const (
 	// TrdSecMarket_Unknown 未知证券市场
 	TrdSecMarket_Unknown = int32(trdcommon.TrdSecMarket_TrdSecMarket_Unknown)
@@ -67,6 +71,25 @@ const (
 	// TrdSecMarket_JP 日本期货市场
 	TrdSecMarket_JP = int32(trdcommon.TrdSecMarket_TrdSecMarket_JP)
 )
+
+var trdSecMarketIDs = map[string]int32{
+	"HK": TrdSecMarket_HK,
+	"US": TrdSecMarket_US,
+	"SH": TrdSecMarket_SH,
+	"SZ": TrdSecMarket_SZ,
+	"SG": TrdSecMarket_SG,
+	"JP": TrdSecMarket_JP,
+}
+
+// GetTrdMarketID 根据市场名称返回交易市场ID
+func GetTrdMarketID(name string) int32 {
+	id, ok := trdSecMarketIDs[strings.ToUpper(name)]
+	if ok {
+		return id
+	}
+
+	return 0
+}
 
 // 交易类别
 const (
@@ -163,4 +186,70 @@ const (
 
 	// OrderType_VWAPLimit 成交量加权平均价格限价订单
 	OrderType_VWAPLimit = int32(trdcommon.OrderType_OrderType_VWAPLimit)
+)
+
+// 订单状态
+const (
+	// OrderStatus_Unsubmitted 未提交
+	OrderStatus_Unsubmitted = int32(trdcommon.OrderStatus_OrderStatus_Unsubmitted)
+
+	// OrderStatus_Unknown 未知状态
+	OrderStatus_Unknown = int32(trdcommon.OrderStatus_OrderStatus_Unknown)
+
+	// OrderStatus_WaitingSubmit 等待提交
+	OrderStatus_WaitingSubmit = int32(trdcommon.OrderStatus_OrderStatus_WaitingSubmit)
+
+	// OrderStatus_Submitting 提交中
+	OrderStatus_Submitting = int32(trdcommon.OrderStatus_OrderStatus_Submitting)
+
+	// OrderStatus_SubmitFailed 提交失败
+	OrderStatus_SubmitFailed = int32(trdcommon.OrderStatus_OrderStatus_SubmitFailed)
+
+	// OrderStatus_TimeOut 处理超时，结果未知
+	OrderStatus_TimeOut = int32(trdcommon.OrderStatus_OrderStatus_TimeOut)
+
+	// OrderStatus_Submitted 已提交，等待成交
+	OrderStatus_Submitted = int32(trdcommon.OrderStatus_OrderStatus_Submitted)
+
+	// OrderStatus_Filled_Part 部分成交
+	OrderStatus_Filled_Part = int32(trdcommon.OrderStatus_OrderStatus_Filled_Part)
+
+	// OrderStatus_Filled_All 全部成交
+	OrderStatus_Filled_All = int32(trdcommon.OrderStatus_OrderStatus_Filled_All)
+
+	// OrderStatus_Cancelling_Part 正在撤单_部分（部分已成交，正在撤销剩余部分）
+	OrderStatus_Cancelling_Part = int32(trdcommon.OrderStatus_OrderStatus_Cancelling_Part)
+
+	// OrderStatus_Cancelling_All 正在撤单_全部
+	OrderStatus_Cancelling_All = int32(trdcommon.OrderStatus_OrderStatus_Cancelling_All)
+
+	// OrderStatus_Cancelled_Part 部分成交，剩余部分已撤单
+	OrderStatus_Cancelled_Part = int32(trdcommon.OrderStatus_OrderStatus_Cancelled_Part)
+
+	// OrderStatus_Cancelled_All 全部已撤单，无成交
+	OrderStatus_Cancelled_All = int32(trdcommon.OrderStatus_OrderStatus_Cancelled_All)
+
+	// OrderStatus_Failed 下单失败，服务拒绝
+	OrderStatus_Failed = int32(trdcommon.OrderStatus_OrderStatus_Failed)
+
+	// OrderStatus_Disabled 已失效
+	OrderStatus_Disabled = int32(trdcommon.OrderStatus_OrderStatus_Disabled)
+
+	// OrderStatus_Deleted 已删除，无成交的订单才能删除
+	OrderStatus_Deleted = int32(trdcommon.OrderStatus_OrderStatus_Deleted)
+
+	// OrderStatus_FillCancelled 成交被撤销，一般遇不到，意思是已经成交的订单被回滚撤销，成交无效变为废单
+	OrderStatus_FillCancelled = int32(trdcommon.OrderStatus_OrderStatus_FillCancelled)
+)
+
+// 交易方向
+const (
+	// TrdSide_Unknown 未知
+	TrdSide_Unknown = int32(trdcommon.TrdSide_TrdSide_Unknown)
+
+	// TrdSide_Buy 买入
+	TrdSide_Buy = int32(trdcommon.TrdSide_TrdSide_Buy)
+
+	// TrdSide_Sell 卖出
+	TrdSide_Sell = int32(trdcommon.TrdSide_TrdSide_Sell)
 )

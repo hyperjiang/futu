@@ -2,7 +2,7 @@ module github.com/hyperjiang/futu
 
 go 1.21
 
-toolchain go1.23.2
+toolchain go1.21.13
 
 require (
 	github.com/hyperjiang/rsa v1.0.0
