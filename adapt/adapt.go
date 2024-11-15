@@ -40,8 +40,8 @@ func SecurityToCode(s *qotcommon.Security) string {
 	return GetMarketName(s.GetMarket()) + "." + s.GetCode()
 }
 
-// NewTradeAccount creates a new TrdHeader for a real trade account.
-func NewTradeAccount(id uint64, market int32) *trdcommon.TrdHeader {
+// NewTradeHeader creates a new TrdHeader for a real trade account.
+func NewTradeHeader(id uint64, market int32) *trdcommon.TrdHeader {
 	return &trdcommon.TrdHeader{
 		TrdEnv:    proto.Int32(int32(trdcommon.TrdEnv_TrdEnv_Real)),
 		AccID:     proto.Uint64(id),
@@ -49,8 +49,8 @@ func NewTradeAccount(id uint64, market int32) *trdcommon.TrdHeader {
 	}
 }
 
-// NewTestingTradeAccount creates a new TrdHeader for a testing trade account.
-func NewTestingTradeAccount(id uint64, market int32) *trdcommon.TrdHeader {
+// NewSimulationTradeHeader creates a new TrdHeader for a simulation trade account.
+func NewSimulationTradeHeader(id uint64, market int32) *trdcommon.TrdHeader {
 	return &trdcommon.TrdHeader{
 		TrdEnv:    proto.Int32(int32(trdcommon.TrdEnv_TrdEnv_Simulate)),
 		AccID:     proto.Uint64(id),

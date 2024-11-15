@@ -70,7 +70,7 @@ func (ts *SDKTestSuite) SetupSuite() {
 		return nil
 	})
 
-	ts.usAccount = adapt.NewTestingTradeAccount(1619199, adapt.TrdMarket_US)
+	ts.usAccount = adapt.NewSimulationTradeHeader(1619199, adapt.TrdMarket_US)
 
 	err = ts.sdk.Subscribe(
 		[]string{"HK.09988", "HK.00700"},

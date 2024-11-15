@@ -46,20 +46,20 @@ func TestSecurityToCode(t *testing.T) {
 	should.Equal("HK.00700", SecurityToCode(s))
 }
 
-func TestNewTradeAccount(t *testing.T) {
+func TestNewTradeHeader(t *testing.T) {
 	should := require.New(t)
 
-	ta := NewTradeAccount(123, TrdMarket_HK)
+	ta := NewTradeHeader(123, TrdMarket_HK)
 	should.NotNil(ta)
 	should.Equal(int32(1), ta.GetTrdMarket())
 	should.Equal(uint64(123), ta.GetAccID())
 	should.Equal(int32(1), ta.GetTrdEnv())
 }
 
-func TestNewTestingTradeAccount(t *testing.T) {
+func TestNewSimulationTradeHeader(t *testing.T) {
 	should := require.New(t)
 
-	ta := NewTestingTradeAccount(123, TrdMarket_HK)
+	ta := NewSimulationTradeHeader(123, TrdMarket_HK)
 	should.NotNil(ta)
 	should.Equal(int32(1), ta.GetTrdMarket())
 	should.Equal(uint64(123), ta.GetAccID())
