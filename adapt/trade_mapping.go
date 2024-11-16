@@ -165,17 +165,17 @@ const (
 	// OrderType_TrailingStopLimit 跟踪止损限价单
 	OrderType_TrailingStopLimit = int32(trdcommon.OrderType_OrderType_TrailingStopLimit)
 
-	// OrderType_TWAP 时间加权平均价格订单
-	OrderType_TWAP = int32(trdcommon.OrderType_OrderType_TWAP)
+	// OrderType_TWAP_MARKET 时间加权平均价格市价订单
+	OrderType_TWAP_MARKET = int32(trdcommon.OrderType_OrderType_TWAP_MARKET)
 
-	// OrderType_TWAPLimit 时间加权平均价格限价订单
-	OrderType_TWAPLimit = int32(trdcommon.OrderType_OrderType_TWAPLimit)
+	// OrderType_TWAP_LIMIT 时间加权平均价格限价订单
+	OrderType_TWAP_LIMIT = int32(trdcommon.OrderType_OrderType_TWAP_LIMIT)
 
-	// OrderType_VWAP 成交量加权平均价格订单
-	OrderType_VWAP = int32(trdcommon.OrderType_OrderType_VWAP)
+	// OrderType_VWAP_MARKET 成交量加权平均价格市价订单
+	OrderType_VWAP_MARKET = int32(trdcommon.OrderType_OrderType_VWAP_MARKET)
 
-	// OrderType_VWAPLimit 成交量加权平均价格限价订单
-	OrderType_VWAPLimit = int32(trdcommon.OrderType_OrderType_VWAPLimit)
+	// OrderType_VWAP_LIMIT 成交量加权平均价格限价订单
+	OrderType_VWAP_LIMIT = int32(trdcommon.OrderType_OrderType_VWAP_LIMIT)
 )
 
 // 订单状态

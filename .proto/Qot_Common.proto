@@ -86,6 +86,7 @@ enum QotMarketState
 	QotMarketState_PreMarketEnd = 9; // 盘前结束
 	QotMarketState_AfterHoursBegin = 10; // 盘后
 	QotMarketState_AfterHoursEnd = 11; // 盘后结束
+	QotMarketState_FUTU_SWITCH_DATE      = 12;
 	QotMarketState_NightOpen = 13; // 夜市开盘
 	QotMarketState_NightEnd = 14; // 夜市收盘
 	QotMarketState_FutureDayOpen = 15; // 期货日市开盘
@@ -105,6 +106,14 @@ enum QotMarketState
     QotMarketState_StibAfterHoursWait = 27; // 科创板的盘后撮合时段（已废弃）
     QotMarketState_StibAfterHoursBegin = 28; // 科创板的盘后交易开始（已废弃）
     QotMarketState_StibAfterHoursEnd = 29; // 科创板的盘后交易结束（已废弃）
+
+    QotMarketState_CLOSE_AUCTION         = 30;  // 收市竞价
+    QotMarketState_AFTERNOON_END         = 31;  // 已收盘
+    QotMarketState_NIGHT                 = 32;  // 交易中
+    QotMarketState_OVERNIGHT_BEGIN       = 33;  // 夜盘开始
+    QotMarketState_OVERNIGHT_END         = 34;  // 夜盘结束
+    QotMarketState_TRADE_AT_LAST         = 35;  // 收盘前成交（在交易时间表内）
+    QotMarketState_TRADE_AUCTION         = 36;  // 收盘前的竞价 （在交易时间表内）
 }
 
 //交易日查询市场
@@ -481,6 +490,8 @@ enum ExpirationCycle
 	ExpirationCycle_Unknown = 0; //未知
 	ExpirationCycle_Week = 1; //周期权
 	ExpirationCycle_Month = 2; //月期权
+	ExpirationCycle_MonthEnd = 3;  // 月末期权
+	ExpirationCycle_Quarter = 4; //季度期权
 }
 
 // 所属交易所

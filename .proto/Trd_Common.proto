@@ -79,10 +79,10 @@ enum OrderType
     OrderType_LimitifTouched = 13; // 触及限价单（止盈）
     OrderType_TrailingStop = 14; // 跟踪止损市价单
     OrderType_TrailingStopLimit = 15; // 跟踪止损限价单
-    OrderType_TWAP = 16; // TWAP市价单
-    OrderType_TWAPLimit = 17; // TWAP限价单
-    OrderType_VWAP = 18; // VWAP损市价单
-    OrderType_VWAPLimit = 19; // VWAP限价单
+	OrderType_TWAP_MARKET = 16; // TWAP 市价单
+	OrderType_TWAP_LIMIT = 17;  // TWAP 限订单
+	OrderType_VWAP_MARKET = 18; // VWAP 市价单
+	OrderType_VWAP_LIMIT = 19;  // VWAP 限订单
 }
 
 //跟踪类型
@@ -237,6 +237,7 @@ message AccCashInfo
     optional int32 currency = 1;        // 货币类型，取值参考 Currency
     optional double cash = 2;           // 现金结余
     optional double availableBalance = 3;   // 现金可提金额
+	optional double netCashPower = 4;		// 现金购买力
 }
 
 //交易协议公共参数头
