@@ -2,7 +2,7 @@
 
 The source files are downloaded from https://openapi.futunn.com/futu-api-doc/quick/demo.html
 
-Current version is `v8.6.4608`
+Current version is `v9.0.5008`
 
 ## How to generate go codes on MacOS
 

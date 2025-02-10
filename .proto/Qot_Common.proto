@@ -15,6 +15,10 @@ enum QotMarket
     QotMarket_CNSZ_Security = 22; //深股市场
 	QotMarket_SG_Security = 31; //新加坡市场
 	QotMarket_JP_Security = 41; //日本市场
+	QotMarket_AU_Security = 51; //澳大利亚市场
+	QotMarket_MY_Security = 61; //马来西亚市场
+	QotMarket_CA_Security = 71; // 加拿大市场
+	QotMarket_FX_Security = 81; // 外汇市场
 }
 
 enum SecurityType

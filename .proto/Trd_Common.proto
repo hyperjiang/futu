@@ -30,10 +30,14 @@ enum TrdMarket
 	TrdMarket_HKCC = 4; //香港A股通市场
 	TrdMarket_Futures = 5; //期货市场
 	TrdMarket_SG = 6; //期货市场
+    TrdMarket_AU = 8; //澳洲市场
     TrdMarket_Futures_Simulate_HK = 10; // 模拟交易期货市场
     TrdMarket_Futures_Simulate_US = 11;
     TrdMarket_Futures_Simulate_SG = 12;
     TrdMarket_Futures_Simulate_JP = 13;
+    TrdMarket_JP = 15;
+    TrdMarket_MY = 111;
+    TrdMarket_CA = 112;
 	TrdMarket_HK_Fund = 113; //香港基金市场
 	TrdMarket_US_Fund = 123; //美国基金市场
 }
@@ -48,6 +52,10 @@ enum TrdSecMarket
 	TrdSecMarket_CN_SZ = 32; //深股市场(股票)
 	TrdSecMarket_SG = 41;    //新加坡市场(期货)
 	TrdSecMarket_JP = 51;    //日本市场(期货)
+    TrdSecMarket_AU = 61; // 澳大利亚
+    TrdSecMarket_MY = 71; // 马来西亚
+    TrdSecMarket_CA = 81; // 加拿大
+    TrdSecMarket_FX = 91; // 外汇
 }
 
 //交易方向
@@ -168,6 +176,8 @@ enum Currency
 	Currency_JPY = 4;   // 日元
 	Currency_SGD = 5;   // 新币
 	Currency_AUD = 6;   // 澳元
+    Currency_CAD = 7; // 加拿大元
+    Currency_MYR = 8; // 马来西亚林吉特
 }
 
 //账户风险控制等级
@@ -240,6 +250,13 @@ message AccCashInfo
 	optional double netCashPower = 4;		// 现金购买力
 }
 
+//分市场资产信息
+message AccMarketInfo
+{
+    optional int32 trdMarket = 1;        // 交易市场, 参见TrdMarket的枚举定义
+    optional double assets = 2;           // 分市场资产信息
+}
+
 //交易协议公共参数头
 message TrdHeader
 {
@@ -301,6 +318,8 @@ message Funds
 	optional double securitiesAssets = 30; // 证券资产净值
 	optional double fundAssets = 31; // 基金资产净值
 	optional double bondAssets = 32; // 债券资产净值
+
+    repeated AccMarketInfo marketInfoList = 33; //分市场资产信息
 }
 
 //账户持仓结构
@@ -396,6 +415,7 @@ message OrderFill
     optional double createTimestamp = 14; //创建时间戳
     optional double updateTimestamp = 15; //最后更新时间戳
     optional int32 status = 16; //成交状态, 参见OrderFillStatus的枚举定义
+    optional int32 trdMarket = 17;  //交易市场, 参见TrdMarket的枚举定义
 }
 
 //最大可交易数量
@@ -419,4 +439,5 @@ message TrdFilterConditions
 	optional string beginTime = 3; //开始时间，严格按YYYY-MM-DD HH:MM:SS或YYYY-MM-DD HH:MM:SS.MS格式传，对持仓无效，拉历史数据必须填
 	optional string endTime = 4; //结束时间，严格按YYYY-MM-DD HH:MM:SS或YYYY-MM-DD HH:MM:SS.MS格式传，对持仓无效，拉历史数据必须填
 	repeated string orderIDExList = 5; // 服务器订单ID，可以用来替代orderID，二选一
+    optional int32 filterMarket = 6; //指定交易市场, 参见TrdMarket的枚举定义
 }
