@@ -20,7 +20,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-//返回结果
+// 返回结果
 type RetType int32
 
 const (
@@ -89,7 +89,7 @@ func (RetType) EnumDescriptor() ([]byte, []int) {
 	return file_Common_proto_rawDescGZIP(), []int{0}
 }
 
-//包加密算法
+// 包加密算法
 type PacketEncAlgo int32
 
 const (
@@ -152,7 +152,7 @@ func (PacketEncAlgo) EnumDescriptor() ([]byte, []int) {
 	return file_Common_proto_rawDescGZIP(), []int{1}
 }
 
-//协议格式，请求协议在请求头中指定，推送协议在Init时指定
+// 协议格式，请求协议在请求头中指定，推送协议在Init时指定
 type ProtoFmt int32
 
 const (
@@ -209,7 +209,7 @@ func (ProtoFmt) EnumDescriptor() ([]byte, []int) {
 	return file_Common_proto_rawDescGZIP(), []int{2}
 }
 
-//用户注册归属地
+// 用户注册归属地
 type UserAttribution int32
 
 const (
@@ -295,7 +295,7 @@ const (
 	ProgramStatusType_ProgramStatusType_NessaryDataMissing   ProgramStatusType = 8  //缺少必要信息
 	ProgramStatusType_ProgramStatusType_UnAgreeDisclaimer    ProgramStatusType = 9  //未同意免责声明
 	ProgramStatusType_ProgramStatusType_Ready                ProgramStatusType = 10 //可以接收业务协议收发,正常可用状态
-	//OpenD登录后被强制退出登录，会导致连接全部断开,需要重连后才能得到以下该状态（并且需要在ui模式下）
+	// OpenD登录后被强制退出登录，会导致连接全部断开,需要重连后才能得到以下该状态（并且需要在ui模式下）
 	ProgramStatusType_ProgramStatusType_ForceLogout          ProgramStatusType = 11 //被强制退出登录,例如修改了登录密码,中途打开设备锁等,详细原因在描述返回
 	ProgramStatusType_ProgramStatusType_DisclaimerPullFailed ProgramStatusType = 12 //拉取免责声明标志失败
 )
@@ -371,7 +371,7 @@ func (ProgramStatusType) EnumDescriptor() ([]byte, []int) {
 	return file_Common_proto_rawDescGZIP(), []int{4}
 }
 
-//包的唯一标识，用于回放攻击的识别和保护
+// 包的唯一标识，用于回放攻击的识别和保护
 type PacketID struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

@@ -39,6 +39,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/qotsub"
 	"github.com/hyperjiang/futu/pb/trdcommon"
+	"github.com/hyperjiang/futu/pb/trdflowsummary"
 	"github.com/hyperjiang/futu/pb/trdgetacclist"
 	"github.com/hyperjiang/futu/pb/trdgetfunds"
 	"github.com/hyperjiang/futu/pb/trdgethistoryorderfilllist"
@@ -324,6 +325,21 @@ func (sdk *SDK) GetOrderFeeWithContext(ctx context.Context, header *trdcommon.Tr
 	}
 
 	return s2c.GetOrderFeeList(), nil
+}
+
+// TrdFlowSummaryWithContext 2226 - gets the trading flow summary with context.
+func (sdk *SDK) TrdFlowSummaryWithContext(ctx context.Context, header *trdcommon.TrdHeader, clearingDate string) ([]*trdflowsummary.FlowSummaryInfo, error) {
+	c2s := &trdflowsummary.C2S{
+		Header:       header,
+		ClearingDate: proto.String(clearingDate),
+	}
+
+	s2c, err := sdk.cli.TrdFlowSummary(ctx, c2s)
+	if err != nil {
+		return nil, err
+	}
+
+	return s2c.GetFlowSummaryInfoList(), nil
 }
 
 // SubscribeWithContext 3001 - subscribes or unsubscribes with context.

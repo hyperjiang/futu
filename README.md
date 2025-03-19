@@ -128,3 +128,4 @@ fmt.Println(res)
 - [x] TrdGetHistoryOrderFillList = 2222 // 获取历史成交列表
 - [x] TrdGetMarginRatio          = 2223 // 获取融资融券数据
 - [x] TrdGetOrderFee             = 2225 // 获取订单费用
+- [x] TrdFlowSummary             = 2226 // 查询账户现金流水

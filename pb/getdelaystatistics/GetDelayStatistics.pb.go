@@ -83,9 +83,9 @@ func (DelayStatisticsType) EnumDescriptor() ([]byte, []int) {
 	return file_GetDelayStatistics_proto_rawDescGZIP(), []int{0}
 }
 
-//某段时间的统计数据
-//SR表示服务器收到数据，目前只有港股支持SR字段，SS表示服务器发出数据
-//CR表示OpenD收到数据，CS表示OpenD发出数据
+// 某段时间的统计数据
+// SR表示服务器收到数据，目前只有港股支持SR字段，SS表示服务器发出数据
+// CR表示OpenD收到数据，CS表示OpenD发出数据
 type QotPushStage int32
 
 const (
@@ -154,7 +154,7 @@ func (QotPushStage) EnumDescriptor() ([]byte, []int) {
 	return file_GetDelayStatistics_proto_rawDescGZIP(), []int{1}
 }
 
-//行情推送类型
+// 行情推送类型
 type QotPushType int32
 
 const (
@@ -286,7 +286,7 @@ type DelayStatisticsItem struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	//范围左闭右开，[begin,end)
+	// 范围左闭右开，[begin,end)
 	Begin           *int32   `protobuf:"varint,1,req,name=begin" json:"begin,omitempty"`                      //耗时范围起点，毫秒单位
 	End             *int32   `protobuf:"varint,2,req,name=end" json:"end,omitempty"`                          //耗时范围结束，毫秒单位
 	Count           *int32   `protobuf:"varint,3,req,name=count" json:"count,omitempty"`                      //个数

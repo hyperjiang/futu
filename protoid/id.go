@@ -24,6 +24,7 @@ const (
 	TrdGetHistoryOrderFillList = 2222 // 获取历史成交列表
 	TrdGetMarginRatio          = 2223 // 获取融资融券数据
 	TrdGetOrderFee             = 2225 // 获取订单费用
+	TrdFlowSummary             = 2226 // 查询账户现金流水
 
 	// 行情接口
 	QotSub                     = 3001 // 订阅或者反订阅

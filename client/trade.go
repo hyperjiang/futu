@@ -5,6 +5,7 @@ import (
 
 	"github.com/hyperjiang/futu/infra"
 	"github.com/hyperjiang/futu/pb/common"
+	"github.com/hyperjiang/futu/pb/trdflowsummary"
 	"github.com/hyperjiang/futu/pb/trdgetacclist"
 	"github.com/hyperjiang/futu/pb/trdgetfunds"
 	"github.com/hyperjiang/futu/pb/trdgethistoryorderfilllist"
@@ -374,6 +375,31 @@ func (client *Client) TrdGetOrderFee(ctx context.Context, c2s *trdgetorderfee.C2
 	ch := make(chan *trdgetorderfee.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdGetOrderFee, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// TrdFlowSummary 2226 - 查询账户现金流水
+func (client *Client) TrdFlowSummary(ctx context.Context, c2s *trdflowsummary.C2S) (*trdflowsummary.S2C, error) {
+	req := &trdflowsummary.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *trdflowsummary.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.TrdFlowSummary, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 

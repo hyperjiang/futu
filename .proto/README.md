@@ -22,6 +22,8 @@ brew install protc-gen-go
 
 Replace `github.com/futuopen/ftapi4go` with `github.com/hyperjiang/futu` in all the proto files.
 
+Replace `github.com/hyperjiang/futu/pb/getoptionexpirationdate` with `github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate`.
+
 ### 4. Generate the codes
 
 ```bash

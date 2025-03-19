@@ -32,6 +32,7 @@ import (
 	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/trdcommon"
+	"github.com/hyperjiang/futu/pb/trdflowsummary"
 	"github.com/hyperjiang/futu/pb/trdgetmarginratio"
 	"github.com/hyperjiang/futu/pb/trdmodifyorder"
 	"github.com/hyperjiang/futu/pb/trdplaceorder"
@@ -230,6 +231,14 @@ func (sdk *SDK) GetOrderFee(header *trdcommon.TrdHeader, orderIdExList []string)
 	defer cancel()
 
 	return sdk.GetOrderFeeWithContext(ctx, header, orderIdExList)
+}
+
+// TrdFlowSummary 2226 - gets the trading flow summary.
+func (sdk *SDK) TrdFlowSummary(header *trdcommon.TrdHeader, clearingDate string) ([]*trdflowsummary.FlowSummaryInfo, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.TrdFlowSummaryWithContext(ctx, header, clearingDate)
 }
 
 // Subscribe 3001 - subscribes or unsubscribes.

@@ -21,7 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-//交易环境
+// 交易环境
 type TrdEnv int32
 
 const (
@@ -78,7 +78,7 @@ func (TrdEnv) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{0}
 }
 
-//交易品类
+// 交易品类
 type TrdCategory int32
 
 const (
@@ -138,7 +138,7 @@ func (TrdCategory) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{1}
 }
 
-//交易市场，是大的市场，不是具体品种
+// 交易市场，是大的市场，不是具体品种
 type TrdMarket int32
 
 const (
@@ -240,7 +240,7 @@ func (TrdMarket) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{2}
 }
 
-//可交易证券所属市场，目前主要是区分A股的沪市和深市，香港和美国暂不需要细分
+// 可交易证券所属市场，目前主要是区分A股的沪市和深市，香港和美国暂不需要细分
 type TrdSecMarket int32
 
 const (
@@ -324,11 +324,11 @@ func (TrdSecMarket) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{3}
 }
 
-//交易方向
+// 交易方向
 type TrdSide int32
 
 const (
-	//客户端下单只传Buy或Sell即可，SellShort是美股订单时服务器返回有此方向，BuyBack目前不存在，但也不排除服务器会传
+	// 客户端下单只传Buy或Sell即可，SellShort是美股订单时服务器返回有此方向，BuyBack目前不存在，但也不排除服务器会传
 	TrdSide_TrdSide_Unknown   TrdSide = 0 //未知方向
 	TrdSide_TrdSide_Buy       TrdSide = 1 //买入
 	TrdSide_TrdSide_Sell      TrdSide = 2 //卖出
@@ -391,7 +391,7 @@ func (TrdSide) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{4}
 }
 
-//订单类型
+// 订单类型
 type OrderType int32
 
 const (
@@ -496,7 +496,7 @@ func (OrderType) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{5}
 }
 
-//跟踪类型
+// 跟踪类型
 type TrailType int32
 
 const (
@@ -556,7 +556,7 @@ func (TrailType) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{6}
 }
 
-//订单状态
+// 订单状态
 type OrderStatus int32
 
 const (
@@ -658,7 +658,7 @@ func (OrderStatus) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{7}
 }
 
-//一笔成交的状态
+// 一笔成交的状态
 type OrderFillStatus int32
 
 const (
@@ -718,7 +718,7 @@ func (OrderFillStatus) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{8}
 }
 
-//持仓方向类型
+// 持仓方向类型
 type PositionSide int32
 
 const (
@@ -778,11 +778,11 @@ func (PositionSide) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{9}
 }
 
-//修改订单的操作类型
+// 修改订单的操作类型
 type ModifyOrderOp int32
 
 const (
-	//港股支持全部操作，美股目前仅支持ModifyOrderOp_Normal和ModifyOrderOp_Cancel
+	// 港股支持全部操作，美股目前仅支持ModifyOrderOp_Normal和ModifyOrderOp_Cancel
 	ModifyOrderOp_ModifyOrderOp_Unknown ModifyOrderOp = 0 //未知操作
 	ModifyOrderOp_ModifyOrderOp_Normal  ModifyOrderOp = 1 //修改订单的价格、数量等，即以前的改单
 	ModifyOrderOp_ModifyOrderOp_Cancel  ModifyOrderOp = 2 //撤单
@@ -848,7 +848,7 @@ func (ModifyOrderOp) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{10}
 }
 
-//交易账户类型
+// 交易账户类型
 type TrdAccType int32
 
 const (
@@ -908,7 +908,7 @@ func (TrdAccType) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{11}
 }
 
-//交易账户状态
+// 交易账户状态
 type TrdAccStatus int32
 
 const (
@@ -965,7 +965,7 @@ func (TrdAccStatus) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{12}
 }
 
-//货币种类
+// 货币种类
 type Currency int32
 
 const (
@@ -1043,7 +1043,7 @@ func (Currency) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{13}
 }
 
-//账户风险控制等级
+// 账户风险控制等级
 type CltRiskLevel int32
 
 const (
@@ -1112,7 +1112,7 @@ func (CltRiskLevel) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{14}
 }
 
-//订单有效期
+// 订单有效期
 type TimeInForce int32
 
 const (
@@ -1169,7 +1169,7 @@ func (TimeInForce) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{15}
 }
 
-//券商
+// 券商
 type SecurityFirm int32
 
 const (
@@ -1235,7 +1235,7 @@ func (SecurityFirm) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{16}
 }
 
-//模拟交易账户类型
+// 模拟交易账户类型
 type SimAccType int32
 
 const (
@@ -1298,7 +1298,7 @@ func (SimAccType) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{17}
 }
 
-//风险状态，共分 9 个等级，LEVEL1是最安全，LEVEL9是最危险
+// 风险状态，共分 9 个等级，LEVEL1是最安全，LEVEL9是最危险
 type CltRiskStatus int32
 
 const (
@@ -1379,7 +1379,7 @@ func (CltRiskStatus) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{18}
 }
 
-//日内交易限制情况
+// 日内交易限制情况
 type DTStatus int32
 
 const (
@@ -1442,7 +1442,7 @@ func (DTStatus) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{19}
 }
 
-//账户现金信息，目前仅用于期货账户
+// 账户现金信息，目前仅用于期货账户
 type AccCashInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1512,7 +1512,7 @@ func (x *AccCashInfo) GetNetCashPower() float64 {
 	return 0
 }
 
-//分市场资产信息
+// 分市场资产信息
 type AccMarketInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1566,7 +1566,7 @@ func (x *AccMarketInfo) GetAssets() float64 {
 	return 0
 }
 
-//交易协议公共参数头
+// 交易协议公共参数头
 type TrdHeader struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1628,7 +1628,7 @@ func (x *TrdHeader) GetTrdMarket() int32 {
 	return 0
 }
 
-//交易业务账户结构
+// 交易业务账户结构
 type TrdAcc struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1738,7 +1738,7 @@ func (x *TrdAcc) GetAccStatus() int32 {
 	return 0
 }
 
-//账户资金结构
+// 账户资金结构
 type Funds struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2040,7 +2040,7 @@ func (x *Funds) GetMarketInfoList() []*AccMarketInfo {
 	return nil
 }
 
-//账户持仓结构
+// 账户持仓结构
 type Position struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2058,7 +2058,7 @@ type Position struct {
 	PlVal        *float64 `protobuf:"fixed64,10,req,name=plVal" json:"plVal,omitempty"`             //盈亏金额，3位精度，期货为2位精度
 	PlRatio      *float64 `protobuf:"fixed64,11,opt,name=plRatio" json:"plRatio,omitempty"`         //盈亏百分比(如plRatio等于8.8代表涨8.8%)，无精度限制，如果没传，代表此时此值无效
 	SecMarket    *int32   `protobuf:"varint,12,opt,name=secMarket" json:"secMarket,omitempty"`      //证券所属市场，参见TrdSecMarket的枚举定义
-	//以下是此持仓今日统计
+	// 以下是此持仓今日统计
 	TdPlVal      *float64 `protobuf:"fixed64,21,opt,name=td_plVal,json=tdPlVal" json:"td_plVal,omitempty"`       //今日盈亏金额，3位精度，下同, 期货为2位精度
 	TdTrdVal     *float64 `protobuf:"fixed64,22,opt,name=td_trdVal,json=tdTrdVal" json:"td_trdVal,omitempty"`    //今日交易额，期货不适用
 	TdBuyVal     *float64 `protobuf:"fixed64,23,opt,name=td_buyVal,json=tdBuyVal" json:"td_buyVal,omitempty"`    //今日买入总额，期货不适用
@@ -2255,7 +2255,7 @@ func (x *Position) GetTrdMarket() int32 {
 	return 0
 }
 
-//订单结构
+// 订单结构
 type Order struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2615,7 +2615,7 @@ func (x *OrderFee) GetFeeList() []*OrderFeeItem {
 	return nil
 }
 
-//成交结构
+// 成交结构
 type OrderFill struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2789,13 +2789,13 @@ func (x *OrderFill) GetTrdMarket() int32 {
 	return 0
 }
 
-//最大可交易数量
+// 最大可交易数量
 type MaxTrdQtys struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	//因目前服务器实现的问题，卖空需要先卖掉持仓才能再卖空，是分开两步卖的，买回来同样是逆向两步；而看多的买是可以现金加融资一起一步买的，请注意这个差异
+	// 因目前服务器实现的问题，卖空需要先卖掉持仓才能再卖空，是分开两步卖的，买回来同样是逆向两步；而看多的买是可以现金加融资一起一步买的，请注意这个差异
 	MaxCashBuy          *float64 `protobuf:"fixed64,1,req,name=maxCashBuy" json:"maxCashBuy,omitempty"`                   //不使用融资，仅自己的现金最大可买整手股数，期货此字段值为0
 	MaxCashAndMarginBuy *float64 `protobuf:"fixed64,2,opt,name=maxCashAndMarginBuy" json:"maxCashAndMarginBuy,omitempty"` //使用融资，自己的现金 + 融资资金总共的最大可买整手股数，期货不适用
 	MaxPositionSell     *float64 `protobuf:"fixed64,3,req,name=maxPositionSell" json:"maxPositionSell,omitempty"`         //不使用融券(卖空)，仅自己的持仓最大可卖整手股数
@@ -2884,7 +2884,7 @@ func (x *MaxTrdQtys) GetShortRequiredIM() float64 {
 	return 0
 }
 
-//过滤条件，条件组合是"与"不是"或"，用于获取订单、成交、持仓等时二次过滤
+// 过滤条件，条件组合是"与"不是"或"，用于获取订单、成交、持仓等时二次过滤
 type TrdFilterConditions struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

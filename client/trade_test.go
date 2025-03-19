@@ -7,6 +7,7 @@ import (
 
 	"github.com/hyperjiang/futu/pb/qotcommon"
 	"github.com/hyperjiang/futu/pb/trdcommon"
+	"github.com/hyperjiang/futu/pb/trdflowsummary"
 	"github.com/hyperjiang/futu/pb/trdgetacclist"
 	"github.com/hyperjiang/futu/pb/trdgetfunds"
 	"github.com/hyperjiang/futu/pb/trdgethistoryorderfilllist"
@@ -275,4 +276,19 @@ func (ts *ClientTestSuite) TestTrdGetMarginRatio() {
 	for _, item := range res.GetMarginRatioInfoList() {
 		log.Info().Interface("margin ratio", item).Msg("TrdGetMarginRatio")
 	}
+}
+
+func (ts *ClientTestSuite) TestTrdFlowSummary() {
+	should := require.New(ts.T())
+
+	c2s := &trdflowsummary.C2S{
+		Header:       usAccount,
+		ClearingDate: proto.String(time.Now().Format("2006-01-02")),
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+
+	_, err := ts.client.TrdFlowSummary(ctx, c2s)
+	should.EqualError(err, "模拟账户不支持查询现金流水")
 }

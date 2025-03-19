@@ -527,13 +527,13 @@ const (
 	QotMarketState_QotMarketState_HkCas                QotMarketState = 19 // 盘后竞价,港股市场增加CAS机制对应的市场状态
 	QotMarketState_QotMarketState_FutureNightWait      QotMarketState = 20 // 夜市等待开盘（已废弃）
 	QotMarketState_QotMarketState_FutureAfternoon      QotMarketState = 21 // 期货下午开盘（已废弃）
-	//美国期货新增加状态
+	// 美国期货新增加状态
 	QotMarketState_QotMarketState_FutureSwitchDate QotMarketState = 22 // 期货切交易日（已废弃）
 	QotMarketState_QotMarketState_FutureOpen       QotMarketState = 23 // 期货开盘
 	QotMarketState_QotMarketState_FutureBreak      QotMarketState = 24 // 期货中盘休息
 	QotMarketState_QotMarketState_FutureBreakOver  QotMarketState = 25 // 期货休息后开盘
 	QotMarketState_QotMarketState_FutureClose      QotMarketState = 26 // 期货收盘
-	//科创板新增状态
+	// 科创板新增状态
 	QotMarketState_QotMarketState_StibAfterHoursWait  QotMarketState = 27 // 科创板的盘后撮合时段（已废弃）
 	QotMarketState_QotMarketState_StibAfterHoursBegin QotMarketState = 28 // 科创板的盘后交易开始（已废弃）
 	QotMarketState_QotMarketState_StibAfterHoursEnd   QotMarketState = 29 // 科创板的盘后交易结束（已废弃）
@@ -663,7 +663,7 @@ func (QotMarketState) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_Common_proto_rawDescGZIP(), []int{7}
 }
 
-//交易日查询市场
+// 交易日查询市场
 type TradeDateMarket int32
 
 const (
@@ -738,7 +738,7 @@ func (TradeDateMarket) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_Common_proto_rawDescGZIP(), []int{8}
 }
 
-//交易日类型
+// 交易日类型
 type TradeDateType int32
 
 const (
@@ -857,7 +857,7 @@ func (RehabType) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_Common_proto_rawDescGZIP(), []int{10}
 }
 
-//枚举值兼容旧协议定义
+// 枚举值兼容旧协议定义
 type KLType int32
 
 const (
@@ -1027,8 +1027,8 @@ func (KLFields) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_Common_proto_rawDescGZIP(), []int{12}
 }
 
-//订阅类型
-//枚举值兼容旧协议定义
+// 订阅类型
+// 枚举值兼容旧协议定义
 type SubType int32
 
 const (
@@ -1575,7 +1575,7 @@ func (HolderCategory) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_Common_proto_rawDescGZIP(), []int{18}
 }
 
-//推送数据的分类，目前只有逐笔在使用
+// 推送数据的分类，目前只有逐笔在使用
 type PushDataType int32
 
 const (
@@ -1638,7 +1638,7 @@ func (PushDataType) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_Common_proto_rawDescGZIP(), []int{19}
 }
 
-//窝轮排序
+// 窝轮排序
 type SortField int32
 
 const (
@@ -1655,7 +1655,7 @@ const (
 	SortField_SortField_Volume         SortField = 10 //成交量
 	SortField_SortField_Turnover       SortField = 11 //成交额
 	SortField_SortField_Amplitude      SortField = 30 //振幅%
-	//以下排序字段只支持用于Qot_GetWarrant协议
+	// 以下排序字段只支持用于Qot_GetWarrant协议
 	SortField_SortField_Score             SortField = 12 //综合评分
 	SortField_SortField_Premium           SortField = 13 //溢价%
 	SortField_SortField_EffectiveLeverage SortField = 14 //有效杠杆
@@ -1681,7 +1681,7 @@ const (
 	SortField_SortField_UpperStrikePrice  SortField = 45 //上限价，仅用于界内证
 	SortField_SortField_LowerStrikePrice  SortField = 46 //下限价，仅用于界内证
 	SortField_SortField_InLinePriceStatus SortField = 47 //界内界外，仅用于界内证
-	//以下排序字段只支持用于Qot_GetPlateSecurity协议，并仅支持美股
+	// 以下排序字段只支持用于Qot_GetPlateSecurity协议，并仅支持美股
 	SortField_SortField_PreCurPrice         SortField = 35 //盘前最新价
 	SortField_SortField_AfterCurPrice       SortField = 36 //盘后最新价
 	SortField_SortField_PrePriceChangeVal   SortField = 37 //盘前涨跌额
@@ -1692,7 +1692,7 @@ const (
 	SortField_SortField_AfterAmplitude      SortField = 42 //盘后振幅%
 	SortField_SortField_PreTurnover         SortField = 43 //盘前成交额
 	SortField_SortField_AfterTurnover       SortField = 44 //盘后成交额
-	//以下排序字段只支持用于Qot_GetPlateSecurity协议，并仅支持期货
+	// 以下排序字段只支持用于Qot_GetPlateSecurity协议，并仅支持期货
 	SortField_SortField_LastSettlePrice SortField = 48 //昨结
 	SortField_SortField_Position        SortField = 49 //持仓量
 	SortField_SortField_PositionChange  SortField = 50 //日增仓
@@ -1845,7 +1845,7 @@ func (SortField) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_Common_proto_rawDescGZIP(), []int{20}
 }
 
-//窝轮发行人
+// 窝轮发行人
 type Issuer int32
 
 const (
@@ -1983,7 +1983,7 @@ func (Issuer) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_Common_proto_rawDescGZIP(), []int{21}
 }
 
-//窝轮上市日
+// 窝轮上市日
 type IpoPeriod int32
 
 const (
@@ -2052,7 +2052,7 @@ func (IpoPeriod) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_Common_proto_rawDescGZIP(), []int{22}
 }
 
-//窝轮价外/内,界内证表示界内界外
+// 窝轮价外/内,界内证表示界内界外
 type PriceType int32
 
 const (
@@ -2112,7 +2112,7 @@ func (PriceType) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_Common_proto_rawDescGZIP(), []int{23}
 }
 
-//窝轮状态
+// 窝轮状态
 type WarrantStatus int32
 
 const (
@@ -2255,7 +2255,7 @@ func (CompanyAct) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_Common_proto_rawDescGZIP(), []int{25}
 }
 
-//行情权限
+// 行情权限
 type QotRight int32
 
 const (
@@ -2798,7 +2798,7 @@ func (PeriodType) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_Common_proto_rawDescGZIP(), []int{32}
 }
 
-//两个字段确定一支股票
+// 两个字段确定一支股票
 type Security struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -3174,8 +3174,8 @@ func (x *OptionBasicQotExData) GetIndexOptionType() int32 {
 	return 0
 }
 
-//美股支持盘前盘后数据
-//科创板仅支持盘后数据：成交量，成交额
+// 美股支持盘前盘后数据
+// 科创板仅支持盘后数据：成交量，成交额
 type PreAfterMarketData struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -4146,7 +4146,7 @@ type Broker struct {
 	Id   *int64  `protobuf:"varint,1,req,name=id" json:"id,omitempty"`    //经纪ID
 	Name *string `protobuf:"bytes,2,req,name=name" json:"name,omitempty"` //经纪名称
 	Pos  *int32  `protobuf:"varint,3,req,name=pos" json:"pos,omitempty"`  //经纪档位
-	//以下为SF行情特有字段
+	// 以下为SF行情特有字段
 	OrderID *int64 `protobuf:"varint,4,opt,name=orderID" json:"orderID,omitempty"` //交易所订单ID，与交易接口返回的订单ID并不一样
 	Volume  *int64 `protobuf:"varint,5,opt,name=volume" json:"volume,omitempty"`   //订单股数
 }
@@ -4463,7 +4463,7 @@ func (x *OrderBook) GetDetailList() []*OrderBookDetail {
 	return nil
 }
 
-//持股变动
+// 持股变动
 type ShareHoldingChange struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

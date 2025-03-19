@@ -178,7 +178,7 @@ type Response struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	//以下3个字段每条协议都有，注释说明在InitConnect.proto中
+	// 以下3个字段每条协议都有，注释说明在InitConnect.proto中
 	RetType *int32  `protobuf:"varint,1,req,name=retType,def=-400" json:"retType,omitempty"`
 	RetMsg  *string `protobuf:"bytes,2,opt,name=retMsg" json:"retMsg,omitempty"`
 	ErrCode *int32  `protobuf:"varint,3,opt,name=errCode" json:"errCode,omitempty"`

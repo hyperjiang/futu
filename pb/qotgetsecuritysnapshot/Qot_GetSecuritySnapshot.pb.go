@@ -809,7 +809,7 @@ func (x *PlateSnapshotExData) GetEqualCount() int32 {
 	return 0
 }
 
-//期货类型额外数据
+// 期货类型额外数据
 type FutureSnapshotExData struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -895,7 +895,7 @@ func (x *FutureSnapshotExData) GetIsMainContract() bool {
 	return false
 }
 
-//基金类型额外数据
+// 基金类型额外数据
 type TrustSnapshotExData struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -981,7 +981,7 @@ func (x *TrustSnapshotExData) GetAssetClass() int32 {
 	return 0
 }
 
-//基本快照数据
+// 基本快照数据
 type SnapshotBasicData struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
