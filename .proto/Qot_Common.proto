@@ -118,6 +118,7 @@ enum QotMarketState
     QotMarketState_OVERNIGHT_END         = 34;  // 夜盘结束
     QotMarketState_TRADE_AT_LAST         = 35;  // 收盘前成交（在交易时间表内）
     QotMarketState_TRADE_AUCTION         = 36;  // 收盘前的竞价 （在交易时间表内）
+	QotMarketState_OVERNIGHT         	 = 37;  // 美股夜盘交易时段
 }
 
 //交易日查询市场
@@ -496,6 +497,27 @@ enum ExpirationCycle
 	ExpirationCycle_Month = 2; //月期权
 	ExpirationCycle_MonthEnd = 3;  // 月末期权
 	ExpirationCycle_Quarter = 4; //季度期权
+	ExpirationCycle_WeekMon = 11; //周一
+	ExpirationCycle_WeekTue = 12; //周二
+	ExpirationCycle_WeekWed = 13; //周三
+	ExpirationCycle_WeekThu = 14; //周四
+	ExpirationCycle_WeekFri = 15; //周五
+}
+
+// 标准期权链类型
+enum OptionStandardType
+{
+	OptionStandardType_Unknown = 0; //未知
+	OptionStandardType_Standard = 1; // 标准
+	OptionStandardType_NonStandard = 2; // 非标准
+}
+
+// 期权结算方式
+enum OptionSettlementMode
+{
+	OptionSettlementMode_Unknown = 0; //未知
+	OptionSettlementMode_AM = 1; // AM
+	OptionSettlementMode_PM = 2; // PM
 }
 
 // 所属交易所
@@ -530,6 +552,15 @@ enum PeriodType
 	PeriodType_DAY = 2; // 日
 	PeriodType_WEEK = 3; // 周
 	PeriodType_MONTH = 4; // 月
+}
+
+enum PriceReminderMarketStatus
+{
+	PriceReminderMarketStatus_Unknow = 0;
+	PriceReminderMarketStatus_Open = 1; // 盘中
+	PriceReminderMarketStatus_USPre = 2;  // 美股盘前
+	PriceReminderMarketStatus_USAfter = 3; // 美股盘后
+	PriceReminderMarketStatus_USOverNight = 4; // 美股夜盘
 }
 
  //两个字段确定一支股票
@@ -633,6 +664,7 @@ message BasicQot
 	optional int32 secStatus = 21; //SecurityStatus, 股票状态
 	optional FutureBasicQotExData futureExData = 22; //期货特有字段
 	optional WarrantBasicQotExData warrantExData = 23; //窝轮特有字段
+	optional PreAfterMarketData overnight = 25; //夜盘数据
 }
 
 message TimeShare
@@ -677,6 +709,9 @@ message OptionStaticExData
 	required string market = 6; //发行市场名字
 	optional double strikeTimestamp = 7; //行权日时间戳
 	optional int32 indexOptionType = 8; //Qot_Common.IndexOptionType, 指数期权的类型，仅在指数期权有效
+	optional int32 expirationCycle = 9; // ExpirationCycle，交割周期
+	optional int32 optionStandardType = 10; // OptionStandardType，标准期权
+	optional int32 optionSettlementMode = 11; // OptionSettlementMode，结算方式
 }
 
 message FutureStaticExData

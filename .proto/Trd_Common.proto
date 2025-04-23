@@ -332,10 +332,10 @@ message Position
     required double qty = 5;            //持有数量，2位精度，期权单位是"张"，下同
     required double canSellQty = 6;     //可卖数量
     required double price = 7;          //市价，3位精度，期货为2位精度
-    optional double costPrice = 8;      //成本价，无精度限制，期货为2位精度，如果没传，代表此时此值无效,
+    optional double costPrice = 8;      //成本价，无精度限制，期货为2位精度，如果没传，代表此时此值无效（已废弃，请使用 dilutedCostPrice 或 averageCostPrice）
     required double val = 9;            //市值，3位精度, 期货此字段值为0
     required double plVal = 10;         //盈亏金额，3位精度，期货为2位精度
-    optional double plRatio = 11;       //盈亏百分比(如plRatio等于8.8代表涨8.8%)，无精度限制，如果没传，代表此时此值无效
+    optional double plRatio = 11;       //摊薄成本价的盈亏百分比(如plRatio等于8.8代表涨8.8%)，无精度限制，如果没传，代表此时此值无效
     optional int32 secMarket = 12;      //证券所属市场，参见TrdSecMarket的枚举定义
 
 	//以下是此持仓今日统计
@@ -350,6 +350,10 @@ message Position
     optional double realizedPL = 29;         //已实现盈亏，期货适用
 	optional int32 currency = 30;        // 货币类型，取值参考 Currency
 	optional int32 trdMarket = 31;  //交易市场, 参见TrdMarket的枚举定义
+
+    optional double dilutedCostPrice = 32;      //摊薄成本价，仅支持证券账户使用
+    optional double averageCostPrice = 33;      //平均成本价，模拟交易证券账户不适用
+    optional double averagePlRatio = 34;        //平均成本价的盈亏百分比(如plRatio等于8.8代表涨8.8%)，无精度限制，如果没传，代表此时此值无效
 }
 
 //订单结构
@@ -381,6 +385,7 @@ message Order
 	optional double trailSpread = 24; //指定价差
 	optional int32 currency = 25;        // 货币类型，取值参考 Currency
 	optional int32 trdMarket = 26;  //交易市场, 参见TrdMarket的枚举定义
+	optional int32 session = 27; //美股订单时段, 参见Common.Session的枚举定义
 }
 
 message OrderFeeItem

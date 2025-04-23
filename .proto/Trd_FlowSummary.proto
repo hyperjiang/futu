@@ -21,6 +21,7 @@ message FlowSummaryInfo
 	optional int32 cashFlowDirection = 5; //现金流方向 TrdCashFlowDirection
 	optional double cashFlowAmount = 6; //金额
 	optional string cashFlowRemark = 7; // 备注
+	optional uint64 cashFlowID = 8; // 现金流ID
 }
 
 message C2S

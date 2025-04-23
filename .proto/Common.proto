@@ -77,3 +77,12 @@ message ProgramStatus
 	required ProgramStatusType type = 1; //当前状态
 	optional string strExtDesc = 2; // 额外描述
 }
+
+enum Session
+{
+	Session_NONE = 0;
+	Session_RTH = 1;
+	Session_ETH = 2;
+	Session_ALL = 3;
+	Session_OVERNIGHT = 4;
+}
