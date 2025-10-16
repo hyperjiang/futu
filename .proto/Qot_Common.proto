@@ -434,6 +434,7 @@ enum CompanyAct
 	CompanyAct_Add = 32; //增发股
 	CompanyAct_Dividend = 64; //现金分红
 	CompanyAct_SPDividend = 128; //特别股息
+	CompanyAct_SpinOff = 256; //分立
 }
 
 //行情权限
@@ -825,5 +826,7 @@ message Rehab
 	optional double addPrice = 20;
 	optional double dividend = 21; //现金分红(例如，每10股派现0.5元,则该字段值为0.05)
 	optional double spDividend = 22; //特别股息(例如，每10股派特别股息0.5元,则该字段值为0.05)
+	optional double spinOffBase = 24; // 分立
+	optional double spinOffErt = 25; //
 	optional double timestamp = 23; //时间戳
 }

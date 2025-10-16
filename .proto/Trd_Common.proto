@@ -434,6 +434,7 @@ message MaxTrdQtys
     optional double maxBuyBack = 5;             //卖空后，需要买回的最大整手股数。因为卖空后，必须先买回已卖空的股数，还掉股票，才能再继续买多。期货不适用
 	optional double longRequiredIM = 6;         //开多仓每张合约初始保证金。当前仅期货和期权适用（最低 FutuOpenD 版本要求：5.0.1310）
 	optional double shortRequiredIM = 7;        //开空仓每张合约初始保证金。当前仅期货和期权适用（最低 FutuOpenD 版本要求：5.0.1310）
+	optional int32 session = 8;                 //美股订单时段, 参见Common.Session的枚举定义（最低 FutuOpenD 版本要求：9.4.5408）
 }
 
 //过滤条件，条件组合是"与"不是"或"，用于获取订单、成交、持仓等时二次过滤

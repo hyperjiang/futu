@@ -29,7 +29,7 @@ type C2S struct {
 
 	UserID                *uint64 `protobuf:"varint,1,req,name=userID" json:"userID,omitempty"`                               //历史原因，目前已废弃，填0即可
 	TrdCategory           *int32  `protobuf:"varint,2,opt,name=trdCategory" json:"trdCategory,omitempty"`                     //交易品类，参考 Trd_Common.TrdCategory
-	NeedGeneralSecAccount *bool   `protobuf:"varint,3,opt,name=needGeneralSecAccount" json:"needGeneralSecAccount,omitempty"` //是否返回全能账户，仅SG用户需要
+	NeedGeneralSecAccount *bool   `protobuf:"varint,3,opt,name=needGeneralSecAccount" json:"needGeneralSecAccount,omitempty"` //是否返回综合账户 （适用于 HK/US/SG/AU 综合账户体系）
 }
 
 func (x *C2S) Reset() {
@@ -178,7 +178,7 @@ type Response struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// 以下3个字段每条协议都有，注释说明在InitConnect.proto中
+	//以下3个字段每条协议都有，注释说明在InitConnect.proto中
 	RetType *int32  `protobuf:"varint,1,req,name=retType,def=-400" json:"retType,omitempty"`
 	RetMsg  *string `protobuf:"bytes,2,opt,name=retMsg" json:"retMsg,omitempty"`
 	ErrCode *int32  `protobuf:"varint,3,opt,name=errCode" json:"errCode,omitempty"`

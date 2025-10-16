@@ -81,7 +81,7 @@ func (OptionCondType) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_GetOptionChain_proto_rawDescGZIP(), []int{0}
 }
 
-// 以下为数据字段筛选，可选字段，不填表示不过滤
+//以下为数据字段筛选，可选字段，不填表示不过滤
 type DataFilter struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

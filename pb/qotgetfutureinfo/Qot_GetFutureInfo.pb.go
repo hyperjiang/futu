@@ -22,7 +22,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// 交易时间
+//交易时间
 type TradeTime struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -76,7 +76,7 @@ func (x *TradeTime) GetEnd() float64 {
 	return 0
 }
 
-// 期货合约资料的列表
+//期货合约资料的列表
 type FutureInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

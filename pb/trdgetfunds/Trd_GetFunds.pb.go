@@ -29,8 +29,8 @@ type C2S struct {
 
 	Header       *trdcommon.TrdHeader `protobuf:"bytes,1,req,name=header" json:"header,omitempty"`              //交易公共参数头
 	RefreshCache *bool                `protobuf:"varint,2,opt,name=refreshCache" json:"refreshCache,omitempty"` //立即刷新OpenD缓存的此数据，默认不填。true向服务器获取最新数据更新缓存并返回；flase或没填则返回OpenD缓存的数据，不会向服务器请求。
-	// 正常情况下，服务器有更新就会立即推送到OpenD，OpenD缓存着数据，API请求过来，返回同步的缓存数据，一般不需要指定刷新缓存，保证快速返回且减少对服务器的压力
-	// 如果遇到丢包等情况，可能出现缓存数据与服务器不一致，用户如果发现数据更新有异样，可指定刷新缓存，解决数据同步的问题。
+	//正常情况下，服务器有更新就会立即推送到OpenD，OpenD缓存着数据，API请求过来，返回同步的缓存数据，一般不需要指定刷新缓存，保证快速返回且减少对服务器的压力
+	//如果遇到丢包等情况，可能出现缓存数据与服务器不一致，用户如果发现数据更新有异样，可指定刷新缓存，解决数据同步的问题。
 	Currency *int32 `protobuf:"varint,3,opt,name=currency" json:"currency,omitempty"` //货币种类，参见Trd_Common.Currency。期货账户必填，其它账户忽略
 }
 
@@ -188,7 +188,7 @@ type Response struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// 以下3个字段每条协议都有，注释说明在InitConnect.proto中
+	//以下3个字段每条协议都有，注释说明在InitConnect.proto中
 	RetType *int32  `protobuf:"varint,1,req,name=retType,def=-400" json:"retType,omitempty"`
 	RetMsg  *string `protobuf:"bytes,2,opt,name=retMsg" json:"retMsg,omitempty"`
 	ErrCode *int32  `protobuf:"varint,3,opt,name=errCode" json:"errCode,omitempty"`

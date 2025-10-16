@@ -29,7 +29,7 @@ type C2S struct {
 
 	Security       *qotcommon.Security `protobuf:"bytes,1,req,name=security" json:"security,omitempty"`              //股票
 	HolderCategory *int32              `protobuf:"varint,2,req,name=holderCategory" json:"holderCategory,omitempty"` //持有者类别（1机构、2基金、3高管）
-	// 以下是发布时间筛选，不传返回所有数据，传了返回发布时间属于开始时间到结束时间段内的数据
+	//以下是发布时间筛选，不传返回所有数据，传了返回发布时间属于开始时间到结束时间段内的数据
 	BeginTime *string `protobuf:"bytes,3,opt,name=beginTime" json:"beginTime,omitempty"` //开始时间，严格按YYYY-MM-DD HH:MM:SS或YYYY-MM-DD HH:MM:SS.MS格式传
 	EndTime   *string `protobuf:"bytes,4,opt,name=endTime" json:"endTime,omitempty"`     //结束时间，严格按YYYY-MM-DD HH:MM:SS或YYYY-MM-DD HH:MM:SS.MS格式传
 }

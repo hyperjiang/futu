@@ -33,10 +33,10 @@ type C2S struct {
 	ModifyOrderOp *int32               `protobuf:"varint,4,req,name=modifyOrderOp" json:"modifyOrderOp,omitempty"` //修改操作类型，参见Trd_Common.ModifyOrderOp的枚举定义
 	ForAll        *bool                `protobuf:"varint,5,opt,name=forAll" json:"forAll,omitempty"`               //是否对此业务账户的全部订单操作，true是，false否(对单个订单)，无此字段代表false，仅对单个订单
 	TrdMarket     *int32               `protobuf:"varint,6,opt,name=trdMarket" json:"trdMarket,omitempty"`         //指定市场，全部撤单时才需要
-	// 下面的字段仅针对单个订单，且modifyOrderOp为ModifyOrderOp_Normal有效
+	//下面的字段仅针对单个订单，且modifyOrderOp为ModifyOrderOp_Normal有效
 	Qty   *float64 `protobuf:"fixed64,8,opt,name=qty" json:"qty,omitempty"`     //数量，期权单位是"张"（精确到小数点后 0 位，超出部分会被舍弃）
 	Price *float64 `protobuf:"fixed64,9,opt,name=price" json:"price,omitempty"` //价格，（证券账户精确到小数点后 3 位，期货账户精确到小数点后 9 位，超出部分会被舍弃）
-	// 以下为调整价格使用，都传才有效，对港、A股有意义，因为港股有价位，A股2位精度，美股可不传
+	//以下为调整价格使用，都传才有效，对港、A股有意义，因为港股有价位，A股2位精度，美股可不传
 	AdjustPrice        *bool    `protobuf:"varint,10,opt,name=adjustPrice" json:"adjustPrice,omitempty"`                //是否调整价格，如果价格不合法，是否调整到合法价位，true调整，false不调整
 	AdjustSideAndLimit *float64 `protobuf:"fixed64,11,opt,name=adjustSideAndLimit" json:"adjustSideAndLimit,omitempty"` //调整方向和调整幅度百分比限制，正数代表向上调整，负数代表向下调整，具体值代表调整幅度限制，如：0.015代表向上调整且幅度不超过1.5%；-0.01代表向下调整且幅度不超过1%
 	AuxPrice           *float64 `protobuf:"fixed64,12,opt,name=auxPrice" json:"auxPrice,omitempty"`                     //触发价格
@@ -292,7 +292,7 @@ type Response struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// 以下3个字段每条协议都有，注释说明在InitConnect.proto中
+	//以下3个字段每条协议都有，注释说明在InitConnect.proto中
 	RetType *int32  `protobuf:"varint,1,req,name=retType,def=-400" json:"retType,omitempty"`
 	RetMsg  *string `protobuf:"bytes,2,opt,name=retMsg" json:"retMsg,omitempty"`
 	ErrCode *int32  `protobuf:"varint,3,opt,name=errCode" json:"errCode,omitempty"`

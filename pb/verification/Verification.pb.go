@@ -139,10 +139,10 @@ func (VerificationOp) EnumDescriptor() ([]byte, []int) {
 	return file_Verification_proto_rawDescGZIP(), []int{1}
 }
 
-// 图形验证码下载之后会将其存至固定路径，请到该路径下查看验证码
-// Windows平台：%appdata%/com.futunn.FutuOpenD/F3CNN/PicVerifyCode.png
-// 非Windows平台：~/.com.futunn.FutuOpenD/F3CNN/PicVerifyCode.png
-// 注意：只有最后一次请求验证码会生效，重复请求只有最后一次的验证码有效
+//图形验证码下载之后会将其存至固定路径，请到该路径下查看验证码
+//Windows平台：%appdata%/com.futunn.FutuOpenD/F3CNN/PicVerifyCode.png
+//非Windows平台：~/.com.futunn.FutuOpenD/F3CNN/PicVerifyCode.png
+//注意：只有最后一次请求验证码会生效，重复请求只有最后一次的验证码有效
 type C2S struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

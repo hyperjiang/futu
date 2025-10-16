@@ -29,8 +29,8 @@ type C2S struct {
 	ClientVer  *int32  `protobuf:"varint,1,req,name=clientVer" json:"clientVer,omitempty"`   //客户端版本号，clientVer = "."以前的数 * 100 + "."以后的，举例：1.1版本的clientVer为1 * 100 + 1 = 101，2.21版本为2 * 100 + 21 = 221
 	ClientID   *string `protobuf:"bytes,2,req,name=clientID" json:"clientID,omitempty"`      //客户端唯一标识，无生具体生成规则，客户端自己保证唯一性即可
 	RecvNotify *bool   `protobuf:"varint,3,opt,name=recvNotify" json:"recvNotify,omitempty"` //此连接是否接收市场状态、交易需要重新解锁等等事件通知，true代表接收，FutuOpenD就会向此连接推送这些通知，反之false代表不接收不推送
-	// 如果通信要加密，首先得在FutuOpenD和客户端都配置RSA密钥，不配置始终不加密
-	// 如果配置了RSA密钥且指定的加密算法不为PacketEncAlgo_None则加密(即便这里不设置，配置了RSA密钥，也会采用默认加密方式)，默认采用FTAES_ECB算法
+	//如果通信要加密，首先得在FutuOpenD和客户端都配置RSA密钥，不配置始终不加密
+	//如果配置了RSA密钥且指定的加密算法不为PacketEncAlgo_None则加密(即便这里不设置，配置了RSA密钥，也会采用默认加密方式)，默认采用FTAES_ECB算法
 	PacketEncAlgo       *int32  `protobuf:"varint,4,opt,name=packetEncAlgo" json:"packetEncAlgo,omitempty"`            //指定包加密算法，参见Common.PacketEncAlgo的枚举定义
 	PushProtoFmt        *int32  `protobuf:"varint,5,opt,name=pushProtoFmt" json:"pushProtoFmt,omitempty"`              //指定这条连接上的推送协议格式，若不指定则使用push_proto_type配置项
 	ProgrammingLanguage *string `protobuf:"bytes,6,opt,name=programmingLanguage" json:"programmingLanguage,omitempty"` //接口编程语言，用于统计语言偏好

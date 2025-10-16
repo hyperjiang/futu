@@ -31,7 +31,7 @@ type C2S struct {
 	Num       *int32 `protobuf:"varint,2,req,name=num" json:"num,omitempty"`             //请求数据个数，最大200
 	SortField *int32 `protobuf:"varint,3,req,name=sortField" json:"sortField,omitempty"` //Qot_Common.SortField，根据哪个字段排序
 	Ascend    *bool  `protobuf:"varint,4,req,name=ascend" json:"ascend,omitempty"`       //升序ture，降序false
-	// 以下为筛选条件，可选字段，不填表示不过滤
+	//以下为筛选条件，可选字段，不填表示不过滤
 	Owner                 *qotcommon.Security `protobuf:"bytes,5,opt,name=owner" json:"owner,omitempty"`                                    //所属正股
 	TypeList              []int32             `protobuf:"varint,6,rep,name=typeList" json:"typeList,omitempty"`                             //Qot_Common.WarrantType，窝轮类型过滤列表
 	IssuerList            []int32             `protobuf:"varint,7,rep,name=issuerList" json:"issuerList,omitempty"`                         //Qot_Common.Issuer，发行人过滤列表
@@ -337,7 +337,7 @@ type WarrantData struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// 静态数据项
+	//静态数据项
 	Stock              *qotcommon.Security `protobuf:"bytes,1,req,name=stock" json:"stock,omitempty"`                              //股票
 	Owner              *qotcommon.Security `protobuf:"bytes,2,req,name=owner" json:"owner,omitempty"`                              //所属正股
 	Type               *int32              `protobuf:"varint,3,req,name=type" json:"type,omitempty"`                               //Qot_Common.WarrantType，窝轮类型
@@ -354,7 +354,7 @@ type WarrantData struct {
 	StrikePrice        *float64            `protobuf:"fixed64,14,req,name=strikePrice" json:"strikePrice,omitempty"`               //行使价
 	LastClosePrice     *float64            `protobuf:"fixed64,15,req,name=lastClosePrice" json:"lastClosePrice,omitempty"`         //昨收价
 	Name               *string             `protobuf:"bytes,16,req,name=name" json:"name,omitempty"`                               //名称
-	// 动态数据项
+	//动态数据项
 	CurPrice           *float64 `protobuf:"fixed64,17,req,name=curPrice" json:"curPrice,omitempty"`                     //当前价
 	PriceChangeVal     *float64 `protobuf:"fixed64,18,req,name=priceChangeVal" json:"priceChangeVal,omitempty"`         //涨跌额
 	ChangeRate         *float64 `protobuf:"fixed64,19,req,name=changeRate" json:"changeRate,omitempty"`                 //涨跌幅（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）
