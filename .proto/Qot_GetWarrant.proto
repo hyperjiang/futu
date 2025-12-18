@@ -12,7 +12,7 @@ message C2S
 	required int32 num =  2; //请求数据个数，最大200
 	required int32 sortField = 3;//Qot_Common.SortField，根据哪个字段排序
 	required bool ascend = 4;//升序ture，降序false
-
+	
 	//以下为筛选条件，可选字段，不填表示不过滤
 	optional Qot_Common.Security owner = 5;	//所属正股
 	repeated int32 typeList = 6; //Qot_Common.WarrantType，窝轮类型过滤列表
@@ -23,9 +23,9 @@ message C2S
 	optional int32 priceType = 11; //Qot_Common.PriceType，价内/价外（暂不支持界内证的界内外筛选）
 	optional int32 status = 12; //Qot_Common.WarrantStatus，窝轮状态
 	optional double curPriceMin = 13; //最新价的过滤下限（闭区间），不传代表下限为 -∞（精确到小数点后 3 位，超出部分会被舍弃）
-	optional double curPriceMax = 14; //最新价的过滤上限（闭区间），不传代表上限为 +∞（精确到小数点后 3 位，超出部分会被舍弃）
+	optional double curPriceMax = 14; //最新价的过滤上限（闭区间），不传代表上限为 +∞（精确到小数点后 3 位，超出部分会被舍弃） 	
 	optional double strikePriceMin = 15; //行使价的过滤下限（闭区间），不传代表下限为 -∞（精确到小数点后 3 位，超出部分会被舍弃）
-	optional double strikePriceMax = 16; //行使价的过滤上限（闭区间），不传代表上限为 +∞（精确到小数点后 3 位，超出部分会被舍弃）
+	optional double strikePriceMax = 16; //行使价的过滤上限（闭区间），不传代表上限为 +∞（精确到小数点后 3 位，超出部分会被舍弃） 
 	optional double streetMin = 17; //街货占比的过滤下限（闭区间），该字段为百分比字段，默认不展示 %，如 20 实际对应 20%。不传代表下限为 -∞（精确到小数点后 3 位，超出部分会被舍弃）
 	optional double streetMax = 18; //街货占比的过滤上限（闭区间），该字段为百分比字段，默认不展示 %，如 20 实际对应 20%。不传代表上限为 +∞（精确到小数点后 3 位，超出部分会被舍弃）
 	optional double conversionMin = 19; //换股比率的过滤下限（闭区间），不传代表下限为 -∞（精确到小数点后 3 位，超出部分会被舍弃）
@@ -39,11 +39,11 @@ message C2S
 	optional double deltaMin = 27;//对冲值的过滤下限（闭区间），仅认购认沽支持此字段过滤，不传代表下限为 -∞（精确到小数点后 3 位，超出部分会被舍弃）
 	optional double deltaMax = 28;//对冲值的过滤上限（闭区间），仅认购认沽支持此字段过滤，不传代表上限为 +∞（精确到小数点后 3 位，超出部分会被舍弃）
 	optional double impliedMin = 29; //引伸波幅的过滤下限（闭区间），仅认购认沽支持此字段过滤，不传代表下限为 -∞（精确到小数点后 3 位，超出部分会被舍弃）
-	optional double impliedMax = 30; //引伸波幅的过滤上限（闭区间），仅认购认沽支持此字段过滤，不传代表上限为 +∞（精确到小数点后 3 位，超出部分会被舍弃）
+	optional double impliedMax = 30; //引伸波幅的过滤上限（闭区间），仅认购认沽支持此字段过滤，不传代表上限为 +∞（精确到小数点后 3 位，超出部分会被舍弃）	
 	optional double recoveryPriceMin = 31; //收回价的过滤下限（闭区间），仅牛熊证支持此字段过滤，不传代表下限为 -∞（精确到小数点后 3 位，超出部分会被舍弃）
 	optional double recoveryPriceMax = 32; //收回价的过滤上限（闭区间），仅牛熊证支持此字段过滤，不传代表上限为 +∞（精确到小数点后 3 位，超出部分会被舍弃）
 	optional double priceRecoveryRatioMin = 33;//正股距收回价，的过滤下限（闭区间），仅牛熊证支持此字段过滤。该字段为百分比字段，默认不展示 %，如 20 实际对应 20%。不传代表下限为 -∞（精确到小数点后 3 位，超出部分会被舍弃）
-	optional double priceRecoveryRatioMax = 34;//正股距收回价，的过滤上限（闭区间），仅牛熊证支持此字段过滤。该字段为百分比字段，默认不展示 %，如 20 实际对应 20%。不传代表上限为 +∞（精确到小数点后 3 位，超出部分会被舍弃）
+	optional double priceRecoveryRatioMax = 34;//正股距收回价，的过滤上限（闭区间），仅牛熊证支持此字段过滤。该字段为百分比字段，默认不展示 %，如 20 实际对应 20%。不传代表上限为 +∞（精确到小数点后 3 位，超出部分会被舍弃）	
 }
 
 message WarrantData
@@ -62,34 +62,34 @@ message WarrantData
 	optional double recoveryPrice = 11; //收回价，仅牛熊证支持此字段
 	required double conversionRatio = 12; //换股比率
 	required int32 lotSize = 13; //每手数量
-	required double strikePrice = 14; //行使价
-	required double lastClosePrice = 15; //昨收价
-	required string name = 16; //名称
-
+	required double strikePrice = 14; //行使价	
+	required double lastClosePrice = 15; //昨收价        
+	required string name = 16; //名称	
+	
 	//动态数据项
 	required double curPrice = 17; //当前价
 	required double priceChangeVal = 18; //涨跌额
-	required double changeRate = 19; //涨跌幅（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）
-	required int32 status = 20; //Qot_Common.WarrantStatus，窝轮状态
-	required double bidPrice = 21; //买入价
+	required double changeRate = 19; //涨跌幅（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）	
+	required int32 status = 20; //Qot_Common.WarrantStatus，窝轮状态	
+	required double bidPrice = 21; //买入价	
 	required double askPrice = 22; //卖出价
 	required int64 bidVol = 23; //买量
 	required int64 askVol = 24; //卖量
 	required int64 volume = 25; //成交量
-	required double turnover = 26; //成交额
+	required double turnover = 26; //成交额	
 	required double score = 27; //综合评分
 	required double premium = 28; //溢价（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）
-	required double breakEvenPoint = 29; //打和点
+	required double breakEvenPoint = 29; //打和点	
 	required double leverage = 30; //杠杆比率（倍）
-	required double ipop = 31; //价内/价外，正数表示价内，负数表示价外（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）
+	required double ipop = 31; //价内/价外，正数表示价内，负数表示价外（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）        	
 	optional double priceRecoveryRatio = 32; //正股距收回价，仅牛熊证支持此字段（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）
 	required double conversionPrice = 33; //换股价
-	required double streetRate = 34; //街货占比（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）
+	required double streetRate = 34; //街货占比（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）	
 	required int64 streetVol = 35; //街货量
 	required double amplitude = 36; //振幅（该字段为百分比字段，默认不展示 %，如 20 实际对应 20%）
-	required int64 issueSize = 37; //发行量
+	required int64 issueSize = 37; //发行量	        
 	required double highPrice = 39; //最高价
-	required double lowPrice = 40; //最低价
+	required double lowPrice = 40; //最低价	
 	optional double impliedVolatility = 41; //引申波幅，仅认购认沽支持此字段
 	optional double delta = 42; //对冲值，仅认购认沽支持此字段
 	required double effectiveLeverage = 43; //有效杠杆

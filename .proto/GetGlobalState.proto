@@ -14,13 +14,13 @@ message C2S
 
 message S2C
 {
-	required int32 marketHK = 1; //Qot_Common.QotMarketState,港股主板市场状态
-	required int32 marketUS = 2; //Qot_Common.QotMarketState,美股Nasdaq市场状态
-	required int32 marketSH = 3; //Qot_Common.QotMarketState,沪市状态
-	required int32 marketSZ = 4; //Qot_Common.QotMarketState,深市状态
-	required int32 marketHKFuture = 5; //Qot_Common.QotMarketState,港股期货市场状态
-	optional int32 marketUSFuture = 15; //Qot_Common.QotMarketState,美国期货市场状态
-	optional int32 marketSGFuture = 17; //Qot_Common.QotMarketState,新加坡期货市场状态
+	required int32 marketHK = 1; //Qot_Common.QotMarketState,港股主板市场状态 
+	required int32 marketUS = 2; //Qot_Common.QotMarketState,美股Nasdaq市场状态 
+	required int32 marketSH = 3; //Qot_Common.QotMarketState,沪市状态 
+	required int32 marketSZ = 4; //Qot_Common.QotMarketState,深市状态 
+	required int32 marketHKFuture = 5; //Qot_Common.QotMarketState,港股期货市场状态 
+	optional int32 marketUSFuture = 15; //Qot_Common.QotMarketState,美国期货市场状态 
+	optional int32 marketSGFuture = 17; //Qot_Common.QotMarketState,新加坡期货市场状态 
 	optional int32 marketJPFuture = 18; //Qot_Common.QotMarketState,日本期货市场状态
 	required bool qotLogined = 6; //是否登陆行情服务器
 	required bool trdLogined = 7; //是否登陆交易服务器
@@ -44,6 +44,6 @@ message Response
 	required int32 retType = 1 [default = -400]; //RetType,返回结果
 	optional string retMsg = 2;
 	optional int32 errCode = 3;
-
+	
 	optional S2C s2c = 4;
 }

@@ -14,7 +14,7 @@ message C2S
 	required int32 modifyOrderOp = 4; //修改操作类型，参见Trd_Common.ModifyOrderOp的枚举定义
 	optional bool forAll = 5; //是否对此业务账户的全部订单操作，true是，false否(对单个订单)，无此字段代表false，仅对单个订单
 	optional int32 trdMarket = 6; //指定市场，全部撤单时才需要
-
+	
 	//下面的字段仅针对单个订单，且modifyOrderOp为ModifyOrderOp_Normal有效
 	optional double qty = 8; //数量，期权单位是"张"（精确到小数点后 0 位，超出部分会被舍弃）
 	optional double price = 9; //价格，（证券账户精确到小数点后 3 位，期货账户精确到小数点后 9 位，超出部分会被舍弃）
@@ -46,6 +46,6 @@ message Response
 	required int32 retType = 1 [default = -400];
 	optional string retMsg = 2;
 	optional int32 errCode = 3;
-
+	
 	optional S2C s2c = 4;
 }

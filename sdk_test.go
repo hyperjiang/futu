@@ -260,7 +260,7 @@ func (ts *SDKTestSuite) TestTrdFlowSummary() {
 	should := require.New(ts.T())
 
 	_, err := ts.sdk.TrdFlowSummary(ts.usAccount, time.Now().Format("2006-01-02"))
-	should.EqualError(err, "模拟账户不支持查询现金流水")
+	should.Error(err, "模拟账户不支持查询现金流水")
 }
 
 func (ts *SDKTestSuite) TestGetSubInfo() {

@@ -1,19 +1,17 @@
 syntax = "proto2";
-package Qot_RequestRehab;
+package UsedQuota;
 option java_package = "com.futu.openapi.pb";
-option go_package = "github.com/hyperjiang/futu/pb/qotrequestrehab";
-
-import "Common.proto";
-import "Qot_Common.proto";
+option go_package = "github.com/hyperjiang/futu/pb/usedquota";
 
 message C2S
 {
-	required Qot_Common.Security security = 1; //股票
+
 }
 
 message S2C
 {
-	repeated Qot_Common.Rehab rehabList = 1; //复权信息
+	optional int32 usedSubQuota = 1; // 已使用订阅额度
+	optional int32 usedKLineQuota = 2; // 已使用历史K线额度
 }
 
 message Request

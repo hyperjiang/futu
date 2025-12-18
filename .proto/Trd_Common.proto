@@ -75,7 +75,7 @@ enum OrderType
 	OrderType_Unknown = 0; //未知类型
 	OrderType_Normal = 1; //普通订单(港股的增强限价单、港股期权的限价单，A股限价委托、美股的限价单，港股期货的限价单，CME期货的限价单)。目前港股期权只能指定此订单类型。
 	OrderType_Market = 2; //市价订单(目前支持美股、港股正股、涡轮、牛熊、界内证)
-
+	
 	OrderType_AbsoluteLimit = 5; //绝对限价订单(目前仅港股)，只有价格完全匹配才成交，否则下单失败，比如你下价格为5元的买单，卖单价格必须也要是5元才能成交，低于5元也不能成交，下单失败。卖出同理
 	OrderType_Auction = 6; //竞价订单(目前仅港股)，仅港股早盘竞价和收盘竞价有效，A股的早盘竞价订单类型不变还是OrderType_Normal
 	OrderType_AuctionLimit = 7; //竞价限价订单(目前仅港股)，仅早盘竞价和收盘竞价有效，参与竞价，且要求满足指定价格才会成交
@@ -87,9 +87,9 @@ enum OrderType
     OrderType_LimitifTouched = 13; // 触及限价单（止盈）
     OrderType_TrailingStop = 14; // 跟踪止损市价单
     OrderType_TrailingStopLimit = 15; // 跟踪止损限价单
-	OrderType_TWAP_MARKET = 16; // TWAP 市价单
-	OrderType_TWAP_LIMIT = 17;  // TWAP 限订单
-	OrderType_VWAP_MARKET = 18; // VWAP 市价单
+	OrderType_TWAP_MARKET = 16; // TWAP 市价单 
+	OrderType_TWAP_LIMIT = 17;  // TWAP 限订单 
+	OrderType_VWAP_MARKET = 18; // VWAP 市价单 
 	OrderType_VWAP_LIMIT = 19;  // VWAP 限订单
 }
 
@@ -164,6 +164,14 @@ enum TrdAccStatus
 {
     TrdAccStatus_Active = 0;
     TrdAccStatus_Disabled = 1;
+}
+
+// 账户类型
+enum TrdAccRole
+{
+	TrdAccRole_Unknown = 0;  //未知
+	TrdAccRole_Normal = 1;  //普通账户
+	TrdAccRole_Master = 2;  //主账户
 }
 
 //货币种类
@@ -277,6 +285,7 @@ message TrdAcc
 	optional int32 simAccType = 7; //模拟交易账号类型，取值见SimAccType
     optional string uniCardNum = 8;  //所属综合账户卡号
     optional int32 accStatus = 9; //账号状态，取值见TrdAccStatus
+	optional int32 accRole = 10; //账号分类，是不是主账号，取值见TrdAccRole
 }
 
 //账户资金结构
@@ -288,7 +297,7 @@ message Funds
 	required double marketVal = 4; //证券市值, 仅证券账户适用
 	required double frozenCash = 5; //冻结资金
 	required double debtCash = 6; //计息金额
-	required double avlWithdrawalCash = 7; //现金可提，仅证券账户适用
+	required double avlWithdrawalCash = 7; //现金可提，仅证券账户适用 
 
 	optional int32 currency = 8;            //币种，本结构体资金相关的货币类型，取值参见 Currency，期货适用
     optional double availableFunds = 9;     //可用资金，期货适用
@@ -307,18 +316,18 @@ message Funds
 	optional double maxWithdrawal = 21;          //融资可提，仅证券账户适用
 	optional int32 riskStatus = 22;              //风险状态，参见 [CltRiskStatus]，证券账户适用，共分 9 个等级，LEVEL1是最安全，LEVEL9是最危险
 	optional double marginCallMargin = 23;       //	Margin Call 保证金
-
+	
 	optional bool isPdt = 24;				//是否PDT账户，仅富途证券（美国）账户适用
 	optional string pdtSeq = 25;			//剩余日内交易次数
 	optional double beginningDTBP = 26;		//初始日内交易购买力
 	optional double remainingDTBP = 27;		//剩余日内交易购买力
 	optional double dtCallAmount = 28;		//日内交易待缴金额
 	optional int32 dtStatus = 29;				//日内交易限制情况，取值见DTStatus
-
+	
 	optional double securitiesAssets = 30; // 证券资产净值
 	optional double fundAssets = 31; // 基金资产净值
 	optional double bondAssets = 32; // 债券资产净值
-
+    
     repeated AccMarketInfo marketInfoList = 33; //分市场资产信息
 }
 
@@ -337,7 +346,7 @@ message Position
     required double plVal = 10;         //盈亏金额，3位精度，期货为2位精度
     optional double plRatio = 11;       //摊薄成本价的盈亏百分比(如plRatio等于8.8代表涨8.8%)，无精度限制，如果没传，代表此时此值无效
     optional int32 secMarket = 12;      //证券所属市场，参见TrdSecMarket的枚举定义
-
+    
 	//以下是此持仓今日统计
     optional double td_plVal = 21;      //今日盈亏金额，3位精度，下同, 期货为2位精度
     optional double td_trdVal = 22;     //今日交易额，期货不适用
@@ -350,7 +359,7 @@ message Position
     optional double realizedPL = 29;         //已实现盈亏，期货适用
 	optional int32 currency = 30;        // 货币类型，取值参考 Currency
 	optional int32 trdMarket = 31;  //交易市场, 参见TrdMarket的枚举定义
-
+	
     optional double dilutedCostPrice = 32;      //摊薄成本价，仅支持证券账户使用
     optional double averageCostPrice = 33;      //平均成本价，模拟交易证券账户不适用
     optional double averagePlRatio = 34;        //平均成本价的盈亏百分比(如plRatio等于8.8代表涨8.8%)，无精度限制，如果没传，代表此时此值无效

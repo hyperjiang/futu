@@ -40,7 +40,7 @@ if err != nil {
     log.Fatal(err)
 }
 
-res, err := client.GetGlobalState()
+res, err := sdk.GetGlobalState()
 fmt.Println(res)
 ```
 

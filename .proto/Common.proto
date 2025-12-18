@@ -65,7 +65,7 @@ enum ProgramStatusType
 	ProgramStatusType_NessaryDataMissing = 8; //缺少必要信息
 	ProgramStatusType_UnAgreeDisclaimer = 9; //未同意免责声明
 	ProgramStatusType_Ready = 10; //可以接收业务协议收发,正常可用状态
-
+	
 	//OpenD登录后被强制退出登录，会导致连接全部断开,需要重连后才能得到以下该状态（并且需要在ui模式下）
 	ProgramStatusType_ForceLogout = 11; //被强制退出登录,例如修改了登录密码,中途打开设备锁等,详细原因在描述返回
 

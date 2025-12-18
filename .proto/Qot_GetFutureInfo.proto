@@ -21,7 +21,7 @@ message FutureInfo
 	required string lastTradeTime = 3; //最后交易日，只有非主连期货合约才有该字段
 	optional double lastTradeTimestamp = 4; //最后交易日时间戳，只有非主连期货合约才有该字段
 	optional Qot_Common.Security owner = 5; //标的股 股票期货和股指期货才有该字段
-	required string ownerOther = 6; //标的
+	required string ownerOther = 6; //标的 
 	required string exchange = 7; //交易所
 	required string contractType = 8; //合约类型
 	required double contractSize = 9; //合约规模
@@ -56,6 +56,6 @@ message Response
 	required int32 retType = 1 [default = -400]; //RetType,返回结果
 	optional string retMsg = 2;
 	optional int32 errCode = 3;
-
+	
 	optional S2C s2c = 4;
 }

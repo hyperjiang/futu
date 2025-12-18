@@ -2,13 +2,11 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        v6.33.2
-// source: Qot_GetRT.proto
+// source: UsedQuota.proto
 
-package qotgetrt
+package usedquota
 
 import (
-	_ "github.com/hyperjiang/futu/pb/common"
-	qotcommon "github.com/hyperjiang/futu/pb/qotcommon"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -25,14 +23,13 @@ const (
 
 type C2S struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Security      *qotcommon.Security    `protobuf:"bytes,1,req,name=security" json:"security,omitempty"` //股票
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *C2S) Reset() {
 	*x = C2S{}
-	mi := &file_Qot_GetRT_proto_msgTypes[0]
+	mi := &file_UsedQuota_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -44,7 +41,7 @@ func (x *C2S) String() string {
 func (*C2S) ProtoMessage() {}
 
 func (x *C2S) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_GetRT_proto_msgTypes[0]
+	mi := &file_UsedQuota_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -57,28 +54,20 @@ func (x *C2S) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use C2S.ProtoReflect.Descriptor instead.
 func (*C2S) Descriptor() ([]byte, []int) {
-	return file_Qot_GetRT_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *C2S) GetSecurity() *qotcommon.Security {
-	if x != nil {
-		return x.Security
-	}
-	return nil
+	return file_UsedQuota_proto_rawDescGZIP(), []int{0}
 }
 
 type S2C struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Security      *qotcommon.Security    `protobuf:"bytes,1,req,name=security" json:"security,omitempty"` //股票
-	Name          *string                `protobuf:"bytes,3,opt,name=name" json:"name,omitempty"`         //股票名称
-	RtList        []*qotcommon.TimeShare `protobuf:"bytes,2,rep,name=rtList" json:"rtList,omitempty"`     //分时点
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	UsedSubQuota   *int32                 `protobuf:"varint,1,opt,name=usedSubQuota" json:"usedSubQuota,omitempty"`     // 已使用订阅额度
+	UsedKLineQuota *int32                 `protobuf:"varint,2,opt,name=usedKLineQuota" json:"usedKLineQuota,omitempty"` // 已使用历史K线额度
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *S2C) Reset() {
 	*x = S2C{}
-	mi := &file_Qot_GetRT_proto_msgTypes[1]
+	mi := &file_UsedQuota_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -90,7 +79,7 @@ func (x *S2C) String() string {
 func (*S2C) ProtoMessage() {}
 
 func (x *S2C) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_GetRT_proto_msgTypes[1]
+	mi := &file_UsedQuota_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -103,28 +92,21 @@ func (x *S2C) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use S2C.ProtoReflect.Descriptor instead.
 func (*S2C) Descriptor() ([]byte, []int) {
-	return file_Qot_GetRT_proto_rawDescGZIP(), []int{1}
+	return file_UsedQuota_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *S2C) GetSecurity() *qotcommon.Security {
-	if x != nil {
-		return x.Security
+func (x *S2C) GetUsedSubQuota() int32 {
+	if x != nil && x.UsedSubQuota != nil {
+		return *x.UsedSubQuota
 	}
-	return nil
+	return 0
 }
 
-func (x *S2C) GetName() string {
-	if x != nil && x.Name != nil {
-		return *x.Name
+func (x *S2C) GetUsedKLineQuota() int32 {
+	if x != nil && x.UsedKLineQuota != nil {
+		return *x.UsedKLineQuota
 	}
-	return ""
-}
-
-func (x *S2C) GetRtList() []*qotcommon.TimeShare {
-	if x != nil {
-		return x.RtList
-	}
-	return nil
+	return 0
 }
 
 type Request struct {
@@ -136,7 +118,7 @@ type Request struct {
 
 func (x *Request) Reset() {
 	*x = Request{}
-	mi := &file_Qot_GetRT_proto_msgTypes[2]
+	mi := &file_UsedQuota_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -148,7 +130,7 @@ func (x *Request) String() string {
 func (*Request) ProtoMessage() {}
 
 func (x *Request) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_GetRT_proto_msgTypes[2]
+	mi := &file_UsedQuota_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -161,7 +143,7 @@ func (x *Request) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Request.ProtoReflect.Descriptor instead.
 func (*Request) Descriptor() ([]byte, []int) {
-	return file_Qot_GetRT_proto_rawDescGZIP(), []int{2}
+	return file_UsedQuota_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Request) GetC2S() *C2S {
@@ -188,7 +170,7 @@ const (
 
 func (x *Response) Reset() {
 	*x = Response{}
-	mi := &file_Qot_GetRT_proto_msgTypes[3]
+	mi := &file_UsedQuota_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -200,7 +182,7 @@ func (x *Response) String() string {
 func (*Response) ProtoMessage() {}
 
 func (x *Response) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_GetRT_proto_msgTypes[3]
+	mi := &file_UsedQuota_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -213,7 +195,7 @@ func (x *Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Response.ProtoReflect.Descriptor instead.
 func (*Response) Descriptor() ([]byte, []int) {
-	return file_Qot_GetRT_proto_rawDescGZIP(), []int{3}
+	return file_UsedQuota_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Response) GetRetType() int32 {
@@ -244,80 +226,73 @@ func (x *Response) GetS2C() *S2C {
 	return nil
 }
 
-var File_Qot_GetRT_proto protoreflect.FileDescriptor
+var File_UsedQuota_proto protoreflect.FileDescriptor
 
-const file_Qot_GetRT_proto_rawDesc = "" +
+const file_UsedQuota_proto_rawDesc = "" +
 	"\n" +
-	"\x0fQot_GetRT.proto\x12\tQot_GetRT\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"7\n" +
-	"\x03C2S\x120\n" +
-	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\"z\n" +
-	"\x03S2C\x120\n" +
-	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\x12-\n" +
-	"\x06rtList\x18\x02 \x03(\v2\x15.Qot_Common.TimeShareR\x06rtList\"+\n" +
+	"\x0fUsedQuota.proto\x12\tUsedQuota\"\x05\n" +
+	"\x03C2S\"Q\n" +
+	"\x03S2C\x12\"\n" +
+	"\fusedSubQuota\x18\x01 \x01(\x05R\fusedSubQuota\x12&\n" +
+	"\x0eusedKLineQuota\x18\x02 \x01(\x05R\x0eusedKLineQuota\"+\n" +
 	"\aRequest\x12 \n" +
-	"\x03c2s\x18\x01 \x02(\v2\x0e.Qot_GetRT.C2SR\x03c2s\"~\n" +
+	"\x03c2s\x18\x01 \x02(\v2\x0e.UsedQuota.C2SR\x03c2s\"~\n" +
 	"\bResponse\x12\x1e\n" +
 	"\aretType\x18\x01 \x02(\x05:\x04-400R\aretType\x12\x16\n" +
 	"\x06retMsg\x18\x02 \x01(\tR\x06retMsg\x12\x18\n" +
 	"\aerrCode\x18\x03 \x01(\x05R\aerrCode\x12 \n" +
-	"\x03s2c\x18\x04 \x01(\v2\x0e.Qot_GetRT.S2CR\x03s2cB=\n" +
-	"\x13com.futu.openapi.pbZ&github.com/hyperjiang/futu/pb/qotgetrt"
+	"\x03s2c\x18\x04 \x01(\v2\x0e.UsedQuota.S2CR\x03s2cB>\n" +
+	"\x13com.futu.openapi.pbZ'github.com/hyperjiang/futu/pb/usedquota"
 
 var (
-	file_Qot_GetRT_proto_rawDescOnce sync.Once
-	file_Qot_GetRT_proto_rawDescData []byte
+	file_UsedQuota_proto_rawDescOnce sync.Once
+	file_UsedQuota_proto_rawDescData []byte
 )
 
-func file_Qot_GetRT_proto_rawDescGZIP() []byte {
-	file_Qot_GetRT_proto_rawDescOnce.Do(func() {
-		file_Qot_GetRT_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_Qot_GetRT_proto_rawDesc), len(file_Qot_GetRT_proto_rawDesc)))
+func file_UsedQuota_proto_rawDescGZIP() []byte {
+	file_UsedQuota_proto_rawDescOnce.Do(func() {
+		file_UsedQuota_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_UsedQuota_proto_rawDesc), len(file_UsedQuota_proto_rawDesc)))
 	})
-	return file_Qot_GetRT_proto_rawDescData
+	return file_UsedQuota_proto_rawDescData
 }
 
-var file_Qot_GetRT_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_Qot_GetRT_proto_goTypes = []any{
-	(*C2S)(nil),                 // 0: Qot_GetRT.C2S
-	(*S2C)(nil),                 // 1: Qot_GetRT.S2C
-	(*Request)(nil),             // 2: Qot_GetRT.Request
-	(*Response)(nil),            // 3: Qot_GetRT.Response
-	(*qotcommon.Security)(nil),  // 4: Qot_Common.Security
-	(*qotcommon.TimeShare)(nil), // 5: Qot_Common.TimeShare
+var file_UsedQuota_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_UsedQuota_proto_goTypes = []any{
+	(*C2S)(nil),      // 0: UsedQuota.C2S
+	(*S2C)(nil),      // 1: UsedQuota.S2C
+	(*Request)(nil),  // 2: UsedQuota.Request
+	(*Response)(nil), // 3: UsedQuota.Response
 }
-var file_Qot_GetRT_proto_depIdxs = []int32{
-	4, // 0: Qot_GetRT.C2S.security:type_name -> Qot_Common.Security
-	4, // 1: Qot_GetRT.S2C.security:type_name -> Qot_Common.Security
-	5, // 2: Qot_GetRT.S2C.rtList:type_name -> Qot_Common.TimeShare
-	0, // 3: Qot_GetRT.Request.c2s:type_name -> Qot_GetRT.C2S
-	1, // 4: Qot_GetRT.Response.s2c:type_name -> Qot_GetRT.S2C
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+var file_UsedQuota_proto_depIdxs = []int32{
+	0, // 0: UsedQuota.Request.c2s:type_name -> UsedQuota.C2S
+	1, // 1: UsedQuota.Response.s2c:type_name -> UsedQuota.S2C
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_Qot_GetRT_proto_init() }
-func file_Qot_GetRT_proto_init() {
-	if File_Qot_GetRT_proto != nil {
+func init() { file_UsedQuota_proto_init() }
+func file_UsedQuota_proto_init() {
+	if File_UsedQuota_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_Qot_GetRT_proto_rawDesc), len(file_Qot_GetRT_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_UsedQuota_proto_rawDesc), len(file_UsedQuota_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_Qot_GetRT_proto_goTypes,
-		DependencyIndexes: file_Qot_GetRT_proto_depIdxs,
-		MessageInfos:      file_Qot_GetRT_proto_msgTypes,
+		GoTypes:           file_UsedQuota_proto_goTypes,
+		DependencyIndexes: file_UsedQuota_proto_depIdxs,
+		MessageInfos:      file_UsedQuota_proto_msgTypes,
 	}.Build()
-	File_Qot_GetRT_proto = out.File
-	file_Qot_GetRT_proto_goTypes = nil
-	file_Qot_GetRT_proto_depIdxs = nil
+	File_UsedQuota_proto = out.File
+	file_UsedQuota_proto_goTypes = nil
+	file_UsedQuota_proto_depIdxs = nil
 }

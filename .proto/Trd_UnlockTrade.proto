@@ -14,7 +14,7 @@ message C2S
 
 message S2C
 {
-
+	
 }
 
 message Request
@@ -28,6 +28,6 @@ message Response
 	required int32 retType = 1 [default = -400];
 	optional string retMsg = 2;
 	optional int32 errCode = 3;
-
+	
 	optional S2C s2c = 4;
 }

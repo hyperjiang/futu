@@ -15,14 +15,14 @@ brew install protobuf
 ### 2. Install the compiler plugin `protoc-gen-go`
 
 ```bash
-brew install protc-gen-go
+brew install protoc-gen-go
 ```
 
 ### 3. Rename package
 
-Replace `github.com/futuopen/ftapi4go` with `github.com/hyperjiang/futu` in all the proto files.
+Replace `github.com/hyperjiang/futu` with `github.com/hyperjiang/futu` in all the proto files.
 
-Replace `github.com/hyperjiang/futu/pb/getoptionexpirationdate` with `github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate`.
+Replace `github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate` with `github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate`.
 
 ### 4. Generate the codes
 
