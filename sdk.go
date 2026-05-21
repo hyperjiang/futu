@@ -135,7 +135,7 @@ func (sdk *SDK) GetPositionList(header *trdcommon.TrdHeader, opts ...adapt.Optio
 	return sdk.GetPositionListWithContext(ctx, header, opts...)
 }
 
-// GetOrderList 2111 - gets the maximum available trading quantities.
+// GetMaxTrdQtys 2111 - gets the maximum available trading quantities.
 //
 // header: trading header
 //
@@ -193,7 +193,7 @@ func (sdk *SDK) ModifyOrder(header *trdcommon.TrdHeader, orderID uint64, modifyO
 	return sdk.ModifyOrderWithContext(ctx, header, orderID, modifyOrderOp, opts...)
 }
 
-// GetHistoryOrderList 2211 - gets the filled order list.
+// GetOrderFillList 2211 - gets the filled order list.
 func (sdk *SDK) GetOrderFillList(header *trdcommon.TrdHeader, opts ...adapt.Option) ([]*trdcommon.OrderFill, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
 	defer cancel()

@@ -56,8 +56,8 @@ func (ts *ClientTestSuite) TestTrdGetAccList_TrdGetFunds() {
 		}
 
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-		defer cancel()
 		res, err := ts.client.TrdGetFunds(ctx, c2s)
+		cancel()
 		should.NoError(err)
 		log.Info().Interface("data", res.GetFunds()).Msg("TrdGetFunds")
 	}
