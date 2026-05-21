@@ -805,13 +805,13 @@ func (client *Client) QotGetMarketState(ctx context.Context, c2s *qotgetmarketst
 	select {
 	case <-ctx.Done():
 		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
 	case resp, ok := <-ch:
 		if !ok {
 			return nil, ErrChannelClosed
 		}
 		return resp.GetS2C(), infra.Error(resp)
-	case <-client.closed:
-		return nil, ErrInterrupted
 	}
 }
 
@@ -830,12 +830,12 @@ func (client *Client) QotGetOptionExpirationDate(ctx context.Context, c2s *qotge
 	select {
 	case <-ctx.Done():
 		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
 	case resp, ok := <-ch:
 		if !ok {
 			return nil, ErrChannelClosed
 		}
 		return resp.GetS2C(), infra.Error(resp)
-	case <-client.closed:
-		return nil, ErrInterrupted
 	}
 }

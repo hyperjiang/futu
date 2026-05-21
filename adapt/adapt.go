@@ -37,6 +37,9 @@ func NewSecurities(codes []string) []*qotcommon.Security {
 
 // SecurityToCode converts a Security to a code string, e.g. "HK.00700".
 func SecurityToCode(s *qotcommon.Security) string {
+	if s == nil {
+		return ""
+	}
 	return GetMarketName(s.GetMarket()) + "." + s.GetCode()
 }
 
@@ -125,7 +128,9 @@ func NewCustomIndicatorFilter(opts ...Option) *qotstockfilter.CustomIndicatorFil
 	o["isNoFilter"] = false
 
 	var f qotstockfilter.CustomIndicatorFilter
-	_ = o.ToProto(&f)
+	if err := o.ToProto(&f); err != nil {
+		return nil
+	}
 
 	return &f
 }
@@ -134,7 +139,9 @@ func NewCustomIndicatorFilter(opts ...Option) *qotstockfilter.CustomIndicatorFil
 func NewFilterConditions(opts ...Option) *trdcommon.TrdFilterConditions {
 	o := NewOptions(opts...)
 	var f trdcommon.TrdFilterConditions
-	_ = o.ToProto(&f)
+	if err := o.ToProto(&f); err != nil {
+		return nil
+	}
 
 	return &f
 }
