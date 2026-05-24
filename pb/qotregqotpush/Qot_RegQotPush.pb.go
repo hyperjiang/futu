@@ -30,6 +30,7 @@ type C2S struct {
 	RehabTypeList []int32                `protobuf:"varint,3,rep,name=rehabTypeList" json:"rehabTypeList,omitempty"` //Qot_Common.RehabType,复权类型,注册K线类型才生效,其他订阅类型忽略该参数,注册K线时该参数不指定默认前复权
 	IsRegOrUnReg  *bool                  `protobuf:"varint,4,req,name=isRegOrUnReg" json:"isRegOrUnReg,omitempty"`   //注册或取消
 	IsFirstPush   *bool                  `protobuf:"varint,5,opt,name=isFirstPush" json:"isFirstPush,omitempty"`     //注册后如果本地已有数据是否首推一次已存在数据,该参数不指定则默认true
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`              //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -97,6 +98,13 @@ func (x *C2S) GetIsFirstPush() bool {
 		return *x.IsFirstPush
 	}
 	return false
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
 }
 
 type S2C struct {
@@ -256,13 +264,14 @@ var File_Qot_RegQotPush_proto protoreflect.FileDescriptor
 
 const file_Qot_RegQotPush_proto_rawDesc = "" +
 	"\n" +
-	"\x14Qot_RegQotPush.proto\x12\x0eQot_RegQotPush\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\xcd\x01\n" +
+	"\x14Qot_RegQotPush.proto\x12\x0eQot_RegQotPush\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\xfc\x01\n" +
 	"\x03C2S\x128\n" +
 	"\fsecurityList\x18\x01 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\x12 \n" +
 	"\vsubTypeList\x18\x02 \x03(\x05R\vsubTypeList\x12$\n" +
 	"\rrehabTypeList\x18\x03 \x03(\x05R\rrehabTypeList\x12\"\n" +
 	"\fisRegOrUnReg\x18\x04 \x02(\bR\fisRegOrUnReg\x12 \n" +
-	"\visFirstPush\x18\x05 \x01(\bR\visFirstPush\"\x05\n" +
+	"\visFirstPush\x18\x05 \x01(\bR\visFirstPush\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"\x05\n" +
 	"\x03S2C\"0\n" +
 	"\aRequest\x12%\n" +
 	"\x03c2s\x18\x01 \x02(\v2\x13.Qot_RegQotPush.C2SR\x03c2s\"\x83\x01\n" +
@@ -287,21 +296,23 @@ func file_Qot_RegQotPush_proto_rawDescGZIP() []byte {
 
 var file_Qot_RegQotPush_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_Qot_RegQotPush_proto_goTypes = []any{
-	(*C2S)(nil),                // 0: Qot_RegQotPush.C2S
-	(*S2C)(nil),                // 1: Qot_RegQotPush.S2C
-	(*Request)(nil),            // 2: Qot_RegQotPush.Request
-	(*Response)(nil),           // 3: Qot_RegQotPush.Response
-	(*qotcommon.Security)(nil), // 4: Qot_Common.Security
+	(*C2S)(nil),                 // 0: Qot_RegQotPush.C2S
+	(*S2C)(nil),                 // 1: Qot_RegQotPush.S2C
+	(*Request)(nil),             // 2: Qot_RegQotPush.Request
+	(*Response)(nil),            // 3: Qot_RegQotPush.Response
+	(*qotcommon.Security)(nil),  // 4: Qot_Common.Security
+	(*qotcommon.QotHeader)(nil), // 5: Qot_Common.QotHeader
 }
 var file_Qot_RegQotPush_proto_depIdxs = []int32{
 	4, // 0: Qot_RegQotPush.C2S.securityList:type_name -> Qot_Common.Security
-	0, // 1: Qot_RegQotPush.Request.c2s:type_name -> Qot_RegQotPush.C2S
-	1, // 2: Qot_RegQotPush.Response.s2c:type_name -> Qot_RegQotPush.S2C
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	5, // 1: Qot_RegQotPush.C2S.header:type_name -> Qot_Common.QotHeader
+	0, // 2: Qot_RegQotPush.Request.c2s:type_name -> Qot_RegQotPush.C2S
+	1, // 3: Qot_RegQotPush.Response.s2c:type_name -> Qot_RegQotPush.S2C
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_Qot_RegQotPush_proto_init() }

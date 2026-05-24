@@ -90,6 +90,7 @@ type C2S struct {
 	GroupName     *string                `protobuf:"bytes,1,req,name=groupName" json:"groupName,omitempty"`       //分组名,有同名的返回排序的首个
 	Op            *int32                 `protobuf:"varint,2,req,name=op" json:"op,omitempty"`                    //ModifyUserSecurityOp,操作类型
 	SecurityList  []*qotcommon.Security  `protobuf:"bytes,3,rep,name=securityList" json:"securityList,omitempty"` //新增、删除或移出该分组下的股票
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`           //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -141,6 +142,13 @@ func (x *C2S) GetOp() int32 {
 func (x *C2S) GetSecurityList() []*qotcommon.Security {
 	if x != nil {
 		return x.SecurityList
+	}
+	return nil
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
 	}
 	return nil
 }
@@ -302,11 +310,12 @@ var File_Qot_ModifyUserSecurity_proto protoreflect.FileDescriptor
 
 const file_Qot_ModifyUserSecurity_proto_rawDesc = "" +
 	"\n" +
-	"\x1cQot_ModifyUserSecurity.proto\x12\x16Qot_ModifyUserSecurity\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"m\n" +
+	"\x1cQot_ModifyUserSecurity.proto\x12\x16Qot_ModifyUserSecurity\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\x9c\x01\n" +
 	"\x03C2S\x12\x1c\n" +
 	"\tgroupName\x18\x01 \x02(\tR\tgroupName\x12\x0e\n" +
 	"\x02op\x18\x02 \x02(\x05R\x02op\x128\n" +
-	"\fsecurityList\x18\x03 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\"\x05\n" +
+	"\fsecurityList\x18\x03 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"\x05\n" +
 	"\x03S2C\"8\n" +
 	"\aRequest\x12-\n" +
 	"\x03c2s\x18\x01 \x02(\v2\x1b.Qot_ModifyUserSecurity.C2SR\x03c2s\"\x8b\x01\n" +
@@ -337,22 +346,24 @@ func file_Qot_ModifyUserSecurity_proto_rawDescGZIP() []byte {
 var file_Qot_ModifyUserSecurity_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_Qot_ModifyUserSecurity_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_Qot_ModifyUserSecurity_proto_goTypes = []any{
-	(ModifyUserSecurityOp)(0),  // 0: Qot_ModifyUserSecurity.ModifyUserSecurityOp
-	(*C2S)(nil),                // 1: Qot_ModifyUserSecurity.C2S
-	(*S2C)(nil),                // 2: Qot_ModifyUserSecurity.S2C
-	(*Request)(nil),            // 3: Qot_ModifyUserSecurity.Request
-	(*Response)(nil),           // 4: Qot_ModifyUserSecurity.Response
-	(*qotcommon.Security)(nil), // 5: Qot_Common.Security
+	(ModifyUserSecurityOp)(0),   // 0: Qot_ModifyUserSecurity.ModifyUserSecurityOp
+	(*C2S)(nil),                 // 1: Qot_ModifyUserSecurity.C2S
+	(*S2C)(nil),                 // 2: Qot_ModifyUserSecurity.S2C
+	(*Request)(nil),             // 3: Qot_ModifyUserSecurity.Request
+	(*Response)(nil),            // 4: Qot_ModifyUserSecurity.Response
+	(*qotcommon.Security)(nil),  // 5: Qot_Common.Security
+	(*qotcommon.QotHeader)(nil), // 6: Qot_Common.QotHeader
 }
 var file_Qot_ModifyUserSecurity_proto_depIdxs = []int32{
 	5, // 0: Qot_ModifyUserSecurity.C2S.securityList:type_name -> Qot_Common.Security
-	1, // 1: Qot_ModifyUserSecurity.Request.c2s:type_name -> Qot_ModifyUserSecurity.C2S
-	2, // 2: Qot_ModifyUserSecurity.Response.s2c:type_name -> Qot_ModifyUserSecurity.S2C
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	6, // 1: Qot_ModifyUserSecurity.C2S.header:type_name -> Qot_Common.QotHeader
+	1, // 2: Qot_ModifyUserSecurity.Request.c2s:type_name -> Qot_ModifyUserSecurity.C2S
+	2, // 3: Qot_ModifyUserSecurity.Response.s2c:type_name -> Qot_ModifyUserSecurity.S2C
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_Qot_ModifyUserSecurity_proto_init() }

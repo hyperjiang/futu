@@ -1,0 +1,41 @@
+syntax = "proto2";
+package Qot_GetResearchAnalystConsensus;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetresearchanalystconsensus";
+
+import "Qot_Common.proto";
+
+message C2S
+{
+	required Qot_Common.Security security = 1; // 股票
+}
+
+message S2C
+{
+	optional double highest = 1;                // 最高目标价
+	optional double average = 2;                // 平均目标价
+	optional double lowest = 3;                 // 最低目标价
+	optional Qot_Common.ResearchRatingType rating = 4; // 近3个月分析师综合评级，详见 Qot_Common.ResearchRatingType 定义；美股仅返回 Sell(1)/Hold(3)/Buy(4)，非美市场另支持 Underperform(2)/StrongBuy(5)
+	optional int32 total = 5;                   // 近3个月参与评级的分析师总人数
+	optional int64 updateTime = 6;              // 评级数据更新时间戳（秒）
+	optional string updateTimeStr = 7;          // 评级数据更新时间字符串，格式 YYYY-MM-DD，对应市场时区
+	optional double buy = 8;                    // Buy 评级占比，百分号前的值，如 12.34 表示 12.34%
+	optional double hold = 9;                   // Hold 评级占比，百分号前的值，如 12.34 表示 12.34%
+	optional double sell = 10;                  // Sell 评级占比，百分号前的值，如 12.34 表示 12.34%
+	// 以下字段仅非美市场支持，US 市场不返回
+	optional double strongBuy = 11;             // Strong Buy 评级占比，百分号前的值，如 12.34 表示 12.34%；仅非美市场
+	optional double underperform = 12;          // Underperform 评级占比，百分号前的值，如 12.34 表示 12.34%；仅非美市场
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32 retType = 1 [default = -400]; // 返回结果，详见 Common.RetType
+	optional string retMsg = 2;                  // 返回结果描述
+	optional int32 errCode = 3;                  // 错误码
+	optional S2C s2c = 4;
+}

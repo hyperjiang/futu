@@ -13,6 +13,7 @@ message C2S
 	repeated int32 rehabTypeList = 3; //Qot_Common.RehabType,复权类型,注册K线类型才生效,其他订阅类型忽略该参数,注册K线时该参数不指定默认前复权
 	required bool isRegOrUnReg = 4; //注册或取消
 	optional bool isFirstPush = 5; //注册后如果本地已有数据是否首推一次已存在数据,该参数不指定则默认true
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
 message S2C

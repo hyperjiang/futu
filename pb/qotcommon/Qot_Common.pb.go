@@ -37,6 +37,7 @@ const (
 	QotMarket_QotMarket_MY_Security   QotMarket = 61 //马来西亚市场
 	QotMarket_QotMarket_CA_Security   QotMarket = 71 // 加拿大市场
 	QotMarket_QotMarket_FX_Security   QotMarket = 81 // 外汇市场
+	QotMarket_QotMarket_CC_Security   QotMarket = 91 // 加密货币市场
 )
 
 // Enum value maps for QotMarket.
@@ -54,6 +55,7 @@ var (
 		61: "QotMarket_MY_Security",
 		71: "QotMarket_CA_Security",
 		81: "QotMarket_FX_Security",
+		91: "QotMarket_CC_Security",
 	}
 	QotMarket_value = map[string]int32{
 		"QotMarket_Unknown":       0,
@@ -68,6 +70,7 @@ var (
 		"QotMarket_MY_Security":   61,
 		"QotMarket_CA_Security":   71,
 		"QotMarket_FX_Security":   81,
+		"QotMarket_CC_Security":   91,
 	}
 )
 
@@ -112,16 +115,18 @@ type SecurityType int32
 
 const (
 	SecurityType_SecurityType_Unknown  SecurityType = 0  //未知
-	SecurityType_SecurityType_Bond     SecurityType = 1  //债券
+	SecurityType_SecurityType_Bond     SecurityType = 1  //场内债券
 	SecurityType_SecurityType_Bwrt     SecurityType = 2  //一揽子权证
 	SecurityType_SecurityType_Eqty     SecurityType = 3  //正股
-	SecurityType_SecurityType_Trust    SecurityType = 4  //信托,基金
+	SecurityType_SecurityType_Trust    SecurityType = 4  //信托
 	SecurityType_SecurityType_Warrant  SecurityType = 5  //窝轮
 	SecurityType_SecurityType_Index    SecurityType = 6  //指数
 	SecurityType_SecurityType_Plate    SecurityType = 7  //板块
 	SecurityType_SecurityType_Drvt     SecurityType = 8  //期权
 	SecurityType_SecurityType_PlateSet SecurityType = 9  //板块集
 	SecurityType_SecurityType_Future   SecurityType = 10 //期货
+	SecurityType_SecurityType_Forex    SecurityType = 11 // 外汇
+	SecurityType_SecurityType_Crypto   SecurityType = 12 // 数字货币
 )
 
 // Enum value maps for SecurityType.
@@ -138,6 +143,8 @@ var (
 		8:  "SecurityType_Drvt",
 		9:  "SecurityType_PlateSet",
 		10: "SecurityType_Future",
+		11: "SecurityType_Forex",
+		12: "SecurityType_Crypto",
 	}
 	SecurityType_value = map[string]int32{
 		"SecurityType_Unknown":  0,
@@ -151,6 +158,8 @@ var (
 		"SecurityType_Drvt":     8,
 		"SecurityType_PlateSet": 9,
 		"SecurityType_Future":   10,
+		"SecurityType_Forex":    11,
+		"SecurityType_Crypto":   12,
 	}
 )
 
@@ -877,6 +886,10 @@ const (
 	KLType_KLType_60Min   KLType = 9  //60分K
 	KLType_KLType_3Min    KLType = 10 //3分K
 	KLType_KLType_Quarter KLType = 11 //季K
+	KLType_KLType_10Min   KLType = 12 //10分K
+	KLType_KLType_120Min  KLType = 13 //120分K
+	KLType_KLType_180Min  KLType = 14 //180分K
+	KLType_KLType_240Min  KLType = 15 //240分K
 )
 
 // Enum value maps for KLType.
@@ -894,6 +907,10 @@ var (
 		9:  "KLType_60Min",
 		10: "KLType_3Min",
 		11: "KLType_Quarter",
+		12: "KLType_10Min",
+		13: "KLType_120Min",
+		14: "KLType_180Min",
+		15: "KLType_240Min",
 	}
 	KLType_value = map[string]int32{
 		"KLType_Unknown": 0,
@@ -908,6 +925,10 @@ var (
 		"KLType_60Min":   9,
 		"KLType_3Min":    10,
 		"KLType_Quarter": 11,
+		"KLType_10Min":   12,
+		"KLType_120Min":  13,
+		"KLType_180Min":  14,
+		"KLType_240Min":  15,
 	}
 )
 
@@ -1053,6 +1074,10 @@ const (
 	SubType_SubType_KL_Qurater SubType = 15 //季K
 	SubType_SubType_KL_Year    SubType = 16 //年K
 	SubType_SubType_KL_3Min    SubType = 17 //3分K
+	SubType_SubType_KL_10Min   SubType = 18 //10分K
+	SubType_SubType_KL_120Min  SubType = 19 //120分K
+	SubType_SubType_KL_180Min  SubType = 20 //180分K
+	SubType_SubType_KL_240Min  SubType = 21 //240分K
 )
 
 // Enum value maps for SubType.
@@ -1075,6 +1100,10 @@ var (
 		15: "SubType_KL_Qurater",
 		16: "SubType_KL_Year",
 		17: "SubType_KL_3Min",
+		18: "SubType_KL_10Min",
+		19: "SubType_KL_120Min",
+		20: "SubType_KL_180Min",
+		21: "SubType_KL_240Min",
 	}
 	SubType_value = map[string]int32{
 		"SubType_None":       0,
@@ -1094,6 +1123,10 @@ var (
 		"SubType_KL_Qurater": 15,
 		"SubType_KL_Year":    16,
 		"SubType_KL_3Min":    17,
+		"SubType_KL_10Min":   18,
+		"SubType_KL_120Min":  19,
+		"SubType_KL_180Min":  20,
+		"SubType_KL_240Min":  21,
 	}
 )
 
@@ -1642,7 +1675,7 @@ func (PushDataType) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_Common_proto_rawDescGZIP(), []int{19}
 }
 
-//窝轮排序
+//排序
 type SortField int32
 
 const (
@@ -1700,6 +1733,20 @@ const (
 	SortField_SortField_LastSettlePrice SortField = 48 //昨结
 	SortField_SortField_Position        SortField = 49 //持仓量
 	SortField_SortField_PositionChange  SortField = 50 //日增仓
+	// 以下排序字段用于 Qot_GetValuationPlateStockList
+	SortField_SortField_MarketCap            SortField = 51 // 市值
+	SortField_SortField_Valuation            SortField = 52 // 估值
+	SortField_SortField_ForwardValuation     SortField = 53 // 预测估值
+	SortField_SortField_HistoricalPercentile SortField = 54 // 历史分位
+	// 以下排序字段用于 Qot_GetShareholdersHolderDetail
+	SortField_SortField_HolderQuantity SortField = 61 // 持股股数
+	// 以下排序字段用于 Qot_GetShareholdersHoldingChanges / Qot_GetShareholdersHolderDetail
+	SortField_SortField_ShareChangeNum SortField = 62 // 持股变动数
+	// 以下排序字段用于 Qot_GetShareholdersHoldingChanges
+	SortField_SortField_HoldingDate        SortField = 63 // 持股日期
+	SortField_SortField_HolderPctChange    SortField = 64 // 变动比例
+	SortField_SortField_HolderChangeAmount SortField = 65 // 变动金额
+	SortField_SortField_HolderPct          SortField = 66 // 持股比例
 )
 
 // Enum value maps for SortField.
@@ -1756,59 +1803,79 @@ var (
 		48: "SortField_LastSettlePrice",
 		49: "SortField_Position",
 		50: "SortField_PositionChange",
+		51: "SortField_MarketCap",
+		52: "SortField_Valuation",
+		53: "SortField_ForwardValuation",
+		54: "SortField_HistoricalPercentile",
+		61: "SortField_HolderQuantity",
+		62: "SortField_ShareChangeNum",
+		63: "SortField_HoldingDate",
+		64: "SortField_HolderPctChange",
+		65: "SortField_HolderChangeAmount",
+		66: "SortField_HolderPct",
 	}
 	SortField_value = map[string]int32{
-		"SortField_Unknow":              0,
-		"SortField_Code":                1,
-		"SortField_CurPrice":            2,
-		"SortField_PriceChangeVal":      3,
-		"SortField_ChangeRate":          4,
-		"SortField_Status":              5,
-		"SortField_BidPrice":            6,
-		"SortField_AskPrice":            7,
-		"SortField_BidVol":              8,
-		"SortField_AskVol":              9,
-		"SortField_Volume":              10,
-		"SortField_Turnover":            11,
-		"SortField_Amplitude":           30,
-		"SortField_Score":               12,
-		"SortField_Premium":             13,
-		"SortField_EffectiveLeverage":   14,
-		"SortField_Delta":               15,
-		"SortField_ImpliedVolatility":   16,
-		"SortField_Type":                17,
-		"SortField_StrikePrice":         18,
-		"SortField_BreakEvenPoint":      19,
-		"SortField_MaturityTime":        20,
-		"SortField_ListTime":            21,
-		"SortField_LastTradeTime":       22,
-		"SortField_Leverage":            23,
-		"SortField_InOutMoney":          24,
-		"SortField_RecoveryPrice":       25,
-		"SortField_ChangePrice":         26,
-		"SortField_Change":              27,
-		"SortField_StreetRate":          28,
-		"SortField_StreetVol":           29,
-		"SortField_WarrantName":         31,
-		"SortField_Issuer":              32,
-		"SortField_LotSize":             33,
-		"SortField_IssueSize":           34,
-		"SortField_UpperStrikePrice":    45,
-		"SortField_LowerStrikePrice":    46,
-		"SortField_InLinePriceStatus":   47,
-		"SortField_PreCurPrice":         35,
-		"SortField_AfterCurPrice":       36,
-		"SortField_PrePriceChangeVal":   37,
-		"SortField_AfterPriceChangeVal": 38,
-		"SortField_PreChangeRate":       39,
-		"SortField_AfterChangeRate":     40,
-		"SortField_PreAmplitude":        41,
-		"SortField_AfterAmplitude":      42,
-		"SortField_PreTurnover":         43,
-		"SortField_AfterTurnover":       44,
-		"SortField_LastSettlePrice":     48,
-		"SortField_Position":            49,
-		"SortField_PositionChange":      50,
+		"SortField_Unknow":               0,
+		"SortField_Code":                 1,
+		"SortField_CurPrice":             2,
+		"SortField_PriceChangeVal":       3,
+		"SortField_ChangeRate":           4,
+		"SortField_Status":               5,
+		"SortField_BidPrice":             6,
+		"SortField_AskPrice":             7,
+		"SortField_BidVol":               8,
+		"SortField_AskVol":               9,
+		"SortField_Volume":               10,
+		"SortField_Turnover":             11,
+		"SortField_Amplitude":            30,
+		"SortField_Score":                12,
+		"SortField_Premium":              13,
+		"SortField_EffectiveLeverage":    14,
+		"SortField_Delta":                15,
+		"SortField_ImpliedVolatility":    16,
+		"SortField_Type":                 17,
+		"SortField_StrikePrice":          18,
+		"SortField_BreakEvenPoint":       19,
+		"SortField_MaturityTime":         20,
+		"SortField_ListTime":             21,
+		"SortField_LastTradeTime":        22,
+		"SortField_Leverage":             23,
+		"SortField_InOutMoney":           24,
+		"SortField_RecoveryPrice":        25,
+		"SortField_ChangePrice":          26,
+		"SortField_Change":               27,
+		"SortField_StreetRate":           28,
+		"SortField_StreetVol":            29,
+		"SortField_WarrantName":          31,
+		"SortField_Issuer":               32,
+		"SortField_LotSize":              33,
+		"SortField_IssueSize":            34,
+		"SortField_UpperStrikePrice":     45,
+		"SortField_LowerStrikePrice":     46,
+		"SortField_InLinePriceStatus":    47,
+		"SortField_PreCurPrice":          35,
+		"SortField_AfterCurPrice":        36,
+		"SortField_PrePriceChangeVal":    37,
+		"SortField_AfterPriceChangeVal":  38,
+		"SortField_PreChangeRate":        39,
+		"SortField_AfterChangeRate":      40,
+		"SortField_PreAmplitude":         41,
+		"SortField_AfterAmplitude":       42,
+		"SortField_PreTurnover":          43,
+		"SortField_AfterTurnover":        44,
+		"SortField_LastSettlePrice":      48,
+		"SortField_Position":             49,
+		"SortField_PositionChange":       50,
+		"SortField_MarketCap":            51,
+		"SortField_Valuation":            52,
+		"SortField_ForwardValuation":     53,
+		"SortField_HistoricalPercentile": 54,
+		"SortField_HolderQuantity":       61,
+		"SortField_ShareChangeNum":       62,
+		"SortField_HoldingDate":          63,
+		"SortField_HolderPctChange":      64,
+		"SortField_HolderChangeAmount":   65,
+		"SortField_HolderPct":            66,
 	}
 )
 
@@ -1847,6 +1914,66 @@ func (x *SortField) UnmarshalJSON(b []byte) error {
 // Deprecated: Use SortField.Descriptor instead.
 func (SortField) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_Common_proto_rawDescGZIP(), []int{20}
+}
+
+// 排序方向
+type SortType int32
+
+const (
+	SortType_SortType_Unknown SortType = 0 // 未知
+	SortType_SortType_Desc    SortType = 1 // 降序
+	SortType_SortType_Asc     SortType = 2 // 升序
+)
+
+// Enum value maps for SortType.
+var (
+	SortType_name = map[int32]string{
+		0: "SortType_Unknown",
+		1: "SortType_Desc",
+		2: "SortType_Asc",
+	}
+	SortType_value = map[string]int32{
+		"SortType_Unknown": 0,
+		"SortType_Desc":    1,
+		"SortType_Asc":     2,
+	}
+)
+
+func (x SortType) Enum() *SortType {
+	p := new(SortType)
+	*p = x
+	return p
+}
+
+func (x SortType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SortType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[21].Descriptor()
+}
+
+func (SortType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[21]
+}
+
+func (x SortType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *SortType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = SortType(num)
+	return nil
+}
+
+// Deprecated: Use SortType.Descriptor instead.
+func (SortType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{21}
 }
 
 //窝轮发行人
@@ -1961,11 +2088,11 @@ func (x Issuer) String() string {
 }
 
 func (Issuer) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[21].Descriptor()
+	return file_Qot_Common_proto_enumTypes[22].Descriptor()
 }
 
 func (Issuer) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[21]
+	return &file_Qot_Common_proto_enumTypes[22]
 }
 
 func (x Issuer) Number() protoreflect.EnumNumber {
@@ -1984,7 +2111,7 @@ func (x *Issuer) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use Issuer.Descriptor instead.
 func (Issuer) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{21}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{22}
 }
 
 //窝轮上市日
@@ -2030,11 +2157,11 @@ func (x IpoPeriod) String() string {
 }
 
 func (IpoPeriod) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[22].Descriptor()
+	return file_Qot_Common_proto_enumTypes[23].Descriptor()
 }
 
 func (IpoPeriod) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[22]
+	return &file_Qot_Common_proto_enumTypes[23]
 }
 
 func (x IpoPeriod) Number() protoreflect.EnumNumber {
@@ -2053,7 +2180,7 @@ func (x *IpoPeriod) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use IpoPeriod.Descriptor instead.
 func (IpoPeriod) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{22}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{23}
 }
 
 //窝轮价外/内,界内证表示界内界外
@@ -2090,11 +2217,11 @@ func (x PriceType) String() string {
 }
 
 func (PriceType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[23].Descriptor()
+	return file_Qot_Common_proto_enumTypes[24].Descriptor()
 }
 
 func (PriceType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[23]
+	return &file_Qot_Common_proto_enumTypes[24]
 }
 
 func (x PriceType) Number() protoreflect.EnumNumber {
@@ -2113,7 +2240,7 @@ func (x *PriceType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PriceType.Descriptor instead.
 func (PriceType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{23}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{24}
 }
 
 //窝轮状态
@@ -2156,11 +2283,11 @@ func (x WarrantStatus) String() string {
 }
 
 func (WarrantStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[24].Descriptor()
+	return file_Qot_Common_proto_enumTypes[25].Descriptor()
 }
 
 func (WarrantStatus) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[24]
+	return &file_Qot_Common_proto_enumTypes[25]
 }
 
 func (x WarrantStatus) Number() protoreflect.EnumNumber {
@@ -2179,7 +2306,7 @@ func (x *WarrantStatus) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use WarrantStatus.Descriptor instead.
 func (WarrantStatus) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{24}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{25}
 }
 
 type CompanyAct int32
@@ -2236,11 +2363,11 @@ func (x CompanyAct) String() string {
 }
 
 func (CompanyAct) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[25].Descriptor()
+	return file_Qot_Common_proto_enumTypes[26].Descriptor()
 }
 
 func (CompanyAct) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[25]
+	return &file_Qot_Common_proto_enumTypes[26]
 }
 
 func (x CompanyAct) Number() protoreflect.EnumNumber {
@@ -2259,7 +2386,7 @@ func (x *CompanyAct) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use CompanyAct.Descriptor instead.
 func (CompanyAct) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{25}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{26}
 }
 
 //行情权限
@@ -2272,6 +2399,7 @@ const (
 	QotRight_QotRight_Level2 QotRight = 3 //Level2
 	QotRight_QotRight_SF     QotRight = 4 //SF高级行情
 	QotRight_QotRight_No     QotRight = 5 //无权限
+	QotRight_QotRight_Level3 QotRight = 6 //Level3
 )
 
 // Enum value maps for QotRight.
@@ -2283,6 +2411,7 @@ var (
 		3: "QotRight_Level2",
 		4: "QotRight_SF",
 		5: "QotRight_No",
+		6: "QotRight_Level3",
 	}
 	QotRight_value = map[string]int32{
 		"QotRight_Unknow": 0,
@@ -2291,6 +2420,7 @@ var (
 		"QotRight_Level2": 3,
 		"QotRight_SF":     4,
 		"QotRight_No":     5,
+		"QotRight_Level3": 6,
 	}
 )
 
@@ -2305,11 +2435,11 @@ func (x QotRight) String() string {
 }
 
 func (QotRight) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[26].Descriptor()
+	return file_Qot_Common_proto_enumTypes[27].Descriptor()
 }
 
 func (QotRight) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[26]
+	return &file_Qot_Common_proto_enumTypes[27]
 }
 
 func (x QotRight) Number() protoreflect.EnumNumber {
@@ -2328,7 +2458,7 @@ func (x *QotRight) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use QotRight.Descriptor instead.
 func (QotRight) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{26}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{27}
 }
 
 // 提醒类型
@@ -2404,11 +2534,11 @@ func (x PriceReminderType) String() string {
 }
 
 func (PriceReminderType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[27].Descriptor()
+	return file_Qot_Common_proto_enumTypes[28].Descriptor()
 }
 
 func (PriceReminderType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[27]
+	return &file_Qot_Common_proto_enumTypes[28]
 }
 
 func (x PriceReminderType) Number() protoreflect.EnumNumber {
@@ -2427,7 +2557,7 @@ func (x *PriceReminderType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PriceReminderType.Descriptor instead.
 func (PriceReminderType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{27}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{28}
 }
 
 // 提醒频率
@@ -2467,11 +2597,11 @@ func (x PriceReminderFreq) String() string {
 }
 
 func (PriceReminderFreq) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[28].Descriptor()
+	return file_Qot_Common_proto_enumTypes[29].Descriptor()
 }
 
 func (PriceReminderFreq) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[28]
+	return &file_Qot_Common_proto_enumTypes[29]
 }
 
 func (x PriceReminderFreq) Number() protoreflect.EnumNumber {
@@ -2490,7 +2620,7 @@ func (x *PriceReminderFreq) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PriceReminderFreq.Descriptor instead.
 func (PriceReminderFreq) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{28}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{29}
 }
 
 // 资产类别
@@ -2539,11 +2669,11 @@ func (x AssetClass) String() string {
 }
 
 func (AssetClass) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[29].Descriptor()
+	return file_Qot_Common_proto_enumTypes[30].Descriptor()
 }
 
 func (AssetClass) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[29]
+	return &file_Qot_Common_proto_enumTypes[30]
 }
 
 func (x AssetClass) Number() protoreflect.EnumNumber {
@@ -2562,7 +2692,7 @@ func (x *AssetClass) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AssetClass.Descriptor instead.
 func (AssetClass) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{29}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{30}
 }
 
 // 交割周期
@@ -2620,11 +2750,11 @@ func (x ExpirationCycle) String() string {
 }
 
 func (ExpirationCycle) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[30].Descriptor()
+	return file_Qot_Common_proto_enumTypes[31].Descriptor()
 }
 
 func (ExpirationCycle) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[30]
+	return &file_Qot_Common_proto_enumTypes[31]
 }
 
 func (x ExpirationCycle) Number() protoreflect.EnumNumber {
@@ -2643,7 +2773,7 @@ func (x *ExpirationCycle) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ExpirationCycle.Descriptor instead.
 func (ExpirationCycle) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{30}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{31}
 }
 
 // 标准期权链类型
@@ -2680,11 +2810,11 @@ func (x OptionStandardType) String() string {
 }
 
 func (OptionStandardType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[31].Descriptor()
+	return file_Qot_Common_proto_enumTypes[32].Descriptor()
 }
 
 func (OptionStandardType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[31]
+	return &file_Qot_Common_proto_enumTypes[32]
 }
 
 func (x OptionStandardType) Number() protoreflect.EnumNumber {
@@ -2703,7 +2833,7 @@ func (x *OptionStandardType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use OptionStandardType.Descriptor instead.
 func (OptionStandardType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{31}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{32}
 }
 
 // 期权结算方式
@@ -2740,11 +2870,11 @@ func (x OptionSettlementMode) String() string {
 }
 
 func (OptionSettlementMode) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[32].Descriptor()
+	return file_Qot_Common_proto_enumTypes[33].Descriptor()
 }
 
 func (OptionSettlementMode) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[32]
+	return &file_Qot_Common_proto_enumTypes[33]
 }
 
 func (x OptionSettlementMode) Number() protoreflect.EnumNumber {
@@ -2763,7 +2893,7 @@ func (x *OptionSettlementMode) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use OptionSettlementMode.Descriptor instead.
 func (OptionSettlementMode) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{32}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{33}
 }
 
 // 所属交易所
@@ -2789,6 +2919,8 @@ const (
 	ExchType_ExchType_CN_STIB      ExchType = 16 //科创板
 	ExchType_ExchType_SG_SGX       ExchType = 17 //新交所
 	ExchType_ExchType_JP_OSE       ExchType = 18 //大阪交易所
+	ExchType_ExchType_CC_CRYPTO    ExchType = 19 //加密货币交易所
+	ExchType_ExchType_MY_BMS       ExchType = 20 //马来西亚交易所
 )
 
 // Enum value maps for ExchType.
@@ -2813,6 +2945,8 @@ var (
 		16: "ExchType_CN_STIB",
 		17: "ExchType_SG_SGX",
 		18: "ExchType_JP_OSE",
+		19: "ExchType_CC_CRYPTO",
+		20: "ExchType_MY_BMS",
 	}
 	ExchType_value = map[string]int32{
 		"ExchType_Unknown":      0,
@@ -2834,6 +2968,8 @@ var (
 		"ExchType_CN_STIB":      16,
 		"ExchType_SG_SGX":       17,
 		"ExchType_JP_OSE":       18,
+		"ExchType_CC_CRYPTO":    19,
+		"ExchType_MY_BMS":       20,
 	}
 )
 
@@ -2848,11 +2984,11 @@ func (x ExchType) String() string {
 }
 
 func (ExchType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[33].Descriptor()
+	return file_Qot_Common_proto_enumTypes[34].Descriptor()
 }
 
 func (ExchType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[33]
+	return &file_Qot_Common_proto_enumTypes[34]
 }
 
 func (x ExchType) Number() protoreflect.EnumNumber {
@@ -2871,7 +3007,7 @@ func (x *ExchType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ExchType.Descriptor instead.
 func (ExchType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{33}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{34}
 }
 
 // 周期类型
@@ -2914,11 +3050,11 @@ func (x PeriodType) String() string {
 }
 
 func (PeriodType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[34].Descriptor()
+	return file_Qot_Common_proto_enumTypes[35].Descriptor()
 }
 
 func (PeriodType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[34]
+	return &file_Qot_Common_proto_enumTypes[35]
 }
 
 func (x PeriodType) Number() protoreflect.EnumNumber {
@@ -2937,7 +3073,7 @@ func (x *PeriodType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PeriodType.Descriptor instead.
 func (PeriodType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{34}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{35}
 }
 
 type PriceReminderMarketStatus int32
@@ -2979,11 +3115,11 @@ func (x PriceReminderMarketStatus) String() string {
 }
 
 func (PriceReminderMarketStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[35].Descriptor()
+	return file_Qot_Common_proto_enumTypes[36].Descriptor()
 }
 
 func (PriceReminderMarketStatus) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[35]
+	return &file_Qot_Common_proto_enumTypes[36]
 }
 
 func (x PriceReminderMarketStatus) Number() protoreflect.EnumNumber {
@@ -3002,7 +3138,1099 @@ func (x *PriceReminderMarketStatus) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PriceReminderMarketStatus.Descriptor instead.
 func (PriceReminderMarketStatus) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{35}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{36}
+}
+
+// 财报类型
+type F10Type int32
+
+const (
+	F10Type_F10Type_Unknown         F10Type = 0
+	F10Type_F10Type_Q1              F10Type = 1  // 单季报，Q1
+	F10Type_F10Type_Q2              F10Type = 2  // 单季报，Q2
+	F10Type_F10Type_Q3              F10Type = 3  // 单季报，Q3
+	F10Type_F10Type_Q4              F10Type = 4  // 单季报，Q4
+	F10Type_F10Type_Q6              F10Type = 5  // 累计季报，Q6（Q1+Q2）
+	F10Type_F10Type_Q9              F10Type = 6  // 累计季报，Q9（Q1+Q2+Q3）
+	F10Type_F10Type_Annual          F10Type = 7  // 年报
+	F10Type_F10Type_Quarterly       F10Type = 9  // 单季报组合（Q1, Q2, Q3, Q4）
+	F10Type_F10Type_QuarterlyAnnual F10Type = 10 // 单季报 + 年报
+	F10Type_F10Type_MulQuarterly    F10Type = 11 // 累计季报（Q1, Q6, Q9, Annual）
+)
+
+// Enum value maps for F10Type.
+var (
+	F10Type_name = map[int32]string{
+		0:  "F10Type_Unknown",
+		1:  "F10Type_Q1",
+		2:  "F10Type_Q2",
+		3:  "F10Type_Q3",
+		4:  "F10Type_Q4",
+		5:  "F10Type_Q6",
+		6:  "F10Type_Q9",
+		7:  "F10Type_Annual",
+		9:  "F10Type_Quarterly",
+		10: "F10Type_QuarterlyAnnual",
+		11: "F10Type_MulQuarterly",
+	}
+	F10Type_value = map[string]int32{
+		"F10Type_Unknown":         0,
+		"F10Type_Q1":              1,
+		"F10Type_Q2":              2,
+		"F10Type_Q3":              3,
+		"F10Type_Q4":              4,
+		"F10Type_Q6":              5,
+		"F10Type_Q9":              6,
+		"F10Type_Annual":          7,
+		"F10Type_Quarterly":       9,
+		"F10Type_QuarterlyAnnual": 10,
+		"F10Type_MulQuarterly":    11,
+	}
+)
+
+func (x F10Type) Enum() *F10Type {
+	p := new(F10Type)
+	*p = x
+	return p
+}
+
+func (x F10Type) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (F10Type) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[37].Descriptor()
+}
+
+func (F10Type) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[37]
+}
+
+func (x F10Type) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *F10Type) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = F10Type(num)
+	return nil
+}
+
+// Deprecated: Use F10Type.Descriptor instead.
+func (F10Type) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{37}
+}
+
+// 财报发布时间类型
+type EarningsPubTimeType int32
+
+const (
+	EarningsPubTimeType_EarningsPubTimeType_Unknown      EarningsPubTimeType = 0 // 未知
+	EarningsPubTimeType_EarningsPubTimeType_PreMarket    EarningsPubTimeType = 1 // 盘前发布
+	EarningsPubTimeType_EarningsPubTimeType_AfterMarket  EarningsPubTimeType = 2 // 盘后发布
+	EarningsPubTimeType_EarningsPubTimeType_DuringMarket EarningsPubTimeType = 3 // 盘中发布
+)
+
+// Enum value maps for EarningsPubTimeType.
+var (
+	EarningsPubTimeType_name = map[int32]string{
+		0: "EarningsPubTimeType_Unknown",
+		1: "EarningsPubTimeType_PreMarket",
+		2: "EarningsPubTimeType_AfterMarket",
+		3: "EarningsPubTimeType_DuringMarket",
+	}
+	EarningsPubTimeType_value = map[string]int32{
+		"EarningsPubTimeType_Unknown":      0,
+		"EarningsPubTimeType_PreMarket":    1,
+		"EarningsPubTimeType_AfterMarket":  2,
+		"EarningsPubTimeType_DuringMarket": 3,
+	}
+)
+
+func (x EarningsPubTimeType) Enum() *EarningsPubTimeType {
+	p := new(EarningsPubTimeType)
+	*p = x
+	return p
+}
+
+func (x EarningsPubTimeType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (EarningsPubTimeType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[38].Descriptor()
+}
+
+func (EarningsPubTimeType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[38]
+}
+
+func (x EarningsPubTimeType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *EarningsPubTimeType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = EarningsPubTimeType(num)
+	return nil
+}
+
+// Deprecated: Use EarningsPubTimeType.Descriptor instead.
+func (EarningsPubTimeType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{38}
+}
+
+// 估值类型
+type ValuationType int32
+
+const (
+	ValuationType_ValuationType_Unknown ValuationType = 0 // 未知
+	ValuationType_ValuationType_PE      ValuationType = 1 // 市盈率
+	ValuationType_ValuationType_PB      ValuationType = 2 // 市净率
+	ValuationType_ValuationType_PS      ValuationType = 3 // 市销率
+)
+
+// Enum value maps for ValuationType.
+var (
+	ValuationType_name = map[int32]string{
+		0: "ValuationType_Unknown",
+		1: "ValuationType_PE",
+		2: "ValuationType_PB",
+		3: "ValuationType_PS",
+	}
+	ValuationType_value = map[string]int32{
+		"ValuationType_Unknown": 0,
+		"ValuationType_PE":      1,
+		"ValuationType_PB":      2,
+		"ValuationType_PS":      3,
+	}
+)
+
+func (x ValuationType) Enum() *ValuationType {
+	p := new(ValuationType)
+	*p = x
+	return p
+}
+
+func (x ValuationType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ValuationType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[39].Descriptor()
+}
+
+func (ValuationType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[39]
+}
+
+func (x ValuationType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *ValuationType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = ValuationType(num)
+	return nil
+}
+
+// Deprecated: Use ValuationType.Descriptor instead.
+func (ValuationType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{39}
+}
+
+// 财务报表类型
+type FinancialStatementsType int32
+
+const (
+	FinancialStatementsType_FinancialStatementsType_Unknown      FinancialStatementsType = 0
+	FinancialStatementsType_FinancialStatementsType_Income       FinancialStatementsType = 1 // 利润表
+	FinancialStatementsType_FinancialStatementsType_BalanceSheet FinancialStatementsType = 2 // 资产负债表
+	FinancialStatementsType_FinancialStatementsType_CashFlow     FinancialStatementsType = 3 // 现金流量表
+	FinancialStatementsType_FinancialStatementsType_MainIndex    FinancialStatementsType = 4 // 关键指标
+)
+
+// Enum value maps for FinancialStatementsType.
+var (
+	FinancialStatementsType_name = map[int32]string{
+		0: "FinancialStatementsType_Unknown",
+		1: "FinancialStatementsType_Income",
+		2: "FinancialStatementsType_BalanceSheet",
+		3: "FinancialStatementsType_CashFlow",
+		4: "FinancialStatementsType_MainIndex",
+	}
+	FinancialStatementsType_value = map[string]int32{
+		"FinancialStatementsType_Unknown":      0,
+		"FinancialStatementsType_Income":       1,
+		"FinancialStatementsType_BalanceSheet": 2,
+		"FinancialStatementsType_CashFlow":     3,
+		"FinancialStatementsType_MainIndex":    4,
+	}
+)
+
+func (x FinancialStatementsType) Enum() *FinancialStatementsType {
+	p := new(FinancialStatementsType)
+	*p = x
+	return p
+}
+
+func (x FinancialStatementsType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (FinancialStatementsType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[40].Descriptor()
+}
+
+func (FinancialStatementsType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[40]
+}
+
+func (x FinancialStatementsType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *FinancialStatementsType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = FinancialStatementsType(num)
+	return nil
+}
+
+// Deprecated: Use FinancialStatementsType.Descriptor instead.
+func (FinancialStatementsType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{40}
+}
+
+// 主营构成维度类型
+type RevenueBreakdownType int32
+
+const (
+	RevenueBreakdownType_RevenueBreakdownType_Unknown  RevenueBreakdownType = 0
+	RevenueBreakdownType_RevenueBreakdownType_Product  RevenueBreakdownType = 1 // 产品
+	RevenueBreakdownType_RevenueBreakdownType_Industry RevenueBreakdownType = 2 // 行业
+	RevenueBreakdownType_RevenueBreakdownType_Region   RevenueBreakdownType = 4 // 地区
+	RevenueBreakdownType_RevenueBreakdownType_Business RevenueBreakdownType = 8 // 业务
+)
+
+// Enum value maps for RevenueBreakdownType.
+var (
+	RevenueBreakdownType_name = map[int32]string{
+		0: "RevenueBreakdownType_Unknown",
+		1: "RevenueBreakdownType_Product",
+		2: "RevenueBreakdownType_Industry",
+		4: "RevenueBreakdownType_Region",
+		8: "RevenueBreakdownType_Business",
+	}
+	RevenueBreakdownType_value = map[string]int32{
+		"RevenueBreakdownType_Unknown":  0,
+		"RevenueBreakdownType_Product":  1,
+		"RevenueBreakdownType_Industry": 2,
+		"RevenueBreakdownType_Region":   4,
+		"RevenueBreakdownType_Business": 8,
+	}
+)
+
+func (x RevenueBreakdownType) Enum() *RevenueBreakdownType {
+	p := new(RevenueBreakdownType)
+	*p = x
+	return p
+}
+
+func (x RevenueBreakdownType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (RevenueBreakdownType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[41].Descriptor()
+}
+
+func (RevenueBreakdownType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[41]
+}
+
+func (x RevenueBreakdownType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *RevenueBreakdownType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = RevenueBreakdownType(num)
+	return nil
+}
+
+// Deprecated: Use RevenueBreakdownType.Descriptor instead.
+func (RevenueBreakdownType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{41}
+}
+
+// 分析师评级
+type ResearchRatingType int32
+
+const (
+	ResearchRatingType_ResearchRatingType_Unknown      ResearchRatingType = 0 // 未知
+	ResearchRatingType_ResearchRatingType_Sell         ResearchRatingType = 1 // Sell（卖出）
+	ResearchRatingType_ResearchRatingType_Underperform ResearchRatingType = 2 // Underperform（跑输大盘）
+	ResearchRatingType_ResearchRatingType_Hold         ResearchRatingType = 3 // Hold（持有）
+	ResearchRatingType_ResearchRatingType_Buy          ResearchRatingType = 4 // Buy（买入）
+	ResearchRatingType_ResearchRatingType_StrongBuy    ResearchRatingType = 5 // Strong Buy（强力推荐）
+)
+
+// Enum value maps for ResearchRatingType.
+var (
+	ResearchRatingType_name = map[int32]string{
+		0: "ResearchRatingType_Unknown",
+		1: "ResearchRatingType_Sell",
+		2: "ResearchRatingType_Underperform",
+		3: "ResearchRatingType_Hold",
+		4: "ResearchRatingType_Buy",
+		5: "ResearchRatingType_StrongBuy",
+	}
+	ResearchRatingType_value = map[string]int32{
+		"ResearchRatingType_Unknown":      0,
+		"ResearchRatingType_Sell":         1,
+		"ResearchRatingType_Underperform": 2,
+		"ResearchRatingType_Hold":         3,
+		"ResearchRatingType_Buy":          4,
+		"ResearchRatingType_StrongBuy":    5,
+	}
+)
+
+func (x ResearchRatingType) Enum() *ResearchRatingType {
+	p := new(ResearchRatingType)
+	*p = x
+	return p
+}
+
+func (x ResearchRatingType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ResearchRatingType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[42].Descriptor()
+}
+
+func (ResearchRatingType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[42]
+}
+
+func (x ResearchRatingType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *ResearchRatingType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = ResearchRatingType(num)
+	return nil
+}
+
+// Deprecated: Use ResearchRatingType.Descriptor instead.
+func (ResearchRatingType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{42}
+}
+
+// 研报评级汇总-评级维度
+type ResearchRatingDimensionType int32
+
+const (
+	ResearchRatingDimensionType_ResearchRatingDimensionType_Unknown     ResearchRatingDimensionType = 0
+	ResearchRatingDimensionType_ResearchRatingDimensionType_Institution ResearchRatingDimensionType = 1 // 机构维度（默认）
+	ResearchRatingDimensionType_ResearchRatingDimensionType_Analyst     ResearchRatingDimensionType = 2 // 分析师维度
+)
+
+// Enum value maps for ResearchRatingDimensionType.
+var (
+	ResearchRatingDimensionType_name = map[int32]string{
+		0: "ResearchRatingDimensionType_Unknown",
+		1: "ResearchRatingDimensionType_Institution",
+		2: "ResearchRatingDimensionType_Analyst",
+	}
+	ResearchRatingDimensionType_value = map[string]int32{
+		"ResearchRatingDimensionType_Unknown":     0,
+		"ResearchRatingDimensionType_Institution": 1,
+		"ResearchRatingDimensionType_Analyst":     2,
+	}
+)
+
+func (x ResearchRatingDimensionType) Enum() *ResearchRatingDimensionType {
+	p := new(ResearchRatingDimensionType)
+	*p = x
+	return p
+}
+
+func (x ResearchRatingDimensionType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ResearchRatingDimensionType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[43].Descriptor()
+}
+
+func (ResearchRatingDimensionType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[43]
+}
+
+func (x ResearchRatingDimensionType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *ResearchRatingDimensionType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = ResearchRatingDimensionType(num)
+	return nil
+}
+
+// Deprecated: Use ResearchRatingDimensionType.Descriptor instead.
+func (ResearchRatingDimensionType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{43}
+}
+
+// 晨星评级类型
+type MorningstarRatingType int32
+
+const (
+	MorningstarRatingType_MorningstarRatingType_Unknown      MorningstarRatingType = 0 // 未知
+	MorningstarRatingType_MorningstarRatingType_Quantitative MorningstarRatingType = 1 // 定量评级（系统模型给出）
+	MorningstarRatingType_MorningstarRatingType_Qualitative  MorningstarRatingType = 2 // 定性评级（分析师人工给出）
+)
+
+// Enum value maps for MorningstarRatingType.
+var (
+	MorningstarRatingType_name = map[int32]string{
+		0: "MorningstarRatingType_Unknown",
+		1: "MorningstarRatingType_Quantitative",
+		2: "MorningstarRatingType_Qualitative",
+	}
+	MorningstarRatingType_value = map[string]int32{
+		"MorningstarRatingType_Unknown":      0,
+		"MorningstarRatingType_Quantitative": 1,
+		"MorningstarRatingType_Qualitative":  2,
+	}
+)
+
+func (x MorningstarRatingType) Enum() *MorningstarRatingType {
+	p := new(MorningstarRatingType)
+	*p = x
+	return p
+}
+
+func (x MorningstarRatingType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (MorningstarRatingType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[44].Descriptor()
+}
+
+func (MorningstarRatingType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[44]
+}
+
+func (x MorningstarRatingType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *MorningstarRatingType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = MorningstarRatingType(num)
+	return nil
+}
+
+// Deprecated: Use MorningstarRatingType.Descriptor instead.
+func (MorningstarRatingType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{44}
+}
+
+// 估值历史区间类型
+type ValuationIntervalType int32
+
+const (
+	ValuationIntervalType_ValuationIntervalType_Unknown   ValuationIntervalType = 0  // 未知
+	ValuationIntervalType_ValuationIntervalType_Month3    ValuationIntervalType = 1  // 3个月
+	ValuationIntervalType_ValuationIntervalType_Month6    ValuationIntervalType = 2  // 6个月
+	ValuationIntervalType_ValuationIntervalType_Year1     ValuationIntervalType = 3  // 1年
+	ValuationIntervalType_ValuationIntervalType_Year3     ValuationIntervalType = 4  // 3年
+	ValuationIntervalType_ValuationIntervalType_Since2019 ValuationIntervalType = 5  // 从2019年起
+	ValuationIntervalType_ValuationIntervalType_Year5     ValuationIntervalType = 6  // 5年
+	ValuationIntervalType_ValuationIntervalType_Year10    ValuationIntervalType = 7  // 10年
+	ValuationIntervalType_ValuationIntervalType_Year2     ValuationIntervalType = 8  // 2年
+	ValuationIntervalType_ValuationIntervalType_Year20    ValuationIntervalType = 9  // 20年
+	ValuationIntervalType_ValuationIntervalType_Year30    ValuationIntervalType = 10 // 30年
+)
+
+// Enum value maps for ValuationIntervalType.
+var (
+	ValuationIntervalType_name = map[int32]string{
+		0:  "ValuationIntervalType_Unknown",
+		1:  "ValuationIntervalType_Month3",
+		2:  "ValuationIntervalType_Month6",
+		3:  "ValuationIntervalType_Year1",
+		4:  "ValuationIntervalType_Year3",
+		5:  "ValuationIntervalType_Since2019",
+		6:  "ValuationIntervalType_Year5",
+		7:  "ValuationIntervalType_Year10",
+		8:  "ValuationIntervalType_Year2",
+		9:  "ValuationIntervalType_Year20",
+		10: "ValuationIntervalType_Year30",
+	}
+	ValuationIntervalType_value = map[string]int32{
+		"ValuationIntervalType_Unknown":   0,
+		"ValuationIntervalType_Month3":    1,
+		"ValuationIntervalType_Month6":    2,
+		"ValuationIntervalType_Year1":     3,
+		"ValuationIntervalType_Year3":     4,
+		"ValuationIntervalType_Since2019": 5,
+		"ValuationIntervalType_Year5":     6,
+		"ValuationIntervalType_Year10":    7,
+		"ValuationIntervalType_Year2":     8,
+		"ValuationIntervalType_Year20":    9,
+		"ValuationIntervalType_Year30":    10,
+	}
+)
+
+func (x ValuationIntervalType) Enum() *ValuationIntervalType {
+	p := new(ValuationIntervalType)
+	*p = x
+	return p
+}
+
+func (x ValuationIntervalType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ValuationIntervalType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[45].Descriptor()
+}
+
+func (ValuationIntervalType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[45]
+}
+
+func (x ValuationIntervalType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *ValuationIntervalType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = ValuationIntervalType(num)
+	return nil
+}
+
+// Deprecated: Use ValuationIntervalType.Descriptor instead.
+func (ValuationIntervalType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{45}
+}
+
+// 持股变动筛选类型
+type HoldingChangesFilterType int32
+
+const (
+	HoldingChangesFilterType_HoldingChangesFilterType_Unknown  HoldingChangesFilterType = 0 // 全部（默认）
+	HoldingChangesFilterType_HoldingChangesFilterType_Increase HoldingChangesFilterType = 1 // 增持
+	HoldingChangesFilterType_HoldingChangesFilterType_Decrease HoldingChangesFilterType = 2 // 减持
+	HoldingChangesFilterType_HoldingChangesFilterType_NewIn    HoldingChangesFilterType = 3 // 建仓
+	HoldingChangesFilterType_HoldingChangesFilterType_CloseOut HoldingChangesFilterType = 4 // 清仓
+)
+
+// Enum value maps for HoldingChangesFilterType.
+var (
+	HoldingChangesFilterType_name = map[int32]string{
+		0: "HoldingChangesFilterType_Unknown",
+		1: "HoldingChangesFilterType_Increase",
+		2: "HoldingChangesFilterType_Decrease",
+		3: "HoldingChangesFilterType_NewIn",
+		4: "HoldingChangesFilterType_CloseOut",
+	}
+	HoldingChangesFilterType_value = map[string]int32{
+		"HoldingChangesFilterType_Unknown":  0,
+		"HoldingChangesFilterType_Increase": 1,
+		"HoldingChangesFilterType_Decrease": 2,
+		"HoldingChangesFilterType_NewIn":    3,
+		"HoldingChangesFilterType_CloseOut": 4,
+	}
+)
+
+func (x HoldingChangesFilterType) Enum() *HoldingChangesFilterType {
+	p := new(HoldingChangesFilterType)
+	*p = x
+	return p
+}
+
+func (x HoldingChangesFilterType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (HoldingChangesFilterType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[46].Descriptor()
+}
+
+func (HoldingChangesFilterType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[46]
+}
+
+func (x HoldingChangesFilterType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *HoldingChangesFilterType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = HoldingChangesFilterType(num)
+	return nil
+}
+
+// Deprecated: Use HoldingChangesFilterType.Descriptor instead.
+func (HoldingChangesFilterType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{46}
+}
+
+// 股东持仓明细机构类型
+type HolderDetailType int32
+
+const (
+	HolderDetailType_HolderDetailType_Default                      HolderDetailType = 0    // 默认不过滤，按服务端默认逻辑返回
+	HolderDetailType_HolderDetailType_All                          HolderDetailType = 1000 // 全部
+	HolderDetailType_HolderDetailType_Unclassified                 HolderDetailType = 1    // 其他机构
+	HolderDetailType_HolderDetailType_TraditionalInvestmentManager HolderDetailType = 2    // 传统投资经理
+	HolderDetailType_HolderDetailType_HedgeFundManager             HolderDetailType = 3    // 对冲基金
+	HolderDetailType_HolderDetailType_VCOrPE                       HolderDetailType = 4    // 风险资本/私募股权投资
+	HolderDetailType_HolderDetailType_CorporatePensionPlanSponsor  HolderDetailType = 5    // 企业年金
+	HolderDetailType_HolderDetailType_FoundationFundSponsor        HolderDetailType = 6    // 基金会基金
+	HolderDetailType_HolderDetailType_InsuranceCompany             HolderDetailType = 7    // 保险公司
+	HolderDetailType_HolderDetailType_BankOrInvestmentBank         HolderDetailType = 8    // 银行/投资银行
+	HolderDetailType_HolderDetailType_FamilyOfficesOrTrust         HolderDetailType = 9    // 家族办公室/信托
+	HolderDetailType_HolderDetailType_SovereignWealthFund          HolderDetailType = 10   // 主权财富基金
+	HolderDetailType_HolderDetailType_REIT                         HolderDetailType = 11   // REIT
+	HolderDetailType_HolderDetailType_StructuredFinancePoolManager HolderDetailType = 12   // 结构化融资经理
+	HolderDetailType_HolderDetailType_UnionPensionPlanSponsor      HolderDetailType = 13   // 联合养老金
+	HolderDetailType_HolderDetailType_GovernmentPensionPlanSponsor HolderDetailType = 14   // 政府养老金
+	HolderDetailType_HolderDetailType_EndowmentFundSponsor         HolderDetailType = 15   // 捐赠基金
+	HolderDetailType_HolderDetailType_IndividualInsiders           HolderDetailType = 100  // 个人
+	HolderDetailType_HolderDetailType_IssueSponsoredADR            HolderDetailType = 200  // ADS
+	HolderDetailType_HolderDetailType_CorporationsPublic           HolderDetailType = 300  // 上市公司
+	HolderDetailType_HolderDetailType_CorporationsPrivate          HolderDetailType = 400  // 未公开上市公司
+	HolderDetailType_HolderDetailType_StateOwnedShares             HolderDetailType = 500  // 国有股
+)
+
+// Enum value maps for HolderDetailType.
+var (
+	HolderDetailType_name = map[int32]string{
+		0:    "HolderDetailType_Default",
+		1000: "HolderDetailType_All",
+		1:    "HolderDetailType_Unclassified",
+		2:    "HolderDetailType_TraditionalInvestmentManager",
+		3:    "HolderDetailType_HedgeFundManager",
+		4:    "HolderDetailType_VCOrPE",
+		5:    "HolderDetailType_CorporatePensionPlanSponsor",
+		6:    "HolderDetailType_FoundationFundSponsor",
+		7:    "HolderDetailType_InsuranceCompany",
+		8:    "HolderDetailType_BankOrInvestmentBank",
+		9:    "HolderDetailType_FamilyOfficesOrTrust",
+		10:   "HolderDetailType_SovereignWealthFund",
+		11:   "HolderDetailType_REIT",
+		12:   "HolderDetailType_StructuredFinancePoolManager",
+		13:   "HolderDetailType_UnionPensionPlanSponsor",
+		14:   "HolderDetailType_GovernmentPensionPlanSponsor",
+		15:   "HolderDetailType_EndowmentFundSponsor",
+		100:  "HolderDetailType_IndividualInsiders",
+		200:  "HolderDetailType_IssueSponsoredADR",
+		300:  "HolderDetailType_CorporationsPublic",
+		400:  "HolderDetailType_CorporationsPrivate",
+		500:  "HolderDetailType_StateOwnedShares",
+	}
+	HolderDetailType_value = map[string]int32{
+		"HolderDetailType_Default":                      0,
+		"HolderDetailType_All":                          1000,
+		"HolderDetailType_Unclassified":                 1,
+		"HolderDetailType_TraditionalInvestmentManager": 2,
+		"HolderDetailType_HedgeFundManager":             3,
+		"HolderDetailType_VCOrPE":                       4,
+		"HolderDetailType_CorporatePensionPlanSponsor":  5,
+		"HolderDetailType_FoundationFundSponsor":        6,
+		"HolderDetailType_InsuranceCompany":             7,
+		"HolderDetailType_BankOrInvestmentBank":         8,
+		"HolderDetailType_FamilyOfficesOrTrust":         9,
+		"HolderDetailType_SovereignWealthFund":          10,
+		"HolderDetailType_REIT":                         11,
+		"HolderDetailType_StructuredFinancePoolManager": 12,
+		"HolderDetailType_UnionPensionPlanSponsor":      13,
+		"HolderDetailType_GovernmentPensionPlanSponsor": 14,
+		"HolderDetailType_EndowmentFundSponsor":         15,
+		"HolderDetailType_IndividualInsiders":           100,
+		"HolderDetailType_IssueSponsoredADR":            200,
+		"HolderDetailType_CorporationsPublic":           300,
+		"HolderDetailType_CorporationsPrivate":          400,
+		"HolderDetailType_StateOwnedShares":             500,
+	}
+)
+
+func (x HolderDetailType) Enum() *HolderDetailType {
+	p := new(HolderDetailType)
+	*p = x
+	return p
+}
+
+func (x HolderDetailType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (HolderDetailType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[47].Descriptor()
+}
+
+func (HolderDetailType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[47]
+}
+
+func (x HolderDetailType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *HolderDetailType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = HolderDetailType(num)
+	return nil
+}
+
+// Deprecated: Use HolderDetailType.Descriptor instead.
+func (HolderDetailType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{47}
+}
+
+// 公司资料字段类型
+type CompanyProfileFieldType int32
+
+const (
+	CompanyProfileFieldType_CompanyProfileFieldType_SourceText       CompanyProfileFieldType = 0 // 文本
+	CompanyProfileFieldType_CompanyProfileFieldType_LinkType         CompanyProfileFieldType = 1 // 链接
+	CompanyProfileFieldType_CompanyProfileFieldType_IndependentTitle CompanyProfileFieldType = 2 // 独立标题
+)
+
+// Enum value maps for CompanyProfileFieldType.
+var (
+	CompanyProfileFieldType_name = map[int32]string{
+		0: "CompanyProfileFieldType_SourceText",
+		1: "CompanyProfileFieldType_LinkType",
+		2: "CompanyProfileFieldType_IndependentTitle",
+	}
+	CompanyProfileFieldType_value = map[string]int32{
+		"CompanyProfileFieldType_SourceText":       0,
+		"CompanyProfileFieldType_LinkType":         1,
+		"CompanyProfileFieldType_IndependentTitle": 2,
+	}
+)
+
+func (x CompanyProfileFieldType) Enum() *CompanyProfileFieldType {
+	p := new(CompanyProfileFieldType)
+	*p = x
+	return p
+}
+
+func (x CompanyProfileFieldType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (CompanyProfileFieldType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[48].Descriptor()
+}
+
+func (CompanyProfileFieldType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[48]
+}
+
+func (x CompanyProfileFieldType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *CompanyProfileFieldType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = CompanyProfileFieldType(num)
+	return nil
+}
+
+// Deprecated: Use CompanyProfileFieldType.Descriptor instead.
+func (CompanyProfileFieldType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{48}
+}
+
+// 券商净买卖方向
+type BuySellType int32
+
+const (
+	BuySellType_BuySellType_Unknown BuySellType = 0
+	BuySellType_BuySellType_NetBuy  BuySellType = 1 // 净买入
+	BuySellType_BuySellType_NetSell BuySellType = 2 // 净卖出
+)
+
+// Enum value maps for BuySellType.
+var (
+	BuySellType_name = map[int32]string{
+		0: "BuySellType_Unknown",
+		1: "BuySellType_NetBuy",
+		2: "BuySellType_NetSell",
+	}
+	BuySellType_value = map[string]int32{
+		"BuySellType_Unknown": 0,
+		"BuySellType_NetBuy":  1,
+		"BuySellType_NetSell": 2,
+	}
+)
+
+func (x BuySellType) Enum() *BuySellType {
+	p := new(BuySellType)
+	*p = x
+	return p
+}
+
+func (x BuySellType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (BuySellType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[49].Descriptor()
+}
+
+func (BuySellType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[49]
+}
+
+func (x BuySellType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *BuySellType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = BuySellType(num)
+	return nil
+}
+
+// Deprecated: Use BuySellType.Descriptor instead.
+func (BuySellType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{49}
+}
+
+// 期权波动率查询时间周期
+type OptionVolatilityTimePeriodType int32
+
+const (
+	OptionVolatilityTimePeriodType_OptionVolatilityTimePeriodType_Unknown  OptionVolatilityTimePeriodType = 0 // 未知
+	OptionVolatilityTimePeriodType_OptionVolatilityTimePeriodType_Week     OptionVolatilityTimePeriodType = 1 // 周
+	OptionVolatilityTimePeriodType_OptionVolatilityTimePeriodType_Month    OptionVolatilityTimePeriodType = 2 // 月（默认）
+	OptionVolatilityTimePeriodType_OptionVolatilityTimePeriodType_Quarter  OptionVolatilityTimePeriodType = 3 // 季度
+	OptionVolatilityTimePeriodType_OptionVolatilityTimePeriodType_HalfYear OptionVolatilityTimePeriodType = 4 // 半年
+	OptionVolatilityTimePeriodType_OptionVolatilityTimePeriodType_Year     OptionVolatilityTimePeriodType = 5 // 年
+)
+
+// Enum value maps for OptionVolatilityTimePeriodType.
+var (
+	OptionVolatilityTimePeriodType_name = map[int32]string{
+		0: "OptionVolatilityTimePeriodType_Unknown",
+		1: "OptionVolatilityTimePeriodType_Week",
+		2: "OptionVolatilityTimePeriodType_Month",
+		3: "OptionVolatilityTimePeriodType_Quarter",
+		4: "OptionVolatilityTimePeriodType_HalfYear",
+		5: "OptionVolatilityTimePeriodType_Year",
+	}
+	OptionVolatilityTimePeriodType_value = map[string]int32{
+		"OptionVolatilityTimePeriodType_Unknown":  0,
+		"OptionVolatilityTimePeriodType_Week":     1,
+		"OptionVolatilityTimePeriodType_Month":    2,
+		"OptionVolatilityTimePeriodType_Quarter":  3,
+		"OptionVolatilityTimePeriodType_HalfYear": 4,
+		"OptionVolatilityTimePeriodType_Year":     5,
+	}
+)
+
+func (x OptionVolatilityTimePeriodType) Enum() *OptionVolatilityTimePeriodType {
+	p := new(OptionVolatilityTimePeriodType)
+	*p = x
+	return p
+}
+
+func (x OptionVolatilityTimePeriodType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (OptionVolatilityTimePeriodType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[50].Descriptor()
+}
+
+func (OptionVolatilityTimePeriodType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[50]
+}
+
+func (x OptionVolatilityTimePeriodType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *OptionVolatilityTimePeriodType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = OptionVolatilityTimePeriodType(num)
+	return nil
+}
+
+// Deprecated: Use OptionVolatilityTimePeriodType.Descriptor instead.
+func (OptionVolatilityTimePeriodType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{50}
+}
+
+// 期权隐含波动率状态
+type OptionImpvolStatusType int32
+
+const (
+	OptionImpvolStatusType_ImpvolFluctuating OptionImpvolStatusType = 0 // 期权波动率处于震荡中
+	OptionImpvolStatusType_ImpvolOvervalued  OptionImpvolStatusType = 1 // 期权波动率处于高估
+	OptionImpvolStatusType_ImpvolUndervalued OptionImpvolStatusType = 2 // 期权波动率处于低估
+)
+
+// Enum value maps for OptionImpvolStatusType.
+var (
+	OptionImpvolStatusType_name = map[int32]string{
+		0: "ImpvolFluctuating",
+		1: "ImpvolOvervalued",
+		2: "ImpvolUndervalued",
+	}
+	OptionImpvolStatusType_value = map[string]int32{
+		"ImpvolFluctuating": 0,
+		"ImpvolOvervalued":  1,
+		"ImpvolUndervalued": 2,
+	}
+)
+
+func (x OptionImpvolStatusType) Enum() *OptionImpvolStatusType {
+	p := new(OptionImpvolStatusType)
+	*p = x
+	return p
+}
+
+func (x OptionImpvolStatusType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (OptionImpvolStatusType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[51].Descriptor()
+}
+
+func (OptionImpvolStatusType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[51]
+}
+
+func (x OptionImpvolStatusType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *OptionImpvolStatusType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = OptionImpvolStatusType(num)
+	return nil
+}
+
+// Deprecated: Use OptionImpvolStatusType.Descriptor instead.
+func (OptionImpvolStatusType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{51}
+}
+
+//行情协议公共参数头
+type QotHeader struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SecurityFirm  *int32                 `protobuf:"varint,1,opt,name=securityFirm" json:"securityFirm,omitempty"` //券商标识，取值见 Trd_Common.SecurityFirm
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *QotHeader) Reset() {
+	*x = QotHeader{}
+	mi := &file_Qot_Common_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *QotHeader) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QotHeader) ProtoMessage() {}
+
+func (x *QotHeader) ProtoReflect() protoreflect.Message {
+	mi := &file_Qot_Common_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QotHeader.ProtoReflect.Descriptor instead.
+func (*QotHeader) Descriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *QotHeader) GetSecurityFirm() int32 {
+	if x != nil && x.SecurityFirm != nil {
+		return *x.SecurityFirm
+	}
+	return 0
 }
 
 //两个字段确定一支股票
@@ -3016,7 +4244,7 @@ type Security struct {
 
 func (x *Security) Reset() {
 	*x = Security{}
-	mi := &file_Qot_Common_proto_msgTypes[0]
+	mi := &file_Qot_Common_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3028,7 +4256,7 @@ func (x *Security) String() string {
 func (*Security) ProtoMessage() {}
 
 func (x *Security) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[0]
+	mi := &file_Qot_Common_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3041,7 +4269,7 @@ func (x *Security) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Security.ProtoReflect.Descriptor instead.
 func (*Security) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{0}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Security) GetMarket() int32 {
@@ -3073,13 +4301,14 @@ type KLine struct {
 	Pe             *float64               `protobuf:"fixed64,11,opt,name=pe" json:"pe,omitempty"`                        //市盈率
 	ChangeRate     *float64               `protobuf:"fixed64,12,opt,name=changeRate" json:"changeRate,omitempty"`        //涨跌幅（该字段为百分比字段，默认不展示%，如20实际对应20%）
 	Timestamp      *float64               `protobuf:"fixed64,13,opt,name=timestamp" json:"timestamp,omitempty"`          //时间戳
+	HpVolume       *float64               `protobuf:"fixed64,14,opt,name=hpVolume" json:"hpVolume,omitempty"`            //高精度成交量
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
 
 func (x *KLine) Reset() {
 	*x = KLine{}
-	mi := &file_Qot_Common_proto_msgTypes[1]
+	mi := &file_Qot_Common_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3091,7 +4320,7 @@ func (x *KLine) String() string {
 func (*KLine) ProtoMessage() {}
 
 func (x *KLine) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[1]
+	mi := &file_Qot_Common_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3104,7 +4333,7 @@ func (x *KLine) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use KLine.ProtoReflect.Descriptor instead.
 func (*KLine) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{1}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *KLine) GetTime() string {
@@ -3198,6 +4427,13 @@ func (x *KLine) GetTimestamp() float64 {
 	return 0
 }
 
+func (x *KLine) GetHpVolume() float64 {
+	if x != nil && x.HpVolume != nil {
+		return *x.HpVolume
+	}
+	return 0
+}
+
 type OptionBasicQotExData struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
 	StrikePrice          *float64               `protobuf:"fixed64,1,req,name=strikePrice" json:"strikePrice,omitempty"`                    //行权价
@@ -3224,7 +4460,7 @@ type OptionBasicQotExData struct {
 
 func (x *OptionBasicQotExData) Reset() {
 	*x = OptionBasicQotExData{}
-	mi := &file_Qot_Common_proto_msgTypes[2]
+	mi := &file_Qot_Common_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3236,7 +4472,7 @@ func (x *OptionBasicQotExData) String() string {
 func (*OptionBasicQotExData) ProtoMessage() {}
 
 func (x *OptionBasicQotExData) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[2]
+	mi := &file_Qot_Common_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3249,7 +4485,7 @@ func (x *OptionBasicQotExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OptionBasicQotExData.ProtoReflect.Descriptor instead.
 func (*OptionBasicQotExData) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{2}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *OptionBasicQotExData) GetStrikePrice() float64 {
@@ -3396,7 +4632,7 @@ type PreAfterMarketData struct {
 
 func (x *PreAfterMarketData) Reset() {
 	*x = PreAfterMarketData{}
-	mi := &file_Qot_Common_proto_msgTypes[3]
+	mi := &file_Qot_Common_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3408,7 +4644,7 @@ func (x *PreAfterMarketData) String() string {
 func (*PreAfterMarketData) ProtoMessage() {}
 
 func (x *PreAfterMarketData) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[3]
+	mi := &file_Qot_Common_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3421,7 +4657,7 @@ func (x *PreAfterMarketData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PreAfterMarketData.ProtoReflect.Descriptor instead.
 func (*PreAfterMarketData) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{3}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *PreAfterMarketData) GetPrice() float64 {
@@ -3492,7 +4728,7 @@ type FutureBasicQotExData struct {
 
 func (x *FutureBasicQotExData) Reset() {
 	*x = FutureBasicQotExData{}
-	mi := &file_Qot_Common_proto_msgTypes[4]
+	mi := &file_Qot_Common_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3504,7 +4740,7 @@ func (x *FutureBasicQotExData) String() string {
 func (*FutureBasicQotExData) ProtoMessage() {}
 
 func (x *FutureBasicQotExData) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[4]
+	mi := &file_Qot_Common_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3517,7 +4753,7 @@ func (x *FutureBasicQotExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FutureBasicQotExData.ProtoReflect.Descriptor instead.
 func (*FutureBasicQotExData) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{4}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *FutureBasicQotExData) GetLastSettlePrice() float64 {
@@ -3559,7 +4795,7 @@ type WarrantBasicQotExData struct {
 
 func (x *WarrantBasicQotExData) Reset() {
 	*x = WarrantBasicQotExData{}
-	mi := &file_Qot_Common_proto_msgTypes[5]
+	mi := &file_Qot_Common_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3571,7 +4807,7 @@ func (x *WarrantBasicQotExData) String() string {
 func (*WarrantBasicQotExData) ProtoMessage() {}
 
 func (x *WarrantBasicQotExData) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[5]
+	mi := &file_Qot_Common_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3584,7 +4820,7 @@ func (x *WarrantBasicQotExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WarrantBasicQotExData.ProtoReflect.Descriptor instead.
 func (*WarrantBasicQotExData) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{5}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *WarrantBasicQotExData) GetDelta() float64 {
@@ -3635,13 +4871,14 @@ type BasicQot struct {
 	FutureExData    *FutureBasicQotExData  `protobuf:"bytes,22,opt,name=futureExData" json:"futureExData,omitempty"`         //期货特有字段
 	WarrantExData   *WarrantBasicQotExData `protobuf:"bytes,23,opt,name=warrantExData" json:"warrantExData,omitempty"`       //窝轮特有字段
 	Overnight       *PreAfterMarketData    `protobuf:"bytes,25,opt,name=overnight" json:"overnight,omitempty"`               //夜盘数据
+	HpVolume        *float64               `protobuf:"fixed64,26,opt,name=hpVolume" json:"hpVolume,omitempty"`               //高精度成交量
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
 
 func (x *BasicQot) Reset() {
 	*x = BasicQot{}
-	mi := &file_Qot_Common_proto_msgTypes[6]
+	mi := &file_Qot_Common_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3653,7 +4890,7 @@ func (x *BasicQot) String() string {
 func (*BasicQot) ProtoMessage() {}
 
 func (x *BasicQot) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[6]
+	mi := &file_Qot_Common_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3666,7 +4903,7 @@ func (x *BasicQot) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BasicQot.ProtoReflect.Descriptor instead.
 func (*BasicQot) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{6}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *BasicQot) GetSecurity() *Security {
@@ -3844,6 +5081,13 @@ func (x *BasicQot) GetOvernight() *PreAfterMarketData {
 	return nil
 }
 
+func (x *BasicQot) GetHpVolume() float64 {
+	if x != nil && x.HpVolume != nil {
+		return *x.HpVolume
+	}
+	return 0
+}
+
 type TimeShare struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Time           *string                `protobuf:"bytes,1,req,name=time" json:"time,omitempty"`                       //时间字符串
@@ -3855,13 +5099,14 @@ type TimeShare struct {
 	Volume         *int64                 `protobuf:"varint,7,opt,name=volume" json:"volume,omitempty"`                  //成交量
 	Turnover       *float64               `protobuf:"fixed64,8,opt,name=turnover" json:"turnover,omitempty"`             //成交额
 	Timestamp      *float64               `protobuf:"fixed64,9,opt,name=timestamp" json:"timestamp,omitempty"`           //时间戳
+	HpVolume       *float64               `protobuf:"fixed64,10,opt,name=hpVolume" json:"hpVolume,omitempty"`            //高精度成交量
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
 
 func (x *TimeShare) Reset() {
 	*x = TimeShare{}
-	mi := &file_Qot_Common_proto_msgTypes[7]
+	mi := &file_Qot_Common_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3873,7 +5118,7 @@ func (x *TimeShare) String() string {
 func (*TimeShare) ProtoMessage() {}
 
 func (x *TimeShare) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[7]
+	mi := &file_Qot_Common_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3886,7 +5131,7 @@ func (x *TimeShare) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TimeShare.ProtoReflect.Descriptor instead.
 func (*TimeShare) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{7}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *TimeShare) GetTime() string {
@@ -3952,6 +5197,13 @@ func (x *TimeShare) GetTimestamp() float64 {
 	return 0
 }
 
+func (x *TimeShare) GetHpVolume() float64 {
+	if x != nil && x.HpVolume != nil {
+		return *x.HpVolume
+	}
+	return 0
+}
+
 type SecurityStaticBasic struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Security      *Security              `protobuf:"bytes,1,req,name=security" json:"security,omitempty"`             //股票
@@ -3969,7 +5221,7 @@ type SecurityStaticBasic struct {
 
 func (x *SecurityStaticBasic) Reset() {
 	*x = SecurityStaticBasic{}
-	mi := &file_Qot_Common_proto_msgTypes[8]
+	mi := &file_Qot_Common_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3981,7 +5233,7 @@ func (x *SecurityStaticBasic) String() string {
 func (*SecurityStaticBasic) ProtoMessage() {}
 
 func (x *SecurityStaticBasic) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[8]
+	mi := &file_Qot_Common_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3994,7 +5246,7 @@ func (x *SecurityStaticBasic) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SecurityStaticBasic.ProtoReflect.Descriptor instead.
 func (*SecurityStaticBasic) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{8}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *SecurityStaticBasic) GetSecurity() *Security {
@@ -4070,7 +5322,7 @@ type WarrantStaticExData struct {
 
 func (x *WarrantStaticExData) Reset() {
 	*x = WarrantStaticExData{}
-	mi := &file_Qot_Common_proto_msgTypes[9]
+	mi := &file_Qot_Common_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4082,7 +5334,7 @@ func (x *WarrantStaticExData) String() string {
 func (*WarrantStaticExData) ProtoMessage() {}
 
 func (x *WarrantStaticExData) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[9]
+	mi := &file_Qot_Common_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4095,7 +5347,7 @@ func (x *WarrantStaticExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WarrantStaticExData.ProtoReflect.Descriptor instead.
 func (*WarrantStaticExData) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{9}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *WarrantStaticExData) GetType() int32 {
@@ -4131,7 +5383,7 @@ type OptionStaticExData struct {
 
 func (x *OptionStaticExData) Reset() {
 	*x = OptionStaticExData{}
-	mi := &file_Qot_Common_proto_msgTypes[10]
+	mi := &file_Qot_Common_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4143,7 +5395,7 @@ func (x *OptionStaticExData) String() string {
 func (*OptionStaticExData) ProtoMessage() {}
 
 func (x *OptionStaticExData) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[10]
+	mi := &file_Qot_Common_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4156,7 +5408,7 @@ func (x *OptionStaticExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OptionStaticExData.ProtoReflect.Descriptor instead.
 func (*OptionStaticExData) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{10}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *OptionStaticExData) GetType() int32 {
@@ -4247,7 +5499,7 @@ type FutureStaticExData struct {
 
 func (x *FutureStaticExData) Reset() {
 	*x = FutureStaticExData{}
-	mi := &file_Qot_Common_proto_msgTypes[11]
+	mi := &file_Qot_Common_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4259,7 +5511,7 @@ func (x *FutureStaticExData) String() string {
 func (*FutureStaticExData) ProtoMessage() {}
 
 func (x *FutureStaticExData) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[11]
+	mi := &file_Qot_Common_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4272,7 +5524,7 @@ func (x *FutureStaticExData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FutureStaticExData.ProtoReflect.Descriptor instead.
 func (*FutureStaticExData) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{11}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *FutureStaticExData) GetLastTradeTime() string {
@@ -4308,7 +5560,7 @@ type SecurityStaticInfo struct {
 
 func (x *SecurityStaticInfo) Reset() {
 	*x = SecurityStaticInfo{}
-	mi := &file_Qot_Common_proto_msgTypes[12]
+	mi := &file_Qot_Common_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4320,7 +5572,7 @@ func (x *SecurityStaticInfo) String() string {
 func (*SecurityStaticInfo) ProtoMessage() {}
 
 func (x *SecurityStaticInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[12]
+	mi := &file_Qot_Common_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4333,7 +5585,7 @@ func (x *SecurityStaticInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SecurityStaticInfo.ProtoReflect.Descriptor instead.
 func (*SecurityStaticInfo) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{12}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *SecurityStaticInfo) GetBasic() *SecurityStaticBasic {
@@ -4378,7 +5630,7 @@ type Broker struct {
 
 func (x *Broker) Reset() {
 	*x = Broker{}
-	mi := &file_Qot_Common_proto_msgTypes[13]
+	mi := &file_Qot_Common_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4390,7 +5642,7 @@ func (x *Broker) String() string {
 func (*Broker) ProtoMessage() {}
 
 func (x *Broker) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[13]
+	mi := &file_Qot_Common_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4403,7 +5655,7 @@ func (x *Broker) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Broker.ProtoReflect.Descriptor instead.
 func (*Broker) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{13}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *Broker) GetId() int64 {
@@ -4454,13 +5706,14 @@ type Ticker struct {
 	TypeSign      *int32                 `protobuf:"varint,9,opt,name=typeSign" json:"typeSign,omitempty"`          //逐笔类型符号
 	PushDataType  *int32                 `protobuf:"varint,10,opt,name=pushDataType" json:"pushDataType,omitempty"` //用于区分推送情况
 	Timestamp     *float64               `protobuf:"fixed64,11,opt,name=timestamp" json:"timestamp,omitempty"`      //时间戳
+	HpVolume      *float64               `protobuf:"fixed64,12,opt,name=hpVolume" json:"hpVolume,omitempty"`        //成交量
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Ticker) Reset() {
 	*x = Ticker{}
-	mi := &file_Qot_Common_proto_msgTypes[14]
+	mi := &file_Qot_Common_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4472,7 +5725,7 @@ func (x *Ticker) String() string {
 func (*Ticker) ProtoMessage() {}
 
 func (x *Ticker) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[14]
+	mi := &file_Qot_Common_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4485,7 +5738,7 @@ func (x *Ticker) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Ticker.ProtoReflect.Descriptor instead.
 func (*Ticker) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{14}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *Ticker) GetTime() string {
@@ -4565,6 +5818,13 @@ func (x *Ticker) GetTimestamp() float64 {
 	return 0
 }
 
+func (x *Ticker) GetHpVolume() float64 {
+	if x != nil && x.HpVolume != nil {
+		return *x.HpVolume
+	}
+	return 0
+}
+
 type OrderBookDetail struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	OrderID       *int64                 `protobuf:"varint,1,req,name=orderID" json:"orderID,omitempty"` //交易所订单ID，与交易接口返回的订单ID并不一样
@@ -4575,7 +5835,7 @@ type OrderBookDetail struct {
 
 func (x *OrderBookDetail) Reset() {
 	*x = OrderBookDetail{}
-	mi := &file_Qot_Common_proto_msgTypes[15]
+	mi := &file_Qot_Common_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4587,7 +5847,7 @@ func (x *OrderBookDetail) String() string {
 func (*OrderBookDetail) ProtoMessage() {}
 
 func (x *OrderBookDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[15]
+	mi := &file_Qot_Common_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4600,7 +5860,7 @@ func (x *OrderBookDetail) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrderBookDetail.ProtoReflect.Descriptor instead.
 func (*OrderBookDetail) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{15}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *OrderBookDetail) GetOrderID() int64 {
@@ -4623,13 +5883,14 @@ type OrderBook struct {
 	Volume        *int64                 `protobuf:"varint,2,req,name=volume" json:"volume,omitempty"`           //委托数量
 	OrederCount   *int32                 `protobuf:"varint,3,req,name=orederCount" json:"orederCount,omitempty"` //委托订单个数
 	DetailList    []*OrderBookDetail     `protobuf:"bytes,4,rep,name=detailList" json:"detailList,omitempty"`    //订单信息，SF行情特有
+	HpVolume      *float64               `protobuf:"fixed64,5,opt,name=hpVolume" json:"hpVolume,omitempty"`      //高精度委托数量
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *OrderBook) Reset() {
 	*x = OrderBook{}
-	mi := &file_Qot_Common_proto_msgTypes[16]
+	mi := &file_Qot_Common_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4641,7 +5902,7 @@ func (x *OrderBook) String() string {
 func (*OrderBook) ProtoMessage() {}
 
 func (x *OrderBook) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[16]
+	mi := &file_Qot_Common_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4654,7 +5915,7 @@ func (x *OrderBook) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OrderBook.ProtoReflect.Descriptor instead.
 func (*OrderBook) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{16}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *OrderBook) GetPrice() float64 {
@@ -4685,6 +5946,13 @@ func (x *OrderBook) GetDetailList() []*OrderBookDetail {
 	return nil
 }
 
+func (x *OrderBook) GetHpVolume() float64 {
+	if x != nil && x.HpVolume != nil {
+		return *x.HpVolume
+	}
+	return 0
+}
+
 //持股变动
 type ShareHoldingChange struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -4701,7 +5969,7 @@ type ShareHoldingChange struct {
 
 func (x *ShareHoldingChange) Reset() {
 	*x = ShareHoldingChange{}
-	mi := &file_Qot_Common_proto_msgTypes[17]
+	mi := &file_Qot_Common_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4713,7 +5981,7 @@ func (x *ShareHoldingChange) String() string {
 func (*ShareHoldingChange) ProtoMessage() {}
 
 func (x *ShareHoldingChange) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[17]
+	mi := &file_Qot_Common_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4726,7 +5994,7 @@ func (x *ShareHoldingChange) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ShareHoldingChange.ProtoReflect.Descriptor instead.
 func (*ShareHoldingChange) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{17}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ShareHoldingChange) GetHolderName() string {
@@ -4788,7 +6056,7 @@ type SubInfo struct {
 
 func (x *SubInfo) Reset() {
 	*x = SubInfo{}
-	mi := &file_Qot_Common_proto_msgTypes[18]
+	mi := &file_Qot_Common_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4800,7 +6068,7 @@ func (x *SubInfo) String() string {
 func (*SubInfo) ProtoMessage() {}
 
 func (x *SubInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[18]
+	mi := &file_Qot_Common_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4813,7 +6081,7 @@ func (x *SubInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubInfo.ProtoReflect.Descriptor instead.
 func (*SubInfo) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{18}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *SubInfo) GetSubType() int32 {
@@ -4835,13 +6103,14 @@ type ConnSubInfo struct {
 	SubInfoList   []*SubInfo             `protobuf:"bytes,1,rep,name=subInfoList" json:"subInfoList,omitempty"`      //该连接订阅信息
 	UsedQuota     *int32                 `protobuf:"varint,2,req,name=usedQuota" json:"usedQuota,omitempty"`         //该连接已经使用的订阅额度
 	IsOwnConnData *bool                  `protobuf:"varint,3,req,name=isOwnConnData" json:"isOwnConnData,omitempty"` //用于区分是否是自己连接的数据
+	SecurityFirm  *int32                 `protobuf:"varint,4,opt,name=securityFirm" json:"securityFirm,omitempty"`   //券商标识，取值见 Trd_Common.SecurityFirm
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ConnSubInfo) Reset() {
 	*x = ConnSubInfo{}
-	mi := &file_Qot_Common_proto_msgTypes[19]
+	mi := &file_Qot_Common_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4853,7 +6122,7 @@ func (x *ConnSubInfo) String() string {
 func (*ConnSubInfo) ProtoMessage() {}
 
 func (x *ConnSubInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[19]
+	mi := &file_Qot_Common_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4866,7 +6135,7 @@ func (x *ConnSubInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnSubInfo.ProtoReflect.Descriptor instead.
 func (*ConnSubInfo) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{19}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ConnSubInfo) GetSubInfoList() []*SubInfo {
@@ -4890,6 +6159,13 @@ func (x *ConnSubInfo) GetIsOwnConnData() bool {
 	return false
 }
 
+func (x *ConnSubInfo) GetSecurityFirm() int32 {
+	if x != nil && x.SecurityFirm != nil {
+		return *x.SecurityFirm
+	}
+	return 0
+}
+
 type PlateInfo struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Plate         *Security              `protobuf:"bytes,1,req,name=plate" json:"plate,omitempty"`          //板块
@@ -4901,7 +6177,7 @@ type PlateInfo struct {
 
 func (x *PlateInfo) Reset() {
 	*x = PlateInfo{}
-	mi := &file_Qot_Common_proto_msgTypes[20]
+	mi := &file_Qot_Common_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4913,7 +6189,7 @@ func (x *PlateInfo) String() string {
 func (*PlateInfo) ProtoMessage() {}
 
 func (x *PlateInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[20]
+	mi := &file_Qot_Common_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4926,7 +6202,7 @@ func (x *PlateInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PlateInfo.ProtoReflect.Descriptor instead.
 func (*PlateInfo) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{20}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *PlateInfo) GetPlate() *Security {
@@ -4983,7 +6259,7 @@ type Rehab struct {
 
 func (x *Rehab) Reset() {
 	*x = Rehab{}
-	mi := &file_Qot_Common_proto_msgTypes[21]
+	mi := &file_Qot_Common_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4995,7 +6271,7 @@ func (x *Rehab) String() string {
 func (*Rehab) ProtoMessage() {}
 
 func (x *Rehab) ProtoReflect() protoreflect.Message {
-	mi := &file_Qot_Common_proto_msgTypes[21]
+	mi := &file_Qot_Common_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5008,7 +6284,7 @@ func (x *Rehab) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Rehab.ProtoReflect.Descriptor instead.
 func (*Rehab) Descriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{21}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *Rehab) GetTime() string {
@@ -5191,10 +6467,12 @@ var File_Qot_Common_proto protoreflect.FileDescriptor
 const file_Qot_Common_proto_rawDesc = "" +
 	"\n" +
 	"\x10Qot_Common.proto\x12\n" +
-	"Qot_Common\x1a\fCommon.proto\"6\n" +
+	"Qot_Common\x1a\fCommon.proto\"/\n" +
+	"\tQotHeader\x12\"\n" +
+	"\fsecurityFirm\x18\x01 \x01(\x05R\fsecurityFirm\"6\n" +
 	"\bSecurity\x12\x16\n" +
 	"\x06market\x18\x01 \x02(\x05R\x06market\x12\x12\n" +
-	"\x04code\x18\x02 \x02(\tR\x04code\"\xfb\x02\n" +
+	"\x04code\x18\x02 \x02(\tR\x04code\"\x97\x03\n" +
 	"\x05KLine\x12\x12\n" +
 	"\x04time\x18\x01 \x02(\tR\x04time\x12\x18\n" +
 	"\aisBlank\x18\x02 \x02(\bR\aisBlank\x12\x1c\n" +
@@ -5213,7 +6491,8 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\n" +
 	"changeRate\x18\f \x01(\x01R\n" +
 	"changeRate\x12\x1c\n" +
-	"\ttimestamp\x18\r \x01(\x01R\ttimestamp\"\x9e\x05\n" +
+	"\ttimestamp\x18\r \x01(\x01R\ttimestamp\x12\x1a\n" +
+	"\bhpVolume\x18\x0e \x01(\x01R\bhpVolume\"\x9e\x05\n" +
 	"\x14OptionBasicQotExData\x12 \n" +
 	"\vstrikePrice\x18\x01 \x02(\x01R\vstrikePrice\x12\"\n" +
 	"\fcontractSize\x18\x02 \x02(\x05R\fcontractSize\x12,\n" +
@@ -5253,7 +6532,7 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x15WarrantBasicQotExData\x12\x14\n" +
 	"\x05delta\x18\x01 \x01(\x01R\x05delta\x12,\n" +
 	"\x11impliedVolatility\x18\x02 \x01(\x01R\x11impliedVolatility\x12\x18\n" +
-	"\apremium\x18\x03 \x02(\x01R\apremium\"\x83\b\n" +
+	"\apremium\x18\x03 \x02(\x01R\apremium\"\x9f\b\n" +
 	"\bBasicQot\x120\n" +
 	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12\x12\n" +
 	"\x04name\x18\x18 \x01(\tR\x04name\x12 \n" +
@@ -5284,7 +6563,8 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\tsecStatus\x18\x15 \x01(\x05R\tsecStatus\x12D\n" +
 	"\ffutureExData\x18\x16 \x01(\v2 .Qot_Common.FutureBasicQotExDataR\ffutureExData\x12G\n" +
 	"\rwarrantExData\x18\x17 \x01(\v2!.Qot_Common.WarrantBasicQotExDataR\rwarrantExData\x12<\n" +
-	"\tovernight\x18\x19 \x01(\v2\x1e.Qot_Common.PreAfterMarketDataR\tovernight\"\xfd\x01\n" +
+	"\tovernight\x18\x19 \x01(\v2\x1e.Qot_Common.PreAfterMarketDataR\tovernight\x12\x1a\n" +
+	"\bhpVolume\x18\x1a \x01(\x01R\bhpVolume\"\x99\x02\n" +
 	"\tTimeShare\x12\x12\n" +
 	"\x04time\x18\x01 \x02(\tR\x04time\x12\x16\n" +
 	"\x06minute\x18\x02 \x02(\x05R\x06minute\x12\x18\n" +
@@ -5294,7 +6574,9 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\bavgPrice\x18\x06 \x01(\x01R\bavgPrice\x12\x16\n" +
 	"\x06volume\x18\a \x01(\x03R\x06volume\x12\x1a\n" +
 	"\bturnover\x18\b \x01(\x01R\bturnover\x12\x1c\n" +
-	"\ttimestamp\x18\t \x01(\x01R\ttimestamp\"\x9b\x02\n" +
+	"\ttimestamp\x18\t \x01(\x01R\ttimestamp\x12\x1a\n" +
+	"\bhpVolume\x18\n" +
+	" \x01(\x01R\bhpVolume\"\x9b\x02\n" +
 	"\x13SecurityStaticBasic\x120\n" +
 	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12\x0e\n" +
 	"\x02id\x18\x02 \x02(\x03R\x02id\x12\x18\n" +
@@ -5337,7 +6619,7 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x04name\x18\x02 \x02(\tR\x04name\x12\x10\n" +
 	"\x03pos\x18\x03 \x02(\x05R\x03pos\x12\x18\n" +
 	"\aorderID\x18\x04 \x01(\x03R\aorderID\x12\x16\n" +
-	"\x06volume\x18\x05 \x01(\x03R\x06volume\"\xa2\x02\n" +
+	"\x06volume\x18\x05 \x01(\x03R\x06volume\"\xbe\x02\n" +
 	"\x06Ticker\x12\x12\n" +
 	"\x04time\x18\x01 \x02(\tR\x04time\x12\x1a\n" +
 	"\bsequence\x18\x02 \x02(\x03R\bsequence\x12\x10\n" +
@@ -5350,17 +6632,19 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\btypeSign\x18\t \x01(\x05R\btypeSign\x12\"\n" +
 	"\fpushDataType\x18\n" +
 	" \x01(\x05R\fpushDataType\x12\x1c\n" +
-	"\ttimestamp\x18\v \x01(\x01R\ttimestamp\"C\n" +
+	"\ttimestamp\x18\v \x01(\x01R\ttimestamp\x12\x1a\n" +
+	"\bhpVolume\x18\f \x01(\x01R\bhpVolume\"C\n" +
 	"\x0fOrderBookDetail\x12\x18\n" +
 	"\aorderID\x18\x01 \x02(\x03R\aorderID\x12\x16\n" +
-	"\x06volume\x18\x02 \x02(\x03R\x06volume\"\x98\x01\n" +
+	"\x06volume\x18\x02 \x02(\x03R\x06volume\"\xb4\x01\n" +
 	"\tOrderBook\x12\x14\n" +
 	"\x05price\x18\x01 \x02(\x01R\x05price\x12\x16\n" +
 	"\x06volume\x18\x02 \x02(\x03R\x06volume\x12 \n" +
 	"\vorederCount\x18\x03 \x02(\x05R\vorederCount\x12;\n" +
 	"\n" +
 	"detailList\x18\x04 \x03(\v2\x1b.Qot_Common.OrderBookDetailR\n" +
-	"detailList\"\xea\x01\n" +
+	"detailList\x12\x1a\n" +
+	"\bhpVolume\x18\x05 \x01(\x01R\bhpVolume\"\xea\x01\n" +
 	"\x12ShareHoldingChange\x12\x1e\n" +
 	"\n" +
 	"holderName\x18\x01 \x02(\tR\n" +
@@ -5375,11 +6659,12 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\ttimestamp\x18\a \x01(\x01R\ttimestamp\"]\n" +
 	"\aSubInfo\x12\x18\n" +
 	"\asubType\x18\x01 \x02(\x05R\asubType\x128\n" +
-	"\fsecurityList\x18\x02 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\"\x88\x01\n" +
+	"\fsecurityList\x18\x02 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\"\xac\x01\n" +
 	"\vConnSubInfo\x125\n" +
 	"\vsubInfoList\x18\x01 \x03(\v2\x13.Qot_Common.SubInfoR\vsubInfoList\x12\x1c\n" +
 	"\tusedQuota\x18\x02 \x02(\x05R\tusedQuota\x12$\n" +
-	"\risOwnConnData\x18\x03 \x02(\bR\risOwnConnData\"i\n" +
+	"\risOwnConnData\x18\x03 \x02(\bR\risOwnConnData\x12\"\n" +
+	"\fsecurityFirm\x18\x04 \x01(\x05R\fsecurityFirm\"i\n" +
 	"\tPlateInfo\x12*\n" +
 	"\x05plate\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\x05plate\x12\x12\n" +
 	"\x04name\x18\x02 \x02(\tR\x04name\x12\x1c\n" +
@@ -5424,7 +6709,7 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\n" +
 	"spinOffErt\x18\x19 \x01(\x01R\n" +
 	"spinOffErt\x12\x1c\n" +
-	"\ttimestamp\x18\x17 \x01(\x01R\ttimestamp*\xcd\x02\n" +
+	"\ttimestamp\x18\x17 \x01(\x01R\ttimestamp*\xe8\x02\n" +
 	"\tQotMarket\x12\x15\n" +
 	"\x11QotMarket_Unknown\x10\x00\x12\x19\n" +
 	"\x15QotMarket_HK_Security\x10\x01\x12\x17\n" +
@@ -5437,7 +6722,8 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x15QotMarket_AU_Security\x103\x12\x19\n" +
 	"\x15QotMarket_MY_Security\x10=\x12\x19\n" +
 	"\x15QotMarket_CA_Security\x10G\x12\x19\n" +
-	"\x15QotMarket_FX_Security\x10Q*\x9a\x02\n" +
+	"\x15QotMarket_FX_Security\x10Q\x12\x19\n" +
+	"\x15QotMarket_CC_Security\x10[*\xcb\x02\n" +
 	"\fSecurityType\x12\x18\n" +
 	"\x14SecurityType_Unknown\x10\x00\x12\x15\n" +
 	"\x11SecurityType_Bond\x10\x01\x12\x15\n" +
@@ -5450,7 +6736,9 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x11SecurityType_Drvt\x10\b\x12\x19\n" +
 	"\x15SecurityType_PlateSet\x10\t\x12\x17\n" +
 	"\x13SecurityType_Future\x10\n" +
-	"*\x8a\x01\n" +
+	"\x12\x16\n" +
+	"\x12SecurityType_Forex\x10\v\x12\x17\n" +
+	"\x13SecurityType_Crypto\x10\f*\x8a\x01\n" +
 	"\fPlateSetType\x12\x14\n" +
 	"\x10PlateSetType_All\x10\x00\x12\x19\n" +
 	"\x15PlateSetType_Industry\x10\x01\x12\x17\n" +
@@ -5533,7 +6821,7 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\tRehabType\x12\x12\n" +
 	"\x0eRehabType_None\x10\x00\x12\x15\n" +
 	"\x11RehabType_Forward\x10\x01\x12\x16\n" +
-	"\x12RehabType_Backward\x10\x02*\xdd\x01\n" +
+	"\x12RehabType_Backward\x10\x02*\xa8\x02\n" +
 	"\x06KLType\x12\x12\n" +
 	"\x0eKLType_Unknown\x10\x00\x12\x0f\n" +
 	"\vKLType_1Min\x10\x01\x12\x0e\n" +
@@ -5548,7 +6836,11 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\fKLType_60Min\x10\t\x12\x0f\n" +
 	"\vKLType_3Min\x10\n" +
 	"\x12\x12\n" +
-	"\x0eKLType_Quarter\x10\v*\xf5\x01\n" +
+	"\x0eKLType_Quarter\x10\v\x12\x10\n" +
+	"\fKLType_10Min\x10\f\x12\x11\n" +
+	"\rKLType_120Min\x10\r\x12\x11\n" +
+	"\rKLType_180Min\x10\x0e\x12\x11\n" +
+	"\rKLType_240Min\x10\x0f*\xf5\x01\n" +
 	"\bKLFields\x12\x11\n" +
 	"\rKLFields_None\x10\x00\x12\x11\n" +
 	"\rKLFields_High\x10\x01\x12\x11\n" +
@@ -5560,7 +6852,7 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x11KLFields_Turnover\x10@\x12\x1a\n" +
 	"\x15KLFields_TurnoverRate\x10\x80\x01\x12\x10\n" +
 	"\vKLFields_PE\x10\x80\x02\x12\x18\n" +
-	"\x13KLFields_ChangeRate\x10\x80\x04*\xea\x02\n" +
+	"\x13KLFields_ChangeRate\x10\x80\x04*\xc5\x03\n" +
 	"\aSubType\x12\x10\n" +
 	"\fSubType_None\x10\x00\x12\x11\n" +
 	"\rSubType_Basic\x10\x01\x12\x15\n" +
@@ -5580,7 +6872,11 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x0eSubType_Broker\x10\x0e\x12\x16\n" +
 	"\x12SubType_KL_Qurater\x10\x0f\x12\x13\n" +
 	"\x0fSubType_KL_Year\x10\x10\x12\x13\n" +
-	"\x0fSubType_KL_3Min\x10\x11*}\n" +
+	"\x0fSubType_KL_3Min\x10\x11\x12\x14\n" +
+	"\x10SubType_KL_10Min\x10\x12\x12\x15\n" +
+	"\x11SubType_KL_120Min\x10\x13\x12\x15\n" +
+	"\x11SubType_KL_180Min\x10\x14\x12\x15\n" +
+	"\x11SubType_KL_240Min\x10\x15*}\n" +
 	"\x0fTickerDirection\x12\x1b\n" +
 	"\x17TickerDirection_Unknown\x10\x00\x12\x17\n" +
 	"\x13TickerDirection_Bid\x10\x01\x12\x17\n" +
@@ -5659,8 +6955,7 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x13PushDataType_Unknow\x10\x00\x12\x19\n" +
 	"\x15PushDataType_Realtime\x10\x01\x12\x1a\n" +
 	"\x16PushDataType_ByDisConn\x10\x02\x12\x16\n" +
-	"\x12PushDataType_Cache\x10\x03*\xd3\n" +
-	"\n" +
+	"\x12PushDataType_Cache\x10\x03*\xfa\f\n" +
 	"\tSortField\x12\x14\n" +
 	"\x10SortField_Unknow\x10\x00\x12\x12\n" +
 	"\x0eSortField_Code\x10\x01\x12\x16\n" +
@@ -5713,7 +7008,21 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x17SortField_AfterTurnover\x10,\x12\x1d\n" +
 	"\x19SortField_LastSettlePrice\x100\x12\x16\n" +
 	"\x12SortField_Position\x101\x12\x1c\n" +
-	"\x18SortField_PositionChange\x102*\xbf\x03\n" +
+	"\x18SortField_PositionChange\x102\x12\x17\n" +
+	"\x13SortField_MarketCap\x103\x12\x17\n" +
+	"\x13SortField_Valuation\x104\x12\x1e\n" +
+	"\x1aSortField_ForwardValuation\x105\x12\"\n" +
+	"\x1eSortField_HistoricalPercentile\x106\x12\x1c\n" +
+	"\x18SortField_HolderQuantity\x10=\x12\x1c\n" +
+	"\x18SortField_ShareChangeNum\x10>\x12\x19\n" +
+	"\x15SortField_HoldingDate\x10?\x12\x1d\n" +
+	"\x19SortField_HolderPctChange\x10@\x12 \n" +
+	"\x1cSortField_HolderChangeAmount\x10A\x12\x17\n" +
+	"\x13SortField_HolderPct\x10B*E\n" +
+	"\bSortType\x12\x14\n" +
+	"\x10SortType_Unknown\x10\x00\x12\x11\n" +
+	"\rSortType_Desc\x10\x01\x12\x10\n" +
+	"\fSortType_Asc\x10\x02*\xbf\x03\n" +
 	"\x06Issuer\x12\x11\n" +
 	"\rIssuer_Unknow\x10\x00\x12\r\n" +
 	"\tIssuer_SG\x10\x01\x12\r\n" +
@@ -5773,14 +7082,15 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x0eCompanyAct_Add\x10 \x12\x17\n" +
 	"\x13CompanyAct_Dividend\x10@\x12\x1a\n" +
 	"\x15CompanyAct_SPDividend\x10\x80\x01\x12\x17\n" +
-	"\x12CompanyAct_SpinOff\x10\x80\x02*}\n" +
+	"\x12CompanyAct_SpinOff\x10\x80\x02*\x92\x01\n" +
 	"\bQotRight\x12\x13\n" +
 	"\x0fQotRight_Unknow\x10\x00\x12\x10\n" +
 	"\fQotRight_Bmp\x10\x01\x12\x13\n" +
 	"\x0fQotRight_Level1\x10\x02\x12\x13\n" +
 	"\x0fQotRight_Level2\x10\x03\x12\x0f\n" +
 	"\vQotRight_SF\x10\x04\x12\x0f\n" +
-	"\vQotRight_No\x10\x05*\xce\x04\n" +
+	"\vQotRight_No\x10\x05\x12\x13\n" +
+	"\x0fQotRight_Level3\x10\x06*\xce\x04\n" +
 	"\x11PriceReminderType\x12\x1d\n" +
 	"\x19PriceReminderType_Unknown\x10\x00\x12\x1d\n" +
 	"\x19PriceReminderType_PriceUp\x10\x01\x12\x1f\n" +
@@ -5831,7 +7141,7 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x14OptionSettlementMode\x12 \n" +
 	"\x1cOptionSettlementMode_Unknown\x10\x00\x12\x1b\n" +
 	"\x17OptionSettlementMode_AM\x10\x01\x12\x1b\n" +
-	"\x17OptionSettlementMode_PM\x10\x02*\xb4\x03\n" +
+	"\x17OptionSettlementMode_PM\x10\x02*\xe1\x03\n" +
 	"\bExchType\x12\x14\n" +
 	"\x10ExchType_Unknown\x10\x00\x12\x19\n" +
 	"\x15ExchType_HK_MainBoard\x10\x01\x12\x18\n" +
@@ -5852,7 +7162,9 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x0eExchType_CN_SZ\x10\x0f\x12\x14\n" +
 	"\x10ExchType_CN_STIB\x10\x10\x12\x13\n" +
 	"\x0fExchType_SG_SGX\x10\x11\x12\x13\n" +
-	"\x0fExchType_JP_OSE\x10\x12*|\n" +
+	"\x0fExchType_JP_OSE\x10\x12\x12\x16\n" +
+	"\x12ExchType_CC_CRYPTO\x10\x13\x12\x13\n" +
+	"\x0fExchType_MY_BMS\x10\x14*|\n" +
 	"\n" +
 	"PeriodType\x12\x16\n" +
 	"\x12PeriodType_Unknown\x10\x00\x12\x17\n" +
@@ -5865,7 +7177,125 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x1ePriceReminderMarketStatus_Open\x10\x01\x12#\n" +
 	"\x1fPriceReminderMarketStatus_USPre\x10\x02\x12%\n" +
 	"!PriceReminderMarketStatus_USAfter\x10\x03\x12)\n" +
-	"%PriceReminderMarketStatus_USOverNight\x10\x04B>\n" +
+	"%PriceReminderMarketStatus_USOverNight\x10\x04*\xe0\x01\n" +
+	"\aF10Type\x12\x13\n" +
+	"\x0fF10Type_Unknown\x10\x00\x12\x0e\n" +
+	"\n" +
+	"F10Type_Q1\x10\x01\x12\x0e\n" +
+	"\n" +
+	"F10Type_Q2\x10\x02\x12\x0e\n" +
+	"\n" +
+	"F10Type_Q3\x10\x03\x12\x0e\n" +
+	"\n" +
+	"F10Type_Q4\x10\x04\x12\x0e\n" +
+	"\n" +
+	"F10Type_Q6\x10\x05\x12\x0e\n" +
+	"\n" +
+	"F10Type_Q9\x10\x06\x12\x12\n" +
+	"\x0eF10Type_Annual\x10\a\x12\x15\n" +
+	"\x11F10Type_Quarterly\x10\t\x12\x1b\n" +
+	"\x17F10Type_QuarterlyAnnual\x10\n" +
+	"\x12\x18\n" +
+	"\x14F10Type_MulQuarterly\x10\v*\xa4\x01\n" +
+	"\x13EarningsPubTimeType\x12\x1f\n" +
+	"\x1bEarningsPubTimeType_Unknown\x10\x00\x12!\n" +
+	"\x1dEarningsPubTimeType_PreMarket\x10\x01\x12#\n" +
+	"\x1fEarningsPubTimeType_AfterMarket\x10\x02\x12$\n" +
+	" EarningsPubTimeType_DuringMarket\x10\x03*l\n" +
+	"\rValuationType\x12\x19\n" +
+	"\x15ValuationType_Unknown\x10\x00\x12\x14\n" +
+	"\x10ValuationType_PE\x10\x01\x12\x14\n" +
+	"\x10ValuationType_PB\x10\x02\x12\x14\n" +
+	"\x10ValuationType_PS\x10\x03*\xd9\x01\n" +
+	"\x17FinancialStatementsType\x12#\n" +
+	"\x1fFinancialStatementsType_Unknown\x10\x00\x12\"\n" +
+	"\x1eFinancialStatementsType_Income\x10\x01\x12(\n" +
+	"$FinancialStatementsType_BalanceSheet\x10\x02\x12$\n" +
+	" FinancialStatementsType_CashFlow\x10\x03\x12%\n" +
+	"!FinancialStatementsType_MainIndex\x10\x04*\xc1\x01\n" +
+	"\x14RevenueBreakdownType\x12 \n" +
+	"\x1cRevenueBreakdownType_Unknown\x10\x00\x12 \n" +
+	"\x1cRevenueBreakdownType_Product\x10\x01\x12!\n" +
+	"\x1dRevenueBreakdownType_Industry\x10\x02\x12\x1f\n" +
+	"\x1bRevenueBreakdownType_Region\x10\x04\x12!\n" +
+	"\x1dRevenueBreakdownType_Business\x10\b*\xd1\x01\n" +
+	"\x12ResearchRatingType\x12\x1e\n" +
+	"\x1aResearchRatingType_Unknown\x10\x00\x12\x1b\n" +
+	"\x17ResearchRatingType_Sell\x10\x01\x12#\n" +
+	"\x1fResearchRatingType_Underperform\x10\x02\x12\x1b\n" +
+	"\x17ResearchRatingType_Hold\x10\x03\x12\x1a\n" +
+	"\x16ResearchRatingType_Buy\x10\x04\x12 \n" +
+	"\x1cResearchRatingType_StrongBuy\x10\x05*\x9c\x01\n" +
+	"\x1bResearchRatingDimensionType\x12'\n" +
+	"#ResearchRatingDimensionType_Unknown\x10\x00\x12+\n" +
+	"'ResearchRatingDimensionType_Institution\x10\x01\x12'\n" +
+	"#ResearchRatingDimensionType_Analyst\x10\x02*\x89\x01\n" +
+	"\x15MorningstarRatingType\x12!\n" +
+	"\x1dMorningstarRatingType_Unknown\x10\x00\x12&\n" +
+	"\"MorningstarRatingType_Quantitative\x10\x01\x12%\n" +
+	"!MorningstarRatingType_Qualitative\x10\x02*\x8d\x03\n" +
+	"\x15ValuationIntervalType\x12!\n" +
+	"\x1dValuationIntervalType_Unknown\x10\x00\x12 \n" +
+	"\x1cValuationIntervalType_Month3\x10\x01\x12 \n" +
+	"\x1cValuationIntervalType_Month6\x10\x02\x12\x1f\n" +
+	"\x1bValuationIntervalType_Year1\x10\x03\x12\x1f\n" +
+	"\x1bValuationIntervalType_Year3\x10\x04\x12#\n" +
+	"\x1fValuationIntervalType_Since2019\x10\x05\x12\x1f\n" +
+	"\x1bValuationIntervalType_Year5\x10\x06\x12 \n" +
+	"\x1cValuationIntervalType_Year10\x10\a\x12\x1f\n" +
+	"\x1bValuationIntervalType_Year2\x10\b\x12 \n" +
+	"\x1cValuationIntervalType_Year20\x10\t\x12 \n" +
+	"\x1cValuationIntervalType_Year30\x10\n" +
+	"*\xd9\x01\n" +
+	"\x18HoldingChangesFilterType\x12$\n" +
+	" HoldingChangesFilterType_Unknown\x10\x00\x12%\n" +
+	"!HoldingChangesFilterType_Increase\x10\x01\x12%\n" +
+	"!HoldingChangesFilterType_Decrease\x10\x02\x12\"\n" +
+	"\x1eHoldingChangesFilterType_NewIn\x10\x03\x12%\n" +
+	"!HoldingChangesFilterType_CloseOut\x10\x04*\x93\a\n" +
+	"\x10HolderDetailType\x12\x1c\n" +
+	"\x18HolderDetailType_Default\x10\x00\x12\x19\n" +
+	"\x14HolderDetailType_All\x10\xe8\a\x12!\n" +
+	"\x1dHolderDetailType_Unclassified\x10\x01\x121\n" +
+	"-HolderDetailType_TraditionalInvestmentManager\x10\x02\x12%\n" +
+	"!HolderDetailType_HedgeFundManager\x10\x03\x12\x1b\n" +
+	"\x17HolderDetailType_VCOrPE\x10\x04\x120\n" +
+	",HolderDetailType_CorporatePensionPlanSponsor\x10\x05\x12*\n" +
+	"&HolderDetailType_FoundationFundSponsor\x10\x06\x12%\n" +
+	"!HolderDetailType_InsuranceCompany\x10\a\x12)\n" +
+	"%HolderDetailType_BankOrInvestmentBank\x10\b\x12)\n" +
+	"%HolderDetailType_FamilyOfficesOrTrust\x10\t\x12(\n" +
+	"$HolderDetailType_SovereignWealthFund\x10\n" +
+	"\x12\x19\n" +
+	"\x15HolderDetailType_REIT\x10\v\x121\n" +
+	"-HolderDetailType_StructuredFinancePoolManager\x10\f\x12,\n" +
+	"(HolderDetailType_UnionPensionPlanSponsor\x10\r\x121\n" +
+	"-HolderDetailType_GovernmentPensionPlanSponsor\x10\x0e\x12)\n" +
+	"%HolderDetailType_EndowmentFundSponsor\x10\x0f\x12'\n" +
+	"#HolderDetailType_IndividualInsiders\x10d\x12'\n" +
+	"\"HolderDetailType_IssueSponsoredADR\x10\xc8\x01\x12(\n" +
+	"#HolderDetailType_CorporationsPublic\x10\xac\x02\x12)\n" +
+	"$HolderDetailType_CorporationsPrivate\x10\x90\x03\x12&\n" +
+	"!HolderDetailType_StateOwnedShares\x10\xf4\x03*\x95\x01\n" +
+	"\x17CompanyProfileFieldType\x12&\n" +
+	"\"CompanyProfileFieldType_SourceText\x10\x00\x12$\n" +
+	" CompanyProfileFieldType_LinkType\x10\x01\x12,\n" +
+	"(CompanyProfileFieldType_IndependentTitle\x10\x02*W\n" +
+	"\vBuySellType\x12\x17\n" +
+	"\x13BuySellType_Unknown\x10\x00\x12\x16\n" +
+	"\x12BuySellType_NetBuy\x10\x01\x12\x17\n" +
+	"\x13BuySellType_NetSell\x10\x02*\xa1\x02\n" +
+	"\x1eOptionVolatilityTimePeriodType\x12*\n" +
+	"&OptionVolatilityTimePeriodType_Unknown\x10\x00\x12'\n" +
+	"#OptionVolatilityTimePeriodType_Week\x10\x01\x12(\n" +
+	"$OptionVolatilityTimePeriodType_Month\x10\x02\x12*\n" +
+	"&OptionVolatilityTimePeriodType_Quarter\x10\x03\x12+\n" +
+	"'OptionVolatilityTimePeriodType_HalfYear\x10\x04\x12'\n" +
+	"#OptionVolatilityTimePeriodType_Year\x10\x05*\\\n" +
+	"\x16OptionImpvolStatusType\x12\x15\n" +
+	"\x11ImpvolFluctuating\x10\x00\x12\x14\n" +
+	"\x10ImpvolOvervalued\x10\x01\x12\x15\n" +
+	"\x11ImpvolUndervalued\x10\x02B>\n" +
 	"\x13com.futu.openapi.pbZ'github.com/hyperjiang/futu/pb/qotcommon"
 
 var (
@@ -5880,87 +7310,104 @@ func file_Qot_Common_proto_rawDescGZIP() []byte {
 	return file_Qot_Common_proto_rawDescData
 }
 
-var file_Qot_Common_proto_enumTypes = make([]protoimpl.EnumInfo, 36)
-var file_Qot_Common_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_Qot_Common_proto_enumTypes = make([]protoimpl.EnumInfo, 52)
+var file_Qot_Common_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_Qot_Common_proto_goTypes = []any{
-	(QotMarket)(0),                 // 0: Qot_Common.QotMarket
-	(SecurityType)(0),              // 1: Qot_Common.SecurityType
-	(PlateSetType)(0),              // 2: Qot_Common.PlateSetType
-	(WarrantType)(0),               // 3: Qot_Common.WarrantType
-	(OptionType)(0),                // 4: Qot_Common.OptionType
-	(IndexOptionType)(0),           // 5: Qot_Common.IndexOptionType
-	(OptionAreaType)(0),            // 6: Qot_Common.OptionAreaType
-	(QotMarketState)(0),            // 7: Qot_Common.QotMarketState
-	(TradeDateMarket)(0),           // 8: Qot_Common.TradeDateMarket
-	(TradeDateType)(0),             // 9: Qot_Common.TradeDateType
-	(RehabType)(0),                 // 10: Qot_Common.RehabType
-	(KLType)(0),                    // 11: Qot_Common.KLType
-	(KLFields)(0),                  // 12: Qot_Common.KLFields
-	(SubType)(0),                   // 13: Qot_Common.SubType
-	(TickerDirection)(0),           // 14: Qot_Common.TickerDirection
-	(TickerType)(0),                // 15: Qot_Common.TickerType
-	(DarkStatus)(0),                // 16: Qot_Common.DarkStatus
-	(SecurityStatus)(0),            // 17: Qot_Common.SecurityStatus
-	(HolderCategory)(0),            // 18: Qot_Common.HolderCategory
-	(PushDataType)(0),              // 19: Qot_Common.PushDataType
-	(SortField)(0),                 // 20: Qot_Common.SortField
-	(Issuer)(0),                    // 21: Qot_Common.Issuer
-	(IpoPeriod)(0),                 // 22: Qot_Common.IpoPeriod
-	(PriceType)(0),                 // 23: Qot_Common.PriceType
-	(WarrantStatus)(0),             // 24: Qot_Common.WarrantStatus
-	(CompanyAct)(0),                // 25: Qot_Common.CompanyAct
-	(QotRight)(0),                  // 26: Qot_Common.QotRight
-	(PriceReminderType)(0),         // 27: Qot_Common.PriceReminderType
-	(PriceReminderFreq)(0),         // 28: Qot_Common.PriceReminderFreq
-	(AssetClass)(0),                // 29: Qot_Common.AssetClass
-	(ExpirationCycle)(0),           // 30: Qot_Common.ExpirationCycle
-	(OptionStandardType)(0),        // 31: Qot_Common.OptionStandardType
-	(OptionSettlementMode)(0),      // 32: Qot_Common.OptionSettlementMode
-	(ExchType)(0),                  // 33: Qot_Common.ExchType
-	(PeriodType)(0),                // 34: Qot_Common.PeriodType
-	(PriceReminderMarketStatus)(0), // 35: Qot_Common.PriceReminderMarketStatus
-	(*Security)(nil),               // 36: Qot_Common.Security
-	(*KLine)(nil),                  // 37: Qot_Common.KLine
-	(*OptionBasicQotExData)(nil),   // 38: Qot_Common.OptionBasicQotExData
-	(*PreAfterMarketData)(nil),     // 39: Qot_Common.PreAfterMarketData
-	(*FutureBasicQotExData)(nil),   // 40: Qot_Common.FutureBasicQotExData
-	(*WarrantBasicQotExData)(nil),  // 41: Qot_Common.WarrantBasicQotExData
-	(*BasicQot)(nil),               // 42: Qot_Common.BasicQot
-	(*TimeShare)(nil),              // 43: Qot_Common.TimeShare
-	(*SecurityStaticBasic)(nil),    // 44: Qot_Common.SecurityStaticBasic
-	(*WarrantStaticExData)(nil),    // 45: Qot_Common.WarrantStaticExData
-	(*OptionStaticExData)(nil),     // 46: Qot_Common.OptionStaticExData
-	(*FutureStaticExData)(nil),     // 47: Qot_Common.FutureStaticExData
-	(*SecurityStaticInfo)(nil),     // 48: Qot_Common.SecurityStaticInfo
-	(*Broker)(nil),                 // 49: Qot_Common.Broker
-	(*Ticker)(nil),                 // 50: Qot_Common.Ticker
-	(*OrderBookDetail)(nil),        // 51: Qot_Common.OrderBookDetail
-	(*OrderBook)(nil),              // 52: Qot_Common.OrderBook
-	(*ShareHoldingChange)(nil),     // 53: Qot_Common.ShareHoldingChange
-	(*SubInfo)(nil),                // 54: Qot_Common.SubInfo
-	(*ConnSubInfo)(nil),            // 55: Qot_Common.ConnSubInfo
-	(*PlateInfo)(nil),              // 56: Qot_Common.PlateInfo
-	(*Rehab)(nil),                  // 57: Qot_Common.Rehab
+	(QotMarket)(0),                      // 0: Qot_Common.QotMarket
+	(SecurityType)(0),                   // 1: Qot_Common.SecurityType
+	(PlateSetType)(0),                   // 2: Qot_Common.PlateSetType
+	(WarrantType)(0),                    // 3: Qot_Common.WarrantType
+	(OptionType)(0),                     // 4: Qot_Common.OptionType
+	(IndexOptionType)(0),                // 5: Qot_Common.IndexOptionType
+	(OptionAreaType)(0),                 // 6: Qot_Common.OptionAreaType
+	(QotMarketState)(0),                 // 7: Qot_Common.QotMarketState
+	(TradeDateMarket)(0),                // 8: Qot_Common.TradeDateMarket
+	(TradeDateType)(0),                  // 9: Qot_Common.TradeDateType
+	(RehabType)(0),                      // 10: Qot_Common.RehabType
+	(KLType)(0),                         // 11: Qot_Common.KLType
+	(KLFields)(0),                       // 12: Qot_Common.KLFields
+	(SubType)(0),                        // 13: Qot_Common.SubType
+	(TickerDirection)(0),                // 14: Qot_Common.TickerDirection
+	(TickerType)(0),                     // 15: Qot_Common.TickerType
+	(DarkStatus)(0),                     // 16: Qot_Common.DarkStatus
+	(SecurityStatus)(0),                 // 17: Qot_Common.SecurityStatus
+	(HolderCategory)(0),                 // 18: Qot_Common.HolderCategory
+	(PushDataType)(0),                   // 19: Qot_Common.PushDataType
+	(SortField)(0),                      // 20: Qot_Common.SortField
+	(SortType)(0),                       // 21: Qot_Common.SortType
+	(Issuer)(0),                         // 22: Qot_Common.Issuer
+	(IpoPeriod)(0),                      // 23: Qot_Common.IpoPeriod
+	(PriceType)(0),                      // 24: Qot_Common.PriceType
+	(WarrantStatus)(0),                  // 25: Qot_Common.WarrantStatus
+	(CompanyAct)(0),                     // 26: Qot_Common.CompanyAct
+	(QotRight)(0),                       // 27: Qot_Common.QotRight
+	(PriceReminderType)(0),              // 28: Qot_Common.PriceReminderType
+	(PriceReminderFreq)(0),              // 29: Qot_Common.PriceReminderFreq
+	(AssetClass)(0),                     // 30: Qot_Common.AssetClass
+	(ExpirationCycle)(0),                // 31: Qot_Common.ExpirationCycle
+	(OptionStandardType)(0),             // 32: Qot_Common.OptionStandardType
+	(OptionSettlementMode)(0),           // 33: Qot_Common.OptionSettlementMode
+	(ExchType)(0),                       // 34: Qot_Common.ExchType
+	(PeriodType)(0),                     // 35: Qot_Common.PeriodType
+	(PriceReminderMarketStatus)(0),      // 36: Qot_Common.PriceReminderMarketStatus
+	(F10Type)(0),                        // 37: Qot_Common.F10Type
+	(EarningsPubTimeType)(0),            // 38: Qot_Common.EarningsPubTimeType
+	(ValuationType)(0),                  // 39: Qot_Common.ValuationType
+	(FinancialStatementsType)(0),        // 40: Qot_Common.FinancialStatementsType
+	(RevenueBreakdownType)(0),           // 41: Qot_Common.RevenueBreakdownType
+	(ResearchRatingType)(0),             // 42: Qot_Common.ResearchRatingType
+	(ResearchRatingDimensionType)(0),    // 43: Qot_Common.ResearchRatingDimensionType
+	(MorningstarRatingType)(0),          // 44: Qot_Common.MorningstarRatingType
+	(ValuationIntervalType)(0),          // 45: Qot_Common.ValuationIntervalType
+	(HoldingChangesFilterType)(0),       // 46: Qot_Common.HoldingChangesFilterType
+	(HolderDetailType)(0),               // 47: Qot_Common.HolderDetailType
+	(CompanyProfileFieldType)(0),        // 48: Qot_Common.CompanyProfileFieldType
+	(BuySellType)(0),                    // 49: Qot_Common.BuySellType
+	(OptionVolatilityTimePeriodType)(0), // 50: Qot_Common.OptionVolatilityTimePeriodType
+	(OptionImpvolStatusType)(0),         // 51: Qot_Common.OptionImpvolStatusType
+	(*QotHeader)(nil),                   // 52: Qot_Common.QotHeader
+	(*Security)(nil),                    // 53: Qot_Common.Security
+	(*KLine)(nil),                       // 54: Qot_Common.KLine
+	(*OptionBasicQotExData)(nil),        // 55: Qot_Common.OptionBasicQotExData
+	(*PreAfterMarketData)(nil),          // 56: Qot_Common.PreAfterMarketData
+	(*FutureBasicQotExData)(nil),        // 57: Qot_Common.FutureBasicQotExData
+	(*WarrantBasicQotExData)(nil),       // 58: Qot_Common.WarrantBasicQotExData
+	(*BasicQot)(nil),                    // 59: Qot_Common.BasicQot
+	(*TimeShare)(nil),                   // 60: Qot_Common.TimeShare
+	(*SecurityStaticBasic)(nil),         // 61: Qot_Common.SecurityStaticBasic
+	(*WarrantStaticExData)(nil),         // 62: Qot_Common.WarrantStaticExData
+	(*OptionStaticExData)(nil),          // 63: Qot_Common.OptionStaticExData
+	(*FutureStaticExData)(nil),          // 64: Qot_Common.FutureStaticExData
+	(*SecurityStaticInfo)(nil),          // 65: Qot_Common.SecurityStaticInfo
+	(*Broker)(nil),                      // 66: Qot_Common.Broker
+	(*Ticker)(nil),                      // 67: Qot_Common.Ticker
+	(*OrderBookDetail)(nil),             // 68: Qot_Common.OrderBookDetail
+	(*OrderBook)(nil),                   // 69: Qot_Common.OrderBook
+	(*ShareHoldingChange)(nil),          // 70: Qot_Common.ShareHoldingChange
+	(*SubInfo)(nil),                     // 71: Qot_Common.SubInfo
+	(*ConnSubInfo)(nil),                 // 72: Qot_Common.ConnSubInfo
+	(*PlateInfo)(nil),                   // 73: Qot_Common.PlateInfo
+	(*Rehab)(nil),                       // 74: Qot_Common.Rehab
 }
 var file_Qot_Common_proto_depIdxs = []int32{
-	36, // 0: Qot_Common.BasicQot.security:type_name -> Qot_Common.Security
-	38, // 1: Qot_Common.BasicQot.optionExData:type_name -> Qot_Common.OptionBasicQotExData
-	39, // 2: Qot_Common.BasicQot.preMarket:type_name -> Qot_Common.PreAfterMarketData
-	39, // 3: Qot_Common.BasicQot.afterMarket:type_name -> Qot_Common.PreAfterMarketData
-	40, // 4: Qot_Common.BasicQot.futureExData:type_name -> Qot_Common.FutureBasicQotExData
-	41, // 5: Qot_Common.BasicQot.warrantExData:type_name -> Qot_Common.WarrantBasicQotExData
-	39, // 6: Qot_Common.BasicQot.overnight:type_name -> Qot_Common.PreAfterMarketData
-	36, // 7: Qot_Common.SecurityStaticBasic.security:type_name -> Qot_Common.Security
-	36, // 8: Qot_Common.WarrantStaticExData.owner:type_name -> Qot_Common.Security
-	36, // 9: Qot_Common.OptionStaticExData.owner:type_name -> Qot_Common.Security
-	44, // 10: Qot_Common.SecurityStaticInfo.basic:type_name -> Qot_Common.SecurityStaticBasic
-	45, // 11: Qot_Common.SecurityStaticInfo.warrantExData:type_name -> Qot_Common.WarrantStaticExData
-	46, // 12: Qot_Common.SecurityStaticInfo.optionExData:type_name -> Qot_Common.OptionStaticExData
-	47, // 13: Qot_Common.SecurityStaticInfo.futureExData:type_name -> Qot_Common.FutureStaticExData
-	51, // 14: Qot_Common.OrderBook.detailList:type_name -> Qot_Common.OrderBookDetail
-	36, // 15: Qot_Common.SubInfo.securityList:type_name -> Qot_Common.Security
-	54, // 16: Qot_Common.ConnSubInfo.subInfoList:type_name -> Qot_Common.SubInfo
-	36, // 17: Qot_Common.PlateInfo.plate:type_name -> Qot_Common.Security
+	53, // 0: Qot_Common.BasicQot.security:type_name -> Qot_Common.Security
+	55, // 1: Qot_Common.BasicQot.optionExData:type_name -> Qot_Common.OptionBasicQotExData
+	56, // 2: Qot_Common.BasicQot.preMarket:type_name -> Qot_Common.PreAfterMarketData
+	56, // 3: Qot_Common.BasicQot.afterMarket:type_name -> Qot_Common.PreAfterMarketData
+	57, // 4: Qot_Common.BasicQot.futureExData:type_name -> Qot_Common.FutureBasicQotExData
+	58, // 5: Qot_Common.BasicQot.warrantExData:type_name -> Qot_Common.WarrantBasicQotExData
+	56, // 6: Qot_Common.BasicQot.overnight:type_name -> Qot_Common.PreAfterMarketData
+	53, // 7: Qot_Common.SecurityStaticBasic.security:type_name -> Qot_Common.Security
+	53, // 8: Qot_Common.WarrantStaticExData.owner:type_name -> Qot_Common.Security
+	53, // 9: Qot_Common.OptionStaticExData.owner:type_name -> Qot_Common.Security
+	61, // 10: Qot_Common.SecurityStaticInfo.basic:type_name -> Qot_Common.SecurityStaticBasic
+	62, // 11: Qot_Common.SecurityStaticInfo.warrantExData:type_name -> Qot_Common.WarrantStaticExData
+	63, // 12: Qot_Common.SecurityStaticInfo.optionExData:type_name -> Qot_Common.OptionStaticExData
+	64, // 13: Qot_Common.SecurityStaticInfo.futureExData:type_name -> Qot_Common.FutureStaticExData
+	68, // 14: Qot_Common.OrderBook.detailList:type_name -> Qot_Common.OrderBookDetail
+	53, // 15: Qot_Common.SubInfo.securityList:type_name -> Qot_Common.Security
+	71, // 16: Qot_Common.ConnSubInfo.subInfoList:type_name -> Qot_Common.SubInfo
+	53, // 17: Qot_Common.PlateInfo.plate:type_name -> Qot_Common.Security
 	18, // [18:18] is the sub-list for method output_type
 	18, // [18:18] is the sub-list for method input_type
 	18, // [18:18] is the sub-list for extension type_name
@@ -5978,8 +7425,8 @@ func file_Qot_Common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_Qot_Common_proto_rawDesc), len(file_Qot_Common_proto_rawDesc)),
-			NumEnums:      36,
-			NumMessages:   22,
+			NumEnums:      52,
+			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

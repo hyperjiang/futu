@@ -8,7 +8,7 @@ package qotgetusersecuritygroup
 
 import (
 	_ "github.com/hyperjiang/futu/pb/common"
-	_ "github.com/hyperjiang/futu/pb/qotcommon"
+	qotcommon "github.com/hyperjiang/futu/pb/qotcommon"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -89,6 +89,7 @@ func (GroupType) EnumDescriptor() ([]byte, []int) {
 type C2S struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	GroupType     *int32                 `protobuf:"varint,1,req,name=groupType" json:"groupType,omitempty"` // GroupType,自选股分组类型。
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`      //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -128,6 +129,13 @@ func (x *C2S) GetGroupType() int32 {
 		return *x.GroupType
 	}
 	return 0
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
 }
 
 type GroupData struct {
@@ -347,9 +355,10 @@ var File_Qot_GetUserSecurityGroup_proto protoreflect.FileDescriptor
 
 const file_Qot_GetUserSecurityGroup_proto_rawDesc = "" +
 	"\n" +
-	"\x1eQot_GetUserSecurityGroup.proto\x12\x18Qot_GetUserSecurityGroup\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"#\n" +
+	"\x1eQot_GetUserSecurityGroup.proto\x12\x18Qot_GetUserSecurityGroup\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"R\n" +
 	"\x03C2S\x12\x1c\n" +
-	"\tgroupType\x18\x01 \x02(\x05R\tgroupType\"G\n" +
+	"\tgroupType\x18\x01 \x02(\x05R\tgroupType\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"G\n" +
 	"\tGroupData\x12\x1c\n" +
 	"\tgroupName\x18\x01 \x02(\tR\tgroupName\x12\x1c\n" +
 	"\tgroupType\x18\x02 \x02(\x05R\tgroupType\"H\n" +
@@ -384,22 +393,24 @@ func file_Qot_GetUserSecurityGroup_proto_rawDescGZIP() []byte {
 var file_Qot_GetUserSecurityGroup_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_Qot_GetUserSecurityGroup_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_Qot_GetUserSecurityGroup_proto_goTypes = []any{
-	(GroupType)(0),    // 0: Qot_GetUserSecurityGroup.GroupType
-	(*C2S)(nil),       // 1: Qot_GetUserSecurityGroup.C2S
-	(*GroupData)(nil), // 2: Qot_GetUserSecurityGroup.GroupData
-	(*S2C)(nil),       // 3: Qot_GetUserSecurityGroup.S2C
-	(*Request)(nil),   // 4: Qot_GetUserSecurityGroup.Request
-	(*Response)(nil),  // 5: Qot_GetUserSecurityGroup.Response
+	(GroupType)(0),              // 0: Qot_GetUserSecurityGroup.GroupType
+	(*C2S)(nil),                 // 1: Qot_GetUserSecurityGroup.C2S
+	(*GroupData)(nil),           // 2: Qot_GetUserSecurityGroup.GroupData
+	(*S2C)(nil),                 // 3: Qot_GetUserSecurityGroup.S2C
+	(*Request)(nil),             // 4: Qot_GetUserSecurityGroup.Request
+	(*Response)(nil),            // 5: Qot_GetUserSecurityGroup.Response
+	(*qotcommon.QotHeader)(nil), // 6: Qot_Common.QotHeader
 }
 var file_Qot_GetUserSecurityGroup_proto_depIdxs = []int32{
-	2, // 0: Qot_GetUserSecurityGroup.S2C.groupList:type_name -> Qot_GetUserSecurityGroup.GroupData
-	1, // 1: Qot_GetUserSecurityGroup.Request.c2s:type_name -> Qot_GetUserSecurityGroup.C2S
-	3, // 2: Qot_GetUserSecurityGroup.Response.s2c:type_name -> Qot_GetUserSecurityGroup.S2C
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	6, // 0: Qot_GetUserSecurityGroup.C2S.header:type_name -> Qot_Common.QotHeader
+	2, // 1: Qot_GetUserSecurityGroup.S2C.groupList:type_name -> Qot_GetUserSecurityGroup.GroupData
+	1, // 2: Qot_GetUserSecurityGroup.Request.c2s:type_name -> Qot_GetUserSecurityGroup.C2S
+	3, // 3: Qot_GetUserSecurityGroup.Response.s2c:type_name -> Qot_GetUserSecurityGroup.S2C
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetUserSecurityGroup_proto_init() }

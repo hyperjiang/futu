@@ -1,0 +1,38 @@
+syntax = "proto2";
+package Qot_GetOptionVolatility;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptionvolatility";
+
+import "Qot_Common.proto";
+
+message C2S {
+    required Qot_Common.Security security = 1;  // 股票
+    optional Qot_Common.OptionVolatilityTimePeriodType queryTimePeriod = 2; // 查询时间周期，详见 Qot_Common.OptionVolatilityTimePeriodType 定义，不填默认月
+    optional int32 hvTimePeriod = 3;             // 标的物历史波动率周期（5~250 日）；不填默认 30 日
+}
+
+message VolatilityItem {
+    optional int64  timestamp = 1;          // 当天 0 点时间戳（秒）
+    optional string timestampStr = 2;       // 日期字符串，格式 YYYY-MM-DD，对应市场时区
+    optional double impliedVolatility = 3;  // 期权隐含波动率（百分比，如 25.0 表示 25%）
+    optional double historyVolatility = 4;  // 标的物历史波动率（百分比，如 25.0 表示 25%）
+    optional double volatilityPremium = 5;  // 波动率溢价（隐含 - 历史，百分比，正值表示隐含高于历史）
+}
+
+message S2C {
+    repeated VolatilityItem itemList = 1;   // 波动率数据列表，时间按从大到小排序
+    optional double averageImpvol = 2;      // 隐含波动率综合值（均值，百分比，如 25.0 表示 25%）
+    optional Qot_Common.OptionImpvolStatusType impvolStatus = 3; // 波动率状态，详见 Qot_Common.OptionImpvolStatusType
+    optional string analysis = 4;           // 分析文案
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

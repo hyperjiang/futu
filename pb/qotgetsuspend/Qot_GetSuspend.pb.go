@@ -28,6 +28,7 @@ type C2S struct {
 	SecurityList  []*qotcommon.Security  `protobuf:"bytes,1,rep,name=securityList" json:"securityList,omitempty"` //股票
 	BeginTime     *string                `protobuf:"bytes,2,req,name=beginTime" json:"beginTime,omitempty"`       //开始时间字符串
 	EndTime       *string                `protobuf:"bytes,3,req,name=endTime" json:"endTime,omitempty"`           //结束时间字符串
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`           //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -81,6 +82,13 @@ func (x *C2S) GetEndTime() string {
 		return *x.EndTime
 	}
 	return ""
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
 }
 
 type Suspend struct {
@@ -352,11 +360,12 @@ var File_Qot_GetSuspend_proto protoreflect.FileDescriptor
 
 const file_Qot_GetSuspend_proto_rawDesc = "" +
 	"\n" +
-	"\x14Qot_GetSuspend.proto\x12\x0eQot_GetSuspend\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"w\n" +
+	"\x14Qot_GetSuspend.proto\x12\x0eQot_GetSuspend\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\xa6\x01\n" +
 	"\x03C2S\x128\n" +
 	"\fsecurityList\x18\x01 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\x12\x1c\n" +
 	"\tbeginTime\x18\x02 \x02(\tR\tbeginTime\x12\x18\n" +
-	"\aendTime\x18\x03 \x02(\tR\aendTime\";\n" +
+	"\aendTime\x18\x03 \x02(\tR\aendTime\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\";\n" +
 	"\aSuspend\x12\x12\n" +
 	"\x04time\x18\x01 \x02(\tR\x04time\x12\x1c\n" +
 	"\ttimestamp\x18\x02 \x01(\x01R\ttimestamp\"~\n" +
@@ -388,26 +397,28 @@ func file_Qot_GetSuspend_proto_rawDescGZIP() []byte {
 
 var file_Qot_GetSuspend_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_Qot_GetSuspend_proto_goTypes = []any{
-	(*C2S)(nil),                // 0: Qot_GetSuspend.C2S
-	(*Suspend)(nil),            // 1: Qot_GetSuspend.Suspend
-	(*SecuritySuspend)(nil),    // 2: Qot_GetSuspend.SecuritySuspend
-	(*S2C)(nil),                // 3: Qot_GetSuspend.S2C
-	(*Request)(nil),            // 4: Qot_GetSuspend.Request
-	(*Response)(nil),           // 5: Qot_GetSuspend.Response
-	(*qotcommon.Security)(nil), // 6: Qot_Common.Security
+	(*C2S)(nil),                 // 0: Qot_GetSuspend.C2S
+	(*Suspend)(nil),             // 1: Qot_GetSuspend.Suspend
+	(*SecuritySuspend)(nil),     // 2: Qot_GetSuspend.SecuritySuspend
+	(*S2C)(nil),                 // 3: Qot_GetSuspend.S2C
+	(*Request)(nil),             // 4: Qot_GetSuspend.Request
+	(*Response)(nil),            // 5: Qot_GetSuspend.Response
+	(*qotcommon.Security)(nil),  // 6: Qot_Common.Security
+	(*qotcommon.QotHeader)(nil), // 7: Qot_Common.QotHeader
 }
 var file_Qot_GetSuspend_proto_depIdxs = []int32{
 	6, // 0: Qot_GetSuspend.C2S.securityList:type_name -> Qot_Common.Security
-	6, // 1: Qot_GetSuspend.SecuritySuspend.security:type_name -> Qot_Common.Security
-	1, // 2: Qot_GetSuspend.SecuritySuspend.suspendList:type_name -> Qot_GetSuspend.Suspend
-	2, // 3: Qot_GetSuspend.S2C.SecuritySuspendList:type_name -> Qot_GetSuspend.SecuritySuspend
-	0, // 4: Qot_GetSuspend.Request.c2s:type_name -> Qot_GetSuspend.C2S
-	3, // 5: Qot_GetSuspend.Response.s2c:type_name -> Qot_GetSuspend.S2C
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	7, // 1: Qot_GetSuspend.C2S.header:type_name -> Qot_Common.QotHeader
+	6, // 2: Qot_GetSuspend.SecuritySuspend.security:type_name -> Qot_Common.Security
+	1, // 3: Qot_GetSuspend.SecuritySuspend.suspendList:type_name -> Qot_GetSuspend.Suspend
+	2, // 4: Qot_GetSuspend.S2C.SecuritySuspendList:type_name -> Qot_GetSuspend.SecuritySuspend
+	0, // 5: Qot_GetSuspend.Request.c2s:type_name -> Qot_GetSuspend.C2S
+	3, // 6: Qot_GetSuspend.Response.s2c:type_name -> Qot_GetSuspend.S2C
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetSuspend_proto_init() }

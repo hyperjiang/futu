@@ -1,0 +1,45 @@
+syntax = "proto2";
+package Qot_GetCompanyExecutives;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetcompanyexecutives";
+
+import "Qot_Common.proto";
+
+// 公司高管信息项
+message DirectorInfo
+{
+    optional string displayLeaderName   = 1;  // 高管展示名称（仅用于展示，不用于查询背景接口）
+    optional string leaderName          = 2;  // 高管姓名（可传入 GetCompanyExecutiveBackground 查询背景）
+    optional string positionName        = 3;  // 职位名称
+    optional uint64 beginDate           = 4;  // 任职起始日时间戳（秒）
+    optional string beginDateStr        = 5;  // 任职起始日字符串，格式 YYYY-MM-DD，对应市场时区
+    optional string leaderGender        = 6;  // 性别，如 "Male" / "Female"
+    optional string leaderAge           = 7;  // 年龄，字符串形式，如 "62"
+    optional string highestEducation    = 8;  // 最高学历
+    optional uint64 annualSalary        = 9;  // 年薪
+    optional uint64 issueDate           = 10; // 发布日期时间戳（秒）
+    optional string issueDateStr        = 11; // 发布日期字符串，格式 YYYY-MM-DD，对应市场时区
+}
+
+message C2S
+{
+    required Qot_Common.Security security = 1; // 股票
+}
+
+message S2C
+{
+    repeated DirectorInfo directorList = 1; // 董事高管列表
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32  retType = 1 [default = -400];
+    optional string retMsg  = 2;
+    optional int32  errCode = 3;
+    optional S2C    s2c     = 4;
+}

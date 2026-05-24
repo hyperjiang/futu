@@ -228,6 +228,7 @@ type S2C struct {
 	ShQotRight            *int32                 `protobuf:"varint,31,opt,name=shQotRight" json:"shQotRight,omitempty"`                       //上海市场行情权限, Qot_Common.QotRight
 	SzQotRight            *int32                 `protobuf:"varint,32,opt,name=szQotRight" json:"szQotRight,omitempty"`                       //深圳市场行情权限, Qot_Common.QotRight
 	Extra                 *int32                 `protobuf:"varint,33,opt,name=extra" json:"extra,omitempty"`                                 // 透传信息
+	CcQotRight            *int32                 `protobuf:"varint,34,opt,name=ccQotRight" json:"ccQotRight,omitempty"`                       //加密货币市场行情权限, Qot_Common.QotRight
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -493,6 +494,13 @@ func (x *S2C) GetExtra() int32 {
 	return 0
 }
 
+func (x *S2C) GetCcQotRight() int32 {
+	if x != nil && x.CcQotRight != nil {
+		return *x.CcQotRight
+	}
+	return 0
+}
+
 type Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	C2S           *C2S                   `protobuf:"bytes,1,req,name=c2s" json:"c2s,omitempty"`
@@ -616,7 +624,7 @@ const file_GetUserInfo_proto_rawDesc = "" +
 	"\n" +
 	"\x11GetUserInfo.proto\x12\vGetUserInfo\x1a\fCommon.proto\"\x19\n" +
 	"\x03C2S\x12\x12\n" +
-	"\x04flag\x18\x02 \x01(\x05R\x04flag\"\x87\n" +
+	"\x04flag\x18\x02 \x01(\x05R\x04flag\"\xa7\n" +
 	"\n" +
 	"\x03S2C\x12\x1a\n" +
 	"\bnickName\x18\x01 \x01(\tR\bnickName\x12\x1c\n" +
@@ -664,7 +672,10 @@ const file_GetUserInfo_proto_rawDesc = "" +
 	"\n" +
 	"szQotRight\x18  \x01(\x05R\n" +
 	"szQotRight\x12\x14\n" +
-	"\x05extra\x18! \x01(\x05R\x05extra\"-\n" +
+	"\x05extra\x18! \x01(\x05R\x05extra\x12\x1e\n" +
+	"\n" +
+	"ccQotRight\x18\" \x01(\x05R\n" +
+	"ccQotRight\"-\n" +
 	"\aRequest\x12\"\n" +
 	"\x03c2s\x18\x01 \x02(\v2\x10.GetUserInfo.C2SR\x03c2s\"\x80\x01\n" +
 	"\bResponse\x12\x1e\n" +

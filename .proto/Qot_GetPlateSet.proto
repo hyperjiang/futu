@@ -10,6 +10,7 @@ message C2S
 {
 	required int32 market = 1; //Qot_Common.QotMarket,股票市场
 	required int32 plateSetType = 2; //Qot_Common.PlateSetType,板块集合的类型
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
 message S2C

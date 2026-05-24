@@ -1,0 +1,37 @@
+syntax = "proto2";
+package Qot_GetCompanyProfile;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetcompanyprofile";
+
+import "Qot_Common.proto";
+
+// 公司详情标签项
+message CompanyLabItem
+{
+    optional string    name      = 1; // 标签名
+    optional string    value     = 2; // 标签对应信息
+    optional Qot_Common.CompanyProfileFieldType fieldType = 3; // 标签类型（详见 Qot_Common.CompanyProfileFieldType 定义）
+}
+
+message C2S
+{
+    required Qot_Common.Security security = 1; // 股票
+}
+
+message S2C
+{
+    repeated CompanyLabItem itemList = 1; // 公司详情标签列表
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32  retType = 1 [default = -400];
+    optional string retMsg  = 2;
+    optional int32  errCode = 3;
+    optional S2C    s2c     = 4;
+}

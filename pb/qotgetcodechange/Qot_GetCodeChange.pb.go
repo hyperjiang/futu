@@ -336,6 +336,7 @@ type C2S struct {
 	SecurityList   []*qotcommon.Security  `protobuf:"bytes,2,rep,name=securityList" json:"securityList,omitempty"`     //根据股票筛选
 	TimeFilterList []*TimeFilter          `protobuf:"bytes,3,rep,name=timeFilterList" json:"timeFilterList,omitempty"` //根据时间筛选
 	TypeList       []int32                `protobuf:"varint,4,rep,name=typeList" json:"typeList,omitempty"`            //CodeChangeType，根据类型筛选
+	Header         *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`               //行情公共参数头
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -394,6 +395,13 @@ func (x *C2S) GetTimeFilterList() []*TimeFilter {
 func (x *C2S) GetTypeList() []int32 {
 	if x != nil {
 		return x.TypeList
+	}
+	return nil
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
 	}
 	return nil
 }
@@ -580,12 +588,13 @@ const file_Qot_GetCodeChange_proto_rawDesc = "" +
 	"TimeFilter\x12\x12\n" +
 	"\x04type\x18\x01 \x02(\x05R\x04type\x12\x1c\n" +
 	"\tbeginTime\x18\x02 \x01(\tR\tbeginTime\x12\x18\n" +
-	"\aendTime\x18\x03 \x01(\tR\aendTime\"\xc4\x01\n" +
+	"\aendTime\x18\x03 \x01(\tR\aendTime\"\xf3\x01\n" +
 	"\x03C2S\x12 \n" +
 	"\vplaceHolder\x18\x01 \x01(\x05R\vplaceHolder\x128\n" +
 	"\fsecurityList\x18\x02 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\x12E\n" +
 	"\x0etimeFilterList\x18\x03 \x03(\v2\x1d.Qot_GetCodeChange.TimeFilterR\x0etimeFilterList\x12\x1a\n" +
-	"\btypeList\x18\x04 \x03(\x05R\btypeList\"P\n" +
+	"\btypeList\x18\x04 \x03(\x05R\btypeList\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"P\n" +
 	"\x03S2C\x12I\n" +
 	"\x0ecodeChangeList\x18\x01 \x03(\v2!.Qot_GetCodeChange.CodeChangeInfoR\x0ecodeChangeList\"3\n" +
 	"\aRequest\x12(\n" +
@@ -627,29 +636,31 @@ func file_Qot_GetCodeChange_proto_rawDescGZIP() []byte {
 var file_Qot_GetCodeChange_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
 var file_Qot_GetCodeChange_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_Qot_GetCodeChange_proto_goTypes = []any{
-	(CodeChangeType)(0),        // 0: Qot_GetCodeChange.CodeChangeType
-	(TimeFilterType)(0),        // 1: Qot_GetCodeChange.TimeFilterType
-	(*CodeChangeInfo)(nil),     // 2: Qot_GetCodeChange.CodeChangeInfo
-	(*TimeFilter)(nil),         // 3: Qot_GetCodeChange.TimeFilter
-	(*C2S)(nil),                // 4: Qot_GetCodeChange.C2S
-	(*S2C)(nil),                // 5: Qot_GetCodeChange.S2C
-	(*Request)(nil),            // 6: Qot_GetCodeChange.Request
-	(*Response)(nil),           // 7: Qot_GetCodeChange.Response
-	(*qotcommon.Security)(nil), // 8: Qot_Common.Security
+	(CodeChangeType)(0),         // 0: Qot_GetCodeChange.CodeChangeType
+	(TimeFilterType)(0),         // 1: Qot_GetCodeChange.TimeFilterType
+	(*CodeChangeInfo)(nil),      // 2: Qot_GetCodeChange.CodeChangeInfo
+	(*TimeFilter)(nil),          // 3: Qot_GetCodeChange.TimeFilter
+	(*C2S)(nil),                 // 4: Qot_GetCodeChange.C2S
+	(*S2C)(nil),                 // 5: Qot_GetCodeChange.S2C
+	(*Request)(nil),             // 6: Qot_GetCodeChange.Request
+	(*Response)(nil),            // 7: Qot_GetCodeChange.Response
+	(*qotcommon.Security)(nil),  // 8: Qot_Common.Security
+	(*qotcommon.QotHeader)(nil), // 9: Qot_Common.QotHeader
 }
 var file_Qot_GetCodeChange_proto_depIdxs = []int32{
 	8, // 0: Qot_GetCodeChange.CodeChangeInfo.security:type_name -> Qot_Common.Security
 	8, // 1: Qot_GetCodeChange.CodeChangeInfo.relatedSecurity:type_name -> Qot_Common.Security
 	8, // 2: Qot_GetCodeChange.C2S.securityList:type_name -> Qot_Common.Security
 	3, // 3: Qot_GetCodeChange.C2S.timeFilterList:type_name -> Qot_GetCodeChange.TimeFilter
-	2, // 4: Qot_GetCodeChange.S2C.codeChangeList:type_name -> Qot_GetCodeChange.CodeChangeInfo
-	4, // 5: Qot_GetCodeChange.Request.c2s:type_name -> Qot_GetCodeChange.C2S
-	5, // 6: Qot_GetCodeChange.Response.s2c:type_name -> Qot_GetCodeChange.S2C
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	9, // 4: Qot_GetCodeChange.C2S.header:type_name -> Qot_Common.QotHeader
+	2, // 5: Qot_GetCodeChange.S2C.codeChangeList:type_name -> Qot_GetCodeChange.CodeChangeInfo
+	4, // 6: Qot_GetCodeChange.Request.c2s:type_name -> Qot_GetCodeChange.C2S
+	5, // 7: Qot_GetCodeChange.Response.s2c:type_name -> Qot_GetCodeChange.S2C
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetCodeChange_proto_init() }

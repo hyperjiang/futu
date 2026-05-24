@@ -63,6 +63,7 @@ message S2C
 	optional int32 shQotRight = 31; //上海市场行情权限, Qot_Common.QotRight
 	optional int32 szQotRight = 32; //深圳市场行情权限, Qot_Common.QotRight
 	optional int32 extra=33; // 透传信息
+	optional int32 ccQotRight = 34; //加密货币市场行情权限, Qot_Common.QotRight
 }
 
 message Request

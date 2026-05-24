@@ -1,0 +1,60 @@
+syntax = "proto2";
+package Qot_GetResearchMorningstarReport;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetresearchmorningstarrpt";
+
+import "Qot_Common.proto";
+
+// 带更新时间的文本内容
+message StringWithUpdateTime {
+    optional string context = 1;       // 文本内容
+    optional int64 updateTime = 2;     // 更新时间戳（秒）
+    optional string updateTimeStr = 3; // 更新时间字符串，格式 YYYY-MM-DD，对应市场时区
+}
+
+message C2S
+{
+    required Qot_Common.Security security = 1; // 股票
+}
+
+message S2C
+{
+    optional Qot_Common.MorningstarRatingType ratingType = 1; // 评级类型（详见 Qot_Common.MorningstarRatingType 定义）
+    optional int32 starRating = 2;                // 晨星星级评分，取值 1-5 星
+    optional int64 starUpdateTime = 3;            // 星级更新时间戳（秒）
+    optional string starUpdateTimeStr = 4;        // 星级更新时间字符串，格式 YYYY-MM-DD，对应市场时区
+    optional double fairValue = 5;                // 公允价值
+    optional StringWithUpdateTime fairValueContent = 6;         // 公允价值分析文本及更新时间
+    optional string economicMoatLabel = 7;        // 护城河评级，如 Wide、Narrow、None
+    optional StringWithUpdateTime economicMoatContent = 8;     // 护城河分析文本及更新时间
+    optional string uncertaintyLabel = 9;         // 不确定性评级，如 Low、Medium、High、Very High、Extreme
+    optional StringWithUpdateTime uncertaintyContent = 10;      // 不确定性分析文本及更新时间
+    optional string financialHealthLabel = 11;    // 财务健康评级
+    optional StringWithUpdateTime financialHealthContent = 12;  // 财务健康分析文本及更新时间
+    repeated string analystReportByLine = 13;     // 分析师署名列表，如 ["William Kerwin, CFA"]
+    optional int64 analystReportUpdateTime = 14;  // 分析师报告更新时间戳（秒）
+    optional string analystReportUpdateTimeStr = 15; // 分析师报告更新时间字符串，格式 YYYY-MM-DD，对应市场时区
+    repeated StringWithUpdateTime bullSay = 16;   // 多方观点列表
+    repeated StringWithUpdateTime bearSay = 17;   // 空方观点列表
+    optional string capitalAllocationLabel = 18;  // 资本配置评级
+    optional StringWithUpdateTime capitalAllocationContent = 19; // 资本配置分析文本及更新时间
+    optional StringWithUpdateTime analystNoteTitle = 20;        // 分析师观点标题及更新时间
+    optional StringWithUpdateTime analystNoteContent = 21;     // 分析师观点内容文本及更新时间
+    optional StringWithUpdateTime investmentThesisContent = 22; // 投资论点文本及更新时间
+    optional StringWithUpdateTime fundamentalsContent = 23;    // 基本面报告文本及更新时间
+    optional StringWithUpdateTime valuationContent = 24;       // 估值报告文本及更新时间
+    optional string pdfUrl = 25;                  // PDF 报告下载链接
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32 retType = 1 [default = -400]; // RetType,返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

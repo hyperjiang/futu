@@ -1,0 +1,42 @@
+syntax = "proto2";
+package Qot_GetCorporateActionsDividends;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetcorporateactionsdividends";
+
+import "Qot_Common.proto";
+
+// 分红派息单条记录
+message DividendItem
+{
+	optional string pubDate             = 1; // 公告日，格式 YYYY/MM/DD，对应市场时区
+	optional string statement           = 2; // 分配方案描述，如"末期息5.3港元"
+	optional string process             = 3; // 事件进展，如"方案实施"/"预案"；仅港股和A股的正股与信托有值
+	optional string recordDate          = 4; // 股权登记日，格式 YYYY/MM/DD，对应市场时区。ETF无此数据
+	optional string exDate              = 5; // 除权除息日，格式 YYYY/MM/DD，对应市场时区
+	optional string dividendPayableDate = 6; // 派息日，格式 YYYY/MM/DD，对应市场时区
+	optional string fiscalYear          = 7; // 财政年度,如“2026”。仅ETF有值。
+}
+
+message C2S
+{
+	required Qot_Common.Security security = 1; // 股票
+}
+
+message S2C
+{
+	repeated DividendItem dividendList = 1; // 分红派息列表，按公告日倒序排列
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32  retType = 1 [default = -400]; //RetType,返回结果
+	optional string retMsg  = 2;
+	optional int32  errCode = 3;
+
+	optional S2C s2c = 4;
+}

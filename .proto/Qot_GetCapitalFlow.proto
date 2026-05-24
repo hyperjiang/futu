@@ -12,6 +12,7 @@ message C2S
 	optional int32 periodType = 2; // Qot_Common.PeriodType 周期类型
 	optional string beginTime = 3; // 开始时间（格式：yyyy-MM-dd），仅周期类型不为实时有效
 	optional string endTime = 4; // 结束时间（格式：yyyy-MM-dd），仅周期类型不为实时有效
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
 message CapitalFlowItem

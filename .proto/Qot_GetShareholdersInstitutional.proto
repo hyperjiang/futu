@@ -1,0 +1,45 @@
+syntax = "proto2";
+package Qot_GetShareholdersInstitutional;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetshareholdersinstitutional";
+
+import "Qot_Common.proto";
+
+message InstitutionHolderItem
+{
+	optional string periodText = 1;               // 报告期，如 "2025/Q3"
+	optional int64 institutionQuantity = 2;       // 机构持股机构数量（家）
+	optional int64 institutionQuantityChange = 3; // 机构持股机构数量变化
+	optional int64 holderQuantity = 4;            // 机构持股总股数（股）
+	optional int64 holderQuantityChange = 5;      // 机构持股总股数变化
+	optional double holderPct = 6;                // 持股比例，百分号前的值，如 12.34 表示 12.34%
+	optional double holderPctChange = 7;          // 持股比例变动，百分号前的值，如 12.34 表示变动 12.34%
+}
+
+message C2S
+{
+	required Qot_Common.Security security = 1;
+	optional string nextKey = 2;    // 分页标识，首次不填，续拉时填上次返回的 nextKey；"-1" 表示无更多数据
+	optional int32  num     = 3;    // 每页返回数量，默认 10，范围 1~50
+}
+
+message S2C
+{
+	optional uint64 updateTime = 1;            // 数据更新时间戳（秒）
+	optional string updateTimeStr = 2;         // 数据更新时间字符串，格式 YYYY-MM-DD HH:MM:SS，对应市场时区
+	optional string nextKey = 3;               // 分页标识，"-1" 表示无更多数据
+	repeated InstitutionHolderItem itemList = 4;
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32  retType = 1 [default = -400];
+	optional string retMsg  = 2;
+	optional int32  errCode = 3;
+	optional S2C s2c = 4;
+}

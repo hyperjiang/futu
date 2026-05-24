@@ -26,6 +26,7 @@ const (
 type C2S struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SecurityList  []*qotcommon.Security  `protobuf:"bytes,1,rep,name=securityList" json:"securityList,omitempty"` //股票列表
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`           //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -63,6 +64,13 @@ func (*C2S) Descriptor() ([]byte, []int) {
 func (x *C2S) GetSecurityList() []*qotcommon.Security {
 	if x != nil {
 		return x.SecurityList
+	}
+	return nil
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
 	}
 	return nil
 }
@@ -292,9 +300,10 @@ var File_Qot_GetMarketState_proto protoreflect.FileDescriptor
 
 const file_Qot_GetMarketState_proto_rawDesc = "" +
 	"\n" +
-	"\x18Qot_GetMarketState.proto\x12\x12Qot_GetMarketState\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"?\n" +
+	"\x18Qot_GetMarketState.proto\x12\x12Qot_GetMarketState\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"n\n" +
 	"\x03C2S\x128\n" +
-	"\fsecurityList\x18\x01 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\"t\n" +
+	"\fsecurityList\x18\x01 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"t\n" +
 	"\n" +
 	"MarketInfo\x120\n" +
 	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12\x12\n" +
@@ -325,24 +334,26 @@ func file_Qot_GetMarketState_proto_rawDescGZIP() []byte {
 
 var file_Qot_GetMarketState_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_Qot_GetMarketState_proto_goTypes = []any{
-	(*C2S)(nil),                // 0: Qot_GetMarketState.C2S
-	(*MarketInfo)(nil),         // 1: Qot_GetMarketState.MarketInfo
-	(*S2C)(nil),                // 2: Qot_GetMarketState.S2C
-	(*Request)(nil),            // 3: Qot_GetMarketState.Request
-	(*Response)(nil),           // 4: Qot_GetMarketState.Response
-	(*qotcommon.Security)(nil), // 5: Qot_Common.Security
+	(*C2S)(nil),                 // 0: Qot_GetMarketState.C2S
+	(*MarketInfo)(nil),          // 1: Qot_GetMarketState.MarketInfo
+	(*S2C)(nil),                 // 2: Qot_GetMarketState.S2C
+	(*Request)(nil),             // 3: Qot_GetMarketState.Request
+	(*Response)(nil),            // 4: Qot_GetMarketState.Response
+	(*qotcommon.Security)(nil),  // 5: Qot_Common.Security
+	(*qotcommon.QotHeader)(nil), // 6: Qot_Common.QotHeader
 }
 var file_Qot_GetMarketState_proto_depIdxs = []int32{
 	5, // 0: Qot_GetMarketState.C2S.securityList:type_name -> Qot_Common.Security
-	5, // 1: Qot_GetMarketState.MarketInfo.security:type_name -> Qot_Common.Security
-	1, // 2: Qot_GetMarketState.S2C.marketInfoList:type_name -> Qot_GetMarketState.MarketInfo
-	0, // 3: Qot_GetMarketState.Request.c2s:type_name -> Qot_GetMarketState.C2S
-	2, // 4: Qot_GetMarketState.Response.s2c:type_name -> Qot_GetMarketState.S2C
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	6, // 1: Qot_GetMarketState.C2S.header:type_name -> Qot_Common.QotHeader
+	5, // 2: Qot_GetMarketState.MarketInfo.security:type_name -> Qot_Common.Security
+	1, // 3: Qot_GetMarketState.S2C.marketInfoList:type_name -> Qot_GetMarketState.MarketInfo
+	0, // 4: Qot_GetMarketState.Request.c2s:type_name -> Qot_GetMarketState.C2S
+	2, // 5: Qot_GetMarketState.Response.s2c:type_name -> Qot_GetMarketState.S2C
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetMarketState_proto_init() }

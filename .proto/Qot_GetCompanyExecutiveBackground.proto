@@ -1,0 +1,30 @@
+syntax = "proto2";
+package Qot_GetCompanyExecutiveBackground;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetcompanyexecutivebackground";
+
+import "Qot_Common.proto";
+
+message C2S
+{
+    required Qot_Common.Security security = 1; // 股票
+    optional string leaderName            = 2; // 高管姓名（使用GetCompanyExecutives返回的leaderName字段）
+}
+
+message S2C
+{
+    optional string briefBackground = 1; // 高管背景简介
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32  retType = 1 [default = -400];
+    optional string retMsg  = 2;
+    optional int32  errCode = 3;
+    optional S2C    s2c     = 4;
+}

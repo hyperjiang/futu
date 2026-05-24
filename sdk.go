@@ -11,26 +11,56 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetcapitaldistribution"
 	"github.com/hyperjiang/futu/pb/qotgetcapitalflow"
+	"github.com/hyperjiang/futu/pb/qotgetcompanyexecutivebackground"
+	"github.com/hyperjiang/futu/pb/qotgetcompanyexecutives"
+	"github.com/hyperjiang/futu/pb/qotgetcompanyoperationalefficiency"
+	"github.com/hyperjiang/futu/pb/qotgetcompanyprofile"
+	"github.com/hyperjiang/futu/pb/qotgetcorporateactionsbuybacks"
+	"github.com/hyperjiang/futu/pb/qotgetcorporateactionsdividends"
+	"github.com/hyperjiang/futu/pb/qotgetcorporateactionsstocksplits"
+	"github.com/hyperjiang/futu/pb/qotgetdailyshortvolume"
+	"github.com/hyperjiang/futu/pb/qotgetfinancialrevenuebreakdown"
+	"github.com/hyperjiang/futu/pb/qotgetfinancialsearnpricehist"
+	"github.com/hyperjiang/futu/pb/qotgetfinancialsearnpricemove"
+	"github.com/hyperjiang/futu/pb/qotgetfinancialsstatements"
 	"github.com/hyperjiang/futu/pb/qotgetfutureinfo"
+	"github.com/hyperjiang/futu/pb/qotgetinsiderholderlist"
+	"github.com/hyperjiang/futu/pb/qotgetinsidertradelist"
 	"github.com/hyperjiang/futu/pb/qotgetipolist"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetmarketstate"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
+	"github.com/hyperjiang/futu/pb/qotgetoptionexerciseprobability"
 	"github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate"
+	"github.com/hyperjiang/futu/pb/qotgetoptionvolatility"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
 	"github.com/hyperjiang/futu/pb/qotgetownerplate"
 	"github.com/hyperjiang/futu/pb/qotgetpricereminder"
+	"github.com/hyperjiang/futu/pb/qotgetresearchanalystconsensus"
+	"github.com/hyperjiang/futu/pb/qotgetresearchmorningstarrpt"
+	"github.com/hyperjiang/futu/pb/qotgetresearchratingsummary"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
+	"github.com/hyperjiang/futu/pb/qotgetshareholdersholderdetail"
+	"github.com/hyperjiang/futu/pb/qotgetshareholdersholdingchanges"
+	"github.com/hyperjiang/futu/pb/qotgetshareholdersinstitutional"
+	"github.com/hyperjiang/futu/pb/qotgetshareholdersoverview"
+	"github.com/hyperjiang/futu/pb/qotgetshortinterest"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
+	"github.com/hyperjiang/futu/pb/qotgettoptenbuysellbrokers"
 	"github.com/hyperjiang/futu/pb/qotgetusersecuritygroup"
+	"github.com/hyperjiang/futu/pb/qotgetvaluationdetail"
+	"github.com/hyperjiang/futu/pb/qotgetvaluationplatestocklist"
 	"github.com/hyperjiang/futu/pb/qotgetwarrant"
+	"github.com/hyperjiang/futu/pb/qotoptionscreen"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
 	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
+	"github.com/hyperjiang/futu/pb/qotstockscreen"
+	"github.com/hyperjiang/futu/pb/qotwarrantscreen"
 	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/hyperjiang/futu/pb/trdflowsummary"
 	"github.com/hyperjiang/futu/pb/trdgetmarginratio"
@@ -586,4 +616,304 @@ func (sdk *SDK) GetOptionExpirationDate(code string, opts ...adapt.Option) ([]*q
 	defer cancel()
 
 	return sdk.GetOptionExpirationDateWithContext(ctx, code, opts...)
+}
+
+// GetFinancialsEarningsPriceMove 3225 - gets the financials earnings price move.
+//
+// code: security code
+func (sdk *SDK) GetFinancialsEarningsPriceMove(code string, opts ...adapt.Option) (*qotgetfinancialsearnpricemove.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetFinancialsEarningsPriceMoveWithContext(ctx, code, opts...)
+}
+
+// GetFinancialsEarningsPriceHistory 3226 - gets the financials earnings price history.
+//
+// code: security code
+func (sdk *SDK) GetFinancialsEarningsPriceHistory(code string) (*qotgetfinancialsearnpricehist.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetFinancialsEarningsPriceHistoryWithContext(ctx, code)
+}
+
+// GetFinancialsStatements 3227 - gets the financial statements.
+//
+// code: security code
+//
+// statementType: financial statement type, see adapt.FinancialStatementsType_*
+func (sdk *SDK) GetFinancialsStatements(code string, statementType int32, opts ...adapt.Option) (*qotgetfinancialsstatements.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetFinancialsStatementsWithContext(ctx, code, statementType, opts...)
+}
+
+// GetFinancialsRevenueBreakdown 3228 - gets the financials revenue breakdown.
+//
+// code: security code
+func (sdk *SDK) GetFinancialsRevenueBreakdown(code string, opts ...adapt.Option) (*qotgetfinancialrevenuebreakdown.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetFinancialsRevenueBreakdownWithContext(ctx, code, opts...)
+}
+
+// GetResearchAnalystConsensus 3229 - gets the research analyst consensus.
+//
+// code: security code
+func (sdk *SDK) GetResearchAnalystConsensus(code string) (*qotgetresearchanalystconsensus.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetResearchAnalystConsensusWithContext(ctx, code)
+}
+
+// GetResearchRatingSummary 3230 - gets the research rating summary.
+//
+// code: security code
+func (sdk *SDK) GetResearchRatingSummary(code string, opts ...adapt.Option) (*qotgetresearchratingsummary.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetResearchRatingSummaryWithContext(ctx, code, opts...)
+}
+
+// GetResearchMorningstarReport 3231 - gets the research morningstar report.
+//
+// code: security code
+func (sdk *SDK) GetResearchMorningstarReport(code string) (*qotgetresearchmorningstarrpt.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetResearchMorningstarReportWithContext(ctx, code)
+}
+
+// GetValuationDetail 3232 - gets the valuation detail.
+//
+// code: security code
+//
+// valuationType: valuation type, see adapt.ValuationType_*
+func (sdk *SDK) GetValuationDetail(code string, valuationType int32, opts ...adapt.Option) (*qotgetvaluationdetail.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetValuationDetailWithContext(ctx, code, valuationType, opts...)
+}
+
+// GetValuationPlateStockList 3233 - gets the valuation plate stock list.
+//
+// code: security code (plate code)
+//
+// valuationType: valuation type, see adapt.ValuationType_*
+func (sdk *SDK) GetValuationPlateStockList(code string, valuationType int32, opts ...adapt.Option) (*qotgetvaluationplatestocklist.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetValuationPlateStockListWithContext(ctx, code, valuationType, opts...)
+}
+
+// GetCorporateActionsDividends 3234 - gets the corporate actions dividends.
+//
+// code: security code
+func (sdk *SDK) GetCorporateActionsDividends(code string) (*qotgetcorporateactionsdividends.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetCorporateActionsDividendsWithContext(ctx, code)
+}
+
+// GetCorporateActionsBuybacks 3235 - gets the corporate actions buybacks.
+//
+// code: security code
+func (sdk *SDK) GetCorporateActionsBuybacks(code string, opts ...adapt.Option) (*qotgetcorporateactionsbuybacks.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetCorporateActionsBuybacksWithContext(ctx, code, opts...)
+}
+
+// GetCorporateActionsStockSplits 3236 - gets the corporate actions stock splits.
+//
+// code: security code
+func (sdk *SDK) GetCorporateActionsStockSplits(code string, opts ...adapt.Option) (*qotgetcorporateactionsstocksplits.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetCorporateActionsStockSplitsWithContext(ctx, code, opts...)
+}
+
+// GetShareholdersOverview 3237 - gets the shareholders overview.
+//
+// code: security code
+func (sdk *SDK) GetShareholdersOverview(code string, opts ...adapt.Option) (*qotgetshareholdersoverview.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetShareholdersOverviewWithContext(ctx, code, opts...)
+}
+
+// GetShareholdersHoldingChanges 3238 - gets the shareholders holding changes.
+//
+// code: security code
+func (sdk *SDK) GetShareholdersHoldingChanges(code string, opts ...adapt.Option) (*qotgetshareholdersholdingchanges.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetShareholdersHoldingChangesWithContext(ctx, code, opts...)
+}
+
+// GetShareholdersHolderDetail 3239 - gets the shareholders holder detail.
+//
+// code: security code
+func (sdk *SDK) GetShareholdersHolderDetail(code string, opts ...adapt.Option) (*qotgetshareholdersholderdetail.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetShareholdersHolderDetailWithContext(ctx, code, opts...)
+}
+
+// GetShareholdersInstitutional 3240 - gets the shareholders institutional.
+//
+// code: security code
+func (sdk *SDK) GetShareholdersInstitutional(code string, opts ...adapt.Option) (*qotgetshareholdersinstitutional.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetShareholdersInstitutionalWithContext(ctx, code, opts...)
+}
+
+// GetInsiderHolderList 3241 - gets the insider holder list.
+//
+// code: security code
+func (sdk *SDK) GetInsiderHolderList(code string, opts ...adapt.Option) (*qotgetinsiderholderlist.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetInsiderHolderListWithContext(ctx, code, opts...)
+}
+
+// GetInsiderTradeList 3242 - gets the insider trade list.
+//
+// code: security code
+func (sdk *SDK) GetInsiderTradeList(code string, opts ...adapt.Option) (*qotgetinsidertradelist.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetInsiderTradeListWithContext(ctx, code, opts...)
+}
+
+// GetCompanyProfile 3243 - gets the company profile.
+//
+// code: security code
+func (sdk *SDK) GetCompanyProfile(code string) (*qotgetcompanyprofile.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetCompanyProfileWithContext(ctx, code)
+}
+
+// GetCompanyExecutives 3244 - gets the company executives.
+//
+// code: security code
+func (sdk *SDK) GetCompanyExecutives(code string) (*qotgetcompanyexecutives.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetCompanyExecutivesWithContext(ctx, code)
+}
+
+// GetCompanyExecutiveBackground 3245 - gets the company executive background.
+//
+// code: security code
+func (sdk *SDK) GetCompanyExecutiveBackground(code string, opts ...adapt.Option) (*qotgetcompanyexecutivebackground.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetCompanyExecutiveBackgroundWithContext(ctx, code, opts...)
+}
+
+// GetCompanyOperationalEfficiency 3246 - gets the company operational efficiency.
+//
+// code: security code
+func (sdk *SDK) GetCompanyOperationalEfficiency(code string, opts ...adapt.Option) (*qotgetcompanyoperationalefficiency.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetCompanyOperationalEfficiencyWithContext(ctx, code, opts...)
+}
+
+// GetTopTenBuySellBrokers 3247 - gets the top ten buy/sell brokers.
+//
+// code: security code
+func (sdk *SDK) GetTopTenBuySellBrokers(code string, opts ...adapt.Option) (*qotgettoptenbuysellbrokers.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetTopTenBuySellBrokersWithContext(ctx, code, opts...)
+}
+
+// GetDailyShortVolume 3248 - gets the daily short volume.
+//
+// code: security code
+func (sdk *SDK) GetDailyShortVolume(code string, opts ...adapt.Option) (*qotgetdailyshortvolume.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetDailyShortVolumeWithContext(ctx, code, opts...)
+}
+
+// GetShortInterest 3249 - gets the short interest.
+//
+// code: security code
+func (sdk *SDK) GetShortInterest(code string, opts ...adapt.Option) (*qotgetshortinterest.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetShortInterestWithContext(ctx, code, opts...)
+}
+
+// GetOptionVolatility 3250 - gets the option volatility.
+//
+// code: security code
+func (sdk *SDK) GetOptionVolatility(code string, opts ...adapt.Option) (*qotgetoptionvolatility.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionVolatilityWithContext(ctx, code, opts...)
+}
+
+// GetOptionExerciseProbability 3251 - gets the option exercise probability.
+//
+// code: security code
+func (sdk *SDK) GetOptionExerciseProbability(code string) (*qotgetoptionexerciseprobability.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionExerciseProbabilityWithContext(ctx, code)
+}
+
+// StockScreen 3252 - stock screen.
+func (sdk *SDK) StockScreen(opts ...adapt.Option) (*qotstockscreen.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.StockScreenWithContext(ctx, opts...)
+}
+
+// OptionScreen 3253 - option screen.
+func (sdk *SDK) OptionScreen(opts ...adapt.Option) (*qotoptionscreen.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.OptionScreenWithContext(ctx, opts...)
+}
+
+// WarrantScreen 3254 - warrant screen.
+func (sdk *SDK) WarrantScreen(opts ...adapt.Option) (*qotwarrantscreen.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.WarrantScreenWithContext(ctx, opts...)
 }

@@ -1,0 +1,58 @@
+syntax = "proto2";
+package Qot_GetShortInterest;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetshortinterest";
+
+import "Qot_Common.proto";
+
+message C2S
+{
+    required Qot_Common.Security security = 1; // 股票
+    optional string nextKey = 2; // 分页标识，首次不填，续拉时填上次返回的 nextKey；"-1" 表示无更多数据
+    optional int32 num = 3; // 每页返回数量，默认 10，范围 1~50
+}
+
+// 美股空头持仓单条记录
+message UsShortInterestItem
+{
+    optional int64  timestamp = 1;              //数据所在交易日时间戳（秒）
+    optional string timestampStr = 2;           //数据所在交易日字符串，格式 YYYY-MM-DD，对应市场时区
+    optional uint64 sharesShort = 3;            //卖空股数
+    optional double shortPercent = 4;           //卖空比例，百分号前的值，如 12.34 表示 12.34%
+    optional uint64 avgDailyShareVolume = 5;    //平均日成交量
+    optional double daysToCover = 6;            //回补天数
+    optional double closePrice = 7;             //收盘价
+    optional double lastClosePrice = 8;         //上次收盘价
+}
+
+// 港股空头持仓单条记录
+message HkShortInterestItem
+{
+    optional int64  timestamp = 1;              //数据所在交易日时间戳（秒）
+    optional string timestampStr = 2;           //数据所在交易日字符串，格式 YYYY-MM-DD，对应市场时区
+    optional double closePrice = 3;             //收盘价
+    optional double lastClosePrice = 4;         //上次收盘价
+    optional uint64 aggregatedShort = 5;        //未平仓股数
+    optional double aggregatedShortRatio = 6;   //占流通股比例，百分号前的值，如 12.34 表示 12.34%
+}
+
+message S2C
+{
+    repeated UsShortInterestItem usItemList = 1; //美股空头持仓数据列表
+    repeated HkShortInterestItem hkItemList = 2; //港股空头持仓数据列表
+    optional string nextKey = 3;               // 分页标识，"-1" 表示无更多数据
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32 retType = 1 [default = -400]; //RetType,返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+
+    optional S2C s2c = 4;
+}

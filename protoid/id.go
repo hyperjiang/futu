@@ -66,4 +66,36 @@ const (
 	QotGetUserSecurityGroup    = 3222 // 获取自选股分组列表
 	QotGetMarketState          = 3223 // 获取指定品种的市场状态
 	QotGetOptionExpirationDate = 3224 // 获取期权到期日
+
+	// v10.6 新增行情接口
+	QotGetFinancialsEarningsPriceMove    = 3225 // 获取财报盈利预测变动
+	QotGetFinancialsEarningsPriceHistory = 3226 // 获取财报盈利预测历史
+	QotGetFinancialsStatements           = 3227 // 获取财务报表
+	QotGetFinancialsRevenueBreakdown     = 3228 // 获取主营构成
+	QotGetResearchAnalystConsensus       = 3229 // 获取分析师评级汇总
+	QotGetResearchRatingSummary          = 3230 // 获取分析师评级详情
+	QotGetResearchMorningstarReport      = 3231 // 获取晨星研报
+	QotGetValuationDetail                = 3232 // 获取估值详情
+	QotGetValuationPlateStockList        = 3233 // 获取板块估值股票列表
+	QotGetCorporateActionsDividends      = 3234 // 获取除权除息
+	QotGetCorporateActionsBuybacks       = 3235 // 获取回购
+	QotGetCorporateActionsStockSplits    = 3236 // 获取拆合股
+	QotGetShareholdersOverview           = 3237 // 获取股东概要
+	QotGetShareholdersHoldingChanges     = 3238 // 获取持股变动
+	QotGetShareholdersHolderDetail       = 3239 // 获取股东持仓明细
+	QotGetShareholdersInstitutional      = 3240 // 获取机构持仓
+	QotGetInsiderHolderList              = 3241 // 获取内部持有人列表
+	QotGetInsiderTradeList               = 3242 // 获取内部人交易列表
+	QotGetCompanyProfile                 = 3243 // 获取公司资料
+	QotGetCompanyExecutives              = 3244 // 获取公司高管
+	QotGetCompanyExecutiveBackground     = 3245 // 获取高管背景
+	QotGetCompanyOperationalEfficiency   = 3246 // 获取营运效率
+	QotGetTopTenBuySellBrokers           = 3247 // 获取十大经纪商
+	QotGetDailyShortVolume               = 3248 // 获取每日做空量
+	QotGetShortInterest                  = 3249 // 获取做空比例
+	QotGetOptionVolatility               = 3250 // 获取期权波动率
+	QotGetOptionExerciseProbability      = 3251 // 获取期权行权概率
+	QotStockScreen                       = 3252 // 条件选股
+	QotOptionScreen                      = 3253 // 期权筛选
+	QotWarrantScreen                     = 3254 // 窝轮筛选
 )

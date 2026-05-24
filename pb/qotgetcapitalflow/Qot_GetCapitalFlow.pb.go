@@ -29,6 +29,7 @@ type C2S struct {
 	PeriodType    *int32                 `protobuf:"varint,2,opt,name=periodType" json:"periodType,omitempty"` // Qot_Common.PeriodType 周期类型
 	BeginTime     *string                `protobuf:"bytes,3,opt,name=beginTime" json:"beginTime,omitempty"`    // 开始时间（格式：yyyy-MM-dd），仅周期类型不为实时有效
 	EndTime       *string                `protobuf:"bytes,4,opt,name=endTime" json:"endTime,omitempty"`        // 结束时间（格式：yyyy-MM-dd），仅周期类型不为实时有效
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`        //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -89,6 +90,13 @@ func (x *C2S) GetEndTime() string {
 		return *x.EndTime
 	}
 	return ""
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
 }
 
 type CapitalFlowItem struct {
@@ -372,14 +380,15 @@ var File_Qot_GetCapitalFlow_proto protoreflect.FileDescriptor
 
 const file_Qot_GetCapitalFlow_proto_rawDesc = "" +
 	"\n" +
-	"\x18Qot_GetCapitalFlow.proto\x12\x12Qot_GetCapitalFlow\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\x8f\x01\n" +
+	"\x18Qot_GetCapitalFlow.proto\x12\x12Qot_GetCapitalFlow\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\xbe\x01\n" +
 	"\x03C2S\x120\n" +
 	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12\x1e\n" +
 	"\n" +
 	"periodType\x18\x02 \x01(\x05R\n" +
 	"periodType\x12\x1c\n" +
 	"\tbeginTime\x18\x03 \x01(\tR\tbeginTime\x12\x18\n" +
-	"\aendTime\x18\x04 \x01(\tR\aendTime\"\xf7\x01\n" +
+	"\aendTime\x18\x04 \x01(\tR\aendTime\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"\xf7\x01\n" +
 	"\x0fCapitalFlowItem\x12\x16\n" +
 	"\x06inFlow\x18\x01 \x02(\x01R\x06inFlow\x12\x12\n" +
 	"\x04time\x18\x02 \x01(\tR\x04time\x12\x1c\n" +
@@ -418,23 +427,25 @@ func file_Qot_GetCapitalFlow_proto_rawDescGZIP() []byte {
 
 var file_Qot_GetCapitalFlow_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_Qot_GetCapitalFlow_proto_goTypes = []any{
-	(*C2S)(nil),                // 0: Qot_GetCapitalFlow.C2S
-	(*CapitalFlowItem)(nil),    // 1: Qot_GetCapitalFlow.CapitalFlowItem
-	(*S2C)(nil),                // 2: Qot_GetCapitalFlow.S2C
-	(*Request)(nil),            // 3: Qot_GetCapitalFlow.Request
-	(*Response)(nil),           // 4: Qot_GetCapitalFlow.Response
-	(*qotcommon.Security)(nil), // 5: Qot_Common.Security
+	(*C2S)(nil),                 // 0: Qot_GetCapitalFlow.C2S
+	(*CapitalFlowItem)(nil),     // 1: Qot_GetCapitalFlow.CapitalFlowItem
+	(*S2C)(nil),                 // 2: Qot_GetCapitalFlow.S2C
+	(*Request)(nil),             // 3: Qot_GetCapitalFlow.Request
+	(*Response)(nil),            // 4: Qot_GetCapitalFlow.Response
+	(*qotcommon.Security)(nil),  // 5: Qot_Common.Security
+	(*qotcommon.QotHeader)(nil), // 6: Qot_Common.QotHeader
 }
 var file_Qot_GetCapitalFlow_proto_depIdxs = []int32{
 	5, // 0: Qot_GetCapitalFlow.C2S.security:type_name -> Qot_Common.Security
-	1, // 1: Qot_GetCapitalFlow.S2C.flowItemList:type_name -> Qot_GetCapitalFlow.CapitalFlowItem
-	0, // 2: Qot_GetCapitalFlow.Request.c2s:type_name -> Qot_GetCapitalFlow.C2S
-	2, // 3: Qot_GetCapitalFlow.Response.s2c:type_name -> Qot_GetCapitalFlow.S2C
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	6, // 1: Qot_GetCapitalFlow.C2S.header:type_name -> Qot_Common.QotHeader
+	1, // 2: Qot_GetCapitalFlow.S2C.flowItemList:type_name -> Qot_GetCapitalFlow.CapitalFlowItem
+	0, // 3: Qot_GetCapitalFlow.Request.c2s:type_name -> Qot_GetCapitalFlow.C2S
+	2, // 4: Qot_GetCapitalFlow.Response.s2c:type_name -> Qot_GetCapitalFlow.S2C
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetCapitalFlow_proto_init() }

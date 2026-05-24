@@ -9,6 +9,7 @@ import "Qot_Common.proto";
 message C2S
 {
 	repeated Qot_Common.Security securityList = 1; //股票
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
  // 正股类型额外数据
@@ -172,6 +173,9 @@ message SnapshotBasicData
 	optional int32 secStatus = 39; //Qot_Common::SecurityStatus 股票状态
 	optional double closePrice5Minute = 40; //5分钟收盘价
 	optional Qot_Common.PreAfterMarketData overnight = 42; //Qot_Common::PreAfterMarketData 夜盘数据
+	optional double hpVolume = 43; //高精度成交量
+	optional double hpAskVol = 44;//高精度卖量
+    optional double hpBidVol = 45;//高精度买量
 }
 
 message Snapshot

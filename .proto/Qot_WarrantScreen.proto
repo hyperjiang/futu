@@ -1,0 +1,134 @@
+syntax = "proto2";
+package Qot_WarrantScreen;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotwarrantscreen";
+
+// =================== 基础消息定义 ===================
+// 说明: 字段编号与后端 wrnt_screener_common.proto / FTCmd20334.proto 完全一致。
+//       值字段使用 double (OpenD 负责与后端 int64 倍率互转)。
+
+// 边界值
+message Boundary
+{
+    optional double value = 1;      // 边界值 (double, 用户直接传原始值, OpenD 负责倍率转换)
+    optional bool includes = 2;     // 是否包含此值
+}
+
+// 区间
+message Interval
+{
+    optional Boundary filterMin = 1; // 区间下限
+    optional Boundary filterMax = 2; // 区间上限
+    optional int32 unit = 3;         // 数值单位
+}
+
+// 选项
+message Choice
+{
+    optional int32 contentType = 1;  // 内容类型: 1=数字, 2=文本
+    optional string text = 2;        // 文本值
+    optional int64 value = 3;        // 数字值
+}
+
+// 筛选组 (各字段描述参考 wrnt_screener_common.proto FieldId 枚举)
+message ScreenGroup
+{
+    optional int32 fieldId = 1;         // FieldId 枚举: 1=代码, 4=发行人, 5=正股, 6=类型, 8=最新价, ...
+    optional Interval interval = 2;     // 区间筛选
+    repeated Choice choices = 3;        // 多选筛选
+}
+
+// 排序
+message Sort
+{
+    optional int32 sortFieldId = 1;  // FieldId 枚举, 排序字段
+    optional int32 direction = 2;    // 0=升序, 1=降序
+}
+
+// =================== 窝轮数据项 ===================
+// 字段编号与后端 FTCMD20334::WarrantItem 完全一致
+// 带倍率的字段已转为 double (OpenD 层自动转换)
+
+message WarrantItem
+{
+    optional uint64 stockId = 1;              // 股票ID (u64 StockHash)
+    optional uint64 stockOwner = 2;           // 正股ID
+    optional uint32 issuerId = 3;             // 发行人ID
+    optional int32 warrantType = 4;           // 类型: 1=认购, 2=认沽, 3=牛证, 4=熊证, 5=界内证
+    optional double strikePrice = 5;          // 行使价
+    optional uint64 maturityDate = 6;         // 到期日 (时间戳秒)
+    optional uint64 lastTradeDate = 7;        // 最后交易日 (时间戳秒)
+    optional double conversionRatio = 8;      // 换股比率
+    optional double lastclosePrice = 9;       // 昨收价
+    optional double recoveryPrice = 10;       // 收回价, 仅牛熊证
+    // field 11-19 reserved
+    optional double stockOwnerPrice = 20;     // 正股价
+    optional double currentPrice = 21;        // 最新价
+    optional uint64 volume = 22;              // 成交量
+    optional double turnover = 23;            // 成交额
+    optional uint64 sellVol = 24;             // 卖量
+    optional uint64 buyVol = 25;              // 买量
+    optional double sellPrice = 26;           // 卖出价
+    optional double buyPrice = 27;            // 买入价
+    optional double streetRate = 28;          // 街货占比
+    optional double highPrice = 29;           // 最高价
+    optional double lowPrice = 30;            // 最低价
+    optional double impliedVolatility = 31;   // 引伸波幅
+    optional double delta = 32;               // 对冲值
+    optional int32 status = 33;               // 状态: 0=正常, 1=停牌, 2=终止交易, 3=待上市
+    optional double streetRateNew = 34;       // 街货占比(新)
+    optional double score = 35;               // 综合评分
+    optional double premium = 36;             // 溢价 (%)
+    optional double leverage = 37;            // 杠杆比率
+    optional double effectiveLeverage = 38;   // 有效杠杆
+    optional double breakEvenPoint = 39;      // 打和点
+    optional double ipop = 40;                // 价内/价外 (%)
+    optional double amplitude = 41;           // 振幅 (%)
+    optional double fxScore = 42;             // 发行评分
+    optional uint64 ipoTime = 43;             // 上市日期 (时间戳秒)
+    optional uint64 streetVol = 44;           // 街货量
+    optional uint32 lotSize = 45;             // 每手数量
+    optional uint64 issueSize = 46;           // 发行量
+    optional double ipoPrice = 47;            // 发行价
+    optional double upperStrikePrice = 48;    // 上限价, 仅界内证
+    optional double lowerStrikePrice = 49;    // 下限价, 仅界内证
+    optional uint32 iwPriceStatus = 50;       // 界内证价格状态: 0=界内, 1=界外
+    optional double sensitivity = 51;         // 敏感度
+    optional double priceRecoveryRatio = 52;  // 正股距收回价 (%)
+}
+
+// =================== 请求/返回 ===================
+// 字段编号与后端 FetchWarrantListV2Req / FetchWarrantListV2Rsp 完全一致
+
+message C2S
+{
+    optional int32 marketType = 1;          // 市场: 1=HK, 4=SG, 15=MY
+    optional bool isDelay = 2;              // 是否延迟行情
+    repeated ScreenGroup filterList = 3;    // 筛选条件列表
+    repeated Sort sortList = 4;             // 排序列表 (多字段排序)
+    optional bool onlyCount = 5;            // 仅返回数量
+    optional int32 pageFrom = 6;            // 数据偏移位, 从0开始
+    optional int32 pageCount = 7;           // 每页最大数量
+}
+
+message S2C
+{
+    // field 1 保留 (ret_code, 由 Response.retType 承担)
+    // field 2 保留 (err_msg, 由 Response.retMsg 承担)
+    repeated WarrantItem warrants = 3;      // 窝轮数据列表
+    optional bool lastPage = 4;             // 是否最后一页
+    optional int32 allCount = 5;            // 数据总量
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

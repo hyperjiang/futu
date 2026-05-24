@@ -18,6 +18,7 @@ enum GroupType
 message C2S
 {
 	required int32 groupType = 1; // GroupType,自选股分组类型。
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
 message GroupData

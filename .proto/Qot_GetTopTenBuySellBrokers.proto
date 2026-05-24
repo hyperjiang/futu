@@ -1,0 +1,44 @@
+syntax = "proto2";
+package Qot_GetTopTenBuySellBrokers;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgettoptenbuysellbrokers";
+
+import "Qot_Common.proto";
+
+message C2S
+{
+	required Qot_Common.Security security = 1; // 股票
+	optional int32 daysBefore = 2; // 不填或 0=实时，N=取前第 N 个交易日的历史数据
+}
+
+message BrokerItem
+{
+	optional int64 netVol = 1; // 净买入/卖出量
+	optional string brokerName = 2; // 经纪商展示名称（实时按券商资料填充，历史取回包名称）
+	optional Qot_Common.BuySellType buySellType = 3; // 买卖类型，详见 Qot_Common.BuySellType 定义
+	optional double avgPrice = 4; // 成交均价（仅实时数据有效）
+	optional double totalVol = 5; // 总成交量（仅实时数据有效）
+	optional double totalTurnover = 6; // 总成交额（仅实时数据有效）
+}
+
+message S2C
+{
+	optional bool isRealTime = 1; // true=实时数据，false=历史数据
+	optional int64 dataTime = 2; // 数据更新时间戳（秒）
+	optional string dataTimeStr = 3; // 数据更新时间字符串，格式 YYYY-MM-DD HH:MM:SS，对应市场时区
+	repeated BrokerItem brokerList = 4; // 经纪商列表，按净买/卖量从高到低排列
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32 retType = 1 [default = -400]; // RetType，返回结果
+	optional string retMsg = 2;
+	optional int32 errCode = 3;
+
+	optional S2C s2c = 4;
+}

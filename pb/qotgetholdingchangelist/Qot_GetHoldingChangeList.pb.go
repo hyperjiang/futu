@@ -28,8 +28,9 @@ type C2S struct {
 	Security       *qotcommon.Security    `protobuf:"bytes,1,req,name=security" json:"security,omitempty"`              //股票
 	HolderCategory *int32                 `protobuf:"varint,2,req,name=holderCategory" json:"holderCategory,omitempty"` //持有者类别（1机构、2基金、3高管）
 	//以下是发布时间筛选，不传返回所有数据，传了返回发布时间属于开始时间到结束时间段内的数据
-	BeginTime     *string `protobuf:"bytes,3,opt,name=beginTime" json:"beginTime,omitempty"` //开始时间，严格按YYYY-MM-DD HH:MM:SS或YYYY-MM-DD HH:MM:SS.MS格式传
-	EndTime       *string `protobuf:"bytes,4,opt,name=endTime" json:"endTime,omitempty"`     //结束时间，严格按YYYY-MM-DD HH:MM:SS或YYYY-MM-DD HH:MM:SS.MS格式传
+	BeginTime     *string              `protobuf:"bytes,3,opt,name=beginTime" json:"beginTime,omitempty"` //开始时间，严格按YYYY-MM-DD HH:MM:SS或YYYY-MM-DD HH:MM:SS.MS格式传
+	EndTime       *string              `protobuf:"bytes,4,opt,name=endTime" json:"endTime,omitempty"`     //结束时间，严格按YYYY-MM-DD HH:MM:SS或YYYY-MM-DD HH:MM:SS.MS格式传
+	Header        *qotcommon.QotHeader `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`     //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -90,6 +91,13 @@ func (x *C2S) GetEndTime() string {
 		return *x.EndTime
 	}
 	return ""
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
 }
 
 type S2C struct {
@@ -265,12 +273,13 @@ var File_Qot_GetHoldingChangeList_proto protoreflect.FileDescriptor
 
 const file_Qot_GetHoldingChangeList_proto_rawDesc = "" +
 	"\n" +
-	"\x1eQot_GetHoldingChangeList.proto\x12\x18Qot_GetHoldingChangeList\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\x97\x01\n" +
+	"\x1eQot_GetHoldingChangeList.proto\x12\x18Qot_GetHoldingChangeList\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\xc6\x01\n" +
 	"\x03C2S\x120\n" +
 	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12&\n" +
 	"\x0eholderCategory\x18\x02 \x02(\x05R\x0eholderCategory\x12\x1c\n" +
 	"\tbeginTime\x18\x03 \x01(\tR\tbeginTime\x12\x18\n" +
-	"\aendTime\x18\x04 \x01(\tR\aendTime\"\x85\x01\n" +
+	"\aendTime\x18\x04 \x01(\tR\aendTime\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"\x85\x01\n" +
 	"\x03S2C\x120\n" +
 	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12L\n" +
 	"\x11holdingChangeList\x18\x02 \x03(\v2\x1e.Qot_Common.ShareHoldingChangeR\x11holdingChangeList\":\n" +
@@ -302,19 +311,21 @@ var file_Qot_GetHoldingChangeList_proto_goTypes = []any{
 	(*Request)(nil),                      // 2: Qot_GetHoldingChangeList.Request
 	(*Response)(nil),                     // 3: Qot_GetHoldingChangeList.Response
 	(*qotcommon.Security)(nil),           // 4: Qot_Common.Security
-	(*qotcommon.ShareHoldingChange)(nil), // 5: Qot_Common.ShareHoldingChange
+	(*qotcommon.QotHeader)(nil),          // 5: Qot_Common.QotHeader
+	(*qotcommon.ShareHoldingChange)(nil), // 6: Qot_Common.ShareHoldingChange
 }
 var file_Qot_GetHoldingChangeList_proto_depIdxs = []int32{
 	4, // 0: Qot_GetHoldingChangeList.C2S.security:type_name -> Qot_Common.Security
-	4, // 1: Qot_GetHoldingChangeList.S2C.security:type_name -> Qot_Common.Security
-	5, // 2: Qot_GetHoldingChangeList.S2C.holdingChangeList:type_name -> Qot_Common.ShareHoldingChange
-	0, // 3: Qot_GetHoldingChangeList.Request.c2s:type_name -> Qot_GetHoldingChangeList.C2S
-	1, // 4: Qot_GetHoldingChangeList.Response.s2c:type_name -> Qot_GetHoldingChangeList.S2C
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	5, // 1: Qot_GetHoldingChangeList.C2S.header:type_name -> Qot_Common.QotHeader
+	4, // 2: Qot_GetHoldingChangeList.S2C.security:type_name -> Qot_Common.Security
+	6, // 3: Qot_GetHoldingChangeList.S2C.holdingChangeList:type_name -> Qot_Common.ShareHoldingChange
+	0, // 4: Qot_GetHoldingChangeList.Request.c2s:type_name -> Qot_GetHoldingChangeList.C2S
+	1, // 5: Qot_GetHoldingChangeList.Response.s2c:type_name -> Qot_GetHoldingChangeList.S2C
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetHoldingChangeList_proto_init() }

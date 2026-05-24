@@ -26,6 +26,7 @@ const (
 type C2S struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SecurityList  []*qotcommon.Security  `protobuf:"bytes,1,rep,name=securityList" json:"securityList,omitempty"` //股票
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`           //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -63,6 +64,13 @@ func (*C2S) Descriptor() ([]byte, []int) {
 func (x *C2S) GetSecurityList() []*qotcommon.Security {
 	if x != nil {
 		return x.SecurityList
+	}
+	return nil
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
 	}
 	return nil
 }
@@ -1019,6 +1027,9 @@ type SnapshotBasicData struct {
 	SecStatus               *int32                        `protobuf:"varint,39,opt,name=secStatus" json:"secStatus,omitempty"`                              //Qot_Common::SecurityStatus 股票状态
 	ClosePrice5Minute       *float64                      `protobuf:"fixed64,40,opt,name=closePrice5Minute" json:"closePrice5Minute,omitempty"`             //5分钟收盘价
 	Overnight               *qotcommon.PreAfterMarketData `protobuf:"bytes,42,opt,name=overnight" json:"overnight,omitempty"`                               //Qot_Common::PreAfterMarketData 夜盘数据
+	HpVolume                *float64                      `protobuf:"fixed64,43,opt,name=hpVolume" json:"hpVolume,omitempty"`                               //高精度成交量
+	HpAskVol                *float64                      `protobuf:"fixed64,44,opt,name=hpAskVol" json:"hpAskVol,omitempty"`                               //高精度卖量
+	HpBidVol                *float64                      `protobuf:"fixed64,45,opt,name=hpBidVol" json:"hpBidVol,omitempty"`                               //高精度买量
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
 }
@@ -1347,6 +1358,27 @@ func (x *SnapshotBasicData) GetOvernight() *qotcommon.PreAfterMarketData {
 	return nil
 }
 
+func (x *SnapshotBasicData) GetHpVolume() float64 {
+	if x != nil && x.HpVolume != nil {
+		return *x.HpVolume
+	}
+	return 0
+}
+
+func (x *SnapshotBasicData) GetHpAskVol() float64 {
+	if x != nil && x.HpAskVol != nil {
+		return *x.HpAskVol
+	}
+	return 0
+}
+
+func (x *SnapshotBasicData) GetHpBidVol() float64 {
+	if x != nil && x.HpBidVol != nil {
+		return *x.HpBidVol
+	}
+	return 0
+}
+
 type Snapshot struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Basic         *SnapshotBasicData     `protobuf:"bytes,1,req,name=basic" json:"basic,omitempty"`                 //快照基本数据
@@ -1612,9 +1644,10 @@ var File_Qot_GetSecuritySnapshot_proto protoreflect.FileDescriptor
 
 const file_Qot_GetSecuritySnapshot_proto_rawDesc = "" +
 	"\n" +
-	"\x1dQot_GetSecuritySnapshot.proto\x12\x17Qot_GetSecuritySnapshot\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"?\n" +
+	"\x1dQot_GetSecuritySnapshot.proto\x12\x17Qot_GetSecuritySnapshot\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"n\n" +
 	"\x03C2S\x128\n" +
-	"\fsecurityList\x18\x01 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\"\xda\x04\n" +
+	"\fsecurityList\x18\x01 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"\xda\x04\n" +
 	"\x14EquitySnapshotExData\x12\"\n" +
 	"\fissuedShares\x18\x01 \x02(\x03R\fissuedShares\x12(\n" +
 	"\x0fissuedMarketVal\x18\x02 \x02(\x01R\x0fissuedMarketVal\x12\x1a\n" +
@@ -1721,7 +1754,7 @@ const file_Qot_GetSecuritySnapshot_proto_rawDesc = "" +
 	"\apremium\x18\x05 \x02(\x01R\apremium\x12\x1e\n" +
 	"\n" +
 	"assetClass\x18\x06 \x02(\x05R\n" +
-	"assetClass\"\xbb\f\n" +
+	"assetClass\"\x8f\r\n" +
 	"\x11SnapshotBasicData\x120\n" +
 	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12\x12\n" +
 	"\x04name\x18) \x01(\tR\x04name\x12\x12\n" +
@@ -1767,7 +1800,10 @@ const file_Qot_GetSecuritySnapshot_proto_rawDesc = "" +
 	"\vafterMarket\x18& \x01(\v2\x1e.Qot_Common.PreAfterMarketDataR\vafterMarket\x12\x1c\n" +
 	"\tsecStatus\x18' \x01(\x05R\tsecStatus\x12,\n" +
 	"\x11closePrice5Minute\x18( \x01(\x01R\x11closePrice5Minute\x12<\n" +
-	"\tovernight\x18* \x01(\v2\x1e.Qot_Common.PreAfterMarketDataR\tovernight\"\x8b\x05\n" +
+	"\tovernight\x18* \x01(\v2\x1e.Qot_Common.PreAfterMarketDataR\tovernight\x12\x1a\n" +
+	"\bhpVolume\x18+ \x01(\x01R\bhpVolume\x12\x1a\n" +
+	"\bhpAskVol\x18, \x01(\x01R\bhpAskVol\x12\x1a\n" +
+	"\bhpBidVol\x18- \x01(\x01R\bhpBidVol\"\x8b\x05\n" +
 	"\bSnapshot\x12@\n" +
 	"\x05basic\x18\x01 \x02(\v2*.Qot_GetSecuritySnapshot.SnapshotBasicDataR\x05basic\x12Q\n" +
 	"\fequityExData\x18\x02 \x01(\v2-.Qot_GetSecuritySnapshot.EquitySnapshotExDataR\fequityExData\x12T\n" +
@@ -1816,32 +1852,34 @@ var file_Qot_GetSecuritySnapshot_proto_goTypes = []any{
 	(*Request)(nil),                      // 11: Qot_GetSecuritySnapshot.Request
 	(*Response)(nil),                     // 12: Qot_GetSecuritySnapshot.Response
 	(*qotcommon.Security)(nil),           // 13: Qot_Common.Security
-	(*qotcommon.PreAfterMarketData)(nil), // 14: Qot_Common.PreAfterMarketData
+	(*qotcommon.QotHeader)(nil),          // 14: Qot_Common.QotHeader
+	(*qotcommon.PreAfterMarketData)(nil), // 15: Qot_Common.PreAfterMarketData
 }
 var file_Qot_GetSecuritySnapshot_proto_depIdxs = []int32{
 	13, // 0: Qot_GetSecuritySnapshot.C2S.securityList:type_name -> Qot_Common.Security
-	13, // 1: Qot_GetSecuritySnapshot.WarrantSnapshotExData.owner:type_name -> Qot_Common.Security
-	13, // 2: Qot_GetSecuritySnapshot.OptionSnapshotExData.owner:type_name -> Qot_Common.Security
-	13, // 3: Qot_GetSecuritySnapshot.SnapshotBasicData.security:type_name -> Qot_Common.Security
-	14, // 4: Qot_GetSecuritySnapshot.SnapshotBasicData.preMarket:type_name -> Qot_Common.PreAfterMarketData
-	14, // 5: Qot_GetSecuritySnapshot.SnapshotBasicData.afterMarket:type_name -> Qot_Common.PreAfterMarketData
-	14, // 6: Qot_GetSecuritySnapshot.SnapshotBasicData.overnight:type_name -> Qot_Common.PreAfterMarketData
-	8,  // 7: Qot_GetSecuritySnapshot.Snapshot.basic:type_name -> Qot_GetSecuritySnapshot.SnapshotBasicData
-	1,  // 8: Qot_GetSecuritySnapshot.Snapshot.equityExData:type_name -> Qot_GetSecuritySnapshot.EquitySnapshotExData
-	2,  // 9: Qot_GetSecuritySnapshot.Snapshot.warrantExData:type_name -> Qot_GetSecuritySnapshot.WarrantSnapshotExData
-	3,  // 10: Qot_GetSecuritySnapshot.Snapshot.optionExData:type_name -> Qot_GetSecuritySnapshot.OptionSnapshotExData
-	4,  // 11: Qot_GetSecuritySnapshot.Snapshot.indexExData:type_name -> Qot_GetSecuritySnapshot.IndexSnapshotExData
-	5,  // 12: Qot_GetSecuritySnapshot.Snapshot.plateExData:type_name -> Qot_GetSecuritySnapshot.PlateSnapshotExData
-	6,  // 13: Qot_GetSecuritySnapshot.Snapshot.futureExData:type_name -> Qot_GetSecuritySnapshot.FutureSnapshotExData
-	7,  // 14: Qot_GetSecuritySnapshot.Snapshot.trustExData:type_name -> Qot_GetSecuritySnapshot.TrustSnapshotExData
-	9,  // 15: Qot_GetSecuritySnapshot.S2C.snapshotList:type_name -> Qot_GetSecuritySnapshot.Snapshot
-	0,  // 16: Qot_GetSecuritySnapshot.Request.c2s:type_name -> Qot_GetSecuritySnapshot.C2S
-	10, // 17: Qot_GetSecuritySnapshot.Response.s2c:type_name -> Qot_GetSecuritySnapshot.S2C
-	18, // [18:18] is the sub-list for method output_type
-	18, // [18:18] is the sub-list for method input_type
-	18, // [18:18] is the sub-list for extension type_name
-	18, // [18:18] is the sub-list for extension extendee
-	0,  // [0:18] is the sub-list for field type_name
+	14, // 1: Qot_GetSecuritySnapshot.C2S.header:type_name -> Qot_Common.QotHeader
+	13, // 2: Qot_GetSecuritySnapshot.WarrantSnapshotExData.owner:type_name -> Qot_Common.Security
+	13, // 3: Qot_GetSecuritySnapshot.OptionSnapshotExData.owner:type_name -> Qot_Common.Security
+	13, // 4: Qot_GetSecuritySnapshot.SnapshotBasicData.security:type_name -> Qot_Common.Security
+	15, // 5: Qot_GetSecuritySnapshot.SnapshotBasicData.preMarket:type_name -> Qot_Common.PreAfterMarketData
+	15, // 6: Qot_GetSecuritySnapshot.SnapshotBasicData.afterMarket:type_name -> Qot_Common.PreAfterMarketData
+	15, // 7: Qot_GetSecuritySnapshot.SnapshotBasicData.overnight:type_name -> Qot_Common.PreAfterMarketData
+	8,  // 8: Qot_GetSecuritySnapshot.Snapshot.basic:type_name -> Qot_GetSecuritySnapshot.SnapshotBasicData
+	1,  // 9: Qot_GetSecuritySnapshot.Snapshot.equityExData:type_name -> Qot_GetSecuritySnapshot.EquitySnapshotExData
+	2,  // 10: Qot_GetSecuritySnapshot.Snapshot.warrantExData:type_name -> Qot_GetSecuritySnapshot.WarrantSnapshotExData
+	3,  // 11: Qot_GetSecuritySnapshot.Snapshot.optionExData:type_name -> Qot_GetSecuritySnapshot.OptionSnapshotExData
+	4,  // 12: Qot_GetSecuritySnapshot.Snapshot.indexExData:type_name -> Qot_GetSecuritySnapshot.IndexSnapshotExData
+	5,  // 13: Qot_GetSecuritySnapshot.Snapshot.plateExData:type_name -> Qot_GetSecuritySnapshot.PlateSnapshotExData
+	6,  // 14: Qot_GetSecuritySnapshot.Snapshot.futureExData:type_name -> Qot_GetSecuritySnapshot.FutureSnapshotExData
+	7,  // 15: Qot_GetSecuritySnapshot.Snapshot.trustExData:type_name -> Qot_GetSecuritySnapshot.TrustSnapshotExData
+	9,  // 16: Qot_GetSecuritySnapshot.S2C.snapshotList:type_name -> Qot_GetSecuritySnapshot.Snapshot
+	0,  // 17: Qot_GetSecuritySnapshot.Request.c2s:type_name -> Qot_GetSecuritySnapshot.C2S
+	10, // 18: Qot_GetSecuritySnapshot.Response.s2c:type_name -> Qot_GetSecuritySnapshot.S2C
+	19, // [19:19] is the sub-list for method output_type
+	19, // [19:19] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetSecuritySnapshot_proto_init() }

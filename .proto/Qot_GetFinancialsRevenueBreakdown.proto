@@ -1,0 +1,58 @@
+syntax = "proto2";
+package Qot_GetFinancialsRevenueBreakdown;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetfinancialrevenuebreakdown";
+
+import "Qot_Common.proto";
+
+// 主营构成项
+message MainIncomeItem
+{
+    optional string name           = 1; // 名称
+    optional double mainOperIncome = 2; // 营业收入
+    optional double ratio          = 3; // 占比，百分号前的值，如 12.34 表示 12.34%
+}
+
+// 单一维度主营构成数据
+message RevenueBreakdownGroup
+{
+    optional Qot_Common.RevenueBreakdownType type = 1; // 维度类型（详见 Qot_Common.RevenueBreakdownType 定义）
+    repeated MainIncomeItem itemList              = 2; // 该维度主营构成数据列表
+}
+
+// 筛选日期
+message ScreenDate
+{
+    optional uint32 date          = 1; // 筛选时间戳（Unix 时间戳（秒），下次请求原样传入）
+    optional string periodText    = 2; // 财报周期，如 "2024/Q3"、"2024/FY"
+    optional Qot_Common.F10Type financialType = 3; // 财报类型（详见 Qot_Common.F10Type 定义）
+}
+
+message C2S
+{
+    required Qot_Common.Security security     = 1; // 股票
+    optional uint32 date                      = 2; // 筛选时间戳（Unix 时间戳（秒），0 或不填返回最新一期，回传型，须为 screenDateList 中某个 date 值）
+    optional Qot_Common.F10Type financialType = 3; // 财报类型，详见 Qot_Common.F10Type 定义，支持 0-7, 9，默认 0(Unknown)
+    optional string currencyCode              = 4; // 币种代码（ISO 4217），如 CNY、USD、HKD、SGD、JPY、CAD、AUD；不填返回原始货币数据
+}
+
+message S2C
+{
+    optional string period                        = 1; // 财报周期，如 "2024/Q3"、"2024/FY"
+    repeated RevenueBreakdownGroup breakdownList  = 2; // 各维度主营构成数据列表
+    optional string currencyCode                  = 3; // 货币代码（ISO 4217）
+    repeated ScreenDate screenDateList            = 4; // 可选日期列表，供客户端筛选历史数据，仅 date 与 financialType 都不填时返回
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32  retType = 1 [default = -400];
+    optional string retMsg  = 2;
+    optional int32  errCode = 3;
+    optional S2C    s2c     = 4;
+}

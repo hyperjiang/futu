@@ -10,6 +10,7 @@ message C2S
 {
 	required Qot_Common.Security security = 1; //股票
 	required int32 maxRetNum = 2; //最多返回的逐笔个数,实际返回数量不一定会返回这么多,最多返回1000个
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
 message S2C

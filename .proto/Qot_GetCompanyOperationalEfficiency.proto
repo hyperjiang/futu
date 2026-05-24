@@ -1,0 +1,53 @@
+syntax = "proto2";
+package Qot_GetCompanyOperationalEfficiency;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetcompanyoperationalefficiency";
+
+import "Qot_Common.proto";
+
+// 经营效率数据项
+message OperationalEfficiencyItem
+{
+    optional int32  fiscalYear          =  1; // 财务年度，如 2024
+    optional Qot_Common.F10Type financialType =  2; // 财报类型，详见 Qot_Common.F10Type 定义
+    optional string periodText          =  3; // 财报周期，如 "2024/Q3"、"2024/FY"
+    optional int64  endDate             =  4; // 财报统计截止日时间戳（秒）
+    optional string endDateStr          =  5; // 财报统计截止日字符串，格式 YYYY-MM-DD，对应市场时区
+    optional int64  employeeNum         =  6; // 员工人数
+    optional double employeeNumYoy      =  7; // 员工人数同比增长率，百分号前的值，如 12.34 表示 12.34%
+    optional double incomePerCapita     =  8; // 人均营收
+    optional double incomePerCapitaYoy  =  9; // 人均营收同比增长率，百分号前的值，如 12.34 表示 12.34%
+    optional double profitPerCapita     = 10; // 人均营业利润
+    optional double profitPerCapitaYoy  = 11; // 人均营业利润同比增长率，百分号前的值，如 12.34 表示 12.34%
+    optional double netProfitPerCapita  = 12; // 人均净利润
+    optional double netProfitPerCapitaYoy = 13; // 人均净利润同比增长率，百分号前的值，如 12.34 表示 12.34%
+}
+
+message C2S
+{
+    required Qot_Common.Security security  = 1; // 股票
+    optional string nextKey                = 2; // 分页标识，首次不填，续拉时填上次返回的 nextKey；"-1" 表示无更多数据
+    optional int32  num                    = 3; // 每页返回数量，默认 10，范围 1~50
+    optional string currencyCode           = 4; // 货币代码(ISO 4217)，如 CNY、USD、HKD、SGD、JPY、CAD、AUD；不传返回默认货币
+    optional Qot_Common.F10Type financialType = 5; // 财报周期筛选，详见 Qot_Common.F10Type 定义，支持 0-7，默认 0(不限)
+}
+
+message S2C
+{
+    repeated OperationalEfficiencyItem itemList = 1; // 经营效率数据列表
+    optional string nextKey                     = 2; // 分页标识，"-1" 表示无更多数据
+    optional string currencyCode                = 3; // 货币代码(ISO 4217)，如 CNY、USD、HKD、SGD、JPY、CAD、AUD
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32  retType = 1 [default = -400];
+    optional string retMsg  = 2;
+    optional int32  errCode = 3;
+    optional S2C    s2c     = 4;
+}

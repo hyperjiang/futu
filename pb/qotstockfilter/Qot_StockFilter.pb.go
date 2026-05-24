@@ -1623,6 +1623,7 @@ type C2S struct {
 	FinancialFilterList       []*FinancialFilter       `protobuf:"bytes,7,rep,name=financialFilterList" json:"financialFilterList,omitempty"`             // 财务指标过滤器
 	PatternFilterList         []*PatternFilter         `protobuf:"bytes,8,rep,name=patternFilterList" json:"patternFilterList,omitempty"`                 // 形态技术指标过滤器
 	CustomIndicatorFilterList []*CustomIndicatorFilter `protobuf:"bytes,9,rep,name=customIndicatorFilterList" json:"customIndicatorFilterList,omitempty"` // 自定义技术指标过滤器
+	Header                    *qotcommon.QotHeader     `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`                                     //行情公共参数头
 	unknownFields             protoimpl.UnknownFields
 	sizeCache                 protoimpl.SizeCache
 }
@@ -1716,6 +1717,13 @@ func (x *C2S) GetPatternFilterList() []*PatternFilter {
 func (x *C2S) GetCustomIndicatorFilterList() []*CustomIndicatorFilter {
 	if x != nil {
 		return x.CustomIndicatorFilterList
+	}
+	return nil
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
 	}
 	return nil
 }
@@ -1972,7 +1980,7 @@ const file_Qot_StockFilter_proto_rawDesc = "" +
 	"\fbaseDataList\x18\x03 \x03(\v2\x19.Qot_StockFilter.BaseDataR\fbaseDataList\x12O\n" +
 	"\x12accumulateDataList\x18\x04 \x03(\v2\x1f.Qot_StockFilter.AccumulateDataR\x12accumulateDataList\x12L\n" +
 	"\x11financialDataList\x18\x05 \x03(\v2\x1e.Qot_StockFilter.FinancialDataR\x11financialDataList\x12^\n" +
-	"\x17customIndicatorDataList\x18\x06 \x03(\v2$.Qot_StockFilter.CustomIndicatorDataR\x17customIndicatorDataList\"\x95\x04\n" +
+	"\x17customIndicatorDataList\x18\x06 \x03(\v2$.Qot_StockFilter.CustomIndicatorDataR\x17customIndicatorDataList\"\xc4\x04\n" +
 	"\x03C2S\x12\x14\n" +
 	"\x05begin\x18\x01 \x02(\x05R\x05begin\x12\x10\n" +
 	"\x03num\x18\x02 \x02(\x05R\x03num\x12\x16\n" +
@@ -1982,7 +1990,8 @@ const file_Qot_StockFilter_proto_rawDesc = "" +
 	"\x14accumulateFilterList\x18\x06 \x03(\v2!.Qot_StockFilter.AccumulateFilterR\x14accumulateFilterList\x12R\n" +
 	"\x13financialFilterList\x18\a \x03(\v2 .Qot_StockFilter.FinancialFilterR\x13financialFilterList\x12L\n" +
 	"\x11patternFilterList\x18\b \x03(\v2\x1e.Qot_StockFilter.PatternFilterR\x11patternFilterList\x12d\n" +
-	"\x19customIndicatorFilterList\x18\t \x03(\v2&.Qot_StockFilter.CustomIndicatorFilterR\x19customIndicatorFilterList\"u\n" +
+	"\x19customIndicatorFilterList\x18\t \x03(\v2&.Qot_StockFilter.CustomIndicatorFilterR\x19customIndicatorFilterList\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"u\n" +
 	"\x03S2C\x12\x1a\n" +
 	"\blastPage\x18\x01 \x02(\bR\blastPage\x12\x1a\n" +
 	"\ballCount\x18\x02 \x02(\x05R\ballCount\x126\n" +
@@ -2187,6 +2196,7 @@ var file_Qot_StockFilter_proto_goTypes = []any{
 	(*Request)(nil),               // 20: Qot_StockFilter.Request
 	(*Response)(nil),              // 21: Qot_StockFilter.Response
 	(*qotcommon.Security)(nil),    // 22: Qot_Common.Security
+	(*qotcommon.QotHeader)(nil),   // 23: Qot_Common.QotHeader
 }
 var file_Qot_StockFilter_proto_depIdxs = []int32{
 	22, // 0: Qot_StockFilter.StockData.security:type_name -> Qot_Common.Security
@@ -2200,14 +2210,15 @@ var file_Qot_StockFilter_proto_depIdxs = []int32{
 	10, // 8: Qot_StockFilter.C2S.financialFilterList:type_name -> Qot_StockFilter.FinancialFilter
 	11, // 9: Qot_StockFilter.C2S.patternFilterList:type_name -> Qot_StockFilter.PatternFilter
 	12, // 10: Qot_StockFilter.C2S.customIndicatorFilterList:type_name -> Qot_StockFilter.CustomIndicatorFilter
-	17, // 11: Qot_StockFilter.S2C.dataList:type_name -> Qot_StockFilter.StockData
-	18, // 12: Qot_StockFilter.Request.c2s:type_name -> Qot_StockFilter.C2S
-	19, // 13: Qot_StockFilter.Response.s2c:type_name -> Qot_StockFilter.S2C
-	14, // [14:14] is the sub-list for method output_type
-	14, // [14:14] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	23, // 11: Qot_StockFilter.C2S.header:type_name -> Qot_Common.QotHeader
+	17, // 12: Qot_StockFilter.S2C.dataList:type_name -> Qot_StockFilter.StockData
+	18, // 13: Qot_StockFilter.Request.c2s:type_name -> Qot_StockFilter.C2S
+	19, // 14: Qot_StockFilter.Response.s2c:type_name -> Qot_StockFilter.S2C
+	15, // [15:15] is the sub-list for method output_type
+	15, // [15:15] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_Qot_StockFilter_proto_init() }

@@ -1,0 +1,71 @@
+syntax = "proto2";
+package Qot_GetFinancialsEarningsPriceHistory;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetfinancialsearnpricehist";
+
+import "Qot_Common.proto";
+
+message C2S
+{
+	required Qot_Common.Security security = 1; // 股票
+}
+
+// 财报日当日的价格行情数据
+message PriceInfo
+{
+	optional int64  tradingDay       = 1;  // 交易日时间戳（秒）
+	optional string tradingDayStr    = 2;  // 交易日字符串，格式 YYYY-MM-DD，对应市场时区
+	optional double closePrice       = 3;  // 收盘价
+	optional double openPrice        = 4;  // 开盘价
+	optional double highestPrice     = 5;  // 最高价
+	optional double lowestPrice      = 6;  // 最低价
+	optional double lastClosePrice   = 7;  // 昨收价
+	optional double volume           = 8;  // 成交量（股）
+}
+
+// 相对于财报日的单交易日收盘价
+message FinScheduleInfo
+{
+	optional int32  delta      = 1; // 相对财报发布日的交易日偏移量（负数=发布前，0=发布当日，正数=发布后）
+	optional double closePrice = 2; // 该交易日的收盘价
+}
+
+// 单期财报周期的历史行情数据，包含财报元信息、预期波动率及财报日当天完整行情
+message PriceHistoryOnEarningsDays
+{
+	optional int32  fiscalYear              = 1;  // 财务年度，如 2024
+	optional int32  financialType           = 2;  // 财报类型，详见 Qot_Common.F10Type 定义
+	optional string periodText              = 3;  // 财报周期，如 "2024/Q3"、"2024/FY"
+	optional bool   isCurrent              = 4;  // 是否为当前（最新）财报期
+	optional int64  pubTradingDay           = 5;  // 财报发布对应的交易日时间戳（秒）
+	optional string pubTradingDayStr        = 6;  // 财报发布交易日字符串，格式 YYYY-MM-DD，对应市场时区
+	optional int64  pubTime                 = 7;  // 财报实际发布时间戳（秒，含时分秒）
+	optional string pubTimeStr              = 8;  // 财报发布时间字符串，格式 YYYY-MM-DD HH:MM:SS，对应市场时区
+	optional Qot_Common.EarningsPubTimeType pubType    = 9;  // 财报发布时间类型，详见 Qot_Common.EarningsPubTimeType 定义
+	optional double predictVolaRatioNewest  = 10; // 最新预期波动比例（百分号前的值，如 12.34 表示 12.34%）
+	optional double predictVolaRatioHighest = 11; // 最高预期波动比例（百分号前的值，如 12.34 表示 12.34%）
+	optional double predictVolaValNewest    = 12; // 最新预期波动金额
+	optional double predictVolaValHighest   = 13; // 最高预期波动金额
+	optional double optionIVCrush           = 14; // 期权隐含波动率压缩值（百分号前的值，如 12.34 表示 12.34%）
+	optional double optionStrikeDateIVCrush = 15; // 行权日期权隐含波动率压缩值（百分号前的值，如 12.34 表示 12.34%）
+	optional PriceInfo priceInfo              = 16; // 财报发布日当天的行情数据
+	repeated FinScheduleInfo scheduleInfoList = 17; // 相对财报日各交易日收盘价列表，按偏移量升序排列
+}
+
+message S2C
+{
+	repeated PriceHistoryOnEarningsDays detailList = 1; // 各财报周期的详细行情数据列表，按财报发布日降序排列
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32  retType = 1 [default = -400]; // 返回结果类型，参见 Common.RetType，0=成功，负数=失败
+	optional string retMsg  = 2;                  // 返回结果描述
+	optional int32  errCode = 3;                  // 错误码，失败时有效
+	optional S2C    s2c     = 4;                  // 响应数据
+}

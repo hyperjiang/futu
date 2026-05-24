@@ -36,6 +36,7 @@ type C2S struct {
 	SecMarket          *int32   `protobuf:"varint,8,opt,name=secMarket" json:"secMarket,omitempty"`                    //证券所属市场，参见TrdSecMarket的枚举定义
 	OrderIDEx          *string  `protobuf:"bytes,9,opt,name=orderIDEx" json:"orderIDEx,omitempty"`                     //表示服务器订单id，可以用来代替orderID，和orderID二选一
 	Session            *int32   `protobuf:"varint,10,opt,name=session" json:"session,omitempty"`                       //美股订单时段, 参见Common.Session的枚举定义
+	PositionID         *uint64  `protobuf:"varint,11,opt,name=positionID" json:"positionID,omitempty"`                 //持仓ID，JP券商查询平仓数量时使用
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -136,6 +137,13 @@ func (x *C2S) GetOrderIDEx() string {
 func (x *C2S) GetSession() int32 {
 	if x != nil && x.Session != nil {
 		return *x.Session
+	}
+	return 0
+}
+
+func (x *C2S) GetPositionID() uint64 {
+	if x != nil && x.PositionID != nil {
+		return *x.PositionID
 	}
 	return 0
 }
@@ -314,7 +322,7 @@ var File_Trd_GetMaxTrdQtys_proto protoreflect.FileDescriptor
 
 const file_Trd_GetMaxTrdQtys_proto_rawDesc = "" +
 	"\n" +
-	"\x17Trd_GetMaxTrdQtys.proto\x12\x11Trd_GetMaxTrdQtys\x1a\fCommon.proto\x1a\x10Trd_Common.proto\"\xbe\x02\n" +
+	"\x17Trd_GetMaxTrdQtys.proto\x12\x11Trd_GetMaxTrdQtys\x1a\fCommon.proto\x1a\x10Trd_Common.proto\"\xde\x02\n" +
 	"\x03C2S\x12-\n" +
 	"\x06header\x18\x01 \x02(\v2\x15.Trd_Common.TrdHeaderR\x06header\x12\x1c\n" +
 	"\torderType\x18\x02 \x02(\x05R\torderType\x12\x12\n" +
@@ -326,7 +334,10 @@ const file_Trd_GetMaxTrdQtys_proto_rawDesc = "" +
 	"\tsecMarket\x18\b \x01(\x05R\tsecMarket\x12\x1c\n" +
 	"\torderIDEx\x18\t \x01(\tR\torderIDEx\x12\x18\n" +
 	"\asession\x18\n" +
-	" \x01(\x05R\asession\"l\n" +
+	" \x01(\x05R\asession\x12\x1e\n" +
+	"\n" +
+	"positionID\x18\v \x01(\x04R\n" +
+	"positionID\"l\n" +
 	"\x03S2C\x12-\n" +
 	"\x06header\x18\x01 \x02(\v2\x15.Trd_Common.TrdHeaderR\x06header\x126\n" +
 	"\n" +

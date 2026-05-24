@@ -110,6 +110,36 @@ fmt.Println(res)
 - [x] QotGetUserSecurityGroup    = 3222 // 获取自选股分组列表
 - [x] QotGetMarketState          = 3223 // 获取指定品种的市场状态
 - [x] QotGetOptionExpirationDate = 3224 // 获取期权到期日
+- [x] QotGetFinancialsEarningsPriceMove    = 3225 // 获取财报盈利预测变动
+- [x] QotGetFinancialsEarningsPriceHistory = 3226 // 获取财报盈利预测历史
+- [x] QotGetFinancialsStatements           = 3227 // 获取财务报表
+- [x] QotGetFinancialsRevenueBreakdown     = 3228 // 获取主营构成
+- [x] QotGetResearchAnalystConsensus       = 3229 // 获取分析师评级汇总
+- [x] QotGetResearchRatingSummary          = 3230 // 获取分析师评级详情
+- [x] QotGetResearchMorningstarReport      = 3231 // 获取晨星研报
+- [x] QotGetValuationDetail                = 3232 // 获取估值详情
+- [x] QotGetValuationPlateStockList        = 3233 // 获取板块估值股票列表
+- [x] QotGetCorporateActionsDividends      = 3234 // 获取除权除息
+- [x] QotGetCorporateActionsBuybacks       = 3235 // 获取回购
+- [x] QotGetCorporateActionsStockSplits    = 3236 // 获取拆合股
+- [x] QotGetShareholdersOverview           = 3237 // 获取股东概要
+- [x] QotGetShareholdersHoldingChanges     = 3238 // 获取持股变动
+- [x] QotGetShareholdersHolderDetail       = 3239 // 获取股东持仓明细
+- [x] QotGetShareholdersInstitutional      = 3240 // 获取机构持仓
+- [x] QotGetInsiderHolderList              = 3241 // 获取内部持有人列表
+- [x] QotGetInsiderTradeList               = 3242 // 获取内部人交易列表
+- [x] QotGetCompanyProfile                 = 3243 // 获取公司资料
+- [x] QotGetCompanyExecutives              = 3244 // 获取公司高管
+- [x] QotGetCompanyExecutiveBackground     = 3245 // 获取高管背景
+- [x] QotGetCompanyOperationalEfficiency   = 3246 // 获取营运效率
+- [x] QotGetTopTenBuySellBrokers           = 3247 // 获取十大经纪商
+- [x] QotGetDailyShortVolume               = 3248 // 获取每日做空量
+- [x] QotGetShortInterest                  = 3249 // 获取做空比例
+- [x] QotGetOptionVolatility               = 3250 // 获取期权波动率
+- [x] QotGetOptionExerciseProbability      = 3251 // 获取期权行权概率
+- [x] QotStockScreen                       = 3252 // 条件选股
+- [x] QotOptionScreen                      = 3253 // 期权筛选
+- [x] QotWarrantScreen                     = 3254 // 窝轮筛选
 
 ### 交易接口
 - [x] TrdGetAccList              = 2001 // 获取交易业务账户列表

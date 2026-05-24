@@ -1,0 +1,67 @@
+syntax = "proto2";
+package Qot_GetFinancialsStatements;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetfinancialsstatements";
+
+import "Qot_Common.proto";
+
+// 财报字段结构信息
+message FinancialFieldInfo
+{
+    optional int64  fieldId     = 1; // 财务字段 ID
+    optional string displayName = 2; // 字段展示名（当前语言，如"营业收入"）
+}
+
+// 单条财务数据项
+message FinancialItem
+{
+    optional int64  fieldId = 1; // 财务字段 ID，与 structureList 中 fieldId 对应
+    optional double data    = 2; // 财务数据
+    optional double yoy     = 3; // 同比（%）
+    optional double qoq     = 4; // 环比（%）
+}
+
+// 财务报表
+message FinancialReport
+{
+    optional int64   dateTime            =  1; // 财报截止日时间戳（秒）
+    optional string  dateTimeStr         =  2; // 财报截止日时间字符串，格式 YYYY-MM-DD，对应市场时区
+    optional int32   fiscalYear          =  3; // 财务年度，如 2024；0 表示无数据
+    optional Qot_Common.F10Type financialType =  4; // 财报类型，详见 Qot_Common.F10Type 定义；0 表示未知，下次请求可原样传入
+    optional string  periodText          =  5; // 财报周期，如 "2024/Q3"、"2024/FY"
+    repeated FinancialItem itemList      =  6; // 财务数据项列表
+    optional string  currencyInfo        =  7; // 货币单位（展示型），如 "人民币"、"美元"
+    optional string  accountingStandards =  8; // 会计准则，如 "国际会计准则"
+    optional string  auditorReport       =  9; // 审计意见，如 "无保留意见"
+    optional string  currencyCode        = 10; // 币种代码（ISO 4217），如 "CNY"、"USD"
+}
+
+message C2S
+{
+    required Qot_Common.Security security              = 1; // 股票
+    optional Qot_Common.FinancialStatementsType statementType = 2; // 财务报表类型（详见 Qot_Common.FinancialStatementsType 定义），默认利润表（Income=1）
+    optional Qot_Common.F10Type      financialType     = 3; // 财报类型，详见 Qot_Common.F10Type 定义，支持 0-7, 9-11，默认 10(QuarterlyAnnual)
+    optional string                  currencyCode      = 4; // 币种代码（ISO 4217），如 CNY、USD、HKD、SGD、JPY、CAD、AUD；不填返回原始货币数据
+    optional string                  nextKey           = 5; // 分页标识，首次不填，续拉时填上次返回的 nextKey；"-1" 表示无更多数据
+    optional int32                   num               = 6; // 每页返回数量，默认 10，范围 1~50
+}
+
+message S2C
+{
+    repeated FinancialFieldInfo      structureList       = 1; // 字段结构列表，仅收集返回数据中有的字段
+    repeated FinancialReport         reportList          = 2; // 财报数据列表，按时间顺序
+    optional string                  nextKey             = 3; // 分页标识，"-1" 表示无更多数据
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32  retType = 1 [default = -400]; // RetType，返回结果
+    optional string retMsg  = 2;
+    optional int32  errCode = 3;
+    optional S2C    s2c     = 4;
+}

@@ -1,0 +1,423 @@
+syntax = "proto2";
+package Qot_StockScreen;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotstockscreen";
+
+// =================== 基础消息定义 ===================
+// 说明: 字段编号与后端 stock_screener_common.proto 完全一致。
+//       值字段使用 double (OpenD 负责与后端 int64 倍率互转)。
+
+// 边界值
+message Boundary
+{
+    required double value = 1;  // 边界值 (double, 用户直接传原始值, OpenD 负责倍率转换)
+    required bool includes = 2; // 是否包含此值
+}
+
+// 区间
+message Interval
+{
+    optional Boundary filterMin = 1; // 区间下限
+    optional Boundary filterMax = 2; // 区间上限
+    optional int32 unit = 3;     // 数值单位 (0=默认, 1=万/K, 2=空/M, 3=亿/B, 仅展示用)
+}
+
+// 参数 (用于动态指标等)
+message Param
+{
+    optional int32 type = 1;    // 类型: 1=字符串, 2=int64, 3=int64数组
+    optional string sval = 2;   // 字符串值
+    optional int64 ival = 3;    // 数字值
+    repeated int64 aval = 4;    // 数字数组
+}
+
+// (原 Result 消息已展开到各 ResultPropertyXxx 中, 字段命名 valueType/sval/ival/aval/dval)
+
+// =================== 属性定义 ===================
+// 枚举值参考后端 stock_screener_common.proto 中对应的 PropertyNameXxx 枚举
+
+message PropertyBasic
+{
+    optional int32 name = 1; // PropertyNameBasic: 1101=代码, 1102=名称, 1103=行业
+}
+
+message PropertySimple
+{
+    optional int32 name = 1; // PropertyNameSimple: 2201=最新价(倍率1000), 2301=市值(倍率1000), ...
+}
+
+message PropertyCumulative
+{
+    optional int32 name = 1;    // PropertyNameCumulative: 3101=涨跌额, 3102=涨跌幅, ...
+    optional uint32 days = 2;   // 天数 (默认1)
+    optional int32 periodAverage = 3; // 周期平均
+}
+
+message PropertyFinancial
+{
+    optional int32 name = 1;    // PropertyNameFinancial: 4101=净利润, 4102=净利润增长率, ...
+    optional int32 term = 2;    // Term: 1=Q1, 2=Q2, 100=年报, 10=最新单季, ...
+    optional int64 duration = 3; // 时间跨度 [1,9], 成长能力因子专用
+    optional int32 year = 4;     // 年份 (2024/2023/...)
+    optional int32 periodAverage = 5; // 周期平均
+    optional int32 futureDuration = 6; // 未来时间段, 参考 FutureDuration
+}
+
+message PropertyIndicator
+{
+    optional int32 name = 1;    // Indicator: 1=最新价, 11=MA5, 31=KDJ_K, 41=MACD_DIF, ...
+    optional int32 period = 2;  // Period: 1=1分, 11=日, 21=周, 31=月, ...
+    repeated int64 indicatorParams = 3; // 动态参数 (如MA6填6, BOLL(15,3)填15和3)
+}
+
+message PropertyFeatured
+{
+    optional int32 name = 1;    // Featured: 5101=筹码获利比例, 5201=指标解读, ...
+    optional int32 period = 2;  // K线周期
+    optional int32 rangePeriod = 3; // 范围周期
+    optional int64 firstCustomParam = 4; // 自定义参数1
+}
+
+message PropertyBroker
+{
+    optional int32 name = 1;    // Broker: 6101=集中度, 6102=变动, 6103=数量, ...
+    optional int32 days = 2;    // 近n日
+    optional string param = 3;  // 参数 (如broker_id, 前N名的N等)
+}
+
+message PropertyOption
+{
+    optional int32 name = 1;    // Option: 1000=正股IV, 1001=IV排名, ...
+    optional Param param = 2;   // 参数
+    optional int32 period = 3;  // HV周期: 0=30天, 1=60天, 2=90天, 3=120天, 4=365天
+}
+
+message PropertyKlineShape
+{
+    optional int32 name = 1;    // KlineShape: 6200=形态, 6201=涨跌概率, ...
+    optional int32 period = 2;  // K线周期, 目前仅支持日K和1小时K
+}
+
+// =================== 筛选查询定义 ===================
+
+message QuerySimpleField
+{
+    optional int32 simpleField = 1;       // SimpleField: 1=市场, 2=交易所, 3=指数, 4=自选股, ...
+    // 筛选值列表 (并集关系)
+    // 注意: 当 simpleField=1(MARKET) 时, 取值为 stock_screener_common.Market
+    //   (HK=1, US=2, CN=3, SG=4, CA=5, AU=6, JA=7, MY=8)
+    //   非 Qot_Common.QotMarket。SDK 已封装为 ScrMarket 枚举, 数值与此一致。
+    repeated int64 screenValueList = 2;
+}
+
+message Plate
+{
+    optional string parentPlateId = 1;    // 父板块ID (如 "BK1000")
+    repeated string plateIdList = 2;      // 板块ID列表 (并集关系, 如 ["BK1001","BK1002"])
+}
+
+message QueryPlate
+{
+    repeated Plate plateList = 1;         // 板块列表 (并集关系)
+}
+
+message QueryPropertySimple
+{
+    required PropertySimple property = 1;
+    optional Boundary filterMin = 2;
+    optional Boundary filterMax = 3;
+    optional int32 unit = 4;
+}
+
+message QueryPropertyCumulative
+{
+    required PropertyCumulative property = 1;
+    optional Boundary filterMin = 2;
+    optional Boundary filterMax = 3;
+    optional int32 continuousPeriod = 4;
+    optional int32 unit = 5;
+}
+
+message QueryPropertyFinancial
+{
+    required PropertyFinancial property = 1;
+    optional Boundary filterMin = 2;
+    optional Boundary filterMax = 3;
+    optional int32 continuousPeriod = 4;
+    optional int32 unit = 7;
+}
+
+message QueryIndicatorPositional
+{
+    required int32 position = 1; // Position: 1=上方, 2=下方, 3=上穿, 4=下穿
+    required int32 period = 2;   // 【已废弃, 用periodType】
+    required int32 firstIndicator = 3; // 【已废弃, 用firstIndicatorName】
+    optional int32 secondIndicator = 4;
+    optional int64 secondValue = 5;
+    repeated int64 firstIndicatorParams = 6;
+    repeated int64 secondIndicatorParams = 7;
+    optional int32 continuousPeriod = 8;
+    // field 9 reserved (f_second_value, AI only)
+    repeated Interval intervals = 10;
+    optional int32 firstIndicatorName = 11; // Indicator 枚举, 替换 field 3
+    optional int32 periodType = 12;         // Period 枚举, 替换 field 2
+}
+
+message QueryIndicatorPattern
+{
+    optional int32 pattern = 1;  // 【已废弃, 用name字段】Pattern 枚举
+    required int32 period = 2;   // 【已废弃, 用periodType】
+    optional int32 continuousPeriod = 3;
+    optional int32 name = 4;     // Pattern 枚举 (新字段)
+    optional bool isMatching = 5; // 是否匹配条件 (默认true)
+    repeated int32 subPatterns = 6; // 子形态列表
+    optional int32 periodType = 7;  // Period 枚举 (新字段)
+}
+
+message QueryPropertyFeatured
+{
+    optional PropertyFeatured property = 1;
+    optional Boundary filterMin = 2;  // 【已废弃, 用intervals】
+    optional Boundary filterMax = 3;  // 【已废弃, 用intervals】
+    repeated Interval intervals = 4; // 区间 (多个为或的关系)
+    repeated int64 valueSet = 5;     // 值集合 (多个为或的关系)
+}
+
+message QueryPropertyBroker
+{
+    optional PropertyBroker property = 1;
+    repeated Interval intervals = 2;
+}
+
+message QueryPropertyOption
+{
+    optional PropertyOption property = 1;
+    repeated Interval intervals = 2;
+}
+
+message QueryKlineShape
+{
+    optional PropertyKlineShape property = 1;
+    repeated int64 valueSet = 5; // K线形态类型集合, 参考 KlineShapeType
+}
+
+// 筛选过滤器 (各字段互斥, 仅设置其中一个)
+message ScreenQuery
+{
+    optional QuerySimpleField simpleFieldQuery = 1;
+    optional QueryPlate plateQuery = 2;
+    optional QueryPropertySimple simplePropertyQuery = 3;
+    optional QueryPropertyCumulative cumulativePropertyQuery = 4;
+    optional QueryPropertyFinancial financialPropertyQuery = 5;
+    optional QueryIndicatorPositional indicatorPositionalQuery = 6;
+    optional QueryIndicatorPattern indicatorPatternQuery = 7;
+    optional QueryPropertyFeatured featuredPropertyQuery = 8;
+    optional QueryPropertyBroker brokerHoldingsQuery = 9;
+    optional QueryKlineShape klineShapeQuery = 10;
+    optional QueryPropertyOption optionQuery = 11;
+}
+
+// 取回属性设置 (各字段互斥, 仅设置其中一个)
+message RetrieveQuery
+{
+    optional PropertyBasic basicProperty = 1;
+    optional PropertySimple simpleProperty = 2;
+    optional PropertyCumulative cumulativeProperty = 3;
+    optional PropertyFinancial financialProperty = 4;
+    optional PropertyIndicator indicatorProperty = 5;
+    optional PropertyFeatured featuredProperty = 6;
+    optional PropertyBroker brokerProperty = 7;
+    optional PropertyOption optionProperty = 8;
+    optional PropertyKlineShape klineShapeProperty = 9;
+}
+
+// 排序 (选一个属性设置排序)
+message Sort
+{
+    required int32 direction = 1; // SortDirection: 1=升序, 2=降序, 3=绝对值升序, 4=绝对值降序
+    optional PropertyBasic basicProperty = 2;
+    optional PropertySimple simpleProperty = 3;
+    optional PropertyCumulative cumulativeProperty = 4;
+    optional PropertyFinancial financialProperty = 5;
+    optional PropertyIndicator indicatorProperty = 6;
+    optional PropertyFeatured featuredProperty = 7;
+    optional PropertyBroker brokerProperty = 8;
+    optional PropertyOption optionProperty = 9;
+    optional PropertyKlineShape klineShapeProperty = 10;
+}
+
+// =================== 结果定义 ===================
+
+// 统一结构: property + (valueType/sval/ival/aval/dval)
+// valueType: 1=string(sval), 2=int64(ival), 3=int64数组(aval), 4=double(dval)
+// enumTypeName: 当 ival 是某个枚举码时, 此字段填该枚举类名 (如 "KlineShapeType"),
+//               SDK 据此本地解码为可读名 (Python: KlineShapeType(ival).name)
+//               非枚举因子不下发, 普通 int64 数值字段不受影响
+// enumName:     OpenD 已通过 protobuf 反射解码出的可读枚举名 (如 "DOUBLE_PEAKS"),
+//               SDK 可直接读取, 不必再维护本地枚举映射
+
+message ResultPropertyBasic
+{
+    optional PropertyBasic property = 1;
+    optional int32 valueType = 2;
+    optional string sval = 3;
+    optional int64 ival = 4;
+    repeated int64 aval = 5;
+    optional double dval = 6;
+    optional string enumTypeName = 7;
+    optional string enumName = 8;
+}
+
+message ResultPropertySimple
+{
+    optional PropertySimple property = 1;
+    optional int32 valueType = 2;
+    optional string sval = 3;
+    optional int64 ival = 4;
+    repeated int64 aval = 5;
+    optional double dval = 6;
+    optional string enumTypeName = 7;
+    optional string enumName = 8;
+}
+
+message ResultPropertyCumulative
+{
+    optional PropertyCumulative property = 1;
+    optional int32 valueType = 2;
+    optional string sval = 3;
+    optional int64 ival = 4;
+    repeated int64 aval = 5;
+    optional double dval = 6;
+    optional string enumTypeName = 7;
+    optional string enumName = 8;
+}
+
+message ResultPropertyFinancial
+{
+    optional PropertyFinancial property = 1;
+    optional int32 valueType = 2;
+    optional string sval = 3;
+    optional int64 ival = 4;
+    repeated int64 aval = 5;
+    optional double dval = 6;
+    optional uint32 endTime = 7;
+    optional string enumTypeName = 8;
+    optional string enumName = 9;
+}
+
+message ResultPropertyIndicator
+{
+    optional PropertyIndicator property = 1;
+    optional int32 valueType = 2;
+    optional string sval = 3;
+    optional int64 ival = 4;
+    repeated int64 aval = 5;
+    optional double dval = 6;
+    optional string enumTypeName = 7;
+    optional string enumName = 8;
+}
+
+message ResultPropertyFeatured
+{
+    optional PropertyFeatured property = 1;
+    optional int32 valueType = 2;
+    optional string sval = 3;
+    optional int64 ival = 4;
+    repeated int64 aval = 5;
+    optional double dval = 6;
+    optional string enumTypeName = 7;
+    optional string enumName = 8;
+}
+
+message ResultPropertyKlineShape
+{
+    optional PropertyKlineShape property = 1;
+    optional int32 valueType = 2;
+    optional string sval = 3;
+    optional int64 ival = 4;
+    repeated int64 aval = 5;
+    optional double dval = 6;
+    optional string enumTypeName = 7;
+    optional string enumName = 8;
+}
+
+message ResultPropertyBroker
+{
+    optional PropertyBroker property = 1;
+    optional int32 valueType = 2;
+    optional string sval = 3;
+    optional int64 ival = 4;
+    repeated int64 aval = 5;
+    optional double dval = 6;
+    optional string enumTypeName = 7;
+    optional string enumName = 8;
+}
+
+message ResultPropertyOption
+{
+    optional PropertyOption property = 1;
+    optional int32 valueType = 2;
+    optional string sval = 3;
+    optional int64 ival = 4;
+    repeated int64 aval = 5;
+    optional double dval = 6;
+    optional string enumTypeName = 7;
+    optional string enumName = 8;
+}
+
+// 单条结果 (各字段互斥)
+message RspItemResult
+{
+    optional ResultPropertyBasic basicPropertyResult = 1;
+    optional ResultPropertySimple simplePropertyResult = 2;
+    optional ResultPropertyCumulative cumulativePropertyResult = 3;
+    optional ResultPropertyFinancial financialPropertyResult = 4;
+    optional ResultPropertyIndicator indicatorPropertyResult = 5;
+    optional ResultPropertyFeatured featuredPropertyResult = 6;
+    optional ResultPropertyBroker brokerPropertyResult = 7;
+    optional ResultPropertyOption optionPropertyResult = 8;
+    optional ResultPropertyKlineShape klineShapePropertyResult = 9;
+}
+
+// 股票筛选结果项
+message StockScreenItem
+{
+    optional uint64 stockId = 1;            // 股票ID (u64 StockHash)
+    repeated RspItemResult results = 2;     // 属性结果列表
+}
+
+// =================== 请求/返回 ===================
+
+message C2S
+{
+    repeated ScreenQuery filterList = 1;        // 筛选过滤器列表
+    repeated RetrieveQuery retrieveList = 2;    // 取回属性设置
+    repeated uint64 watchlistStockIds = 3;      // 自选股ID列表
+    optional Sort sort = 4;                     // 排序
+    optional int32 pageFrom = 5;                // 数据偏移位, 从0开始
+    optional int32 pageCount = 6;               // 最大拉取数量 (最大300)
+    // field 7 (session_auth) 保留
+    // field 8 (internal_invoke) 保留
+    repeated Sort sortList = 9;                 // 多字段排序 (有值时优先于sort)
+}
+
+message S2C
+{
+    // field 1 保留 (result_code, 由 Response.retType 承担)
+    repeated StockScreenItem dataList = 2;  // 股票数据列表
+    optional int32 lastPage = 3;            // 是否最后一页 (0=否, 1=是)
+    optional int32 allCount = 4;            // 数据总量
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

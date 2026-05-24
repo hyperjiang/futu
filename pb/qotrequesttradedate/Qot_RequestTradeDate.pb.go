@@ -26,10 +26,11 @@ const (
 type C2S struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// 当 market 和 security 同时存在，会忽略 market，仅对 security 进行查询。
-	Market        *int32              `protobuf:"varint,1,req,name=market" json:"market,omitempty"`      //Qot_Common.TradeDateMarket,要查询的市场
-	BeginTime     *string             `protobuf:"bytes,2,req,name=beginTime" json:"beginTime,omitempty"` //开始时间字符串
-	EndTime       *string             `protobuf:"bytes,3,req,name=endTime" json:"endTime,omitempty"`     //结束时间字符串
-	Security      *qotcommon.Security `protobuf:"bytes,4,opt,name=security" json:"security,omitempty"`   // 指定标的
+	Market        *int32               `protobuf:"varint,1,req,name=market" json:"market,omitempty"`      //Qot_Common.TradeDateMarket,要查询的市场
+	BeginTime     *string              `protobuf:"bytes,2,req,name=beginTime" json:"beginTime,omitempty"` //开始时间字符串
+	EndTime       *string              `protobuf:"bytes,3,req,name=endTime" json:"endTime,omitempty"`     //结束时间字符串
+	Security      *qotcommon.Security  `protobuf:"bytes,4,opt,name=security" json:"security,omitempty"`   // 指定标的
+	Header        *qotcommon.QotHeader `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`     //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -88,6 +89,13 @@ func (x *C2S) GetEndTime() string {
 func (x *C2S) GetSecurity() *qotcommon.Security {
 	if x != nil {
 		return x.Security
+	}
+	return nil
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
 	}
 	return nil
 }
@@ -317,12 +325,13 @@ var File_Qot_RequestTradeDate_proto protoreflect.FileDescriptor
 
 const file_Qot_RequestTradeDate_proto_rawDesc = "" +
 	"\n" +
-	"\x1aQot_RequestTradeDate.proto\x12\x14Qot_RequestTradeDate\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\x87\x01\n" +
+	"\x1aQot_RequestTradeDate.proto\x12\x14Qot_RequestTradeDate\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\xb6\x01\n" +
 	"\x03C2S\x12\x16\n" +
 	"\x06market\x18\x01 \x02(\x05R\x06market\x12\x1c\n" +
 	"\tbeginTime\x18\x02 \x02(\tR\tbeginTime\x12\x18\n" +
 	"\aendTime\x18\x03 \x02(\tR\aendTime\x120\n" +
-	"\bsecurity\x18\x04 \x01(\v2\x14.Qot_Common.SecurityR\bsecurity\"c\n" +
+	"\bsecurity\x18\x04 \x01(\v2\x14.Qot_Common.SecurityR\bsecurity\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"c\n" +
 	"\tTradeDate\x12\x12\n" +
 	"\x04time\x18\x01 \x02(\tR\x04time\x12\x1c\n" +
 	"\ttimestamp\x18\x02 \x01(\x01R\ttimestamp\x12$\n" +
@@ -352,23 +361,25 @@ func file_Qot_RequestTradeDate_proto_rawDescGZIP() []byte {
 
 var file_Qot_RequestTradeDate_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_Qot_RequestTradeDate_proto_goTypes = []any{
-	(*C2S)(nil),                // 0: Qot_RequestTradeDate.C2S
-	(*TradeDate)(nil),          // 1: Qot_RequestTradeDate.TradeDate
-	(*S2C)(nil),                // 2: Qot_RequestTradeDate.S2C
-	(*Request)(nil),            // 3: Qot_RequestTradeDate.Request
-	(*Response)(nil),           // 4: Qot_RequestTradeDate.Response
-	(*qotcommon.Security)(nil), // 5: Qot_Common.Security
+	(*C2S)(nil),                 // 0: Qot_RequestTradeDate.C2S
+	(*TradeDate)(nil),           // 1: Qot_RequestTradeDate.TradeDate
+	(*S2C)(nil),                 // 2: Qot_RequestTradeDate.S2C
+	(*Request)(nil),             // 3: Qot_RequestTradeDate.Request
+	(*Response)(nil),            // 4: Qot_RequestTradeDate.Response
+	(*qotcommon.Security)(nil),  // 5: Qot_Common.Security
+	(*qotcommon.QotHeader)(nil), // 6: Qot_Common.QotHeader
 }
 var file_Qot_RequestTradeDate_proto_depIdxs = []int32{
 	5, // 0: Qot_RequestTradeDate.C2S.security:type_name -> Qot_Common.Security
-	1, // 1: Qot_RequestTradeDate.S2C.tradeDateList:type_name -> Qot_RequestTradeDate.TradeDate
-	0, // 2: Qot_RequestTradeDate.Request.c2s:type_name -> Qot_RequestTradeDate.C2S
-	2, // 3: Qot_RequestTradeDate.Response.s2c:type_name -> Qot_RequestTradeDate.S2C
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	6, // 1: Qot_RequestTradeDate.C2S.header:type_name -> Qot_Common.QotHeader
+	1, // 2: Qot_RequestTradeDate.S2C.tradeDateList:type_name -> Qot_RequestTradeDate.TradeDate
+	0, // 3: Qot_RequestTradeDate.Request.c2s:type_name -> Qot_RequestTradeDate.C2S
+	2, // 4: Qot_RequestTradeDate.Response.s2c:type_name -> Qot_RequestTradeDate.S2C
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_Qot_RequestTradeDate_proto_init() }

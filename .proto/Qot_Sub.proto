@@ -18,6 +18,7 @@ message C2S
 	optional bool isSubOrderBookDetail = 8; //订阅摆盘可用,是否订阅摆盘明细,仅支持SF行情,该参数不指定则默认false
 	optional bool extendedTime = 9;  // 是否允许美股盘前盘后数据（仅用于订阅美股的实时K线、实时分时、实时逐笔）
 	optional int32 session = 10; // 时段
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
 message S2C

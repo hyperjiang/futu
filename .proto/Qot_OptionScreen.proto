@@ -1,0 +1,268 @@
+syntax = "proto2";
+package Qot_OptionScreen;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotoptionscreen";
+
+import "Qot_Common.proto";
+
+// 期权市场品类 (枚举值与后台 FTCmdOptionMarket.MarketCategory 一致, 直接透传)
+enum MarketCategory
+{
+    MarketCategory_US_Stock = 0; // 美股股票期权
+    MarketCategory_US_Index = 1; // 美股指数期权
+    MarketCategory_US_Future = 2; // 美股期货期权
+    MarketCategory_HK_Stock = 3; // 港股股票期权
+    MarketCategory_HK_Index = 4; // 港股指数期权
+    MarketCategory_JP_Stock = 5; // 日股股票期权
+    MarketCategory_JP_Index = 6; // 日股指数期权
+}
+
+// 标的筛选因子类型
+enum UnderlyingIndicatorType
+{
+    UnderlyingIndicatorType_Unknown = 0; // 未知
+    // 标的基本信息
+    UnderlyingIndicatorType_StockList = 101; // 【确切值】指定标的范围(股票ID列表)
+    // ⚠️ 不支持: 后端 option_screener_svc 未实装, 传入会被 OpenD 入口拦截并返回错误
+    UnderlyingIndicatorType_Plate = 103 [deprecated = true]; // 【已废弃】指定板块, 后端不支持
+    UnderlyingIndicatorType_IndexList = 106; // 【确切值】指定指数类型
+    // 标的期权统计
+    UnderlyingIndicatorType_Volume = 201; // 【范围】总成交量
+    UnderlyingIndicatorType_OpenInterest = 202; // 【范围】总持仓量
+    UnderlyingIndicatorType_IV = 203; // 【范围】标的IV
+    UnderlyingIndicatorType_HV = 204; // 【范围】标的HV
+    UnderlyingIndicatorType_IVRank = 205; // 【范围】标的IV Rank
+    UnderlyingIndicatorType_IVPercentile = 206; // 【范围】标的IV Percentile
+    UnderlyingIndicatorType_IVChange = 207; // 【范围】标的IV变化量
+    UnderlyingIndicatorType_IVChangeRatio = 208; // 【范围】标的IV变化率
+    UnderlyingIndicatorType_IVHVRatio = 209; // 【范围】标的IV/HV
+    UnderlyingIndicatorType_IVHVSpread = 210; // 【范围】标的IV-HV
+    // 行情指标
+    UnderlyingIndicatorType_MarketCap = 401; // 【范围】标的市值
+    UnderlyingIndicatorType_StockPrice = 402; // 【范围】标的最新价
+    UnderlyingIndicatorType_ChangeRatio = 403; // 【范围】涨跌幅
+}
+
+// 期权筛选因子类型
+enum OptionIndicatorType
+{
+    OptionIndicatorType_Unknown = 0; // 未知
+    // 期权静态信息
+    OptionIndicatorType_StrikePrice = 1001; // 【范围】行权价
+    OptionIndicatorType_LeftDay = 1002; // 【范围】距离到期日天数
+    OptionIndicatorType_OptionType = 1003; // 【确切值】期权类型(CALL/PUT)
+    OptionIndicatorType_ExerciseType = 1004; // 【确切值】行权方式(美式/欧式)
+    OptionIndicatorType_ExpirationType = 1005; // 【确切值】到期类型(周/月/季)
+    OptionIndicatorType_StrikeDateTimestamp = 1007; // 【确切值】到期日时间戳(秒)
+    // 期权实时行情
+    OptionIndicatorType_InTheMoney = 2001; // 【确切值】价内/价外(0:价外,1:价内)
+    OptionIndicatorType_Price = 2002; // 【范围】期权价格
+    OptionIndicatorType_MidPrice = 2003; // 【范围】期权中间价
+    OptionIndicatorType_BidPrice = 2004; // 【范围】买价
+    OptionIndicatorType_AskPrice = 2005; // 【范围】卖价
+    OptionIndicatorType_BidAskSpread = 2006; // 【范围】买卖价差
+    OptionIndicatorType_BidVolume = 2007; // 【范围】买量
+    OptionIndicatorType_AskVolume = 2008; // 【范围】卖量
+    OptionIndicatorType_BidAskVolumeRatio = 2009; // 【范围】买卖量比
+    OptionIndicatorType_ChangeRatio = 2010; // 【范围】涨跌幅
+    OptionIndicatorType_Volume = 2011; // 【范围】成交量
+    OptionIndicatorType_Turnover = 2012; // 【范围】成交额
+    OptionIndicatorType_OpenInterest = 2013; // 【范围】持仓量
+    OptionIndicatorType_OpenInterestMarketCap = 2014; // 【范围】持仓市值
+    OptionIndicatorType_VolOIRatio = 2018; // 【范围】成交量/持仓量
+    // ⚠️ filter 不支持(后端 option_screener_svc 未实装, 入口拦截报错); sort/retrieve 可用
+    OptionIndicatorType_Premium = 2021; // 【范围】权利金, 仅 sort/retrieve
+    // 期权分析指标
+    OptionIndicatorType_ImpliedVolatility = 3001; // 【范围】隐含波动率
+    OptionIndicatorType_HistoryVolatility = 3002; // 【范围】历史波动率
+    OptionIndicatorType_IVHVRatio = 3003; // 【范围】IV/HV
+    OptionIndicatorType_Delta = 3004; // 【范围】Delta
+    OptionIndicatorType_Gamma = 3005; // 【范围】Gamma
+    OptionIndicatorType_Vega = 3006; // 【范围】Vega
+    OptionIndicatorType_Theta = 3007; // 【范围】Theta
+    OptionIndicatorType_Rho = 3008; // 【范围】Rho
+    OptionIndicatorType_LeverageRatio = 3009; // 【范围】杠杆比率
+    OptionIndicatorType_EffectiveGearing = 3010; // 【范围】有效杠杆
+    OptionIndicatorType_BuyToBep = 3011; // 【范围】买入到盈亏平衡点比率
+    OptionIndicatorType_SellToBep = 3012; // 【范围】卖出到盈亏平衡点比率
+    OptionIndicatorType_BuyProfitProbability = 3013; // 【范围】买入盈利概率
+    OptionIndicatorType_SellProfitProbability = 3014; // 【范围】卖出盈利概率
+    OptionIndicatorType_IntrinsicValuePer = 3015; // 【范围】内在价值百分比
+    OptionIndicatorType_TimeValuePer = 3016; // 【范围】时间价值百分比
+    OptionIndicatorType_ITMDegree = 3017; // 【范围】价内程度
+    OptionIndicatorType_OTMDegree = 3018; // 【范围】价外程度
+    OptionIndicatorType_ITMProbability = 3019; // 【范围】价内概率
+    OptionIndicatorType_OTMProbability = 3020; // 【范围】价外概率
+    OptionIndicatorType_SellAnnualizedReturn = 3021; // 【范围】卖出年化收益率
+    OptionIndicatorType_IntervalReturn = 3022; // 【范围】卖出区间收益率
+    // ⚠️ 已废弃: 不支持 filter/sort/retrieve, 传入会报错。新代码请使用 BuyToBep(3011)。
+    OptionIndicatorType_BuyBreakEvenPoint = 3023 [deprecated = true]; // 已废弃, 传入会报错
+}
+
+// =================== 区间和筛选条件 ===================
+// 值字段使用 double (OpenD 负责与后端 int64 倍率互转)
+
+message Boundary
+{
+    required double value = 1; // 边界值 (double, 用户直接传原始值)
+    required bool includes = 2; // 是否包含此值
+}
+
+message Interval
+{
+    optional Boundary filterMin = 1; // 区间下限
+    optional Boundary filterMax = 2; // 区间上限
+}
+
+message IndicatorValue
+{
+    repeated int64 valueList = 1; // 确切值列表(用于枚举型筛选, 无倍率)
+    optional Interval valueInterval = 2; // 值区间(用于范围型筛选, double 值)
+    repeated string strValueList = 3; // 字符串确切值列表(用于PLATE等, 如 ["BK1001"])
+}
+
+// 标的筛选条件
+message UnderlyingIndicator
+{
+    required int32 indicatorType = 1; // UnderlyingIndicatorType
+    optional IndicatorValue indicatorValue = 2; // 筛选条件
+    repeated OptionPlate plateList = 4; // 板块列表, 仅PLATE(103)类型使用
+}
+
+// 期权筛选条件
+message OptionIndicator
+{
+    required int32 indicatorType = 1; // OptionIndicatorType
+    optional IndicatorValue indicatorValue = 2; // 筛选条件
+}
+
+// 筛选条件组(组内OR, 组间AND)
+message FilterGroup
+{
+    repeated UnderlyingIndicator underlyingList = 1; // 标的筛选条件
+    repeated OptionIndicator optionList = 2; // 期权筛选条件
+}
+
+// 板块
+message OptionPlate
+{
+    optional string parentPlateId = 1;    // 父板块ID (如 "BK1000")
+    repeated string plateIdList = 2;      // 板块ID列表 (并集关系, 如 ["BK1001","BK1002"])
+}
+
+// 排序
+message Sort
+{
+    required int32 indicatorType = 1; // OptionIndicatorType(排序字段)
+    required int32 direction = 2; // 0=升序, 1=降序
+}
+
+// =================== 返回项 ===================
+// 值字段使用 double (OpenD 负责与后端 int64 倍率互转)
+
+// 标的统计信息
+message UnderlyingInfo
+{
+    optional uint64 stockID = 1; // 标的股票ID
+    optional double iv = 2; // 标的IV
+    optional double hv = 3; // 标的HV
+    optional double ivRank = 4; // IV Rank
+    optional double ivPercentile = 5; // IV Percentile
+    optional double marketCap = 6; // 市值
+    optional double price = 7; // 标的价格
+    optional double changeRatio = 8; // 涨跌幅
+}
+
+// 期权数据项
+message OptionScreenItem
+{
+    optional Qot_Common.Security security = 1; // 期权证券信息
+    optional string optionName = 2; // 期权名称
+    optional double strikePrice = 3; // 行权价
+    optional int64 strikeDate = 4; // 行权日(格式YYYYMMDD)
+    optional int32 optionType = 5; // 期权类型(CALL/PUT)
+    optional int32 exerciseType = 6; // 行权方式
+    optional int32 expirationType = 7; // 到期类型
+    optional int32 inTheMoney = 8; // 价内/价外(0:价外,1:价内)
+    optional int32 leftDay = 9; // 距到期天数
+    // 行情数据
+    optional double price = 20; // 期权价格
+    optional double midPrice = 21; // 中间价
+    optional double bidPrice = 22; // 买价
+    optional double askPrice = 23; // 卖价
+    optional double bidAskSpread = 24; // 买卖价差
+    optional int64 bidVolume = 25; // 买量
+    optional int64 askVolume = 26; // 卖量
+    optional double changeRatio = 27; // 涨跌幅
+    optional int64 volume = 28; // 成交量
+    optional double turnover = 29; // 成交额
+    optional int64 openInterest = 30; // 持仓量
+    optional double bidAskVolumeRatio = 31; // 买卖量比
+    optional double openInterestMarketCap = 32; // 持仓市值
+    optional double volOIRatio = 33; // 成交量/持仓量
+    optional double premium = 34; // 权利金
+    // Greeks
+    optional double impliedVolatility = 40; // 隐含波动率
+    optional double delta = 41; // Delta
+    optional double gamma = 42; // Gamma
+    optional double vega = 43; // Vega
+    optional double theta = 44; // Theta
+    optional double rho = 45; // Rho
+    optional double leverageRatio = 46; // 杠杆比率
+    optional double effectiveGearing = 47; // 有效杠杆
+    optional double itmProbability = 48; // 价内概率
+    // ⚠️ 历史字段: 后端未返回对应数据, 已弃用, 始终不填充
+    // 新代码请用 buyToBep (字段 53)
+    optional double buyBreakEvenPoint = 49 [deprecated = true]; // 已弃用, 始终为空
+    // 标的信息
+    optional UnderlyingInfo underlyingInfo = 50; // 标的信息
+    // 期权分析指标 (续)
+    optional double historyVolatility = 51; // 历史波动率
+    optional double ivHvRatio = 52; // IV/HV
+    optional double buyToBep = 53; // 买入到盈亏平衡点比率
+    optional double sellToBep = 54; // 卖出到盈亏平衡点比率
+    optional double buyProfitProbability = 55; // 买入盈利概率
+    optional double sellProfitProbability = 56; // 卖出盈利概率
+    optional double intrinsicValuePer = 57; // 内在价值百分比
+    optional double timeValuePer = 58; // 时间价值百分比
+    optional double itmDegree = 59; // 价内程度
+    optional double otmDegree = 60; // 价外程度
+    optional double otmProbability = 61; // 价外概率
+    optional double sellAnnualizedReturn = 62; // 卖出年化收益率
+    optional double intervalReturn = 63; // 卖出区间收益率
+}
+
+// =================== 请求/返回 ===================
+
+message C2S
+{
+    repeated int32 marketCategoryList = 1; // MarketCategory 市场品类列表(至少一个)
+    repeated FilterGroup filterList = 2; // 筛选条件组(组间AND)
+    repeated Sort sortList = 3; // 排序
+    optional int32 pageFrom = 4; // 数据偏移位，从0开始
+    optional int32 pageCount = 5; // 最大数量(最大1000)
+    // 返回字段声明(类似StockScreen的retrieve)，值为 OptionIndicatorType/UnderlyingIndicatorType
+    // 不填则返回默认基础字段集；code/option_name/strike_date/underlying stock_id 始终返回
+    repeated int32 optionRetrieveList = 6;     // 期权字段, 值为 OptionIndicatorType
+    repeated int32 underlyingRetrieveList = 7; // 标的字段, 值为 UnderlyingIndicatorType
+}
+
+message S2C
+{
+    required bool lastPage = 1; // 是否最后一页
+    required int32 allCount = 2; // 数据总量
+    repeated OptionScreenItem dataList = 3; // 返回的期权数据列表
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32 retType = 1 [default = -400]; // RetType,返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

@@ -1,0 +1,53 @@
+syntax = "proto2";
+package Qot_GetShareholdersOverview;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetshareholdersoverview";
+
+import "Qot_Common.proto";
+
+message OwnershipStaticItem
+{
+	optional string name          = 1; // 持股人/分组名称
+	optional double holderPct     = 2; // 持股占比（百分比），如 23.37 表示 23.37%
+	optional int32  holderId      = 3; // 股东 ID；mainHolderInfoList 中有值，其他分组为 0
+}
+
+message OwnershipStaticInfo
+{
+	optional uint64 staticDate    = 1; // 统计日期时间戳（秒）
+	optional string staticDateStr = 2; // 统计日期字符串，格式 YYYY-MM-DD，对应市场时区
+	repeated OwnershipStaticItem itemList = 4; // 持股统计子项列表
+}
+
+// 报告期条目
+message HoldingPeriodItem
+{
+	optional string periodText = 1; // 报告期，如 "2025/Q3"
+	optional int32  periodId   = 2; // 报告期 ID，下次请求原样传入
+}
+
+message C2S
+{
+	required Qot_Common.Security security = 1;
+	optional int32               periodId = 3; // 指定报告期 ID；传 0 或不传则返回最新数据，并额外返回可用报告期列表
+}
+
+message S2C
+{
+	repeated OwnershipStaticInfo mainHolderInfoList  = 1; // 主要股东列表
+	repeated OwnershipStaticInfo holderTypeInfoList  = 2; // 持股类型列表
+	repeated HoldingPeriodItem   holdingPeriodList   = 3; // 可用报告期列表，仅当请求 periodId 为 0 时返回
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32  retType = 1 [default = -400];
+	optional string retMsg  = 2;
+	optional int32  errCode = 3;
+	optional S2C s2c = 4;
+}

@@ -1,0 +1,83 @@
+syntax = "proto2";
+package Qot_GetCorporateActionsBuybacks;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetcorporateactionsbuybacks";
+
+import "Qot_Common.proto";
+
+// 港股回购单条记录
+message HKBuyBackItem
+{
+	optional uint64 publDate              = 1;  // 公告日时间戳（秒）
+	optional string publDateStr           = 2;  // 公告日字符串，格式 YYYY-MM-DD，对应市场时区
+	optional uint64 endDate               = 3;  // 回购截止日时间戳（秒）
+	optional string endDateStr            = 4;  // 回购截止日字符串，格式 YYYY-MM-DD，对应市场时区
+	optional double buyBackMoney          = 5;  // 回购金额
+	optional int64  buyBackSum            = 6;  // 回购股数（股）
+	optional double percentage            = 7;  // 占已发行股份百分比，百分号前的值，如 12.34 表示 12.34%
+	optional double highPrice             = 8;  // 最高回购价
+	optional double lowPrice              = 9;  // 最低回购价
+	optional int64  cumulativeSum         = 10; // 本轮累计回购股数（股）
+	optional double cumulativePercentage  = 11; // 本轮累计回购占总股本百分比，百分号前的值，如 12.34 表示 12.34%
+	optional string shareType             = 12; // 股份类别
+}
+
+// A股回购单条记录
+message ABuyBackItem
+{
+	optional uint64 changeRegDate    = 1;  // 工商变更登记日时间戳（秒）
+	optional string changeRegDateStr = 2;  // 工商变更登记日字符串，格式 YYYY-MM-DD，对应市场时区
+	optional uint64 changeDate       = 3;  // 股份变动日时间戳（秒）
+	optional string changeDateStr    = 4;  // 股份变动日字符串，格式 YYYY-MM-DD，对应市场时区
+	optional string eventProceDesc   = 5;  // 事件进程描述
+	optional uint64 advanceDate      = 6;  // 预案公告日时间戳（秒）
+	optional string advanceDateStr   = 7;  // 预案公告日字符串，格式 YYYY-MM-DD，对应市场时区
+	optional uint64 meetPassDate     = 8;  // 股东大会通过日时间戳（秒）
+	optional string meetPassDateStr  = 9;  // 股东大会通过日字符串，格式 YYYY-MM-DD，对应市场时区
+	optional uint64 startDate        = 10; // 回购开始日时间戳（秒）
+	optional string startDateStr     = 11; // 回购开始日字符串，格式 YYYY-MM-DD，对应市场时区
+	optional uint64 endDate          = 12; // 回购截止日时间戳（秒）
+	optional string endDateStr       = 13; // 回购截止日字符串，格式 YYYY-MM-DD，对应市场时区
+	optional uint64 payDate          = 14; // 支付日时间戳（秒）
+	optional string payDateStr       = 15; // 支付日字符串，格式 YYYY-MM-DD，对应市场时区
+	optional string seller           = 16; // 出售方（股份被回购方）
+	optional string buyBackMode      = 17; // 回购方式
+	optional string shareType        = 18; // 股份类别
+	optional int64  buyBackSum       = 19; // 回购股数（股）
+	optional double buyBackMoney     = 20; // 回购金额
+	optional double percentage       = 21; // 占已发行股份百分比，百分号前的值，如 12.34 表示 12.34%
+	optional double valueFloor       = 22; // 拟回购资金总额下限
+	optional double valueCeiling     = 23; // 拟回购资金总额上限
+	optional double priceFloor       = 24; // 回购价格下限
+	optional double priceCeiling     = 25; // 回购价格上限
+	optional double volumeFloor      = 26; // 拟回购股数下限
+	optional double volumeCeiling    = 27; // 拟回购股数上限
+}
+
+message C2S
+{
+	required Qot_Common.Security security = 1; // 股票
+	optional string nextKey = 2; // 分页标识，首次不填，续拉时填上次返回的 nextKey；"-1" 表示无更多数据
+	optional int32  num     = 3; // 每页返回数量，默认 10，范围 1~50
+}
+
+message S2C
+{
+	repeated HKBuyBackItem hkBuyBackList = 1; // 港股回购列表
+	repeated ABuyBackItem  aBuyBackList  = 2; // A股回购列表
+	optional string nextKey = 3; // 分页标识，"-1" 表示无更多数据
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32  retType = 1 [default = -400]; //RetType,返回结果
+	optional string retMsg  = 2;
+	optional int32  errCode = 3;
+
+	optional S2C s2c = 4;
+}

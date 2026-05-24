@@ -19,6 +19,7 @@ message C2S
 	optional int32 secMarket = 8; //证券所属市场，参见TrdSecMarket的枚举定义
 	optional string orderIDEx = 9; //表示服务器订单id，可以用来代替orderID，和orderID二选一
 	optional int32 session = 10; //美股订单时段, 参见Common.Session的枚举定义
+	optional uint64 positionID = 11; //持仓ID，JP券商查询平仓数量时使用
 }
 
 message S2C

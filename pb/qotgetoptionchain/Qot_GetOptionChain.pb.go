@@ -272,6 +272,7 @@ type C2S struct {
 	BeginTime       *string                `protobuf:"bytes,4,req,name=beginTime" json:"beginTime,omitempty"`              //期权到期日开始时间
 	EndTime         *string                `protobuf:"bytes,5,req,name=endTime" json:"endTime,omitempty"`                  //期权到期日结束时间，时间跨度最多一个月
 	DataFilter      *DataFilter            `protobuf:"bytes,7,opt,name=dataFilter" json:"dataFilter,omitempty"`            //数据字段筛选
+	Header          *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`                  //行情公共参数头
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -351,6 +352,13 @@ func (x *C2S) GetEndTime() string {
 func (x *C2S) GetDataFilter() *DataFilter {
 	if x != nil {
 		return x.DataFilter
+	}
+	return nil
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
 	}
 	return nil
 }
@@ -653,7 +661,7 @@ const file_Qot_GetOptionChain_proto_rawDesc = "" +
 	"\x0fopenInterestMin\x18\x0f \x01(\x01R\x0fopenInterestMin\x12(\n" +
 	"\x0fopenInterestMax\x18\x10 \x01(\x01R\x0fopenInterestMax\x12\x16\n" +
 	"\x06volMin\x18\x11 \x01(\x01R\x06volMin\x12\x16\n" +
-	"\x06volMax\x18\x12 \x01(\x01R\x06volMax\"\x85\x02\n" +
+	"\x06volMax\x18\x12 \x01(\x01R\x06volMax\"\xb4\x02\n" +
 	"\x03C2S\x12*\n" +
 	"\x05owner\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\x05owner\x12(\n" +
 	"\x0findexOptionType\x18\x06 \x01(\x05R\x0findexOptionType\x12\x12\n" +
@@ -663,7 +671,8 @@ const file_Qot_GetOptionChain_proto_rawDesc = "" +
 	"\aendTime\x18\x05 \x02(\tR\aendTime\x12>\n" +
 	"\n" +
 	"dataFilter\x18\a \x01(\v2\x1e.Qot_GetOptionChain.DataFilterR\n" +
-	"dataFilter\"r\n" +
+	"dataFilter\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"r\n" +
 	"\n" +
 	"OptionItem\x122\n" +
 	"\x04call\x18\x01 \x01(\v2\x1e.Qot_Common.SecurityStaticInfoR\x04call\x120\n" +
@@ -713,22 +722,24 @@ var file_Qot_GetOptionChain_proto_goTypes = []any{
 	(*Request)(nil),                      // 6: Qot_GetOptionChain.Request
 	(*Response)(nil),                     // 7: Qot_GetOptionChain.Response
 	(*qotcommon.Security)(nil),           // 8: Qot_Common.Security
-	(*qotcommon.SecurityStaticInfo)(nil), // 9: Qot_Common.SecurityStaticInfo
+	(*qotcommon.QotHeader)(nil),          // 9: Qot_Common.QotHeader
+	(*qotcommon.SecurityStaticInfo)(nil), // 10: Qot_Common.SecurityStaticInfo
 }
 var file_Qot_GetOptionChain_proto_depIdxs = []int32{
-	8, // 0: Qot_GetOptionChain.C2S.owner:type_name -> Qot_Common.Security
-	1, // 1: Qot_GetOptionChain.C2S.dataFilter:type_name -> Qot_GetOptionChain.DataFilter
-	9, // 2: Qot_GetOptionChain.OptionItem.call:type_name -> Qot_Common.SecurityStaticInfo
-	9, // 3: Qot_GetOptionChain.OptionItem.put:type_name -> Qot_Common.SecurityStaticInfo
-	3, // 4: Qot_GetOptionChain.OptionChain.option:type_name -> Qot_GetOptionChain.OptionItem
-	4, // 5: Qot_GetOptionChain.S2C.optionChain:type_name -> Qot_GetOptionChain.OptionChain
-	2, // 6: Qot_GetOptionChain.Request.c2s:type_name -> Qot_GetOptionChain.C2S
-	5, // 7: Qot_GetOptionChain.Response.s2c:type_name -> Qot_GetOptionChain.S2C
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	8,  // 0: Qot_GetOptionChain.C2S.owner:type_name -> Qot_Common.Security
+	1,  // 1: Qot_GetOptionChain.C2S.dataFilter:type_name -> Qot_GetOptionChain.DataFilter
+	9,  // 2: Qot_GetOptionChain.C2S.header:type_name -> Qot_Common.QotHeader
+	10, // 3: Qot_GetOptionChain.OptionItem.call:type_name -> Qot_Common.SecurityStaticInfo
+	10, // 4: Qot_GetOptionChain.OptionItem.put:type_name -> Qot_Common.SecurityStaticInfo
+	3,  // 5: Qot_GetOptionChain.OptionChain.option:type_name -> Qot_GetOptionChain.OptionItem
+	4,  // 6: Qot_GetOptionChain.S2C.optionChain:type_name -> Qot_GetOptionChain.OptionChain
+	2,  // 7: Qot_GetOptionChain.Request.c2s:type_name -> Qot_GetOptionChain.C2S
+	5,  // 8: Qot_GetOptionChain.Response.s2c:type_name -> Qot_GetOptionChain.S2C
+	9,  // [9:9] is the sub-list for method output_type
+	9,  // [9:9] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetOptionChain_proto_init() }

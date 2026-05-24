@@ -1,0 +1,67 @@
+syntax = "proto2";
+package Qot_GetDailyShortVolume;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetdailyshortvolume";
+
+import "Qot_Common.proto";
+
+message C2S
+{
+    required Qot_Common.Security security = 1; // 股票
+    optional string nextKey = 2; // 分页标识，首次不填，续拉时填上次返回的 nextKey；"-1" 表示无更多数据
+    optional int32 num = 3; // 每页返回数量，默认 10，范围 1~50
+}
+
+// 美股每日卖空单条记录
+message UsDailyShortVolumeItem
+{
+    optional int64  timestamp = 1;          //数据所在交易日时间戳（秒，当日零点）
+    optional string timestampStr = 2;       //数据所在交易日字符串，格式 YYYY-MM-DD，对应市场时区
+    optional uint64 totalSharesShort = 3;   //卖空总股数
+    optional uint64 nasdaqSharesShort = 4;  //纳斯达克卖空股数
+    optional uint64 nyseSharesShort = 5;    //纽交所卖空股数
+    optional double shortPercent = 6;       //卖空比例，百分号前的值，如 12.34 表示 12.34%
+    optional uint64 volume = 7;             //成交量（股）
+    optional double closePrice = 8;         //收盘价
+    optional double lastClosePrice = 9;     //上次收盘价
+    optional double dailyTradeAvgRatio = 10; //日均成交比例，百分号前的值，如 12.34 表示 12.34%；timestamp 往前 20 交易日的日均
+}
+
+// 港股每日卖空单条记录
+message HkDailyShortVolumeItem
+{
+    optional int64  timestamp = 1;              //数据所在交易日时间戳（秒，当日零点）
+    optional string timestampStr = 2;           //数据所在交易日字符串，格式 YYYY-MM-DD，对应市场时区
+    optional uint64 sharesTraded = 3;           //成交量（股）
+    optional double turnover = 4;               //成交额
+    optional uint64 shortSellSharesTraded = 5;  //做空成交量（股）
+    optional double shortSellTurnover = 6;      //做空成交额
+    optional double openPrice = 7;              //开盘价
+    optional double closePrice = 8;             //收盘价
+    optional double lastClosePrice = 9;         //上次收盘价
+    optional double dailyTradeAvgRatio = 10;    //日均成交比例，百分号前的值，如 12.34 表示 12.34%；timestamp 往前 20 交易日的日均
+}
+
+message S2C
+{
+    repeated UsDailyShortVolumeItem usItemList = 1; //美股每日卖空数据列表
+    repeated HkDailyShortVolumeItem hkItemList = 2; //港股每日卖空数据列表
+    optional string nextKey = 3;             // 分页标识，"-1" 表示无更多数据
+    optional int64  aggregatedShort = 4;     //未平仓股数，仅港股
+    optional double aggregatedShortRatio = 5;//占流通股比例，百分号前的值，如 12.34 表示 12.34%，仅港股
+    optional string newTimeStr = 6;          //最新数据时间字符串，格式 YYYY-MM-DD，对应市场时区，仅港股
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32 retType = 1 [default = -400]; //RetType,返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+
+    optional S2C s2c = 4;
+}

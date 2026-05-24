@@ -44,6 +44,7 @@ type C2S struct {
 	TrailValue         *float64 `protobuf:"fixed64,16,opt,name=trailValue" json:"trailValue,omitempty"`                //跟踪金额/百分比
 	TrailSpread        *float64 `protobuf:"fixed64,17,opt,name=trailSpread" json:"trailSpread,omitempty"`              //指定价差
 	Session            *int32   `protobuf:"varint,18,opt,name=session" json:"session,omitempty"`                       //美股订单时段, 参见Common.Session的枚举定义
+	PositionID         *uint64  `protobuf:"varint,19,opt,name=positionID" json:"positionID,omitempty"`                 //持仓ID，JP券商查询平仓数量时使用
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -200,6 +201,13 @@ func (x *C2S) GetTrailSpread() float64 {
 func (x *C2S) GetSession() int32 {
 	if x != nil && x.Session != nil {
 		return *x.Session
+	}
+	return 0
+}
+
+func (x *C2S) GetPositionID() uint64 {
+	if x != nil && x.PositionID != nil {
+		return *x.PositionID
 	}
 	return 0
 }
@@ -386,7 +394,7 @@ var File_Trd_PlaceOrder_proto protoreflect.FileDescriptor
 
 const file_Trd_PlaceOrder_proto_rawDesc = "" +
 	"\n" +
-	"\x14Trd_PlaceOrder.proto\x12\x0eTrd_PlaceOrder\x1a\fCommon.proto\x1a\x10Trd_Common.proto\"\xbe\x04\n" +
+	"\x14Trd_PlaceOrder.proto\x12\x0eTrd_PlaceOrder\x1a\fCommon.proto\x1a\x10Trd_Common.proto\"\xde\x04\n" +
 	"\x03C2S\x12,\n" +
 	"\bpacketID\x18\x01 \x02(\v2\x10.Common.PacketIDR\bpacketID\x12-\n" +
 	"\x06header\x18\x02 \x02(\v2\x15.Trd_Common.TrdHeaderR\x06header\x12\x18\n" +
@@ -408,7 +416,10 @@ const file_Trd_PlaceOrder_proto_rawDesc = "" +
 	"trailValue\x18\x10 \x01(\x01R\n" +
 	"trailValue\x12 \n" +
 	"\vtrailSpread\x18\x11 \x01(\x01R\vtrailSpread\x12\x18\n" +
-	"\asession\x18\x12 \x01(\x05R\asession\"l\n" +
+	"\asession\x18\x12 \x01(\x05R\asession\x12\x1e\n" +
+	"\n" +
+	"positionID\x18\x13 \x01(\x04R\n" +
+	"positionID\"l\n" +
 	"\x03S2C\x12-\n" +
 	"\x06header\x18\x01 \x02(\v2\x15.Trd_Common.TrdHeaderR\x06header\x12\x18\n" +
 	"\aorderID\x18\x02 \x01(\x04R\aorderID\x12\x1c\n" +

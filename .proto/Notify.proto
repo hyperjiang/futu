@@ -75,6 +75,7 @@ message QotRight
 	optional int32 usCBOEFutureQotRight = 20; //美股CBOE期货行情权限, Qot_Common.QotRight
 	optional int32 shQotRight = 21; //上海A股行情权限, Qot_Common.QotRight
 	optional int32 szQotRight = 22; //深圳A股行情权限, Qot_Common.QotRight
+	optional int32 ccQotRight = 23; //加密货币市场行情权限, Qot_Common.QotRight
 }
 
 message APILevel

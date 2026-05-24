@@ -53,6 +53,7 @@ message C2S
 	repeated Qot_Common.Security securityList = 2; //根据股票筛选
 	repeated TimeFilter timeFilterList = 3; //根据时间筛选
 	repeated int32 typeList = 4; //CodeChangeType，根据类型筛选
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
 message S2C

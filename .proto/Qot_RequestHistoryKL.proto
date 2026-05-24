@@ -18,6 +18,7 @@ message C2S
 	optional bytes nextReqKey = 8; //分页请求key
 	optional bool extendedTime = 9;  //是否获取美股盘前盘后数据，仅支持 60 分钟及以下级别
 	optional int32 session = 10; //Qot_Common.Session, 美股盘前盘后数据，仅支持 60 分钟及以下级别
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
 message S2C

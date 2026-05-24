@@ -1,0 +1,105 @@
+syntax = "proto2";
+package Qot_GetResearchRatingSummary;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetresearchratingsummary";
+
+import "Qot_Common.proto";
+
+message C2S
+{
+	required Qot_Common.Security security = 1;   // 股票
+	optional Qot_Common.ResearchRatingDimensionType ratingDimensionType = 2; // 评级维度（详见 Qot_Common.ResearchRatingDimensionType 定义），默认机构维度
+	optional string uid = 3;                     // 空=取该股票的评级汇总列表；非空=取该 uid（institutionUid 或 analystUid）的评级详情
+	optional string nextKey = 4;                 // 分页标识，首次不填，续拉时填上次返回的 nextKey；"-1" 表示无更多数据
+	optional int32 num = 5;                      // 每页返回数量，默认 10，范围 1~20
+}
+
+message InstInfo
+{
+	optional string institutionUid = 1;         // 机构唯一标识
+	optional string institutionPictureUrl = 2;  // 机构图片 URL
+	optional string institutionName = 3;        // 机构名称
+	optional int64 updateTime = 4;              // 更新时间戳（秒）
+	optional string updateTimeStr = 5;          // 更新时间字符串，格式 YYYY-MM-DD，对应市场时区
+	optional string institutionSourceName = 6;  // 机构来源名称
+	optional string institutionEnName = 7;      // 机构英文名称
+}
+
+message AnalystInfo
+{
+	optional string analystUid = 1;         // 分析师唯一标识
+	optional string analystName = 2;        // 分析师姓名
+	optional string analystPictureUrl = 3;  // 分析师头像 URL
+	optional double numOfStars       = 4;  // 星级（0.0~5.0，如 3.50 表示 3.5 星）
+	optional double successRate      = 5;  // 成功率，百分号前的值，如 12.34 表示 12.34%
+	optional double excessReturn     = 6;  // 超额收益，百分号前的值，如 12.34 表示 12.34%
+	optional double stockSuccessRate = 7;  // 个股成功率，百分号前的值，如 12.34 表示 12.34%
+	optional double stockAvgReturn   = 8;  // 个股平均收益，百分号前的值，如 12.34 表示 12.34%
+	optional InstInfo institutionInfo = 9;  // 所属机构信息
+	optional int64 updateTime = 10;         // 更新时间戳（秒）
+	optional string updateTimeStr = 11;     // 更新时间字符串，格式 YYYY-MM-DD，对应市场时区
+}
+
+message RatingItem
+{
+	optional string analystUid = 1;             // 分析师唯一标识
+	optional string institutionUid = 2;         // 机构唯一标识
+	optional Qot_Common.ResearchRatingType rating = 3; // 评级（详见 Qot_Common.ResearchRatingType 定义），仅返回 Sell(1)/Hold(3)/Buy(4)，数值越大评级越高
+	optional double targetPrice = 4;            // 目标价
+	optional int64 recommendationDate = 5;      // 评级日期时间戳（秒）
+	optional string recommendationDateStr = 6;  // 评级日期字符串，格式 YYYY-MM-DD，对应市场时区
+	optional string ratingUrl = 7;              // 评级来源 URL
+	optional int64 updateTime = 8;              // 更新时间戳（秒）
+	optional string updateTimeStr = 9;          // 更新时间字符串，格式 YYYY-MM-DD，对应市场时区
+}
+
+// 机构评级汇总行（uid 空, ratingDimensionType=1）
+message InstRatingSummaryItem
+{
+	optional InstInfo institutionInfo = 1;   // 机构信息
+	repeated RatingItem ratingItemList = 2;  // 该机构对该股票的评级记录列表
+}
+
+// 分析师评级汇总行（uid 空, ratingDimensionType=2）
+message AnalystRatingSummaryItem
+{
+	optional AnalystInfo analystInfo = 1;    // 分析师信息
+	repeated RatingItem ratingItemList = 2;  // 该分析师对该股票的评级记录列表
+}
+
+// 机构评级详情（uid 非空, ratingDimensionType=1）
+message InstRatingDetail
+{
+	optional InstInfo institutionInfo = 1;     // 机构信息
+	repeated AnalystInfo analystInfoList = 2;  // 机构下的分析师列表（精简版，不含 stockSuccessRate/stockAvgReturn/institutionInfo）
+	repeated RatingItem ratingItemList = 3;    // 机构下的评级记录列表
+}
+
+// 分析师评级详情（uid 非空, ratingDimensionType=2）
+message AnalystRatingDetail
+{
+	optional AnalystInfo analystInfo = 1;    // 分析师信息（含所属 institutionInfo）
+	repeated RatingItem ratingItemList = 2;  // 该分析师对该股票的评级记录列表
+}
+
+message S2C
+{
+	repeated InstRatingSummaryItem instRatingSummaryList = 1;        // 机构评级汇总列表（uid 空, ratingDimensionType=1 时填充）
+	repeated AnalystRatingSummaryItem analystRatingSummaryList = 2;  // 分析师评级汇总列表（uid 空, ratingDimensionType=2 时填充）
+	optional InstRatingDetail instRatingDetail = 3;                  // 机构评级详情（uid 非空, ratingDimensionType=1 时填充）
+	optional AnalystRatingDetail analystRatingDetail = 4;            // 分析师评级详情（uid 非空, ratingDimensionType=2 时填充）
+	optional string nextKey = 5;                                     // 分页标识，"-1" 表示无更多数据
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32 retType = 1 [default = -400];  // 返回结果，参考 Common.RetType
+	optional string retMsg = 2;                   // 返回结果描述
+	optional int32 errCode = 3;                   // 错误码，客户端可根据错误码判断错误类型
+	optional S2C s2c = 4;
+}

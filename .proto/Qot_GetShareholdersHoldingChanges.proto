@@ -1,0 +1,51 @@
+syntax = "proto2";
+package Qot_GetShareholdersHoldingChanges;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetshareholdersholdingchanges";
+
+import "Qot_Common.proto";
+
+message OwnerListItem
+{
+	optional string periodText         = 1;  // 报告期，如 "2025/Q3"
+	optional string name               = 2;  // 股东名称
+	optional int32  holderId           = 3;  // 股东 ID，用于请求历史变动明细
+	optional int64  shareChangeNum     = 4;  // 持股变动数（单位：股）
+	optional int64  sharesChangePrice  = 5;  // 参考变动金额
+	optional double holderPct          = 6;  // 持股比例，百分号前的值，如 12.34 表示 12.34%
+	optional string holderType         = 7;  // 持股性质（文本，如"传统投资经理"）
+	optional int32  holderTypeId       = 8;  // 持股性质 ID，用于请求历史变动明细
+	optional uint64 holdingDate        = 9;  // 报告日期时间戳（秒）
+	optional string holdingDateStr     = 10; // 报告日期字符串，格式 YYYY-MM-DD，香港时区
+	optional double holderPctChange    = 11; // 持股变动比例，百分号前的值，如 12.34 表示变动 12.34%
+	optional int64  holderQuantity     = 12; // 持股数（单位：股）
+}
+
+message C2S
+{
+	required Qot_Common.Security security = 1;  // 股票
+	optional string nextKey   = 2;  // 分页标识，首次不填，续拉时填上次返回的 nextKey；"-1" 表示无更多数据
+	optional int32  num       = 3;  // 每页返回数量，默认 10，范围 1~50
+	optional Qot_Common.SortType sortType   = 4;  // 排序方向，详见 Qot_Common.SortType 定义，默认降序
+	optional Qot_Common.SortField sortColumn = 5; // 排序字段，详见 Qot_Common.SortField，62=持股变动数（默认）63=持股日期 64=变动比例 65=变动金额 66=持股比例
+	optional Qot_Common.HoldingChangesFilterType filterType = 6; // 筛选类型，详见 Qot_Common.HoldingChangesFilterType 定义，默认全部
+}
+
+message S2C
+{
+	repeated OwnerListItem itemList = 1;  // 持股变动记录列表
+	optional string nextKey         = 2;  // 分页标识，"-1" 表示无更多数据
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32  retType = 1 [default = -400];
+	optional string retMsg  = 2;
+	optional int32  errCode = 3;
+	optional S2C s2c = 4;
+}

@@ -27,6 +27,7 @@ type C2S struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Security      *qotcommon.Security    `protobuf:"bytes,1,req,name=security" json:"security,omitempty"` //股票
 	Num           *int32                 `protobuf:"varint,2,req,name=num" json:"num,omitempty"`          //请求的摆盘个数
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`   //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -73,6 +74,13 @@ func (x *C2S) GetNum() int32 {
 		return *x.Num
 	}
 	return 0
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
 }
 
 type S2C struct {
@@ -296,10 +304,11 @@ var File_Qot_GetOrderBook_proto protoreflect.FileDescriptor
 
 const file_Qot_GetOrderBook_proto_rawDesc = "" +
 	"\n" +
-	"\x16Qot_GetOrderBook.proto\x12\x10Qot_GetOrderBook\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"I\n" +
+	"\x16Qot_GetOrderBook.proto\x12\x10Qot_GetOrderBook\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"x\n" +
 	"\x03C2S\x120\n" +
 	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12\x10\n" +
-	"\x03num\x18\x02 \x02(\x05R\x03num\"\x95\x03\n" +
+	"\x03num\x18\x02 \x02(\x05R\x03num\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"\x95\x03\n" +
 	"\x03S2C\x120\n" +
 	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12\x12\n" +
 	"\x04name\x18\b \x01(\tR\x04name\x12A\n" +
@@ -337,20 +346,22 @@ var file_Qot_GetOrderBook_proto_goTypes = []any{
 	(*Request)(nil),             // 2: Qot_GetOrderBook.Request
 	(*Response)(nil),            // 3: Qot_GetOrderBook.Response
 	(*qotcommon.Security)(nil),  // 4: Qot_Common.Security
-	(*qotcommon.OrderBook)(nil), // 5: Qot_Common.OrderBook
+	(*qotcommon.QotHeader)(nil), // 5: Qot_Common.QotHeader
+	(*qotcommon.OrderBook)(nil), // 6: Qot_Common.OrderBook
 }
 var file_Qot_GetOrderBook_proto_depIdxs = []int32{
 	4, // 0: Qot_GetOrderBook.C2S.security:type_name -> Qot_Common.Security
-	4, // 1: Qot_GetOrderBook.S2C.security:type_name -> Qot_Common.Security
-	5, // 2: Qot_GetOrderBook.S2C.orderBookAskList:type_name -> Qot_Common.OrderBook
-	5, // 3: Qot_GetOrderBook.S2C.orderBookBidList:type_name -> Qot_Common.OrderBook
-	0, // 4: Qot_GetOrderBook.Request.c2s:type_name -> Qot_GetOrderBook.C2S
-	1, // 5: Qot_GetOrderBook.Response.s2c:type_name -> Qot_GetOrderBook.S2C
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	5, // 1: Qot_GetOrderBook.C2S.header:type_name -> Qot_Common.QotHeader
+	4, // 2: Qot_GetOrderBook.S2C.security:type_name -> Qot_Common.Security
+	6, // 3: Qot_GetOrderBook.S2C.orderBookAskList:type_name -> Qot_Common.OrderBook
+	6, // 4: Qot_GetOrderBook.S2C.orderBookBidList:type_name -> Qot_Common.OrderBook
+	0, // 5: Qot_GetOrderBook.Request.c2s:type_name -> Qot_GetOrderBook.C2S
+	1, // 6: Qot_GetOrderBook.Response.s2c:type_name -> Qot_GetOrderBook.S2C
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetOrderBook_proto_init() }

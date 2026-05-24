@@ -8,34 +8,64 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetcapitaldistribution"
 	"github.com/hyperjiang/futu/pb/qotgetcapitalflow"
+	"github.com/hyperjiang/futu/pb/qotgetcompanyexecutivebackground"
+	"github.com/hyperjiang/futu/pb/qotgetcompanyexecutives"
+	"github.com/hyperjiang/futu/pb/qotgetcompanyoperationalefficiency"
+	"github.com/hyperjiang/futu/pb/qotgetcompanyprofile"
+	"github.com/hyperjiang/futu/pb/qotgetcorporateactionsbuybacks"
+	"github.com/hyperjiang/futu/pb/qotgetcorporateactionsdividends"
+	"github.com/hyperjiang/futu/pb/qotgetcorporateactionsstocksplits"
+	"github.com/hyperjiang/futu/pb/qotgetdailyshortvolume"
+	"github.com/hyperjiang/futu/pb/qotgetfinancialrevenuebreakdown"
+	"github.com/hyperjiang/futu/pb/qotgetfinancialsearnpricehist"
+	"github.com/hyperjiang/futu/pb/qotgetfinancialsearnpricemove"
+	"github.com/hyperjiang/futu/pb/qotgetfinancialsstatements"
 	"github.com/hyperjiang/futu/pb/qotgetfutureinfo"
+	"github.com/hyperjiang/futu/pb/qotgetinsiderholderlist"
+	"github.com/hyperjiang/futu/pb/qotgetinsidertradelist"
 	"github.com/hyperjiang/futu/pb/qotgetipolist"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetmarketstate"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
+	"github.com/hyperjiang/futu/pb/qotgetoptionexerciseprobability"
 	"github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate"
+	"github.com/hyperjiang/futu/pb/qotgetoptionvolatility"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
 	"github.com/hyperjiang/futu/pb/qotgetownerplate"
 	"github.com/hyperjiang/futu/pb/qotgetplatesecurity"
 	"github.com/hyperjiang/futu/pb/qotgetplateset"
 	"github.com/hyperjiang/futu/pb/qotgetpricereminder"
 	"github.com/hyperjiang/futu/pb/qotgetreference"
+	"github.com/hyperjiang/futu/pb/qotgetresearchanalystconsensus"
+	"github.com/hyperjiang/futu/pb/qotgetresearchmorningstarrpt"
+	"github.com/hyperjiang/futu/pb/qotgetresearchratingsummary"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
+	"github.com/hyperjiang/futu/pb/qotgetshareholdersholderdetail"
+	"github.com/hyperjiang/futu/pb/qotgetshareholdersholdingchanges"
+	"github.com/hyperjiang/futu/pb/qotgetshareholdersinstitutional"
+	"github.com/hyperjiang/futu/pb/qotgetshareholdersoverview"
+	"github.com/hyperjiang/futu/pb/qotgetshortinterest"
 	"github.com/hyperjiang/futu/pb/qotgetstaticinfo"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
+	"github.com/hyperjiang/futu/pb/qotgettoptenbuysellbrokers"
 	"github.com/hyperjiang/futu/pb/qotgetusersecurity"
 	"github.com/hyperjiang/futu/pb/qotgetusersecuritygroup"
+	"github.com/hyperjiang/futu/pb/qotgetvaluationdetail"
+	"github.com/hyperjiang/futu/pb/qotgetvaluationplatestocklist"
 	"github.com/hyperjiang/futu/pb/qotgetwarrant"
 	"github.com/hyperjiang/futu/pb/qotmodifyusersecurity"
+	"github.com/hyperjiang/futu/pb/qotoptionscreen"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
 	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
 	"github.com/hyperjiang/futu/pb/qotsetpricereminder"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
+	"github.com/hyperjiang/futu/pb/qotstockscreen"
 	"github.com/hyperjiang/futu/pb/qotsub"
+	"github.com/hyperjiang/futu/pb/qotwarrantscreen"
 	"github.com/hyperjiang/futu/protoid"
 )
 
@@ -827,6 +857,636 @@ func (client *Client) QotGetOptionExpirationDate(ctx context.Context, c2s *qotge
 		return nil, err
 	}
 
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetFinancialsEarningsPriceMove 3225 - 获取财报盈利预测变动
+func (client *Client) QotGetFinancialsEarningsPriceMove(ctx context.Context, c2s *qotgetfinancialsearnpricemove.C2S) (*qotgetfinancialsearnpricemove.S2C, error) {
+	req := &qotgetfinancialsearnpricemove.Request{C2S: c2s}
+	ch := make(chan *qotgetfinancialsearnpricemove.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetFinancialsEarningsPriceMove, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetFinancialsEarningsPriceHistory 3226 - 获取财报盈利预测历史
+func (client *Client) QotGetFinancialsEarningsPriceHistory(ctx context.Context, c2s *qotgetfinancialsearnpricehist.C2S) (*qotgetfinancialsearnpricehist.S2C, error) {
+	req := &qotgetfinancialsearnpricehist.Request{C2S: c2s}
+	ch := make(chan *qotgetfinancialsearnpricehist.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetFinancialsEarningsPriceHistory, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetFinancialsStatements 3227 - 获取财务报表
+func (client *Client) QotGetFinancialsStatements(ctx context.Context, c2s *qotgetfinancialsstatements.C2S) (*qotgetfinancialsstatements.S2C, error) {
+	req := &qotgetfinancialsstatements.Request{C2S: c2s}
+	ch := make(chan *qotgetfinancialsstatements.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetFinancialsStatements, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetFinancialsRevenueBreakdown 3228 - 获取主营构成
+func (client *Client) QotGetFinancialsRevenueBreakdown(ctx context.Context, c2s *qotgetfinancialrevenuebreakdown.C2S) (*qotgetfinancialrevenuebreakdown.S2C, error) {
+	req := &qotgetfinancialrevenuebreakdown.Request{C2S: c2s}
+	ch := make(chan *qotgetfinancialrevenuebreakdown.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetFinancialsRevenueBreakdown, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetResearchAnalystConsensus 3229 - 获取分析师评级汇总
+func (client *Client) QotGetResearchAnalystConsensus(ctx context.Context, c2s *qotgetresearchanalystconsensus.C2S) (*qotgetresearchanalystconsensus.S2C, error) {
+	req := &qotgetresearchanalystconsensus.Request{C2S: c2s}
+	ch := make(chan *qotgetresearchanalystconsensus.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetResearchAnalystConsensus, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetResearchRatingSummary 3230 - 获取分析师评级详情
+func (client *Client) QotGetResearchRatingSummary(ctx context.Context, c2s *qotgetresearchratingsummary.C2S) (*qotgetresearchratingsummary.S2C, error) {
+	req := &qotgetresearchratingsummary.Request{C2S: c2s}
+	ch := make(chan *qotgetresearchratingsummary.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetResearchRatingSummary, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetResearchMorningstarReport 3231 - 获取晨星研报
+func (client *Client) QotGetResearchMorningstarReport(ctx context.Context, c2s *qotgetresearchmorningstarrpt.C2S) (*qotgetresearchmorningstarrpt.S2C, error) {
+	req := &qotgetresearchmorningstarrpt.Request{C2S: c2s}
+	ch := make(chan *qotgetresearchmorningstarrpt.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetResearchMorningstarReport, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetValuationDetail 3232 - 获取估值详情
+func (client *Client) QotGetValuationDetail(ctx context.Context, c2s *qotgetvaluationdetail.C2S) (*qotgetvaluationdetail.S2C, error) {
+	req := &qotgetvaluationdetail.Request{C2S: c2s}
+	ch := make(chan *qotgetvaluationdetail.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetValuationDetail, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetValuationPlateStockList 3233 - 获取板块估值股票列表
+func (client *Client) QotGetValuationPlateStockList(ctx context.Context, c2s *qotgetvaluationplatestocklist.C2S) (*qotgetvaluationplatestocklist.S2C, error) {
+	req := &qotgetvaluationplatestocklist.Request{C2S: c2s}
+	ch := make(chan *qotgetvaluationplatestocklist.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetValuationPlateStockList, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetCorporateActionsDividends 3234 - 获取除权除息
+func (client *Client) QotGetCorporateActionsDividends(ctx context.Context, c2s *qotgetcorporateactionsdividends.C2S) (*qotgetcorporateactionsdividends.S2C, error) {
+	req := &qotgetcorporateactionsdividends.Request{C2S: c2s}
+	ch := make(chan *qotgetcorporateactionsdividends.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetCorporateActionsDividends, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetCorporateActionsBuybacks 3235 - 获取回购
+func (client *Client) QotGetCorporateActionsBuybacks(ctx context.Context, c2s *qotgetcorporateactionsbuybacks.C2S) (*qotgetcorporateactionsbuybacks.S2C, error) {
+	req := &qotgetcorporateactionsbuybacks.Request{C2S: c2s}
+	ch := make(chan *qotgetcorporateactionsbuybacks.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetCorporateActionsBuybacks, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetCorporateActionsStockSplits 3236 - 获取拆合股
+func (client *Client) QotGetCorporateActionsStockSplits(ctx context.Context, c2s *qotgetcorporateactionsstocksplits.C2S) (*qotgetcorporateactionsstocksplits.S2C, error) {
+	req := &qotgetcorporateactionsstocksplits.Request{C2S: c2s}
+	ch := make(chan *qotgetcorporateactionsstocksplits.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetCorporateActionsStockSplits, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetShareholdersOverview 3237 - 获取股东概要
+func (client *Client) QotGetShareholdersOverview(ctx context.Context, c2s *qotgetshareholdersoverview.C2S) (*qotgetshareholdersoverview.S2C, error) {
+	req := &qotgetshareholdersoverview.Request{C2S: c2s}
+	ch := make(chan *qotgetshareholdersoverview.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetShareholdersOverview, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetShareholdersHoldingChanges 3238 - 获取持股变动
+func (client *Client) QotGetShareholdersHoldingChanges(ctx context.Context, c2s *qotgetshareholdersholdingchanges.C2S) (*qotgetshareholdersholdingchanges.S2C, error) {
+	req := &qotgetshareholdersholdingchanges.Request{C2S: c2s}
+	ch := make(chan *qotgetshareholdersholdingchanges.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetShareholdersHoldingChanges, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetShareholdersHolderDetail 3239 - 获取股东持仓明细
+func (client *Client) QotGetShareholdersHolderDetail(ctx context.Context, c2s *qotgetshareholdersholderdetail.C2S) (*qotgetshareholdersholderdetail.S2C, error) {
+	req := &qotgetshareholdersholderdetail.Request{C2S: c2s}
+	ch := make(chan *qotgetshareholdersholderdetail.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetShareholdersHolderDetail, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetShareholdersInstitutional 3240 - 获取机构持仓
+func (client *Client) QotGetShareholdersInstitutional(ctx context.Context, c2s *qotgetshareholdersinstitutional.C2S) (*qotgetshareholdersinstitutional.S2C, error) {
+	req := &qotgetshareholdersinstitutional.Request{C2S: c2s}
+	ch := make(chan *qotgetshareholdersinstitutional.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetShareholdersInstitutional, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetInsiderHolderList 3241 - 获取内部持有人列表
+func (client *Client) QotGetInsiderHolderList(ctx context.Context, c2s *qotgetinsiderholderlist.C2S) (*qotgetinsiderholderlist.S2C, error) {
+	req := &qotgetinsiderholderlist.Request{C2S: c2s}
+	ch := make(chan *qotgetinsiderholderlist.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetInsiderHolderList, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetInsiderTradeList 3242 - 获取内部人交易列表
+func (client *Client) QotGetInsiderTradeList(ctx context.Context, c2s *qotgetinsidertradelist.C2S) (*qotgetinsidertradelist.S2C, error) {
+	req := &qotgetinsidertradelist.Request{C2S: c2s}
+	ch := make(chan *qotgetinsidertradelist.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetInsiderTradeList, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetCompanyProfile 3243 - 获取公司资料
+func (client *Client) QotGetCompanyProfile(ctx context.Context, c2s *qotgetcompanyprofile.C2S) (*qotgetcompanyprofile.S2C, error) {
+	req := &qotgetcompanyprofile.Request{C2S: c2s}
+	ch := make(chan *qotgetcompanyprofile.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetCompanyProfile, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetCompanyExecutives 3244 - 获取公司高管
+func (client *Client) QotGetCompanyExecutives(ctx context.Context, c2s *qotgetcompanyexecutives.C2S) (*qotgetcompanyexecutives.S2C, error) {
+	req := &qotgetcompanyexecutives.Request{C2S: c2s}
+	ch := make(chan *qotgetcompanyexecutives.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetCompanyExecutives, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetCompanyExecutiveBackground 3245 - 获取高管背景
+func (client *Client) QotGetCompanyExecutiveBackground(ctx context.Context, c2s *qotgetcompanyexecutivebackground.C2S) (*qotgetcompanyexecutivebackground.S2C, error) {
+	req := &qotgetcompanyexecutivebackground.Request{C2S: c2s}
+	ch := make(chan *qotgetcompanyexecutivebackground.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetCompanyExecutiveBackground, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetCompanyOperationalEfficiency 3246 - 获取营运效率
+func (client *Client) QotGetCompanyOperationalEfficiency(ctx context.Context, c2s *qotgetcompanyoperationalefficiency.C2S) (*qotgetcompanyoperationalefficiency.S2C, error) {
+	req := &qotgetcompanyoperationalefficiency.Request{C2S: c2s}
+	ch := make(chan *qotgetcompanyoperationalefficiency.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetCompanyOperationalEfficiency, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetTopTenBuySellBrokers 3247 - 获取十大经纪商
+func (client *Client) QotGetTopTenBuySellBrokers(ctx context.Context, c2s *qotgettoptenbuysellbrokers.C2S) (*qotgettoptenbuysellbrokers.S2C, error) {
+	req := &qotgettoptenbuysellbrokers.Request{C2S: c2s}
+	ch := make(chan *qotgettoptenbuysellbrokers.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetTopTenBuySellBrokers, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetDailyShortVolume 3248 - 获取每日做空量
+func (client *Client) QotGetDailyShortVolume(ctx context.Context, c2s *qotgetdailyshortvolume.C2S) (*qotgetdailyshortvolume.S2C, error) {
+	req := &qotgetdailyshortvolume.Request{C2S: c2s}
+	ch := make(chan *qotgetdailyshortvolume.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetDailyShortVolume, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetShortInterest 3249 - 获取做空比例
+func (client *Client) QotGetShortInterest(ctx context.Context, c2s *qotgetshortinterest.C2S) (*qotgetshortinterest.S2C, error) {
+	req := &qotgetshortinterest.Request{C2S: c2s}
+	ch := make(chan *qotgetshortinterest.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetShortInterest, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetOptionVolatility 3250 - 获取期权波动率
+func (client *Client) QotGetOptionVolatility(ctx context.Context, c2s *qotgetoptionvolatility.C2S) (*qotgetoptionvolatility.S2C, error) {
+	req := &qotgetoptionvolatility.Request{C2S: c2s}
+	ch := make(chan *qotgetoptionvolatility.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetOptionVolatility, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotGetOptionExerciseProbability 3251 - 获取期权行权概率
+func (client *Client) QotGetOptionExerciseProbability(ctx context.Context, c2s *qotgetoptionexerciseprobability.C2S) (*qotgetoptionexerciseprobability.S2C, error) {
+	req := &qotgetoptionexerciseprobability.Request{C2S: c2s}
+	ch := make(chan *qotgetoptionexerciseprobability.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotGetOptionExerciseProbability, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotStockScreen 3252 - 条件选股
+func (client *Client) QotStockScreen(ctx context.Context, c2s *qotstockscreen.C2S) (*qotstockscreen.S2C, error) {
+	req := &qotstockscreen.Request{C2S: c2s}
+	ch := make(chan *qotstockscreen.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotStockScreen, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotOptionScreen 3253 - 期权筛选
+func (client *Client) QotOptionScreen(ctx context.Context, c2s *qotoptionscreen.C2S) (*qotoptionscreen.S2C, error) {
+	req := &qotoptionscreen.Request{C2S: c2s}
+	ch := make(chan *qotoptionscreen.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotOptionScreen, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// QotWarrantScreen 3254 - 窝轮筛选
+func (client *Client) QotWarrantScreen(ctx context.Context, c2s *qotwarrantscreen.C2S) (*qotwarrantscreen.S2C, error) {
+	req := &qotwarrantscreen.Request{C2S: c2s}
+	ch := make(chan *qotwarrantscreen.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.QotWarrantScreen, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
 	select {
 	case <-ctx.Done():
 		return nil, ctx.Err()

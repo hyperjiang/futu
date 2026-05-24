@@ -260,6 +260,7 @@ func (x *FutureInfo) GetOrigin() *qotcommon.Security {
 type C2S struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SecurityList  []*qotcommon.Security  `protobuf:"bytes,1,rep,name=securityList" json:"securityList,omitempty"` //股票列表
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`           //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -297,6 +298,13 @@ func (*C2S) Descriptor() ([]byte, []int) {
 func (x *C2S) GetSecurityList() []*qotcommon.Security {
 	if x != nil {
 		return x.SecurityList
+	}
+	return nil
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
 	}
 	return nil
 }
@@ -494,9 +502,10 @@ const file_Qot_GetFutureInfo_proto_rawDesc = "" +
 	"\ttradeTime\x18\x0f \x03(\v2\x1c.Qot_GetFutureInfo.TradeTimeR\ttradeTime\x12\x1a\n" +
 	"\btimeZone\x18\x10 \x02(\tR\btimeZone\x12,\n" +
 	"\x11exchangeFormatUrl\x18\x11 \x02(\tR\x11exchangeFormatUrl\x12,\n" +
-	"\x06origin\x18\x12 \x01(\v2\x14.Qot_Common.SecurityR\x06origin\"?\n" +
+	"\x06origin\x18\x12 \x01(\v2\x14.Qot_Common.SecurityR\x06origin\"n\n" +
 	"\x03C2S\x128\n" +
-	"\fsecurityList\x18\x01 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\"L\n" +
+	"\fsecurityList\x18\x01 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"L\n" +
 	"\x03S2C\x12E\n" +
 	"\x0efutureInfoList\x18\x01 \x03(\v2\x1d.Qot_GetFutureInfo.FutureInfoR\x0efutureInfoList\"3\n" +
 	"\aRequest\x12(\n" +
@@ -522,13 +531,14 @@ func file_Qot_GetFutureInfo_proto_rawDescGZIP() []byte {
 
 var file_Qot_GetFutureInfo_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_Qot_GetFutureInfo_proto_goTypes = []any{
-	(*TradeTime)(nil),          // 0: Qot_GetFutureInfo.TradeTime
-	(*FutureInfo)(nil),         // 1: Qot_GetFutureInfo.FutureInfo
-	(*C2S)(nil),                // 2: Qot_GetFutureInfo.C2S
-	(*S2C)(nil),                // 3: Qot_GetFutureInfo.S2C
-	(*Request)(nil),            // 4: Qot_GetFutureInfo.Request
-	(*Response)(nil),           // 5: Qot_GetFutureInfo.Response
-	(*qotcommon.Security)(nil), // 6: Qot_Common.Security
+	(*TradeTime)(nil),           // 0: Qot_GetFutureInfo.TradeTime
+	(*FutureInfo)(nil),          // 1: Qot_GetFutureInfo.FutureInfo
+	(*C2S)(nil),                 // 2: Qot_GetFutureInfo.C2S
+	(*S2C)(nil),                 // 3: Qot_GetFutureInfo.S2C
+	(*Request)(nil),             // 4: Qot_GetFutureInfo.Request
+	(*Response)(nil),            // 5: Qot_GetFutureInfo.Response
+	(*qotcommon.Security)(nil),  // 6: Qot_Common.Security
+	(*qotcommon.QotHeader)(nil), // 7: Qot_Common.QotHeader
 }
 var file_Qot_GetFutureInfo_proto_depIdxs = []int32{
 	6, // 0: Qot_GetFutureInfo.FutureInfo.security:type_name -> Qot_Common.Security
@@ -536,14 +546,15 @@ var file_Qot_GetFutureInfo_proto_depIdxs = []int32{
 	0, // 2: Qot_GetFutureInfo.FutureInfo.tradeTime:type_name -> Qot_GetFutureInfo.TradeTime
 	6, // 3: Qot_GetFutureInfo.FutureInfo.origin:type_name -> Qot_Common.Security
 	6, // 4: Qot_GetFutureInfo.C2S.securityList:type_name -> Qot_Common.Security
-	1, // 5: Qot_GetFutureInfo.S2C.futureInfoList:type_name -> Qot_GetFutureInfo.FutureInfo
-	2, // 6: Qot_GetFutureInfo.Request.c2s:type_name -> Qot_GetFutureInfo.C2S
-	3, // 7: Qot_GetFutureInfo.Response.s2c:type_name -> Qot_GetFutureInfo.S2C
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	7, // 5: Qot_GetFutureInfo.C2S.header:type_name -> Qot_Common.QotHeader
+	1, // 6: Qot_GetFutureInfo.S2C.futureInfoList:type_name -> Qot_GetFutureInfo.FutureInfo
+	2, // 7: Qot_GetFutureInfo.Request.c2s:type_name -> Qot_GetFutureInfo.C2S
+	3, // 8: Qot_GetFutureInfo.Response.s2c:type_name -> Qot_GetFutureInfo.S2C
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetFutureInfo_proto_init() }

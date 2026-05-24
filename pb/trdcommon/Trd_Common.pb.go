@@ -86,6 +86,7 @@ const (
 	TrdCategory_TrdCategory_Unknown  TrdCategory = 0 //未知品类
 	TrdCategory_TrdCategory_Security TrdCategory = 1 //证券
 	TrdCategory_TrdCategory_Future   TrdCategory = 2 //期货
+	TrdCategory_TrdCategory_Crypto   TrdCategory = 3 //加密货币
 )
 
 // Enum value maps for TrdCategory.
@@ -94,11 +95,13 @@ var (
 		0: "TrdCategory_Unknown",
 		1: "TrdCategory_Security",
 		2: "TrdCategory_Future",
+		3: "TrdCategory_Crypto",
 	}
 	TrdCategory_value = map[string]int32{
 		"TrdCategory_Unknown":  0,
 		"TrdCategory_Security": 1,
 		"TrdCategory_Future":   2,
+		"TrdCategory_Crypto":   3,
 	}
 )
 
@@ -150,6 +153,7 @@ const (
 	TrdMarket_TrdMarket_HKCC                TrdMarket = 4  //香港A股通市场
 	TrdMarket_TrdMarket_Futures             TrdMarket = 5  //期货市场
 	TrdMarket_TrdMarket_SG                  TrdMarket = 6  //期货市场
+	TrdMarket_TrdMarket_Crypto              TrdMarket = 7  //加密货币市场
 	TrdMarket_TrdMarket_AU                  TrdMarket = 8  //澳洲市场
 	TrdMarket_TrdMarket_Futures_Simulate_HK TrdMarket = 10 // 模拟交易期货市场
 	TrdMarket_TrdMarket_Futures_Simulate_US TrdMarket = 11
@@ -160,6 +164,9 @@ const (
 	TrdMarket_TrdMarket_CA                  TrdMarket = 112
 	TrdMarket_TrdMarket_HK_Fund             TrdMarket = 113 //香港基金市场
 	TrdMarket_TrdMarket_US_Fund             TrdMarket = 123 //美国基金市场
+	TrdMarket_TrdMarket_SG_Fund             TrdMarket = 124 //新加坡基金市场
+	TrdMarket_TrdMarket_MY_Fund             TrdMarket = 125 //马来西亚基金市场
+	TrdMarket_TrdMarket_JP_Fund             TrdMarket = 126 //日本基金市场
 )
 
 // Enum value maps for TrdMarket.
@@ -172,6 +179,7 @@ var (
 		4:   "TrdMarket_HKCC",
 		5:   "TrdMarket_Futures",
 		6:   "TrdMarket_SG",
+		7:   "TrdMarket_Crypto",
 		8:   "TrdMarket_AU",
 		10:  "TrdMarket_Futures_Simulate_HK",
 		11:  "TrdMarket_Futures_Simulate_US",
@@ -182,6 +190,9 @@ var (
 		112: "TrdMarket_CA",
 		113: "TrdMarket_HK_Fund",
 		123: "TrdMarket_US_Fund",
+		124: "TrdMarket_SG_Fund",
+		125: "TrdMarket_MY_Fund",
+		126: "TrdMarket_JP_Fund",
 	}
 	TrdMarket_value = map[string]int32{
 		"TrdMarket_Unknown":             0,
@@ -191,6 +202,7 @@ var (
 		"TrdMarket_HKCC":                4,
 		"TrdMarket_Futures":             5,
 		"TrdMarket_SG":                  6,
+		"TrdMarket_Crypto":              7,
 		"TrdMarket_AU":                  8,
 		"TrdMarket_Futures_Simulate_HK": 10,
 		"TrdMarket_Futures_Simulate_US": 11,
@@ -201,6 +213,9 @@ var (
 		"TrdMarket_CA":                  112,
 		"TrdMarket_HK_Fund":             113,
 		"TrdMarket_US_Fund":             123,
+		"TrdMarket_SG_Fund":             124,
+		"TrdMarket_MY_Fund":             125,
+		"TrdMarket_JP_Fund":             126,
 	}
 )
 
@@ -245,33 +260,35 @@ func (TrdMarket) EnumDescriptor() ([]byte, []int) {
 type TrdSecMarket int32
 
 const (
-	TrdSecMarket_TrdSecMarket_Unknown TrdSecMarket = 0  //未知市场
-	TrdSecMarket_TrdSecMarket_HK      TrdSecMarket = 1  //香港市场(股票、窝轮、牛熊、期权、期货等)
-	TrdSecMarket_TrdSecMarket_US      TrdSecMarket = 2  //美国市场(股票、期权、期货等)
-	TrdSecMarket_TrdSecMarket_CN_SH   TrdSecMarket = 31 //沪股市场(股票)
-	TrdSecMarket_TrdSecMarket_CN_SZ   TrdSecMarket = 32 //深股市场(股票)
-	TrdSecMarket_TrdSecMarket_SG      TrdSecMarket = 41 //新加坡市场(期货)
-	TrdSecMarket_TrdSecMarket_JP      TrdSecMarket = 51 //日本市场(期货)
-	TrdSecMarket_TrdSecMarket_AU      TrdSecMarket = 61 // 澳大利亚
-	TrdSecMarket_TrdSecMarket_MY      TrdSecMarket = 71 // 马来西亚
-	TrdSecMarket_TrdSecMarket_CA      TrdSecMarket = 81 // 加拿大
-	TrdSecMarket_TrdSecMarket_FX      TrdSecMarket = 91 // 外汇
+	TrdSecMarket_TrdSecMarket_Unknown TrdSecMarket = 0   //未知市场
+	TrdSecMarket_TrdSecMarket_HK      TrdSecMarket = 1   //香港市场(股票、窝轮、牛熊、期权、期货等)
+	TrdSecMarket_TrdSecMarket_US      TrdSecMarket = 2   //美国市场(股票、期权、期货等)
+	TrdSecMarket_TrdSecMarket_CN_SH   TrdSecMarket = 31  //沪股市场(股票)
+	TrdSecMarket_TrdSecMarket_CN_SZ   TrdSecMarket = 32  //深股市场(股票)
+	TrdSecMarket_TrdSecMarket_SG      TrdSecMarket = 41  //新加坡市场(期货)
+	TrdSecMarket_TrdSecMarket_JP      TrdSecMarket = 51  //日本市场(期货)
+	TrdSecMarket_TrdSecMarket_AU      TrdSecMarket = 61  // 澳大利亚
+	TrdSecMarket_TrdSecMarket_MY      TrdSecMarket = 71  // 马来西亚
+	TrdSecMarket_TrdSecMarket_CA      TrdSecMarket = 81  // 加拿大
+	TrdSecMarket_TrdSecMarket_FX      TrdSecMarket = 91  // 外汇
+	TrdSecMarket_TrdSecMarket_CC      TrdSecMarket = 101 // 加密货币市场
 )
 
 // Enum value maps for TrdSecMarket.
 var (
 	TrdSecMarket_name = map[int32]string{
-		0:  "TrdSecMarket_Unknown",
-		1:  "TrdSecMarket_HK",
-		2:  "TrdSecMarket_US",
-		31: "TrdSecMarket_CN_SH",
-		32: "TrdSecMarket_CN_SZ",
-		41: "TrdSecMarket_SG",
-		51: "TrdSecMarket_JP",
-		61: "TrdSecMarket_AU",
-		71: "TrdSecMarket_MY",
-		81: "TrdSecMarket_CA",
-		91: "TrdSecMarket_FX",
+		0:   "TrdSecMarket_Unknown",
+		1:   "TrdSecMarket_HK",
+		2:   "TrdSecMarket_US",
+		31:  "TrdSecMarket_CN_SH",
+		32:  "TrdSecMarket_CN_SZ",
+		41:  "TrdSecMarket_SG",
+		51:  "TrdSecMarket_JP",
+		61:  "TrdSecMarket_AU",
+		71:  "TrdSecMarket_MY",
+		81:  "TrdSecMarket_CA",
+		91:  "TrdSecMarket_FX",
+		101: "TrdSecMarket_CC",
 	}
 	TrdSecMarket_value = map[string]int32{
 		"TrdSecMarket_Unknown": 0,
@@ -285,6 +302,7 @@ var (
 		"TrdSecMarket_MY":      71,
 		"TrdSecMarket_CA":      81,
 		"TrdSecMarket_FX":      91,
+		"TrdSecMarket_CC":      101,
 	}
 )
 
@@ -853,9 +871,13 @@ func (ModifyOrderOp) EnumDescriptor() ([]byte, []int) {
 type TrdAccType int32
 
 const (
-	TrdAccType_TrdAccType_Unknown TrdAccType = 0 //未知类型
-	TrdAccType_TrdAccType_Cash    TrdAccType = 1 //现金账户
-	TrdAccType_TrdAccType_Margin  TrdAccType = 2 //保证金账户
+	TrdAccType_TrdAccType_Unknown     TrdAccType = 0 //未知类型
+	TrdAccType_TrdAccType_Cash        TrdAccType = 1 //现金账户
+	TrdAccType_TrdAccType_Margin      TrdAccType = 2 //保证金账户
+	TrdAccType_TrdAccType_TFSA        TrdAccType = 3 //加拿大免税账户
+	TrdAccType_TrdAccType_RRSP        TrdAccType = 4 //加拿大注册退休账户
+	TrdAccType_TrdAccType_SRRSP       TrdAccType = 5 //加拿大配偶退休账户
+	TrdAccType_TrdAccType_Derivatives TrdAccType = 6 //日本衍生品账户
 )
 
 // Enum value maps for TrdAccType.
@@ -864,11 +886,19 @@ var (
 		0: "TrdAccType_Unknown",
 		1: "TrdAccType_Cash",
 		2: "TrdAccType_Margin",
+		3: "TrdAccType_TFSA",
+		4: "TrdAccType_RRSP",
+		5: "TrdAccType_SRRSP",
+		6: "TrdAccType_Derivatives",
 	}
 	TrdAccType_value = map[string]int32{
-		"TrdAccType_Unknown": 0,
-		"TrdAccType_Cash":    1,
-		"TrdAccType_Margin":  2,
+		"TrdAccType_Unknown":     0,
+		"TrdAccType_Cash":        1,
+		"TrdAccType_Margin":      2,
+		"TrdAccType_TFSA":        3,
+		"TrdAccType_RRSP":        4,
+		"TrdAccType_SRRSP":       5,
+		"TrdAccType_Derivatives": 6,
 	}
 )
 
@@ -973,6 +1003,7 @@ const (
 	TrdAccRole_TrdAccRole_Unknown TrdAccRole = 0 //未知
 	TrdAccRole_TrdAccRole_Normal  TrdAccRole = 1 //普通账户
 	TrdAccRole_TrdAccRole_Master  TrdAccRole = 2 //主账户
+	TrdAccRole_TrdAccRole_IPO     TrdAccRole = 3 //IPO 账户，仅MY券商
 )
 
 // Enum value maps for TrdAccRole.
@@ -981,11 +1012,13 @@ var (
 		0: "TrdAccRole_Unknown",
 		1: "TrdAccRole_Normal",
 		2: "TrdAccRole_Master",
+		3: "TrdAccRole_IPO",
 	}
 	TrdAccRole_value = map[string]int32{
 		"TrdAccRole_Unknown": 0,
 		"TrdAccRole_Normal":  1,
 		"TrdAccRole_Master":  2,
+		"TrdAccRole_IPO":     3,
 	}
 )
 
@@ -1179,6 +1212,7 @@ type TimeInForce int32
 const (
 	TimeInForce_TimeInForce_DAY TimeInForce = 0 // 当日有效
 	TimeInForce_TimeInForce_GTC TimeInForce = 1 // 撤单前有效，最多持续90自然日。
+	TimeInForce_TimeInForce_IOC TimeInForce = 2 // 立即执行，否则取消
 )
 
 // Enum value maps for TimeInForce.
@@ -1186,10 +1220,12 @@ var (
 	TimeInForce_name = map[int32]string{
 		0: "TimeInForce_DAY",
 		1: "TimeInForce_GTC",
+		2: "TimeInForce_IOC",
 	}
 	TimeInForce_value = map[string]int32{
 		"TimeInForce_DAY": 0,
 		"TimeInForce_GTC": 1,
+		"TimeInForce_IOC": 2,
 	}
 )
 
@@ -1230,80 +1266,16 @@ func (TimeInForce) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{16}
 }
 
-//券商
-type SecurityFirm int32
-
-const (
-	SecurityFirm_SecurityFirm_Unknown        SecurityFirm = 0 //未知
-	SecurityFirm_SecurityFirm_FutuSecurities SecurityFirm = 1 //富途证券（香港）
-	SecurityFirm_SecurityFirm_FutuInc        SecurityFirm = 2 //富途证券（美国）
-	SecurityFirm_SecurityFirm_FutuSG         SecurityFirm = 3 //富途证券（新加坡）
-	SecurityFirm_SecurityFirm_FutuAU         SecurityFirm = 4 //富途证券（澳洲）
-)
-
-// Enum value maps for SecurityFirm.
-var (
-	SecurityFirm_name = map[int32]string{
-		0: "SecurityFirm_Unknown",
-		1: "SecurityFirm_FutuSecurities",
-		2: "SecurityFirm_FutuInc",
-		3: "SecurityFirm_FutuSG",
-		4: "SecurityFirm_FutuAU",
-	}
-	SecurityFirm_value = map[string]int32{
-		"SecurityFirm_Unknown":        0,
-		"SecurityFirm_FutuSecurities": 1,
-		"SecurityFirm_FutuInc":        2,
-		"SecurityFirm_FutuSG":         3,
-		"SecurityFirm_FutuAU":         4,
-	}
-)
-
-func (x SecurityFirm) Enum() *SecurityFirm {
-	p := new(SecurityFirm)
-	*p = x
-	return p
-}
-
-func (x SecurityFirm) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (SecurityFirm) Descriptor() protoreflect.EnumDescriptor {
-	return file_Trd_Common_proto_enumTypes[17].Descriptor()
-}
-
-func (SecurityFirm) Type() protoreflect.EnumType {
-	return &file_Trd_Common_proto_enumTypes[17]
-}
-
-func (x SecurityFirm) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Do not use.
-func (x *SecurityFirm) UnmarshalJSON(b []byte) error {
-	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
-	if err != nil {
-		return err
-	}
-	*x = SecurityFirm(num)
-	return nil
-}
-
-// Deprecated: Use SecurityFirm.Descriptor instead.
-func (SecurityFirm) EnumDescriptor() ([]byte, []int) {
-	return file_Trd_Common_proto_rawDescGZIP(), []int{17}
-}
-
 //模拟交易账户类型
 type SimAccType int32
 
 const (
-	SimAccType_SimAccType_Unknown SimAccType = 0 //未知
-	SimAccType_SimAccType_Stock   SimAccType = 1 //股票模拟账户（仅用于交易证券类产品，不支持交易期权）
-	SimAccType_SimAccType_Option  SimAccType = 2 //期权模拟账户（仅用于交易期权，不支持交易股票证券类产品）
-	SimAccType_SimAccType_Futures SimAccType = 3 //期货模拟账户
+	SimAccType_SimAccType_Unknown        SimAccType = 0 //未知
+	SimAccType_SimAccType_Stock          SimAccType = 1 //股票模拟账户（仅用于交易证券类产品，不支持交易期权）
+	SimAccType_SimAccType_Option         SimAccType = 2 //期权模拟账户（仅用于交易期权，不支持交易股票证券类产品）
+	SimAccType_SimAccType_Futures        SimAccType = 3 //期货模拟账户
+	SimAccType_SimAccType_StockAndOption SimAccType = 4 //股票和期权模拟账户（支持交易股票和期权）
+	SimAccType_SimAccType_Competition    SimAccType = 5 // 比赛账户
 )
 
 // Enum value maps for SimAccType.
@@ -1313,12 +1285,16 @@ var (
 		1: "SimAccType_Stock",
 		2: "SimAccType_Option",
 		3: "SimAccType_Futures",
+		4: "SimAccType_StockAndOption",
+		5: "SimAccType_Competition",
 	}
 	SimAccType_value = map[string]int32{
-		"SimAccType_Unknown": 0,
-		"SimAccType_Stock":   1,
-		"SimAccType_Option":  2,
-		"SimAccType_Futures": 3,
+		"SimAccType_Unknown":        0,
+		"SimAccType_Stock":          1,
+		"SimAccType_Option":         2,
+		"SimAccType_Futures":        3,
+		"SimAccType_StockAndOption": 4,
+		"SimAccType_Competition":    5,
 	}
 )
 
@@ -1333,11 +1309,11 @@ func (x SimAccType) String() string {
 }
 
 func (SimAccType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Trd_Common_proto_enumTypes[18].Descriptor()
+	return file_Trd_Common_proto_enumTypes[17].Descriptor()
 }
 
 func (SimAccType) Type() protoreflect.EnumType {
-	return &file_Trd_Common_proto_enumTypes[18]
+	return &file_Trd_Common_proto_enumTypes[17]
 }
 
 func (x SimAccType) Number() protoreflect.EnumNumber {
@@ -1356,7 +1332,7 @@ func (x *SimAccType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SimAccType.Descriptor instead.
 func (SimAccType) EnumDescriptor() ([]byte, []int) {
-	return file_Trd_Common_proto_rawDescGZIP(), []int{18}
+	return file_Trd_Common_proto_rawDescGZIP(), []int{17}
 }
 
 //风险状态，共分 9 个等级，LEVEL1是最安全，LEVEL9是最危险
@@ -1414,11 +1390,11 @@ func (x CltRiskStatus) String() string {
 }
 
 func (CltRiskStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_Trd_Common_proto_enumTypes[19].Descriptor()
+	return file_Trd_Common_proto_enumTypes[18].Descriptor()
 }
 
 func (CltRiskStatus) Type() protoreflect.EnumType {
-	return &file_Trd_Common_proto_enumTypes[19]
+	return &file_Trd_Common_proto_enumTypes[18]
 }
 
 func (x CltRiskStatus) Number() protoreflect.EnumNumber {
@@ -1437,7 +1413,7 @@ func (x *CltRiskStatus) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use CltRiskStatus.Descriptor instead.
 func (CltRiskStatus) EnumDescriptor() ([]byte, []int) {
-	return file_Trd_Common_proto_rawDescGZIP(), []int{19}
+	return file_Trd_Common_proto_rawDescGZIP(), []int{18}
 }
 
 //日内交易限制情况
@@ -1477,11 +1453,11 @@ func (x DTStatus) String() string {
 }
 
 func (DTStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_Trd_Common_proto_enumTypes[20].Descriptor()
+	return file_Trd_Common_proto_enumTypes[19].Descriptor()
 }
 
 func (DTStatus) Type() protoreflect.EnumType {
-	return &file_Trd_Common_proto_enumTypes[20]
+	return &file_Trd_Common_proto_enumTypes[19]
 }
 
 func (x DTStatus) Number() protoreflect.EnumNumber {
@@ -1500,7 +1476,320 @@ func (x *DTStatus) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use DTStatus.Descriptor instead.
 func (DTStatus) EnumDescriptor() ([]byte, []int) {
+	return file_Trd_Common_proto_rawDescGZIP(), []int{19}
+}
+
+//JP子账户类型
+type TrdSubAccType int32
+
+const (
+	TrdSubAccType_TrdSubAccType_None              TrdSubAccType = 0 //未知
+	TrdSubAccType_TrdSubAccType_JP_GENERAL        TrdSubAccType = 1 // 日本-一般口座-long
+	TrdSubAccType_TrdSubAccType_JP_TOKUTEI        TrdSubAccType = 2 // 日本-特定口座-long
+	TrdSubAccType_TrdSubAccType_JP_NISA_GENERAL   TrdSubAccType = 3 // 日本-一般NISA
+	TrdSubAccType_TrdSubAccType_JP_NISA_TSUMITATE TrdSubAccType = 4 // 日本-累计NISA
+	// JP支持信用账户新增如下六种子账户类型
+	TrdSubAccType_TrdSubAccType_JP_GENERAL_SHORT   TrdSubAccType = 5  // 日本-一般口座-Short
+	TrdSubAccType_TrdSubAccType_JP_TOKUTEI_SHORT   TrdSubAccType = 6  // 日本-特定口座-Short
+	TrdSubAccType_TrdSubAccType_JP_HONPO_GENERAL   TrdSubAccType = 7  // 日本-本国信用交易抵押品-一般
+	TrdSubAccType_TrdSubAccType_JP_GAIKOKU_GENERAL TrdSubAccType = 8  // 日本-外国信用交易抵押品-一般
+	TrdSubAccType_TrdSubAccType_JP_HONPO_TOKUTEI   TrdSubAccType = 9  // 日本-本国信用交易抵押品-特定
+	TrdSubAccType_TrdSubAccType_JP_GAIKOKU_TOKUTEI TrdSubAccType = 10 // 日本-外国信用交易抵押品-特定
+	// JP支持衍生品账户新增如下六种子账户类型
+	TrdSubAccType_TrdSubAccType_JP_DERIVATIVE_LONG            TrdSubAccType = 11 // 日本-衍生品-Long
+	TrdSubAccType_TrdSubAccType_JP_DERIVATIVE_SHORT           TrdSubAccType = 12 // 日本-衍生品-Short
+	TrdSubAccType_TrdSubAccType_JP_HONPO_DERIVATIVE_GENERAL   TrdSubAccType = 13 // 日本-本国衍生品证据金-一般
+	TrdSubAccType_TrdSubAccType_JP_GAIKOKU_DERIVATIVE_GENERAL TrdSubAccType = 14 // 日本-外国衍生品证据金-一般
+	TrdSubAccType_TrdSubAccType_JP_HONPO_DERIVATIVE_TOKUTEI   TrdSubAccType = 15 // 日本-本国衍生品证据金-特定
+	TrdSubAccType_TrdSubAccType_JP_GAIKOKU_DERIVATIVE_TOKUTEI TrdSubAccType = 16 // 日本-外国衍生品证据金-特定
+)
+
+// Enum value maps for TrdSubAccType.
+var (
+	TrdSubAccType_name = map[int32]string{
+		0:  "TrdSubAccType_None",
+		1:  "TrdSubAccType_JP_GENERAL",
+		2:  "TrdSubAccType_JP_TOKUTEI",
+		3:  "TrdSubAccType_JP_NISA_GENERAL",
+		4:  "TrdSubAccType_JP_NISA_TSUMITATE",
+		5:  "TrdSubAccType_JP_GENERAL_SHORT",
+		6:  "TrdSubAccType_JP_TOKUTEI_SHORT",
+		7:  "TrdSubAccType_JP_HONPO_GENERAL",
+		8:  "TrdSubAccType_JP_GAIKOKU_GENERAL",
+		9:  "TrdSubAccType_JP_HONPO_TOKUTEI",
+		10: "TrdSubAccType_JP_GAIKOKU_TOKUTEI",
+		11: "TrdSubAccType_JP_DERIVATIVE_LONG",
+		12: "TrdSubAccType_JP_DERIVATIVE_SHORT",
+		13: "TrdSubAccType_JP_HONPO_DERIVATIVE_GENERAL",
+		14: "TrdSubAccType_JP_GAIKOKU_DERIVATIVE_GENERAL",
+		15: "TrdSubAccType_JP_HONPO_DERIVATIVE_TOKUTEI",
+		16: "TrdSubAccType_JP_GAIKOKU_DERIVATIVE_TOKUTEI",
+	}
+	TrdSubAccType_value = map[string]int32{
+		"TrdSubAccType_None":                          0,
+		"TrdSubAccType_JP_GENERAL":                    1,
+		"TrdSubAccType_JP_TOKUTEI":                    2,
+		"TrdSubAccType_JP_NISA_GENERAL":               3,
+		"TrdSubAccType_JP_NISA_TSUMITATE":             4,
+		"TrdSubAccType_JP_GENERAL_SHORT":              5,
+		"TrdSubAccType_JP_TOKUTEI_SHORT":              6,
+		"TrdSubAccType_JP_HONPO_GENERAL":              7,
+		"TrdSubAccType_JP_GAIKOKU_GENERAL":            8,
+		"TrdSubAccType_JP_HONPO_TOKUTEI":              9,
+		"TrdSubAccType_JP_GAIKOKU_TOKUTEI":            10,
+		"TrdSubAccType_JP_DERIVATIVE_LONG":            11,
+		"TrdSubAccType_JP_DERIVATIVE_SHORT":           12,
+		"TrdSubAccType_JP_HONPO_DERIVATIVE_GENERAL":   13,
+		"TrdSubAccType_JP_GAIKOKU_DERIVATIVE_GENERAL": 14,
+		"TrdSubAccType_JP_HONPO_DERIVATIVE_TOKUTEI":   15,
+		"TrdSubAccType_JP_GAIKOKU_DERIVATIVE_TOKUTEI": 16,
+	}
+)
+
+func (x TrdSubAccType) Enum() *TrdSubAccType {
+	p := new(TrdSubAccType)
+	*p = x
+	return p
+}
+
+func (x TrdSubAccType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (TrdSubAccType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Trd_Common_proto_enumTypes[20].Descriptor()
+}
+
+func (TrdSubAccType) Type() protoreflect.EnumType {
+	return &file_Trd_Common_proto_enumTypes[20]
+}
+
+func (x TrdSubAccType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *TrdSubAccType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = TrdSubAccType(num)
+	return nil
+}
+
+// Deprecated: Use TrdSubAccType.Descriptor instead.
+func (TrdSubAccType) EnumDescriptor() ([]byte, []int) {
 	return file_Trd_Common_proto_rawDescGZIP(), []int{20}
+}
+
+//日内交易限制情况
+type TrdAssetCategory int32
+
+const (
+	TrdAssetCategory_TrdAssetCategory_Unknown TrdAssetCategory = 0 //未知
+	TrdAssetCategory_TrdAssetCategory_JP      TrdAssetCategory = 1 //本国
+	TrdAssetCategory_TrdAssetCategory_US      TrdAssetCategory = 2 //外国
+)
+
+// Enum value maps for TrdAssetCategory.
+var (
+	TrdAssetCategory_name = map[int32]string{
+		0: "TrdAssetCategory_Unknown",
+		1: "TrdAssetCategory_JP",
+		2: "TrdAssetCategory_US",
+	}
+	TrdAssetCategory_value = map[string]int32{
+		"TrdAssetCategory_Unknown": 0,
+		"TrdAssetCategory_JP":      1,
+		"TrdAssetCategory_US":      2,
+	}
+)
+
+func (x TrdAssetCategory) Enum() *TrdAssetCategory {
+	p := new(TrdAssetCategory)
+	*p = x
+	return p
+}
+
+func (x TrdAssetCategory) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (TrdAssetCategory) Descriptor() protoreflect.EnumDescriptor {
+	return file_Trd_Common_proto_enumTypes[21].Descriptor()
+}
+
+func (TrdAssetCategory) Type() protoreflect.EnumType {
+	return &file_Trd_Common_proto_enumTypes[21]
+}
+
+func (x TrdAssetCategory) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *TrdAssetCategory) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = TrdAssetCategory(num)
+	return nil
+}
+
+// Deprecated: Use TrdAssetCategory.Descriptor instead.
+func (TrdAssetCategory) EnumDescriptor() ([]byte, []int) {
+	return file_Trd_Common_proto_rawDescGZIP(), []int{21}
+}
+
+type ExposureLevel int32
+
+const (
+	ExposureLevel_ExposureLevel_Unknown    ExposureLevel = 0 // 未知
+	ExposureLevel_ExposureLevel_Normal     ExposureLevel = 1 // 正常
+	ExposureLevel_ExposureLevel_NearLimit  ExposureLevel = 2 // 即将用尽
+	ExposureLevel_ExposureLevel_Restricted ExposureLevel = 3 // 受限
+	ExposureLevel_ExposureLevel_Safe       ExposureLevel = 4 // 安全
+	ExposureLevel_ExposureLevel_Moderate   ExposureLevel = 5 // 适中
+	ExposureLevel_ExposureLevel_Warning    ExposureLevel = 6 // 预警
+	ExposureLevel_ExposureLevel_MarginCall ExposureLevel = 7 // 危险
+)
+
+// Enum value maps for ExposureLevel.
+var (
+	ExposureLevel_name = map[int32]string{
+		0: "ExposureLevel_Unknown",
+		1: "ExposureLevel_Normal",
+		2: "ExposureLevel_NearLimit",
+		3: "ExposureLevel_Restricted",
+		4: "ExposureLevel_Safe",
+		5: "ExposureLevel_Moderate",
+		6: "ExposureLevel_Warning",
+		7: "ExposureLevel_MarginCall",
+	}
+	ExposureLevel_value = map[string]int32{
+		"ExposureLevel_Unknown":    0,
+		"ExposureLevel_Normal":     1,
+		"ExposureLevel_NearLimit":  2,
+		"ExposureLevel_Restricted": 3,
+		"ExposureLevel_Safe":       4,
+		"ExposureLevel_Moderate":   5,
+		"ExposureLevel_Warning":    6,
+		"ExposureLevel_MarginCall": 7,
+	}
+)
+
+func (x ExposureLevel) Enum() *ExposureLevel {
+	p := new(ExposureLevel)
+	*p = x
+	return p
+}
+
+func (x ExposureLevel) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ExposureLevel) Descriptor() protoreflect.EnumDescriptor {
+	return file_Trd_Common_proto_enumTypes[22].Descriptor()
+}
+
+func (ExposureLevel) Type() protoreflect.EnumType {
+	return &file_Trd_Common_proto_enumTypes[22]
+}
+
+func (x ExposureLevel) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *ExposureLevel) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = ExposureLevel(num)
+	return nil
+}
+
+// Deprecated: Use ExposureLevel.Descriptor instead.
+func (ExposureLevel) EnumDescriptor() ([]byte, []int) {
+	return file_Trd_Common_proto_rawDescGZIP(), []int{22}
+}
+
+//券商
+type SecurityFirm int32
+
+const (
+	SecurityFirm_SecurityFirm_Unknown        SecurityFirm = 0 //未知
+	SecurityFirm_SecurityFirm_FutuSecurities SecurityFirm = 1 //富途证券（香港）
+	SecurityFirm_SecurityFirm_FutuInc        SecurityFirm = 2 //富途证券（美国）
+	SecurityFirm_SecurityFirm_FutuSG         SecurityFirm = 3 //富途证券（新加坡）
+	SecurityFirm_SecurityFirm_FutuAU         SecurityFirm = 4 //富途证券（澳洲）
+	SecurityFirm_SecurityFirm_FutuCA         SecurityFirm = 5 //富途证券（加拿大）
+	SecurityFirm_SecurityFirm_FutuMY         SecurityFirm = 6 //富途证券（马来西亚）
+	SecurityFirm_SecurityFirm_FutuJP         SecurityFirm = 7 //富途证券（日本）
+)
+
+// Enum value maps for SecurityFirm.
+var (
+	SecurityFirm_name = map[int32]string{
+		0: "SecurityFirm_Unknown",
+		1: "SecurityFirm_FutuSecurities",
+		2: "SecurityFirm_FutuInc",
+		3: "SecurityFirm_FutuSG",
+		4: "SecurityFirm_FutuAU",
+		5: "SecurityFirm_FutuCA",
+		6: "SecurityFirm_FutuMY",
+		7: "SecurityFirm_FutuJP",
+	}
+	SecurityFirm_value = map[string]int32{
+		"SecurityFirm_Unknown":        0,
+		"SecurityFirm_FutuSecurities": 1,
+		"SecurityFirm_FutuInc":        2,
+		"SecurityFirm_FutuSG":         3,
+		"SecurityFirm_FutuAU":         4,
+		"SecurityFirm_FutuCA":         5,
+		"SecurityFirm_FutuMY":         6,
+		"SecurityFirm_FutuJP":         7,
+	}
+)
+
+func (x SecurityFirm) Enum() *SecurityFirm {
+	p := new(SecurityFirm)
+	*p = x
+	return p
+}
+
+func (x SecurityFirm) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (SecurityFirm) Descriptor() protoreflect.EnumDescriptor {
+	return file_Trd_Common_proto_enumTypes[23].Descriptor()
+}
+
+func (SecurityFirm) Type() protoreflect.EnumType {
+	return &file_Trd_Common_proto_enumTypes[23]
+}
+
+func (x SecurityFirm) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *SecurityFirm) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = SecurityFirm(num)
+	return nil
+}
+
+// Deprecated: Use SecurityFirm.Descriptor instead.
+func (SecurityFirm) EnumDescriptor() ([]byte, []int) {
+	return file_Trd_Common_proto_rawDescGZIP(), []int{23}
 }
 
 //账户现金信息，目前仅用于期货账户
@@ -1631,6 +1920,7 @@ type TrdHeader struct {
 	TrdEnv        *int32                 `protobuf:"varint,1,req,name=trdEnv" json:"trdEnv,omitempty"`       //交易环境, 参见TrdEnv的枚举定义
 	AccID         *uint64                `protobuf:"varint,2,req,name=accID" json:"accID,omitempty"`         //业务账号, 业务账号与交易环境、市场权限需要匹配，否则会返回错误
 	TrdMarket     *int32                 `protobuf:"varint,3,req,name=trdMarket" json:"trdMarket,omitempty"` //交易市场, 参见TrdMarket的枚举定义
+	JpAccType     *int32                 `protobuf:"varint,4,opt,name=jpAccType" json:"jpAccType,omitempty"` //JP子账户类型，取值见 TrdSubAccType
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1686,21 +1976,30 @@ func (x *TrdHeader) GetTrdMarket() int32 {
 	return 0
 }
 
+func (x *TrdHeader) GetJpAccType() int32 {
+	if x != nil && x.JpAccType != nil {
+		return *x.JpAccType
+	}
+	return 0
+}
+
 //交易业务账户结构
 type TrdAcc struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	TrdEnv            *int32                 `protobuf:"varint,1,req,name=trdEnv" json:"trdEnv,omitempty"`                       //交易环境，参见TrdEnv的枚举定义
-	AccID             *uint64                `protobuf:"varint,2,req,name=accID" json:"accID,omitempty"`                         //业务账号
-	TrdMarketAuthList []int32                `protobuf:"varint,3,rep,name=trdMarketAuthList" json:"trdMarketAuthList,omitempty"` //业务账户支持的交易市场权限，即此账户能交易那些市场, 可拥有多个交易市场权限，目前仅单个，取值参见TrdMarket的枚举定义
-	AccType           *int32                 `protobuf:"varint,4,opt,name=accType" json:"accType,omitempty"`                     //账户类型，取值见TrdAccType
-	CardNum           *string                `protobuf:"bytes,5,opt,name=cardNum" json:"cardNum,omitempty"`                      //卡号
-	SecurityFirm      *int32                 `protobuf:"varint,6,opt,name=securityFirm" json:"securityFirm,omitempty"`           //所属券商，取值见SecurityFirm
-	SimAccType        *int32                 `protobuf:"varint,7,opt,name=simAccType" json:"simAccType,omitempty"`               //模拟交易账号类型，取值见SimAccType
-	UniCardNum        *string                `protobuf:"bytes,8,opt,name=uniCardNum" json:"uniCardNum,omitempty"`                //所属综合账户卡号
-	AccStatus         *int32                 `protobuf:"varint,9,opt,name=accStatus" json:"accStatus,omitempty"`                 //账号状态，取值见TrdAccStatus
-	AccRole           *int32                 `protobuf:"varint,10,opt,name=accRole" json:"accRole,omitempty"`                    //账号分类，是不是主账号，取值见TrdAccRole
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	TrdEnv             *int32                 `protobuf:"varint,1,req,name=trdEnv" json:"trdEnv,omitempty"`                         //交易环境，参见TrdEnv的枚举定义
+	AccID              *uint64                `protobuf:"varint,2,req,name=accID" json:"accID,omitempty"`                           //业务账号
+	TrdMarketAuthList  []int32                `protobuf:"varint,3,rep,name=trdMarketAuthList" json:"trdMarketAuthList,omitempty"`   //业务账户支持的交易市场权限，即此账户能交易那些市场, 可拥有多个交易市场权限，目前仅单个，取值参见TrdMarket的枚举定义
+	AccType            *int32                 `protobuf:"varint,4,opt,name=accType" json:"accType,omitempty"`                       //账户类型，取值见TrdAccType
+	CardNum            *string                `protobuf:"bytes,5,opt,name=cardNum" json:"cardNum,omitempty"`                        //卡号
+	SecurityFirm       *int32                 `protobuf:"varint,6,opt,name=securityFirm" json:"securityFirm,omitempty"`             //所属券商，取值见Trd_Common.SecurityFirm
+	SimAccType         *int32                 `protobuf:"varint,7,opt,name=simAccType" json:"simAccType,omitempty"`                 //模拟交易账号类型，取值见SimAccType
+	UniCardNum         *string                `protobuf:"bytes,8,opt,name=uniCardNum" json:"uniCardNum,omitempty"`                  //所属综合账户卡号
+	AccStatus          *int32                 `protobuf:"varint,9,opt,name=accStatus" json:"accStatus,omitempty"`                   //账号状态，取值见TrdAccStatus
+	AccRole            *int32                 `protobuf:"varint,10,opt,name=accRole" json:"accRole,omitempty"`                      //账号分类，是不是主账号，取值见TrdAccRole
+	JpAccType          []int32                `protobuf:"varint,11,rep,name=jpAccType" json:"jpAccType,omitempty"`                  //JP子账户类型，取值见 TrdSubAccType
+	CompetitionAccName *string                `protobuf:"bytes,12,opt,name=competitionAccName" json:"competitionAccName,omitempty"` // 比赛账户名称
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *TrdAcc) Reset() {
@@ -1803,6 +2102,20 @@ func (x *TrdAcc) GetAccRole() int32 {
 	return 0
 }
 
+func (x *TrdAcc) GetJpAccType() []int32 {
+	if x != nil {
+		return x.JpAccType
+	}
+	return nil
+}
+
+func (x *TrdAcc) GetCompetitionAccName() string {
+	if x != nil && x.CompetitionAccName != nil {
+		return *x.CompetitionAccName
+	}
+	return ""
+}
+
 //账户资金结构
 type Funds struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
@@ -1834,11 +2147,16 @@ type Funds struct {
 	BeginningDTBP     *float64               `protobuf:"fixed64,26,opt,name=beginningDTBP" json:"beginningDTBP,omitempty"`         //初始日内交易购买力
 	RemainingDTBP     *float64               `protobuf:"fixed64,27,opt,name=remainingDTBP" json:"remainingDTBP,omitempty"`         //剩余日内交易购买力
 	DtCallAmount      *float64               `protobuf:"fixed64,28,opt,name=dtCallAmount" json:"dtCallAmount,omitempty"`           //日内交易待缴金额
-	DtStatus          *int32                 `protobuf:"varint,29,opt,name=dtStatus" json:"dtStatus,omitempty"`                    //日内交易限制情况，取值见DTStatus
+	DtStatus          *int32                 `protobuf:"varint,29,opt,name=dtStatus" json:"dtStatus,omitempty"`                    //日内交易限制情况，取值见 DTStatus
 	SecuritiesAssets  *float64               `protobuf:"fixed64,30,opt,name=securitiesAssets" json:"securitiesAssets,omitempty"`   // 证券资产净值
 	FundAssets        *float64               `protobuf:"fixed64,31,opt,name=fundAssets" json:"fundAssets,omitempty"`               // 基金资产净值
 	BondAssets        *float64               `protobuf:"fixed64,32,opt,name=bondAssets" json:"bondAssets,omitempty"`               // 债券资产净值
 	MarketInfoList    []*AccMarketInfo       `protobuf:"bytes,33,rep,name=marketInfoList" json:"marketInfoList,omitempty"`         //分市场资产信息
+	CryptoMv          *float64               `protobuf:"fixed64,34,opt,name=cryptoMv" json:"cryptoMv,omitempty"`                   //加密货币市值
+	ExposureLevel     *int32                 `protobuf:"varint,35,opt,name=exposureLevel" json:"exposureLevel,omitempty"`          //取值见ExposureLevel
+	ExposureLimit     *float64               `protobuf:"fixed64,36,opt,name=exposureLimit" json:"exposureLimit,omitempty"`         //持仓限额
+	UsedLimit         *float64               `protobuf:"fixed64,37,opt,name=usedLimit" json:"usedLimit,omitempty"`                 //已用持仓限额
+	RemainingLimit    *float64               `protobuf:"fixed64,38,opt,name=remainingLimit" json:"remainingLimit,omitempty"`       //剩余持仓限额
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -2102,6 +2420,41 @@ func (x *Funds) GetMarketInfoList() []*AccMarketInfo {
 		return x.MarketInfoList
 	}
 	return nil
+}
+
+func (x *Funds) GetCryptoMv() float64 {
+	if x != nil && x.CryptoMv != nil {
+		return *x.CryptoMv
+	}
+	return 0
+}
+
+func (x *Funds) GetExposureLevel() int32 {
+	if x != nil && x.ExposureLevel != nil {
+		return *x.ExposureLevel
+	}
+	return 0
+}
+
+func (x *Funds) GetExposureLimit() float64 {
+	if x != nil && x.ExposureLimit != nil {
+		return *x.ExposureLimit
+	}
+	return 0
+}
+
+func (x *Funds) GetUsedLimit() float64 {
+	if x != nil && x.UsedLimit != nil {
+		return *x.UsedLimit
+	}
+	return 0
+}
+
+func (x *Funds) GetRemainingLimit() float64 {
+	if x != nil && x.RemainingLimit != nil {
+		return *x.RemainingLimit
+	}
+	return 0
 }
 
 //账户持仓结构
@@ -2372,6 +2725,7 @@ type Order struct {
 	Currency        *int32                 `protobuf:"varint,25,opt,name=currency" json:"currency,omitempty"`                // 货币类型，取值参考 Currency
 	TrdMarket       *int32                 `protobuf:"varint,26,opt,name=trdMarket" json:"trdMarket,omitempty"`              //交易市场, 参见TrdMarket的枚举定义
 	Session         *int32                 `protobuf:"varint,27,opt,name=session" json:"session,omitempty"`                  //美股订单时段, 参见Common.Session的枚举定义
+	JpAccType       *int32                 `protobuf:"varint,28,opt,name=jpAccType" json:"jpAccType,omitempty"`              //JP子账户类型，取值见 TrdSubAccType
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -2595,6 +2949,13 @@ func (x *Order) GetSession() int32 {
 	return 0
 }
 
+func (x *Order) GetJpAccType() int32 {
+	if x != nil && x.JpAccType != nil {
+		return *x.JpAccType
+	}
+	return 0
+}
+
 type OrderFeeItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Title         *string                `protobuf:"bytes,1,opt,name=title" json:"title,omitempty"`   //费用名字
@@ -2727,6 +3088,7 @@ type OrderFill struct {
 	UpdateTimestamp   *float64               `protobuf:"fixed64,15,opt,name=updateTimestamp" json:"updateTimestamp,omitempty"`   //最后更新时间戳
 	Status            *int32                 `protobuf:"varint,16,opt,name=status" json:"status,omitempty"`                      //成交状态, 参见OrderFillStatus的枚举定义
 	TrdMarket         *int32                 `protobuf:"varint,17,opt,name=trdMarket" json:"trdMarket,omitempty"`                //交易市场, 参见TrdMarket的枚举定义
+	JpAccType         *int32                 `protobuf:"varint,18,opt,name=jpAccType" json:"jpAccType,omitempty"`                //JP子账户类型，取值见 TrdSubAccType
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -2876,6 +3238,13 @@ func (x *OrderFill) GetStatus() int32 {
 func (x *OrderFill) GetTrdMarket() int32 {
 	if x != nil && x.TrdMarket != nil {
 		return *x.TrdMarket
+	}
+	return 0
+}
+
+func (x *OrderFill) GetJpAccType() int32 {
+	if x != nil && x.JpAccType != nil {
+		return *x.JpAccType
 	}
 	return 0
 }
@@ -3080,11 +3449,12 @@ const file_Trd_Common_proto_rawDesc = "" +
 	"\fnetCashPower\x18\x04 \x01(\x01R\fnetCashPower\"E\n" +
 	"\rAccMarketInfo\x12\x1c\n" +
 	"\ttrdMarket\x18\x01 \x01(\x05R\ttrdMarket\x12\x16\n" +
-	"\x06assets\x18\x02 \x01(\x01R\x06assets\"W\n" +
+	"\x06assets\x18\x02 \x01(\x01R\x06assets\"u\n" +
 	"\tTrdHeader\x12\x16\n" +
 	"\x06trdEnv\x18\x01 \x02(\x05R\x06trdEnv\x12\x14\n" +
 	"\x05accID\x18\x02 \x02(\x04R\x05accID\x12\x1c\n" +
-	"\ttrdMarket\x18\x03 \x02(\x05R\ttrdMarket\"\xb4\x02\n" +
+	"\ttrdMarket\x18\x03 \x02(\x05R\ttrdMarket\x12\x1c\n" +
+	"\tjpAccType\x18\x04 \x01(\x05R\tjpAccType\"\x82\x03\n" +
 	"\x06TrdAcc\x12\x16\n" +
 	"\x06trdEnv\x18\x01 \x02(\x05R\x06trdEnv\x12\x14\n" +
 	"\x05accID\x18\x02 \x02(\x04R\x05accID\x12,\n" +
@@ -3100,7 +3470,10 @@ const file_Trd_Common_proto_rawDesc = "" +
 	"uniCardNum\x12\x1c\n" +
 	"\taccStatus\x18\t \x01(\x05R\taccStatus\x12\x18\n" +
 	"\aaccRole\x18\n" +
-	" \x01(\x05R\aaccRole\"\x8d\t\n" +
+	" \x01(\x05R\aaccRole\x12\x1c\n" +
+	"\tjpAccType\x18\v \x03(\x05R\tjpAccType\x12.\n" +
+	"\x12competitionAccName\x18\f \x01(\tR\x12competitionAccName\"\xbb\n" +
+	"\n" +
 	"\x05Funds\x12\x14\n" +
 	"\x05power\x18\x01 \x02(\x01R\x05power\x12 \n" +
 	"\vtotalAssets\x18\x02 \x02(\x01R\vtotalAssets\x12\x12\n" +
@@ -3145,7 +3518,12 @@ const file_Trd_Common_proto_rawDesc = "" +
 	"\n" +
 	"bondAssets\x18  \x01(\x01R\n" +
 	"bondAssets\x12A\n" +
-	"\x0emarketInfoList\x18! \x03(\v2\x19.Trd_Common.AccMarketInfoR\x0emarketInfoList\"\xea\x05\n" +
+	"\x0emarketInfoList\x18! \x03(\v2\x19.Trd_Common.AccMarketInfoR\x0emarketInfoList\x12\x1a\n" +
+	"\bcryptoMv\x18\" \x01(\x01R\bcryptoMv\x12$\n" +
+	"\rexposureLevel\x18# \x01(\x05R\rexposureLevel\x12$\n" +
+	"\rexposureLimit\x18$ \x01(\x01R\rexposureLimit\x12\x1c\n" +
+	"\tusedLimit\x18% \x01(\x01R\tusedLimit\x12&\n" +
+	"\x0eremainingLimit\x18& \x01(\x01R\x0eremainingLimit\"\xea\x05\n" +
 	"\bPosition\x12\x1e\n" +
 	"\n" +
 	"positionID\x18\x01 \x02(\x04R\n" +
@@ -3180,7 +3558,7 @@ const file_Trd_Common_proto_rawDesc = "" +
 	"\ttrdMarket\x18\x1f \x01(\x05R\ttrdMarket\x12*\n" +
 	"\x10dilutedCostPrice\x18  \x01(\x01R\x10dilutedCostPrice\x12*\n" +
 	"\x10averageCostPrice\x18! \x01(\x01R\x10averageCostPrice\x12&\n" +
-	"\x0eaveragePlRatio\x18\" \x01(\x01R\x0eaveragePlRatio\"\xab\x06\n" +
+	"\x0eaveragePlRatio\x18\" \x01(\x01R\x0eaveragePlRatio\"\xc9\x06\n" +
 	"\x05Order\x12\x18\n" +
 	"\atrdSide\x18\x01 \x02(\x05R\atrdSide\x12\x1c\n" +
 	"\torderType\x18\x02 \x02(\x05R\torderType\x12 \n" +
@@ -3217,14 +3595,15 @@ const file_Trd_Common_proto_rawDesc = "" +
 	"\vtrailSpread\x18\x18 \x01(\x01R\vtrailSpread\x12\x1a\n" +
 	"\bcurrency\x18\x19 \x01(\x05R\bcurrency\x12\x1c\n" +
 	"\ttrdMarket\x18\x1a \x01(\x05R\ttrdMarket\x12\x18\n" +
-	"\asession\x18\x1b \x01(\x05R\asession\":\n" +
+	"\asession\x18\x1b \x01(\x05R\asession\x12\x1c\n" +
+	"\tjpAccType\x18\x1c \x01(\x05R\tjpAccType\":\n" +
 	"\fOrderFeeItem\x12\x14\n" +
 	"\x05title\x18\x01 \x01(\tR\x05title\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\x01R\x05value\"z\n" +
 	"\bOrderFee\x12\x1c\n" +
 	"\torderIDEx\x18\x01 \x02(\tR\torderIDEx\x12\x1c\n" +
 	"\tfeeAmount\x18\x02 \x01(\x01R\tfeeAmount\x122\n" +
-	"\afeeList\x18\x03 \x03(\v2\x18.Trd_Common.OrderFeeItemR\afeeList\"\x81\x04\n" +
+	"\afeeList\x18\x03 \x03(\v2\x18.Trd_Common.OrderFeeItemR\afeeList\"\x9f\x04\n" +
 	"\tOrderFill\x12\x18\n" +
 	"\atrdSide\x18\x01 \x02(\x05R\atrdSide\x12\x16\n" +
 	"\x06fillID\x18\x02 \x02(\x04R\x06fillID\x12\x1a\n" +
@@ -3245,7 +3624,8 @@ const file_Trd_Common_proto_rawDesc = "" +
 	"\x0fcreateTimestamp\x18\x0e \x01(\x01R\x0fcreateTimestamp\x12(\n" +
 	"\x0fupdateTimestamp\x18\x0f \x01(\x01R\x0fupdateTimestamp\x12\x16\n" +
 	"\x06status\x18\x10 \x01(\x05R\x06status\x12\x1c\n" +
-	"\ttrdMarket\x18\x11 \x01(\x05R\ttrdMarket\"\xb8\x02\n" +
+	"\ttrdMarket\x18\x11 \x01(\x05R\ttrdMarket\x12\x1c\n" +
+	"\tjpAccType\x18\x12 \x01(\x05R\tjpAccType\"\xb8\x02\n" +
 	"\n" +
 	"MaxTrdQtys\x12\x1e\n" +
 	"\n" +
@@ -3269,11 +3649,12 @@ const file_Trd_Common_proto_rawDesc = "" +
 	"\ffilterMarket\x18\x06 \x01(\x05R\ffilterMarket*.\n" +
 	"\x06TrdEnv\x12\x13\n" +
 	"\x0fTrdEnv_Simulate\x10\x00\x12\x0f\n" +
-	"\vTrdEnv_Real\x10\x01*X\n" +
+	"\vTrdEnv_Real\x10\x01*p\n" +
 	"\vTrdCategory\x12\x17\n" +
 	"\x13TrdCategory_Unknown\x10\x00\x12\x18\n" +
 	"\x14TrdCategory_Security\x10\x01\x12\x16\n" +
-	"\x12TrdCategory_Future\x10\x02*\x97\x03\n" +
+	"\x12TrdCategory_Future\x10\x02\x12\x16\n" +
+	"\x12TrdCategory_Crypto\x10\x03*\xf2\x03\n" +
 	"\tTrdMarket\x12\x15\n" +
 	"\x11TrdMarket_Unknown\x10\x00\x12\x10\n" +
 	"\fTrdMarket_HK\x10\x01\x12\x10\n" +
@@ -3281,7 +3662,8 @@ const file_Trd_Common_proto_rawDesc = "" +
 	"\fTrdMarket_CN\x10\x03\x12\x12\n" +
 	"\x0eTrdMarket_HKCC\x10\x04\x12\x15\n" +
 	"\x11TrdMarket_Futures\x10\x05\x12\x10\n" +
-	"\fTrdMarket_SG\x10\x06\x12\x10\n" +
+	"\fTrdMarket_SG\x10\x06\x12\x14\n" +
+	"\x10TrdMarket_Crypto\x10\a\x12\x10\n" +
 	"\fTrdMarket_AU\x10\b\x12!\n" +
 	"\x1dTrdMarket_Futures_Simulate_HK\x10\n" +
 	"\x12!\n" +
@@ -3292,7 +3674,10 @@ const file_Trd_Common_proto_rawDesc = "" +
 	"\fTrdMarket_MY\x10o\x12\x10\n" +
 	"\fTrdMarket_CA\x10p\x12\x15\n" +
 	"\x11TrdMarket_HK_Fund\x10q\x12\x15\n" +
-	"\x11TrdMarket_US_Fund\x10{*\x80\x02\n" +
+	"\x11TrdMarket_US_Fund\x10{\x12\x15\n" +
+	"\x11TrdMarket_SG_Fund\x10|\x12\x15\n" +
+	"\x11TrdMarket_MY_Fund\x10}\x12\x15\n" +
+	"\x11TrdMarket_JP_Fund\x10~*\x95\x02\n" +
 	"\fTrdSecMarket\x12\x18\n" +
 	"\x14TrdSecMarket_Unknown\x10\x00\x12\x13\n" +
 	"\x0fTrdSecMarket_HK\x10\x01\x12\x13\n" +
@@ -3304,7 +3689,8 @@ const file_Trd_Common_proto_rawDesc = "" +
 	"\x0fTrdSecMarket_AU\x10=\x12\x13\n" +
 	"\x0fTrdSecMarket_MY\x10G\x12\x13\n" +
 	"\x0fTrdSecMarket_CA\x10Q\x12\x13\n" +
-	"\x0fTrdSecMarket_FX\x10[*m\n" +
+	"\x0fTrdSecMarket_FX\x10[\x12\x13\n" +
+	"\x0fTrdSecMarket_CC\x10e*m\n" +
 	"\aTrdSide\x12\x13\n" +
 	"\x0fTrdSide_Unknown\x10\x00\x12\x0f\n" +
 	"\vTrdSide_Buy\x10\x01\x12\x10\n" +
@@ -3368,20 +3754,25 @@ const file_Trd_Common_proto_rawDesc = "" +
 	"\x14ModifyOrderOp_Cancel\x10\x02\x12\x19\n" +
 	"\x15ModifyOrderOp_Disable\x10\x03\x12\x18\n" +
 	"\x14ModifyOrderOp_Enable\x10\x04\x12\x18\n" +
-	"\x14ModifyOrderOp_Delete\x10\x05*P\n" +
+	"\x14ModifyOrderOp_Delete\x10\x05*\xac\x01\n" +
 	"\n" +
 	"TrdAccType\x12\x16\n" +
 	"\x12TrdAccType_Unknown\x10\x00\x12\x13\n" +
 	"\x0fTrdAccType_Cash\x10\x01\x12\x15\n" +
-	"\x11TrdAccType_Margin\x10\x02*B\n" +
+	"\x11TrdAccType_Margin\x10\x02\x12\x13\n" +
+	"\x0fTrdAccType_TFSA\x10\x03\x12\x13\n" +
+	"\x0fTrdAccType_RRSP\x10\x04\x12\x14\n" +
+	"\x10TrdAccType_SRRSP\x10\x05\x12\x1a\n" +
+	"\x16TrdAccType_Derivatives\x10\x06*B\n" +
 	"\fTrdAccStatus\x12\x17\n" +
 	"\x13TrdAccStatus_Active\x10\x00\x12\x19\n" +
-	"\x15TrdAccStatus_Disabled\x10\x01*R\n" +
+	"\x15TrdAccStatus_Disabled\x10\x01*f\n" +
 	"\n" +
 	"TrdAccRole\x12\x16\n" +
 	"\x12TrdAccRole_Unknown\x10\x00\x12\x15\n" +
 	"\x11TrdAccRole_Normal\x10\x01\x12\x15\n" +
-	"\x11TrdAccRole_Master\x10\x02*\xb0\x01\n" +
+	"\x11TrdAccRole_Master\x10\x02\x12\x12\n" +
+	"\x0eTrdAccRole_IPO\x10\x03*\xb0\x01\n" +
 	"\bCurrency\x12\x14\n" +
 	"\x10Currency_Unknown\x10\x00\x12\x10\n" +
 	"\fCurrency_HKD\x10\x01\x12\x10\n" +
@@ -3398,22 +3789,19 @@ const file_Trd_Common_proto_rawDesc = "" +
 	"\x14CltRiskLevel_Warning\x10\x01\x12\x17\n" +
 	"\x13CltRiskLevel_Danger\x10\x02\x12\x1d\n" +
 	"\x19CltRiskLevel_AbsoluteSafe\x10\x03\x12\x1a\n" +
-	"\x16CltRiskLevel_OptDanger\x10\x04*7\n" +
+	"\x16CltRiskLevel_OptDanger\x10\x04*L\n" +
 	"\vTimeInForce\x12\x13\n" +
 	"\x0fTimeInForce_DAY\x10\x00\x12\x13\n" +
-	"\x0fTimeInForce_GTC\x10\x01*\x95\x01\n" +
-	"\fSecurityFirm\x12\x18\n" +
-	"\x14SecurityFirm_Unknown\x10\x00\x12\x1f\n" +
-	"\x1bSecurityFirm_FutuSecurities\x10\x01\x12\x18\n" +
-	"\x14SecurityFirm_FutuInc\x10\x02\x12\x17\n" +
-	"\x13SecurityFirm_FutuSG\x10\x03\x12\x17\n" +
-	"\x13SecurityFirm_FutuAU\x10\x04*i\n" +
+	"\x0fTimeInForce_GTC\x10\x01\x12\x13\n" +
+	"\x0fTimeInForce_IOC\x10\x02*\xa4\x01\n" +
 	"\n" +
 	"SimAccType\x12\x16\n" +
 	"\x12SimAccType_Unknown\x10\x00\x12\x14\n" +
 	"\x10SimAccType_Stock\x10\x01\x12\x15\n" +
 	"\x11SimAccType_Option\x10\x02\x12\x16\n" +
-	"\x12SimAccType_Futures\x10\x03*\x94\x02\n" +
+	"\x12SimAccType_Futures\x10\x03\x12\x1d\n" +
+	"\x19SimAccType_StockAndOption\x10\x04\x12\x1a\n" +
+	"\x16SimAccType_Competition\x10\x05*\x94\x02\n" +
 	"\rCltRiskStatus\x12\x19\n" +
 	"\x15CltRiskStatus_Unknown\x10\x00\x12\x18\n" +
 	"\x14CltRiskStatus_Level1\x10\x01\x12\x18\n" +
@@ -3429,7 +3817,48 @@ const file_Trd_Common_proto_rawDesc = "" +
 	"\x10DTStatus_Unknown\x10\x00\x12\x16\n" +
 	"\x12DTStatus_Unlimited\x10\x01\x12\x13\n" +
 	"\x0fDTStatus_EMCall\x10\x02\x12\x13\n" +
-	"\x0fDTStatus_DTCall\x10\x03B>\n" +
+	"\x0fDTStatus_DTCall\x10\x03*\x94\x05\n" +
+	"\rTrdSubAccType\x12\x16\n" +
+	"\x12TrdSubAccType_None\x10\x00\x12\x1c\n" +
+	"\x18TrdSubAccType_JP_GENERAL\x10\x01\x12\x1c\n" +
+	"\x18TrdSubAccType_JP_TOKUTEI\x10\x02\x12!\n" +
+	"\x1dTrdSubAccType_JP_NISA_GENERAL\x10\x03\x12#\n" +
+	"\x1fTrdSubAccType_JP_NISA_TSUMITATE\x10\x04\x12\"\n" +
+	"\x1eTrdSubAccType_JP_GENERAL_SHORT\x10\x05\x12\"\n" +
+	"\x1eTrdSubAccType_JP_TOKUTEI_SHORT\x10\x06\x12\"\n" +
+	"\x1eTrdSubAccType_JP_HONPO_GENERAL\x10\a\x12$\n" +
+	" TrdSubAccType_JP_GAIKOKU_GENERAL\x10\b\x12\"\n" +
+	"\x1eTrdSubAccType_JP_HONPO_TOKUTEI\x10\t\x12$\n" +
+	" TrdSubAccType_JP_GAIKOKU_TOKUTEI\x10\n" +
+	"\x12$\n" +
+	" TrdSubAccType_JP_DERIVATIVE_LONG\x10\v\x12%\n" +
+	"!TrdSubAccType_JP_DERIVATIVE_SHORT\x10\f\x12-\n" +
+	")TrdSubAccType_JP_HONPO_DERIVATIVE_GENERAL\x10\r\x12/\n" +
+	"+TrdSubAccType_JP_GAIKOKU_DERIVATIVE_GENERAL\x10\x0e\x12-\n" +
+	")TrdSubAccType_JP_HONPO_DERIVATIVE_TOKUTEI\x10\x0f\x12/\n" +
+	"+TrdSubAccType_JP_GAIKOKU_DERIVATIVE_TOKUTEI\x10\x10*b\n" +
+	"\x10TrdAssetCategory\x12\x1c\n" +
+	"\x18TrdAssetCategory_Unknown\x10\x00\x12\x17\n" +
+	"\x13TrdAssetCategory_JP\x10\x01\x12\x17\n" +
+	"\x13TrdAssetCategory_US\x10\x02*\xec\x01\n" +
+	"\rExposureLevel\x12\x19\n" +
+	"\x15ExposureLevel_Unknown\x10\x00\x12\x18\n" +
+	"\x14ExposureLevel_Normal\x10\x01\x12\x1b\n" +
+	"\x17ExposureLevel_NearLimit\x10\x02\x12\x1c\n" +
+	"\x18ExposureLevel_Restricted\x10\x03\x12\x16\n" +
+	"\x12ExposureLevel_Safe\x10\x04\x12\x1a\n" +
+	"\x16ExposureLevel_Moderate\x10\x05\x12\x19\n" +
+	"\x15ExposureLevel_Warning\x10\x06\x12\x1c\n" +
+	"\x18ExposureLevel_MarginCall\x10\a*\xe0\x01\n" +
+	"\fSecurityFirm\x12\x18\n" +
+	"\x14SecurityFirm_Unknown\x10\x00\x12\x1f\n" +
+	"\x1bSecurityFirm_FutuSecurities\x10\x01\x12\x18\n" +
+	"\x14SecurityFirm_FutuInc\x10\x02\x12\x17\n" +
+	"\x13SecurityFirm_FutuSG\x10\x03\x12\x17\n" +
+	"\x13SecurityFirm_FutuAU\x10\x04\x12\x17\n" +
+	"\x13SecurityFirm_FutuCA\x10\x05\x12\x17\n" +
+	"\x13SecurityFirm_FutuMY\x10\x06\x12\x17\n" +
+	"\x13SecurityFirm_FutuJP\x10\aB>\n" +
 	"\x13com.futu.openapi.pbZ'github.com/hyperjiang/futu/pb/trdcommon"
 
 var (
@@ -3444,7 +3873,7 @@ func file_Trd_Common_proto_rawDescGZIP() []byte {
 	return file_Trd_Common_proto_rawDescData
 }
 
-var file_Trd_Common_proto_enumTypes = make([]protoimpl.EnumInfo, 21)
+var file_Trd_Common_proto_enumTypes = make([]protoimpl.EnumInfo, 24)
 var file_Trd_Common_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_Trd_Common_proto_goTypes = []any{
 	(TrdEnv)(0),                 // 0: Trd_Common.TrdEnv
@@ -3464,27 +3893,30 @@ var file_Trd_Common_proto_goTypes = []any{
 	(Currency)(0),               // 14: Trd_Common.Currency
 	(CltRiskLevel)(0),           // 15: Trd_Common.CltRiskLevel
 	(TimeInForce)(0),            // 16: Trd_Common.TimeInForce
-	(SecurityFirm)(0),           // 17: Trd_Common.SecurityFirm
-	(SimAccType)(0),             // 18: Trd_Common.SimAccType
-	(CltRiskStatus)(0),          // 19: Trd_Common.CltRiskStatus
-	(DTStatus)(0),               // 20: Trd_Common.DTStatus
-	(*AccCashInfo)(nil),         // 21: Trd_Common.AccCashInfo
-	(*AccMarketInfo)(nil),       // 22: Trd_Common.AccMarketInfo
-	(*TrdHeader)(nil),           // 23: Trd_Common.TrdHeader
-	(*TrdAcc)(nil),              // 24: Trd_Common.TrdAcc
-	(*Funds)(nil),               // 25: Trd_Common.Funds
-	(*Position)(nil),            // 26: Trd_Common.Position
-	(*Order)(nil),               // 27: Trd_Common.Order
-	(*OrderFeeItem)(nil),        // 28: Trd_Common.OrderFeeItem
-	(*OrderFee)(nil),            // 29: Trd_Common.OrderFee
-	(*OrderFill)(nil),           // 30: Trd_Common.OrderFill
-	(*MaxTrdQtys)(nil),          // 31: Trd_Common.MaxTrdQtys
-	(*TrdFilterConditions)(nil), // 32: Trd_Common.TrdFilterConditions
+	(SimAccType)(0),             // 17: Trd_Common.SimAccType
+	(CltRiskStatus)(0),          // 18: Trd_Common.CltRiskStatus
+	(DTStatus)(0),               // 19: Trd_Common.DTStatus
+	(TrdSubAccType)(0),          // 20: Trd_Common.TrdSubAccType
+	(TrdAssetCategory)(0),       // 21: Trd_Common.TrdAssetCategory
+	(ExposureLevel)(0),          // 22: Trd_Common.ExposureLevel
+	(SecurityFirm)(0),           // 23: Trd_Common.SecurityFirm
+	(*AccCashInfo)(nil),         // 24: Trd_Common.AccCashInfo
+	(*AccMarketInfo)(nil),       // 25: Trd_Common.AccMarketInfo
+	(*TrdHeader)(nil),           // 26: Trd_Common.TrdHeader
+	(*TrdAcc)(nil),              // 27: Trd_Common.TrdAcc
+	(*Funds)(nil),               // 28: Trd_Common.Funds
+	(*Position)(nil),            // 29: Trd_Common.Position
+	(*Order)(nil),               // 30: Trd_Common.Order
+	(*OrderFeeItem)(nil),        // 31: Trd_Common.OrderFeeItem
+	(*OrderFee)(nil),            // 32: Trd_Common.OrderFee
+	(*OrderFill)(nil),           // 33: Trd_Common.OrderFill
+	(*MaxTrdQtys)(nil),          // 34: Trd_Common.MaxTrdQtys
+	(*TrdFilterConditions)(nil), // 35: Trd_Common.TrdFilterConditions
 }
 var file_Trd_Common_proto_depIdxs = []int32{
-	21, // 0: Trd_Common.Funds.cashInfoList:type_name -> Trd_Common.AccCashInfo
-	22, // 1: Trd_Common.Funds.marketInfoList:type_name -> Trd_Common.AccMarketInfo
-	28, // 2: Trd_Common.OrderFee.feeList:type_name -> Trd_Common.OrderFeeItem
+	24, // 0: Trd_Common.Funds.cashInfoList:type_name -> Trd_Common.AccCashInfo
+	25, // 1: Trd_Common.Funds.marketInfoList:type_name -> Trd_Common.AccMarketInfo
+	31, // 2: Trd_Common.OrderFee.feeList:type_name -> Trd_Common.OrderFeeItem
 	3,  // [3:3] is the sub-list for method output_type
 	3,  // [3:3] is the sub-list for method input_type
 	3,  // [3:3] is the sub-list for extension type_name
@@ -3502,7 +3934,7 @@ func file_Trd_Common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_Trd_Common_proto_rawDesc), len(file_Trd_Common_proto_rawDesc)),
-			NumEnums:      21,
+			NumEnums:      24,
 			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,

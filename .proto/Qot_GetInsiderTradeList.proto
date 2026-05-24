@@ -1,0 +1,53 @@
+syntax = "proto2";
+package Qot_GetInsiderTradeList;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetinsidertradelist";
+
+import "Qot_Common.proto";
+
+message OwnerInsiderTradeItem
+{
+	optional int64  tradeShares                = 1;  // 交易股数
+	optional int64  minTradeDate               = 2;  // 最小交易日期时间戳（秒）
+	optional string minTradeDateStr            = 3;  // 最小交易日期字符串，格式 YYYY-MM-DD，对应市场时区
+	optional int64  maxTradeDate               = 4;  // 最大交易日期时间戳（秒）
+	optional string maxTradeDateStr            = 5;  // 最大交易日期字符串，格式 YYYY-MM-DD，对应市场时区
+	optional double minPrice                   = 6;  // 最小交易价格
+	optional double maxPrice                   = 7;  // 最大交易价格
+	optional int64  securityHolderQuantity     = 8;  // 证券类型持股数
+	optional bool   isProposedSaleOfSecurities = 9;  // 是否为计划出售证券
+	optional int64  holderId                   = 10; // 股东id
+	optional string name                       = 11; // 股东名称
+	optional string title                      = 12; // 股东职位
+	optional string securityDescription        = 13; // 证券类型描述
+	optional string transactionType            = 14; // 交易类型
+	optional string sourceGroupName            = 15; // 交易数据来源
+}
+
+message C2S
+{
+	required Qot_Common.Security security    = 1;
+	optional int64 holderId                  = 2; // 股东id，非必传，传了为指定某一个股东；可取自 GetInsiderHolderList（3241）或本协议（3242）返回的 holderId
+	optional string nextKey                  = 3; // 分页标识，首次不填，续拉时填上次返回的 nextKey；"-1" 表示无更多数据
+	optional int32  num                      = 4; // 每页返回数量，默认 10，范围 1~50
+}
+
+message S2C
+{
+	repeated OwnerInsiderTradeItem itemList = 1;
+	optional int32 allCount                 = 2; // 总数
+	optional string nextKey                 = 3; // 分页标识，"-1" 表示无更多数据
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32  retType = 1 [default = -400];
+	optional string retMsg  = 2;
+	optional int32  errCode = 3;
+	optional S2C s2c = 4;
+}

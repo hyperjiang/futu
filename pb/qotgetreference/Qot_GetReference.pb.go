@@ -86,6 +86,7 @@ type C2S struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Security      *qotcommon.Security    `protobuf:"bytes,1,req,name=security" json:"security,omitempty"`            //股票
 	ReferenceType *int32                 `protobuf:"varint,2,req,name=referenceType" json:"referenceType,omitempty"` // ReferenceType, 相关类型
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`              //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -132,6 +133,13 @@ func (x *C2S) GetReferenceType() int32 {
 		return *x.ReferenceType
 	}
 	return 0
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
 }
 
 type S2C struct {
@@ -299,10 +307,11 @@ var File_Qot_GetReference_proto protoreflect.FileDescriptor
 
 const file_Qot_GetReference_proto_rawDesc = "" +
 	"\n" +
-	"\x16Qot_GetReference.proto\x12\x10Qot_GetReference\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"]\n" +
+	"\x16Qot_GetReference.proto\x12\x10Qot_GetReference\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\x8c\x01\n" +
 	"\x03C2S\x120\n" +
 	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12$\n" +
-	"\rreferenceType\x18\x02 \x02(\x05R\rreferenceType\"M\n" +
+	"\rreferenceType\x18\x02 \x02(\x05R\rreferenceType\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"M\n" +
 	"\x03S2C\x12F\n" +
 	"\x0estaticInfoList\x18\x02 \x03(\v2\x1e.Qot_Common.SecurityStaticInfoR\x0estaticInfoList\"2\n" +
 	"\aRequest\x12'\n" +
@@ -339,18 +348,20 @@ var file_Qot_GetReference_proto_goTypes = []any{
 	(*Request)(nil),                      // 3: Qot_GetReference.Request
 	(*Response)(nil),                     // 4: Qot_GetReference.Response
 	(*qotcommon.Security)(nil),           // 5: Qot_Common.Security
-	(*qotcommon.SecurityStaticInfo)(nil), // 6: Qot_Common.SecurityStaticInfo
+	(*qotcommon.QotHeader)(nil),          // 6: Qot_Common.QotHeader
+	(*qotcommon.SecurityStaticInfo)(nil), // 7: Qot_Common.SecurityStaticInfo
 }
 var file_Qot_GetReference_proto_depIdxs = []int32{
 	5, // 0: Qot_GetReference.C2S.security:type_name -> Qot_Common.Security
-	6, // 1: Qot_GetReference.S2C.staticInfoList:type_name -> Qot_Common.SecurityStaticInfo
-	1, // 2: Qot_GetReference.Request.c2s:type_name -> Qot_GetReference.C2S
-	2, // 3: Qot_GetReference.Response.s2c:type_name -> Qot_GetReference.S2C
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	6, // 1: Qot_GetReference.C2S.header:type_name -> Qot_Common.QotHeader
+	7, // 2: Qot_GetReference.S2C.staticInfoList:type_name -> Qot_Common.SecurityStaticInfo
+	1, // 3: Qot_GetReference.Request.c2s:type_name -> Qot_GetReference.C2S
+	2, // 4: Qot_GetReference.Response.s2c:type_name -> Qot_GetReference.S2C
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetReference_proto_init() }

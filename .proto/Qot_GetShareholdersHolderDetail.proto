@@ -1,0 +1,55 @@
+syntax = "proto2";
+package Qot_GetShareholdersHolderDetail;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetshareholdersholderdetail";
+
+import "Qot_Common.proto";
+
+message OwnershipDetailItem
+{
+	optional string periodText = 1;           // 报告期，如 "2025/Q3"
+	optional uint64 holderId = 2;             // 持股人 ID
+	optional string name = 3;                 // 股东名称
+	optional int64 holderQuantity = 4;        // 总持股数（股）
+	optional int64 holderQuantityChange = 5;  // 持股变动数（股，正为增持，负为减持）
+	optional double holderPct = 6;            // 持股比例（%），如 12.34 表示 12.34%
+	optional double holderPctChange = 7;      // 持股变动比例（%），如 12.34 表示 12.34%；负值为减少
+	optional uint64 holdingDate = 8;          // 持股日期时间戳（秒）
+	optional string holdingDateStr = 9;       // 持股日期字符串，格式 YYYY-MM-DD，香港时区
+	optional double closePrice = 10;          // 持股日期对应收盘价（真实价格）
+	optional double priceChangePct = 11;      // 持股日期对应涨跌幅（%），如 -0.4467 表示 -0.4467%
+	optional string sourceGroupName = 12;     // 持股明细披露信息来源（如 13F、多份文件等）
+}
+
+message C2S
+{
+	required Qot_Common.Security security = 1;
+	optional Qot_Common.HolderDetailType requestType = 2; // 请求数据类型，详见 Qot_Common.HolderDetailType 定义，默认按服务端默认逻辑返回
+	optional string nextKey = 3;              // 分页标识，首次不填，续拉时填上次返回的 nextKey；"-1" 表示无更多数据
+	optional int32 num = 4;                   // 每页返回数量，默认 10，范围 1~50
+	optional Qot_Common.SortField sortColumn = 5; // 排序列，详见 Qot_Common.SortField，61=持股股数（默认）62=持股变动数
+	optional Qot_Common.SortType sortType   = 6;  // 排序方向，详见 Qot_Common.SortType 定义，默认降序
+	optional int32 periodId = 7;              // 指定统计周期 ID；与 Qot_GetShareholdersOverview（3237）返回的 holdingPeriodList 中 periodId 一致；默认 0 表示最新周期
+	optional int32 holderId = 8;              // 按持股人 ID 过滤；默认 0 表示不过滤；可取自 GetShareholdersOverview（3237）、GetShareholdersHoldingChanges（3238）、本协议（3239）、GetInsiderHolderList（3241）、GetInsiderTradeList（3242）返回的 holderId
+}
+
+message S2C
+{
+	optional uint64 updateTime = 1;           // 数据更新时间戳（秒）
+	optional string updateTimeStr = 2;        // 数据更新时间字符串，格式 YYYY-MM-DD HH:MM:SS，对应市场时区
+	optional string nextKey = 3;              // 分页标识，"-1" 表示无更多数据
+	repeated OwnershipDetailItem itemList = 4;
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32  retType = 1 [default = -400];
+	optional string retMsg  = 2;
+	optional int32  errCode = 3;
+	optional S2C s2c = 4;
+}

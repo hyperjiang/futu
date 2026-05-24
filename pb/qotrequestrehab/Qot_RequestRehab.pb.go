@@ -26,6 +26,7 @@ const (
 type C2S struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Security      *qotcommon.Security    `protobuf:"bytes,1,req,name=security" json:"security,omitempty"` //股票
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`   //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -63,6 +64,13 @@ func (*C2S) Descriptor() ([]byte, []int) {
 func (x *C2S) GetSecurity() *qotcommon.Security {
 	if x != nil {
 		return x.Security
+	}
+	return nil
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
 	}
 	return nil
 }
@@ -232,9 +240,10 @@ var File_Qot_RequestRehab_proto protoreflect.FileDescriptor
 
 const file_Qot_RequestRehab_proto_rawDesc = "" +
 	"\n" +
-	"\x16Qot_RequestRehab.proto\x12\x10Qot_RequestRehab\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"7\n" +
+	"\x16Qot_RequestRehab.proto\x12\x10Qot_RequestRehab\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"f\n" +
 	"\x03C2S\x120\n" +
-	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\"6\n" +
+	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"6\n" +
 	"\x03S2C\x12/\n" +
 	"\trehabList\x18\x01 \x03(\v2\x11.Qot_Common.RehabR\trehabList\"2\n" +
 	"\aRequest\x12'\n" +
@@ -260,23 +269,25 @@ func file_Qot_RequestRehab_proto_rawDescGZIP() []byte {
 
 var file_Qot_RequestRehab_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_Qot_RequestRehab_proto_goTypes = []any{
-	(*C2S)(nil),                // 0: Qot_RequestRehab.C2S
-	(*S2C)(nil),                // 1: Qot_RequestRehab.S2C
-	(*Request)(nil),            // 2: Qot_RequestRehab.Request
-	(*Response)(nil),           // 3: Qot_RequestRehab.Response
-	(*qotcommon.Security)(nil), // 4: Qot_Common.Security
-	(*qotcommon.Rehab)(nil),    // 5: Qot_Common.Rehab
+	(*C2S)(nil),                 // 0: Qot_RequestRehab.C2S
+	(*S2C)(nil),                 // 1: Qot_RequestRehab.S2C
+	(*Request)(nil),             // 2: Qot_RequestRehab.Request
+	(*Response)(nil),            // 3: Qot_RequestRehab.Response
+	(*qotcommon.Security)(nil),  // 4: Qot_Common.Security
+	(*qotcommon.QotHeader)(nil), // 5: Qot_Common.QotHeader
+	(*qotcommon.Rehab)(nil),     // 6: Qot_Common.Rehab
 }
 var file_Qot_RequestRehab_proto_depIdxs = []int32{
 	4, // 0: Qot_RequestRehab.C2S.security:type_name -> Qot_Common.Security
-	5, // 1: Qot_RequestRehab.S2C.rehabList:type_name -> Qot_Common.Rehab
-	0, // 2: Qot_RequestRehab.Request.c2s:type_name -> Qot_RequestRehab.C2S
-	1, // 3: Qot_RequestRehab.Response.s2c:type_name -> Qot_RequestRehab.S2C
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	5, // 1: Qot_RequestRehab.C2S.header:type_name -> Qot_Common.QotHeader
+	6, // 2: Qot_RequestRehab.S2C.rehabList:type_name -> Qot_Common.Rehab
+	0, // 3: Qot_RequestRehab.Request.c2s:type_name -> Qot_RequestRehab.C2S
+	1, // 4: Qot_RequestRehab.Response.s2c:type_name -> Qot_RequestRehab.S2C
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_Qot_RequestRehab_proto_init() }

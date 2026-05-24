@@ -35,6 +35,7 @@ type C2S struct {
 	IsSubOrderBookDetail *bool                  `protobuf:"varint,8,opt,name=isSubOrderBookDetail" json:"isSubOrderBookDetail,omitempty"` //订阅摆盘可用,是否订阅摆盘明细,仅支持SF行情,该参数不指定则默认false
 	ExtendedTime         *bool                  `protobuf:"varint,9,opt,name=extendedTime" json:"extendedTime,omitempty"`                 // 是否允许美股盘前盘后数据（仅用于订阅美股的实时K线、实时分时、实时逐笔）
 	Session              *int32                 `protobuf:"varint,10,opt,name=session" json:"session,omitempty"`                          // 时段
+	Header               *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`                            //行情公共参数头
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -137,6 +138,13 @@ func (x *C2S) GetSession() int32 {
 		return *x.Session
 	}
 	return 0
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
 }
 
 type S2C struct {
@@ -296,7 +304,7 @@ var File_Qot_Sub_proto protoreflect.FileDescriptor
 
 const file_Qot_Sub_proto_rawDesc = "" +
 	"\n" +
-	"\rQot_Sub.proto\x12\aQot_Sub\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\x99\x03\n" +
+	"\rQot_Sub.proto\x12\aQot_Sub\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\xc8\x03\n" +
 	"\x03C2S\x128\n" +
 	"\fsecurityList\x18\x01 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\x12 \n" +
 	"\vsubTypeList\x18\x02 \x03(\x05R\vsubTypeList\x12\"\n" +
@@ -310,7 +318,8 @@ const file_Qot_Sub_proto_rawDesc = "" +
 	"\x14isSubOrderBookDetail\x18\b \x01(\bR\x14isSubOrderBookDetail\x12\"\n" +
 	"\fextendedTime\x18\t \x01(\bR\fextendedTime\x12\x18\n" +
 	"\asession\x18\n" +
-	" \x01(\x05R\asession\"\x05\n" +
+	" \x01(\x05R\asession\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"\x05\n" +
 	"\x03S2C\")\n" +
 	"\aRequest\x12\x1e\n" +
 	"\x03c2s\x18\x01 \x02(\v2\f.Qot_Sub.C2SR\x03c2s\"|\n" +
@@ -335,21 +344,23 @@ func file_Qot_Sub_proto_rawDescGZIP() []byte {
 
 var file_Qot_Sub_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_Qot_Sub_proto_goTypes = []any{
-	(*C2S)(nil),                // 0: Qot_Sub.C2S
-	(*S2C)(nil),                // 1: Qot_Sub.S2C
-	(*Request)(nil),            // 2: Qot_Sub.Request
-	(*Response)(nil),           // 3: Qot_Sub.Response
-	(*qotcommon.Security)(nil), // 4: Qot_Common.Security
+	(*C2S)(nil),                 // 0: Qot_Sub.C2S
+	(*S2C)(nil),                 // 1: Qot_Sub.S2C
+	(*Request)(nil),             // 2: Qot_Sub.Request
+	(*Response)(nil),            // 3: Qot_Sub.Response
+	(*qotcommon.Security)(nil),  // 4: Qot_Common.Security
+	(*qotcommon.QotHeader)(nil), // 5: Qot_Common.QotHeader
 }
 var file_Qot_Sub_proto_depIdxs = []int32{
 	4, // 0: Qot_Sub.C2S.securityList:type_name -> Qot_Common.Security
-	0, // 1: Qot_Sub.Request.c2s:type_name -> Qot_Sub.C2S
-	1, // 2: Qot_Sub.Response.s2c:type_name -> Qot_Sub.S2C
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	5, // 1: Qot_Sub.C2S.header:type_name -> Qot_Common.QotHeader
+	0, // 2: Qot_Sub.Request.c2s:type_name -> Qot_Sub.C2S
+	1, // 3: Qot_Sub.Response.s2c:type_name -> Qot_Sub.S2C
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_Qot_Sub_proto_init() }

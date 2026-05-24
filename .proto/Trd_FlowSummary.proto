@@ -15,20 +15,23 @@ enum TrdCashFlowDirection
 message FlowSummaryInfo
 {
 	optional string clearingDate = 1; //清算日期
-	optional string settlementDate = 2; //结算日期
+	optional string settlementDate = 2; //结算日期，数字货币账户无效
 	optional int32 currency = 3; //币种
 	optional string cashFlowType = 4; //现金流类型
 	optional int32 cashFlowDirection = 5; //现金流方向 TrdCashFlowDirection
 	optional double cashFlowAmount = 6; //金额
 	optional string cashFlowRemark = 7; // 备注
 	optional uint64 cashFlowID = 8; // 现金流ID
+	optional string createTime = 9; // 创建时间，仅数字货币账户有效
 }
 
 message C2S
 {
 	required Trd_Common.TrdHeader header = 1; //交易公共参数头
-	required string clearingDate = 2; //清算日期，格式 "2017-05-20"
+	required string clearingDate = 2; //清算日期，证券/期货账户有效，格式 "2017-05-20"
 	optional int32 cashFlowDirection = 3; //现金流方向 TrdCashFlowDirection
+	optional string startCreateDate = 4; //创建日期开始时间，仅数字货币账户有效，格式 "2017-05-20"
+	optional string endCreateDate = 5; //创建日期结束时间，仅数字货币账户有效，格式 "2017-05-20"
 }
 
 message S2C

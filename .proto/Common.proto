@@ -86,3 +86,5 @@ enum Session
 	Session_ALL = 3;
 	Session_OVERNIGHT = 4;
 }
+
+// SecurityFirm 已迁移到 Trd_Common.proto

@@ -363,6 +363,7 @@ type QotRight struct {
 	UsCBOEFutureQotRight  *int32                 `protobuf:"varint,20,opt,name=usCBOEFutureQotRight" json:"usCBOEFutureQotRight,omitempty"`   //美股CBOE期货行情权限, Qot_Common.QotRight
 	ShQotRight            *int32                 `protobuf:"varint,21,opt,name=shQotRight" json:"shQotRight,omitempty"`                       //上海A股行情权限, Qot_Common.QotRight
 	SzQotRight            *int32                 `protobuf:"varint,22,opt,name=szQotRight" json:"szQotRight,omitempty"`                       //深圳A股行情权限, Qot_Common.QotRight
+	CcQotRight            *int32                 `protobuf:"varint,23,opt,name=ccQotRight" json:"ccQotRight,omitempty"`                       //加密货币市场行情权限, Qot_Common.QotRight
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -526,6 +527,13 @@ func (x *QotRight) GetShQotRight() int32 {
 func (x *QotRight) GetSzQotRight() int32 {
 	if x != nil && x.SzQotRight != nil {
 		return *x.SzQotRight
+	}
+	return 0
+}
+
+func (x *QotRight) GetCcQotRight() int32 {
+	if x != nil && x.CcQotRight != nil {
+		return *x.CcQotRight
 	}
 	return 0
 }
@@ -867,7 +875,7 @@ const file_Notify_proto_rawDesc = "" +
 	"qotLogined\x12\x1e\n" +
 	"\n" +
 	"trdLogined\x18\x02 \x02(\bR\n" +
-	"trdLogined\"\xba\x06\n" +
+	"trdLogined\"\xda\x06\n" +
 	"\bQotRight\x12\x1e\n" +
 	"\n" +
 	"hkQotRight\x18\x04 \x02(\x05R\n" +
@@ -898,7 +906,10 @@ const file_Notify_proto_rawDesc = "" +
 	"shQotRight\x12\x1e\n" +
 	"\n" +
 	"szQotRight\x18\x16 \x01(\x05R\n" +
-	"szQotRight\"&\n" +
+	"szQotRight\x12\x1e\n" +
+	"\n" +
+	"ccQotRight\x18\x17 \x01(\x05R\n" +
+	"ccQotRight\"&\n" +
 	"\bAPILevel\x12\x1a\n" +
 	"\bapiLevel\x18\x03 \x02(\tR\bapiLevel\"N\n" +
 	"\bAPIQuota\x12\x1a\n" +

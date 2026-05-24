@@ -26,6 +26,7 @@ const (
 type C2S struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	GroupName     *string                `protobuf:"bytes,1,req,name=groupName" json:"groupName,omitempty"` //分组名,有同名的返回排序首个
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`     //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -65,6 +66,13 @@ func (x *C2S) GetGroupName() string {
 		return *x.GroupName
 	}
 	return ""
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
 }
 
 type S2C struct {
@@ -232,9 +240,10 @@ var File_Qot_GetUserSecurity_proto protoreflect.FileDescriptor
 
 const file_Qot_GetUserSecurity_proto_rawDesc = "" +
 	"\n" +
-	"\x19Qot_GetUserSecurity.proto\x12\x13Qot_GetUserSecurity\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"#\n" +
+	"\x19Qot_GetUserSecurity.proto\x12\x13Qot_GetUserSecurity\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"R\n" +
 	"\x03C2S\x12\x1c\n" +
-	"\tgroupName\x18\x01 \x02(\tR\tgroupName\"M\n" +
+	"\tgroupName\x18\x01 \x02(\tR\tgroupName\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"M\n" +
 	"\x03S2C\x12F\n" +
 	"\x0estaticInfoList\x18\x01 \x03(\v2\x1e.Qot_Common.SecurityStaticInfoR\x0estaticInfoList\"5\n" +
 	"\aRequest\x12*\n" +
@@ -264,17 +273,19 @@ var file_Qot_GetUserSecurity_proto_goTypes = []any{
 	(*S2C)(nil),                          // 1: Qot_GetUserSecurity.S2C
 	(*Request)(nil),                      // 2: Qot_GetUserSecurity.Request
 	(*Response)(nil),                     // 3: Qot_GetUserSecurity.Response
-	(*qotcommon.SecurityStaticInfo)(nil), // 4: Qot_Common.SecurityStaticInfo
+	(*qotcommon.QotHeader)(nil),          // 4: Qot_Common.QotHeader
+	(*qotcommon.SecurityStaticInfo)(nil), // 5: Qot_Common.SecurityStaticInfo
 }
 var file_Qot_GetUserSecurity_proto_depIdxs = []int32{
-	4, // 0: Qot_GetUserSecurity.S2C.staticInfoList:type_name -> Qot_Common.SecurityStaticInfo
-	0, // 1: Qot_GetUserSecurity.Request.c2s:type_name -> Qot_GetUserSecurity.C2S
-	1, // 2: Qot_GetUserSecurity.Response.s2c:type_name -> Qot_GetUserSecurity.S2C
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	4, // 0: Qot_GetUserSecurity.C2S.header:type_name -> Qot_Common.QotHeader
+	5, // 1: Qot_GetUserSecurity.S2C.staticInfoList:type_name -> Qot_Common.SecurityStaticInfo
+	0, // 2: Qot_GetUserSecurity.Request.c2s:type_name -> Qot_GetUserSecurity.C2S
+	1, // 3: Qot_GetUserSecurity.Response.s2c:type_name -> Qot_GetUserSecurity.S2C
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetUserSecurity_proto_init() }

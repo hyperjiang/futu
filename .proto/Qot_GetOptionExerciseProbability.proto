@@ -1,0 +1,32 @@
+syntax = "proto2";
+package Qot_GetOptionExerciseProbability;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptionexerciseprobability";
+
+import "Qot_Common.proto";
+
+message C2S {
+    required Qot_Common.Security security = 1; // 股票
+}
+
+message StrikeProbabilityItem {
+    optional int64  timestamp = 1;          // 数据点时间戳（秒）
+    optional string timestampStr = 2;       // 日期字符串，格式 YYYY-MM-DD，对应市场时区
+    optional double securityPrice = 3;      // 正股价格
+    optional double strikeProbability = 4;  // 行权概率，百分号前的值，如 12.34 表示 12.34%
+}
+
+message S2C {
+    repeated StrikeProbabilityItem itemList = 1; // 行权概率列表，时间按从大到小排序
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

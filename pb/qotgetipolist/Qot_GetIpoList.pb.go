@@ -551,7 +551,8 @@ func (x *IpoData) GetUsExData() *USIpoExData {
 
 type C2S struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Market        *int32                 `protobuf:"varint,1,req,name=market" json:"market,omitempty"` // Qot_Common::QotMarket股票市场，支持沪股和深股，且沪股和深股不做区分都代表A股市场。
+	Market        *int32                 `protobuf:"varint,1,req,name=market" json:"market,omitempty"`  // Qot_Common::QotMarket股票市场，支持沪股和深股，且沪股和深股不做区分都代表A股市场。
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"` //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -591,6 +592,13 @@ func (x *C2S) GetMarket() int32 {
 		return *x.Market
 	}
 	return 0
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
 }
 
 type S2C struct {
@@ -803,9 +811,10 @@ const file_Qot_GetIpoList_proto_rawDesc = "" +
 	"\x05basic\x18\x01 \x02(\v2\x1c.Qot_GetIpoList.BasicIpoDataR\x05basic\x127\n" +
 	"\bcnExData\x18\x02 \x01(\v2\x1b.Qot_GetIpoList.CNIpoExDataR\bcnExData\x127\n" +
 	"\bhkExData\x18\x03 \x01(\v2\x1b.Qot_GetIpoList.HKIpoExDataR\bhkExData\x127\n" +
-	"\busExData\x18\x04 \x01(\v2\x1b.Qot_GetIpoList.USIpoExDataR\busExData\"\x1d\n" +
+	"\busExData\x18\x04 \x01(\v2\x1b.Qot_GetIpoList.USIpoExDataR\busExData\"L\n" +
 	"\x03C2S\x12\x16\n" +
-	"\x06market\x18\x01 \x02(\x05R\x06market\"8\n" +
+	"\x06market\x18\x01 \x02(\x05R\x06market\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"8\n" +
 	"\x03S2C\x121\n" +
 	"\aipoList\x18\x01 \x03(\v2\x17.Qot_GetIpoList.IpoDataR\aipoList\"0\n" +
 	"\aRequest\x12%\n" +
@@ -831,17 +840,18 @@ func file_Qot_GetIpoList_proto_rawDescGZIP() []byte {
 
 var file_Qot_GetIpoList_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_Qot_GetIpoList_proto_goTypes = []any{
-	(*BasicIpoData)(nil),       // 0: Qot_GetIpoList.BasicIpoData
-	(*CNIpoExData)(nil),        // 1: Qot_GetIpoList.CNIpoExData
-	(*WinningNumData)(nil),     // 2: Qot_GetIpoList.WinningNumData
-	(*HKIpoExData)(nil),        // 3: Qot_GetIpoList.HKIpoExData
-	(*USIpoExData)(nil),        // 4: Qot_GetIpoList.USIpoExData
-	(*IpoData)(nil),            // 5: Qot_GetIpoList.IpoData
-	(*C2S)(nil),                // 6: Qot_GetIpoList.C2S
-	(*S2C)(nil),                // 7: Qot_GetIpoList.S2C
-	(*Request)(nil),            // 8: Qot_GetIpoList.Request
-	(*Response)(nil),           // 9: Qot_GetIpoList.Response
-	(*qotcommon.Security)(nil), // 10: Qot_Common.Security
+	(*BasicIpoData)(nil),        // 0: Qot_GetIpoList.BasicIpoData
+	(*CNIpoExData)(nil),         // 1: Qot_GetIpoList.CNIpoExData
+	(*WinningNumData)(nil),      // 2: Qot_GetIpoList.WinningNumData
+	(*HKIpoExData)(nil),         // 3: Qot_GetIpoList.HKIpoExData
+	(*USIpoExData)(nil),         // 4: Qot_GetIpoList.USIpoExData
+	(*IpoData)(nil),             // 5: Qot_GetIpoList.IpoData
+	(*C2S)(nil),                 // 6: Qot_GetIpoList.C2S
+	(*S2C)(nil),                 // 7: Qot_GetIpoList.S2C
+	(*Request)(nil),             // 8: Qot_GetIpoList.Request
+	(*Response)(nil),            // 9: Qot_GetIpoList.Response
+	(*qotcommon.Security)(nil),  // 10: Qot_Common.Security
+	(*qotcommon.QotHeader)(nil), // 11: Qot_Common.QotHeader
 }
 var file_Qot_GetIpoList_proto_depIdxs = []int32{
 	10, // 0: Qot_GetIpoList.BasicIpoData.security:type_name -> Qot_Common.Security
@@ -850,14 +860,15 @@ var file_Qot_GetIpoList_proto_depIdxs = []int32{
 	1,  // 3: Qot_GetIpoList.IpoData.cnExData:type_name -> Qot_GetIpoList.CNIpoExData
 	3,  // 4: Qot_GetIpoList.IpoData.hkExData:type_name -> Qot_GetIpoList.HKIpoExData
 	4,  // 5: Qot_GetIpoList.IpoData.usExData:type_name -> Qot_GetIpoList.USIpoExData
-	5,  // 6: Qot_GetIpoList.S2C.ipoList:type_name -> Qot_GetIpoList.IpoData
-	6,  // 7: Qot_GetIpoList.Request.c2s:type_name -> Qot_GetIpoList.C2S
-	7,  // 8: Qot_GetIpoList.Response.s2c:type_name -> Qot_GetIpoList.S2C
-	9,  // [9:9] is the sub-list for method output_type
-	9,  // [9:9] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	11, // 6: Qot_GetIpoList.C2S.header:type_name -> Qot_Common.QotHeader
+	5,  // 7: Qot_GetIpoList.S2C.ipoList:type_name -> Qot_GetIpoList.IpoData
+	6,  // 8: Qot_GetIpoList.Request.c2s:type_name -> Qot_GetIpoList.C2S
+	7,  // 9: Qot_GetIpoList.Response.s2c:type_name -> Qot_GetIpoList.S2C
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetIpoList_proto_init() }

@@ -53,6 +53,7 @@ message C2S
 	required string beginTime = 4; //期权到期日开始时间
 	required string endTime = 5; //期权到期日结束时间，时间跨度最多一个月
 	optional DataFilter dataFilter = 7; //数据字段筛选
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
 message OptionItem

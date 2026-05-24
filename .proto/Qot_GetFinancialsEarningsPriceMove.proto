@@ -1,0 +1,57 @@
+syntax = "proto2";
+package Qot_GetFinancialsEarningsPriceMove;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetfinancialsearnpricemove";
+
+import "Qot_Common.proto";
+
+message C2S
+{
+	required Qot_Common.Security security = 1; // 股票
+	optional int32 periodCount = 2; // 财报周期数量，默认 10，取值范围 [1, 50]
+}
+
+// 单个交易日的股价行情数据
+message PricePerformanceRow
+{
+	optional int64  tradingDay       = 1; // 交易日时间戳（秒）
+	optional string tradingDayStr    = 2; // 交易日字符串，格式 YYYY-MM-DD，对应市场时区
+	optional double closePrice       = 3; // 收盘价
+	optional double openPrice        = 4; // 开盘价
+	optional double highestPrice     = 5; // 最高价
+	optional double lowestPrice      = 6; // 最低价
+	optional double lastClosePrice   = 7; // 昨收价
+	optional double optionIV         = 8; // 期权隐含波动率（百分号前的值，如 12.34 表示 12.34%）
+	optional double optionHV         = 9; // 期权历史波动率（百分号前的值，如 12.34 表示 12.34%）
+}
+
+// 单期财报周期的行情数据，包含财报元信息及财报日前后若干交易日的价格序列
+message ReportCycleQuote
+{
+	optional int32  fiscalYear        = 1; // 财务年度，如 2024
+	optional int32  financialType     = 2; // 财报类型，详见 Qot_Common.F10Type 定义
+	optional string periodText        = 3; // 财报周期，如 "2024/Q3"、"2024/FY"
+	optional int64  pubTradingDay     = 4; // 财报发布对应的交易日时间戳（秒）
+	optional string pubTradingDayStr  = 5; // 财报发布交易日字符串，格式 YYYY-MM-DD，对应市场时区
+	optional Qot_Common.EarningsPubTimeType pubType = 6; // 财报发布时间类型，详见 Qot_Common.EarningsPubTimeType 定义
+	optional int32  priceInfoIndex    = 7; // itemList 中财报发布当日所在的下标（0-based）；-1 表示无数据
+	repeated PricePerformanceRow itemList = 8; // 财报日前后的交易日行情列表，按时间升序排列
+}
+
+message S2C
+{
+	repeated ReportCycleQuote detailList = 1; // 各财报周期的详细行情数据列表，按财报发布日降序排列
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32  retType = 1 [default = -400]; // 返回结果类型，参见 Common.RetType，0=成功，负数=失败
+	optional string retMsg  = 2;                  // 返回结果描述
+	optional int32  errCode = 3;                  // 错误码，失败时有效
+	optional S2C    s2c     = 4;                  // 响应数据
+}

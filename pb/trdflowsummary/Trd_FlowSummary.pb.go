@@ -84,13 +84,14 @@ func (TrdCashFlowDirection) EnumDescriptor() ([]byte, []int) {
 type FlowSummaryInfo struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	ClearingDate      *string                `protobuf:"bytes,1,opt,name=clearingDate" json:"clearingDate,omitempty"`            //清算日期
-	SettlementDate    *string                `protobuf:"bytes,2,opt,name=settlementDate" json:"settlementDate,omitempty"`        //结算日期
+	SettlementDate    *string                `protobuf:"bytes,2,opt,name=settlementDate" json:"settlementDate,omitempty"`        //结算日期，数字货币账户无效
 	Currency          *int32                 `protobuf:"varint,3,opt,name=currency" json:"currency,omitempty"`                   //币种
 	CashFlowType      *string                `protobuf:"bytes,4,opt,name=cashFlowType" json:"cashFlowType,omitempty"`            //现金流类型
 	CashFlowDirection *int32                 `protobuf:"varint,5,opt,name=cashFlowDirection" json:"cashFlowDirection,omitempty"` //现金流方向 TrdCashFlowDirection
 	CashFlowAmount    *float64               `protobuf:"fixed64,6,opt,name=cashFlowAmount" json:"cashFlowAmount,omitempty"`      //金额
 	CashFlowRemark    *string                `protobuf:"bytes,7,opt,name=cashFlowRemark" json:"cashFlowRemark,omitempty"`        // 备注
 	CashFlowID        *uint64                `protobuf:"varint,8,opt,name=cashFlowID" json:"cashFlowID,omitempty"`               // 现金流ID
+	CreateTime        *string                `protobuf:"bytes,9,opt,name=createTime" json:"createTime,omitempty"`                // 创建时间，仅数字货币账户有效
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -181,11 +182,20 @@ func (x *FlowSummaryInfo) GetCashFlowID() uint64 {
 	return 0
 }
 
+func (x *FlowSummaryInfo) GetCreateTime() string {
+	if x != nil && x.CreateTime != nil {
+		return *x.CreateTime
+	}
+	return ""
+}
+
 type C2S struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Header            *trdcommon.TrdHeader   `protobuf:"bytes,1,req,name=header" json:"header,omitempty"`                        //交易公共参数头
-	ClearingDate      *string                `protobuf:"bytes,2,req,name=clearingDate" json:"clearingDate,omitempty"`            //清算日期，格式 "2017-05-20"
+	ClearingDate      *string                `protobuf:"bytes,2,req,name=clearingDate" json:"clearingDate,omitempty"`            //清算日期，证券/期货账户有效，格式 "2017-05-20"
 	CashFlowDirection *int32                 `protobuf:"varint,3,opt,name=cashFlowDirection" json:"cashFlowDirection,omitempty"` //现金流方向 TrdCashFlowDirection
+	StartCreateDate   *string                `protobuf:"bytes,4,opt,name=startCreateDate" json:"startCreateDate,omitempty"`      //创建日期开始时间，仅数字货币账户有效，格式 "2017-05-20"
+	EndCreateDate     *string                `protobuf:"bytes,5,opt,name=endCreateDate" json:"endCreateDate,omitempty"`          //创建日期结束时间，仅数字货币账户有效，格式 "2017-05-20"
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -239,6 +249,20 @@ func (x *C2S) GetCashFlowDirection() int32 {
 		return *x.CashFlowDirection
 	}
 	return 0
+}
+
+func (x *C2S) GetStartCreateDate() string {
+	if x != nil && x.StartCreateDate != nil {
+		return *x.StartCreateDate
+	}
+	return ""
+}
+
+func (x *C2S) GetEndCreateDate() string {
+	if x != nil && x.EndCreateDate != nil {
+		return *x.EndCreateDate
+	}
+	return ""
 }
 
 type S2C struct {
@@ -415,7 +439,7 @@ var File_Trd_FlowSummary_proto protoreflect.FileDescriptor
 
 const file_Trd_FlowSummary_proto_rawDesc = "" +
 	"\n" +
-	"\x15Trd_FlowSummary.proto\x12\x0fTrd_FlowSummary\x1a\x10Trd_Common.proto\"\xbb\x02\n" +
+	"\x15Trd_FlowSummary.proto\x12\x0fTrd_FlowSummary\x1a\x10Trd_Common.proto\"\xdb\x02\n" +
 	"\x0fFlowSummaryInfo\x12\"\n" +
 	"\fclearingDate\x18\x01 \x01(\tR\fclearingDate\x12&\n" +
 	"\x0esettlementDate\x18\x02 \x01(\tR\x0esettlementDate\x12\x1a\n" +
@@ -426,11 +450,16 @@ const file_Trd_FlowSummary_proto_rawDesc = "" +
 	"\x0ecashFlowRemark\x18\a \x01(\tR\x0ecashFlowRemark\x12\x1e\n" +
 	"\n" +
 	"cashFlowID\x18\b \x01(\x04R\n" +
-	"cashFlowID\"\x86\x01\n" +
+	"cashFlowID\x12\x1e\n" +
+	"\n" +
+	"createTime\x18\t \x01(\tR\n" +
+	"createTime\"\xd6\x01\n" +
 	"\x03C2S\x12-\n" +
 	"\x06header\x18\x01 \x02(\v2\x15.Trd_Common.TrdHeaderR\x06header\x12\"\n" +
 	"\fclearingDate\x18\x02 \x02(\tR\fclearingDate\x12,\n" +
-	"\x11cashFlowDirection\x18\x03 \x01(\x05R\x11cashFlowDirection\"\x88\x01\n" +
+	"\x11cashFlowDirection\x18\x03 \x01(\x05R\x11cashFlowDirection\x12(\n" +
+	"\x0fstartCreateDate\x18\x04 \x01(\tR\x0fstartCreateDate\x12$\n" +
+	"\rendCreateDate\x18\x05 \x01(\tR\rendCreateDate\"\x88\x01\n" +
 	"\x03S2C\x12-\n" +
 	"\x06header\x18\x01 \x02(\v2\x15.Trd_Common.TrdHeaderR\x06header\x12R\n" +
 	"\x13flowSummaryInfoList\x18\x02 \x03(\v2 .Trd_FlowSummary.FlowSummaryInfoR\x13flowSummaryInfoList\"1\n" +

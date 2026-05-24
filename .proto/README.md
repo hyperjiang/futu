@@ -2,7 +2,7 @@
 
 The source files are downloaded from https://openapi.futunn.com/futu-api-doc/quick/demo.html
 
-Current version is `v9.4.5418`
+Current version is `v10.6.6608`
 
 ## How to generate go codes on MacOS
 
@@ -20,9 +20,9 @@ brew install protoc-gen-go
 
 ### 3. Rename package
 
-Replace `github.com/hyperjiang/futu` with `github.com/hyperjiang/futu` in all the proto files.
+Replace `github.com/futuopen/ftapi4go` with `github.com/hyperjiang/futu` in all the proto files.
 
-Replace `github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate` with `github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate`.
+Replace `github.com/hyperjiang/futu/pb/getoptionexpirationdate` with `github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate`.
 
 ### 4. Generate the codes
 

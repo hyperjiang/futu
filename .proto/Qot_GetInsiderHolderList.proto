@@ -1,0 +1,45 @@
+syntax = "proto2";
+package Qot_GetInsiderHolderList;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetinsiderholderlist";
+
+import "Qot_Common.proto";
+
+message OwnerInsiderHolderItem
+{
+	optional int64  holderId       = 1; // 股东id，可作为 GetInsiderTradeList 和 Qot_GetShareholdersHolderDetail 的入参
+	optional int64  holderQuantity = 2; // 总持股数
+	optional double holderPct      = 3; // 持股比例，百分号前的值，如 12.34 表示 12.34%
+	optional string name           = 4; // 股东名称
+	optional string title          = 5; // 股东职位
+}
+
+message C2S
+{
+	required Qot_Common.Security security = 1;
+	optional string nextKey = 2; // 分页标识，首次不填，续拉时填上次返回的 nextKey；"-1" 表示无更多数据
+	optional int32  num     = 3; // 每页返回数量，默认 10，范围 1~20
+}
+
+message S2C
+{
+	repeated OwnerInsiderHolderItem itemList           = 1;
+	optional int32                  allCount           = 2;  // 总数
+	optional string                 nextKey            = 3;  // 分页标识，"-1" 表示无更多数据
+	optional int32                  insiderTotalCount  = 4;  // 内部人总人数，仅首次请求（nextKey为空）时返回
+	optional int32                  insiderBoughtCount = 5;  // 内部人买入总人数，仅首次请求时返回
+	optional int32                  insiderSoldCount   = 6;  // 内部人卖出总人数，仅首次请求时返回
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32  retType = 1 [default = -400];
+	optional string retMsg  = 2;
+	optional int32  errCode = 3;
+	optional S2C s2c = 4;
+}

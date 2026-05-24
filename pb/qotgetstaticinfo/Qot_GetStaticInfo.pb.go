@@ -29,6 +29,7 @@ type C2S struct {
 	Market        *int32                `protobuf:"varint,1,opt,name=market" json:"market,omitempty"`            //Qot_Common.QotMarket,股票市场
 	SecType       *int32                `protobuf:"varint,2,opt,name=secType" json:"secType,omitempty"`          //Qot_Common.SecurityType,股票类型
 	SecurityList  []*qotcommon.Security `protobuf:"bytes,3,rep,name=securityList" json:"securityList,omitempty"` //股票，若该字段存在，忽略其他字段，只返回该字段股票的静态信息
+	Header        *qotcommon.QotHeader  `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`           //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -80,6 +81,13 @@ func (x *C2S) GetSecType() int32 {
 func (x *C2S) GetSecurityList() []*qotcommon.Security {
 	if x != nil {
 		return x.SecurityList
+	}
+	return nil
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
 	}
 	return nil
 }
@@ -249,11 +257,12 @@ var File_Qot_GetStaticInfo_proto protoreflect.FileDescriptor
 
 const file_Qot_GetStaticInfo_proto_rawDesc = "" +
 	"\n" +
-	"\x17Qot_GetStaticInfo.proto\x12\x11Qot_GetStaticInfo\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"q\n" +
+	"\x17Qot_GetStaticInfo.proto\x12\x11Qot_GetStaticInfo\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\xa0\x01\n" +
 	"\x03C2S\x12\x16\n" +
 	"\x06market\x18\x01 \x01(\x05R\x06market\x12\x18\n" +
 	"\asecType\x18\x02 \x01(\x05R\asecType\x128\n" +
-	"\fsecurityList\x18\x03 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\"M\n" +
+	"\fsecurityList\x18\x03 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"M\n" +
 	"\x03S2C\x12F\n" +
 	"\x0estaticInfoList\x18\x01 \x03(\v2\x1e.Qot_Common.SecurityStaticInfoR\x0estaticInfoList\"3\n" +
 	"\aRequest\x12(\n" +
@@ -284,18 +293,20 @@ var file_Qot_GetStaticInfo_proto_goTypes = []any{
 	(*Request)(nil),                      // 2: Qot_GetStaticInfo.Request
 	(*Response)(nil),                     // 3: Qot_GetStaticInfo.Response
 	(*qotcommon.Security)(nil),           // 4: Qot_Common.Security
-	(*qotcommon.SecurityStaticInfo)(nil), // 5: Qot_Common.SecurityStaticInfo
+	(*qotcommon.QotHeader)(nil),          // 5: Qot_Common.QotHeader
+	(*qotcommon.SecurityStaticInfo)(nil), // 6: Qot_Common.SecurityStaticInfo
 }
 var file_Qot_GetStaticInfo_proto_depIdxs = []int32{
 	4, // 0: Qot_GetStaticInfo.C2S.securityList:type_name -> Qot_Common.Security
-	5, // 1: Qot_GetStaticInfo.S2C.staticInfoList:type_name -> Qot_Common.SecurityStaticInfo
-	0, // 2: Qot_GetStaticInfo.Request.c2s:type_name -> Qot_GetStaticInfo.C2S
-	1, // 3: Qot_GetStaticInfo.Response.s2c:type_name -> Qot_GetStaticInfo.S2C
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	5, // 1: Qot_GetStaticInfo.C2S.header:type_name -> Qot_Common.QotHeader
+	6, // 2: Qot_GetStaticInfo.S2C.staticInfoList:type_name -> Qot_Common.SecurityStaticInfo
+	0, // 3: Qot_GetStaticInfo.Request.c2s:type_name -> Qot_GetStaticInfo.C2S
+	1, // 4: Qot_GetStaticInfo.Response.s2c:type_name -> Qot_GetStaticInfo.S2C
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetStaticInfo_proto_init() }

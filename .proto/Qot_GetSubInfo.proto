@@ -9,6 +9,7 @@ import "Qot_Common.proto";
 message C2S
 {
 	optional bool isReqAllConn = 1; //是否返回所有连接的订阅状态,不传或者传false只返回当前连接数据
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
 message S2C

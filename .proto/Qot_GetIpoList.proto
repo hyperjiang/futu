@@ -77,6 +77,7 @@ message IpoData
 message C2S
 {
 	required int32 market = 1; // Qot_Common::QotMarket股票市场，支持沪股和深股，且沪股和深股不做区分都代表A股市场。
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
 message S2C

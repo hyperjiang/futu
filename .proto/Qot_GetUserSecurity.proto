@@ -9,6 +9,7 @@ import "Qot_Common.proto";
 message C2S
 {
 	required string groupName = 1; //分组名,有同名的返回排序首个
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
 message S2C

@@ -17,6 +17,7 @@ message DetailItem
 message C2S
 {
 	optional bool bGetDetail = 2;	//是否返回详细拉取过的历史纪录
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
 message S2C

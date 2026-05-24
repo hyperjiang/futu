@@ -26,6 +26,7 @@ const (
 type C2S struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	IsReqAllConn  *bool                  `protobuf:"varint,1,opt,name=isReqAllConn" json:"isReqAllConn,omitempty"` //是否返回所有连接的订阅状态,不传或者传false只返回当前连接数据
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`            //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -65,6 +66,13 @@ func (x *C2S) GetIsReqAllConn() bool {
 		return *x.IsReqAllConn
 	}
 	return false
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
 }
 
 type S2C struct {
@@ -248,9 +256,10 @@ var File_Qot_GetSubInfo_proto protoreflect.FileDescriptor
 
 const file_Qot_GetSubInfo_proto_rawDesc = "" +
 	"\n" +
-	"\x14Qot_GetSubInfo.proto\x12\x0eQot_GetSubInfo\x1a\fCommon.proto\x1a\x10Qot_Common.proto\")\n" +
+	"\x14Qot_GetSubInfo.proto\x12\x0eQot_GetSubInfo\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"X\n" +
 	"\x03C2S\x12\"\n" +
-	"\fisReqAllConn\x18\x01 \x01(\bR\fisReqAllConn\"\x92\x01\n" +
+	"\fisReqAllConn\x18\x01 \x01(\bR\fisReqAllConn\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"\x92\x01\n" +
 	"\x03S2C\x12A\n" +
 	"\x0fconnSubInfoList\x18\x01 \x03(\v2\x17.Qot_Common.ConnSubInfoR\x0fconnSubInfoList\x12&\n" +
 	"\x0etotalUsedQuota\x18\x02 \x02(\x05R\x0etotalUsedQuota\x12 \n" +
@@ -282,17 +291,19 @@ var file_Qot_GetSubInfo_proto_goTypes = []any{
 	(*S2C)(nil),                   // 1: Qot_GetSubInfo.S2C
 	(*Request)(nil),               // 2: Qot_GetSubInfo.Request
 	(*Response)(nil),              // 3: Qot_GetSubInfo.Response
-	(*qotcommon.ConnSubInfo)(nil), // 4: Qot_Common.ConnSubInfo
+	(*qotcommon.QotHeader)(nil),   // 4: Qot_Common.QotHeader
+	(*qotcommon.ConnSubInfo)(nil), // 5: Qot_Common.ConnSubInfo
 }
 var file_Qot_GetSubInfo_proto_depIdxs = []int32{
-	4, // 0: Qot_GetSubInfo.S2C.connSubInfoList:type_name -> Qot_Common.ConnSubInfo
-	0, // 1: Qot_GetSubInfo.Request.c2s:type_name -> Qot_GetSubInfo.C2S
-	1, // 2: Qot_GetSubInfo.Response.s2c:type_name -> Qot_GetSubInfo.S2C
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	4, // 0: Qot_GetSubInfo.C2S.header:type_name -> Qot_Common.QotHeader
+	5, // 1: Qot_GetSubInfo.S2C.connSubInfoList:type_name -> Qot_Common.ConnSubInfo
+	0, // 2: Qot_GetSubInfo.Request.c2s:type_name -> Qot_GetSubInfo.C2S
+	1, // 3: Qot_GetSubInfo.Response.s2c:type_name -> Qot_GetSubInfo.S2C
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetSubInfo_proto_init() }

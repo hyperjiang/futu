@@ -114,6 +114,18 @@ const (
 
 	// SubType_KL_3Min 3分钟K线
 	SubType_KL_3Min = int32(qotcommon.SubType_SubType_KL_3Min)
+
+	// SubType_KL_10Min 10分钟K线
+	SubType_KL_10Min = int32(qotcommon.SubType_SubType_KL_10Min)
+
+	// SubType_KL_120Min 120分钟K线
+	SubType_KL_120Min = int32(qotcommon.SubType_SubType_KL_120Min)
+
+	// SubType_KL_180Min 180分钟K线
+	SubType_KL_180Min = int32(qotcommon.SubType_SubType_KL_180Min)
+
+	// SubType_KL_240Min 240分钟K线
+	SubType_KL_240Min = int32(qotcommon.SubType_SubType_KL_240Min)
 )
 
 // 复权类型
@@ -165,6 +177,18 @@ const (
 
 	// KLType_Quarter 季K线
 	KLType_Quarter = int32(qotcommon.KLType_KLType_Quarter)
+
+	// KLType_10Min 10分钟K线
+	KLType_10Min = int32(qotcommon.KLType_KLType_10Min)
+
+	// KLType_120Min 120分钟K线
+	KLType_120Min = int32(qotcommon.KLType_KLType_120Min)
+
+	// KLType_180Min 180分钟K线
+	KLType_180Min = int32(qotcommon.KLType_KLType_180Min)
+
+	// KLType_240Min 240分钟K线
+	KLType_240Min = int32(qotcommon.KLType_KLType_240Min)
 )
 
 // 证券类型
@@ -201,6 +225,12 @@ const (
 
 	// SecurityType_Future 期货
 	SecurityType_Future = int32(qotcommon.SecurityType_SecurityType_Future)
+
+	// SecurityType_Forex 外汇
+	SecurityType_Forex = int32(qotcommon.SecurityType_SecurityType_Forex)
+
+	// SecurityType_Crypto 数字货币
+	SecurityType_Crypto = int32(qotcommon.SecurityType_SecurityType_Crypto)
 )
 
 // 板块集合类型
@@ -381,6 +411,36 @@ const (
 
 	// SortField_PositionChange 持仓量变化
 	SortField_PositionChange = int32(qotcommon.SortField_SortField_PositionChange)
+
+	// SortField_MarketCap 市值
+	SortField_MarketCap = int32(qotcommon.SortField_SortField_MarketCap)
+
+	// SortField_Valuation 估值
+	SortField_Valuation = int32(qotcommon.SortField_SortField_Valuation)
+
+	// SortField_ForwardValuation 预测估值
+	SortField_ForwardValuation = int32(qotcommon.SortField_SortField_ForwardValuation)
+
+	// SortField_HistoricalPercentile 历史分位
+	SortField_HistoricalPercentile = int32(qotcommon.SortField_SortField_HistoricalPercentile)
+
+	// SortField_HolderQuantity 持股股数
+	SortField_HolderQuantity = int32(qotcommon.SortField_SortField_HolderQuantity)
+
+	// SortField_ShareChangeNum 持股变动数
+	SortField_ShareChangeNum = int32(qotcommon.SortField_SortField_ShareChangeNum)
+
+	// SortField_HoldingDate 持股日期
+	SortField_HoldingDate = int32(qotcommon.SortField_SortField_HoldingDate)
+
+	// SortField_HolderPctChange 变动比例
+	SortField_HolderPctChange = int32(qotcommon.SortField_SortField_HolderPctChange)
+
+	// SortField_HolderChangeAmount 变动金额
+	SortField_HolderChangeAmount = int32(qotcommon.SortField_SortField_HolderChangeAmount)
+
+	// SortField_HolderPct 持股比例
+	SortField_HolderPct = int32(qotcommon.SortField_SortField_HolderPct)
 )
 
 // 参考类型
@@ -570,4 +630,235 @@ const (
 
 	// GroupType_GroupType_All 全部分组
 	GroupType_All = int32(qotgetusersecuritygroup.GroupType_GroupType_All)
+)
+
+// 排序方向
+const (
+	// SortType_Unknown 未知
+	SortType_Unknown = int32(qotcommon.SortType_SortType_Unknown)
+
+	// SortType_Desc 降序
+	SortType_Desc = int32(qotcommon.SortType_SortType_Desc)
+
+	// SortType_Asc 升序
+	SortType_Asc = int32(qotcommon.SortType_SortType_Asc)
+)
+
+// 财报类型
+const (
+	// F10Type_Unknown 未知
+	F10Type_Unknown = int32(qotcommon.F10Type_F10Type_Unknown)
+
+	// F10Type_Q1 单季报Q1
+	F10Type_Q1 = int32(qotcommon.F10Type_F10Type_Q1)
+
+	// F10Type_Q2 单季报Q2
+	F10Type_Q2 = int32(qotcommon.F10Type_F10Type_Q2)
+
+	// F10Type_Q3 单季报Q3
+	F10Type_Q3 = int32(qotcommon.F10Type_F10Type_Q3)
+
+	// F10Type_Q4 单季报Q4
+	F10Type_Q4 = int32(qotcommon.F10Type_F10Type_Q4)
+
+	// F10Type_Q6 累计季报Q6(Q1+Q2)
+	F10Type_Q6 = int32(qotcommon.F10Type_F10Type_Q6)
+
+	// F10Type_Q9 累计季报Q9(Q1+Q2+Q3)
+	F10Type_Q9 = int32(qotcommon.F10Type_F10Type_Q9)
+
+	// F10Type_Annual 年报
+	F10Type_Annual = int32(qotcommon.F10Type_F10Type_Annual)
+
+	// F10Type_Quarterly 单季报组合(Q1,Q2,Q3,Q4)
+	F10Type_Quarterly = int32(qotcommon.F10Type_F10Type_Quarterly)
+
+	// F10Type_QuarterlyAnnual 单季报+年报
+	F10Type_QuarterlyAnnual = int32(qotcommon.F10Type_F10Type_QuarterlyAnnual)
+
+	// F10Type_MulQuarterly 累计季报(Q1,Q6,Q9,Annual)
+	F10Type_MulQuarterly = int32(qotcommon.F10Type_F10Type_MulQuarterly)
+)
+
+// 估值类型
+const (
+	// ValuationType_Unknown 未知
+	ValuationType_Unknown = int32(qotcommon.ValuationType_ValuationType_Unknown)
+
+	// ValuationType_PE 市盈率
+	ValuationType_PE = int32(qotcommon.ValuationType_ValuationType_PE)
+
+	// ValuationType_PB 市净率
+	ValuationType_PB = int32(qotcommon.ValuationType_ValuationType_PB)
+
+	// ValuationType_PS 市销率
+	ValuationType_PS = int32(qotcommon.ValuationType_ValuationType_PS)
+)
+
+// 财务报表类型
+const (
+	// FinancialStatementsType_Unknown 未知
+	FinancialStatementsType_Unknown = int32(qotcommon.FinancialStatementsType_FinancialStatementsType_Unknown)
+
+	// FinancialStatementsType_Income 利润表
+	FinancialStatementsType_Income = int32(qotcommon.FinancialStatementsType_FinancialStatementsType_Income)
+
+	// FinancialStatementsType_BalanceSheet 资产负债表
+	FinancialStatementsType_BalanceSheet = int32(qotcommon.FinancialStatementsType_FinancialStatementsType_BalanceSheet)
+
+	// FinancialStatementsType_CashFlow 现金流量表
+	FinancialStatementsType_CashFlow = int32(qotcommon.FinancialStatementsType_FinancialStatementsType_CashFlow)
+
+	// FinancialStatementsType_MainIndex 关键指标
+	FinancialStatementsType_MainIndex = int32(qotcommon.FinancialStatementsType_FinancialStatementsType_MainIndex)
+)
+
+// 主营构成维度类型
+const (
+	// RevenueBreakdownType_Unknown 未知
+	RevenueBreakdownType_Unknown = int32(qotcommon.RevenueBreakdownType_RevenueBreakdownType_Unknown)
+
+	// RevenueBreakdownType_Product 产品
+	RevenueBreakdownType_Product = int32(qotcommon.RevenueBreakdownType_RevenueBreakdownType_Product)
+
+	// RevenueBreakdownType_Industry 行业
+	RevenueBreakdownType_Industry = int32(qotcommon.RevenueBreakdownType_RevenueBreakdownType_Industry)
+
+	// RevenueBreakdownType_Region 地区
+	RevenueBreakdownType_Region = int32(qotcommon.RevenueBreakdownType_RevenueBreakdownType_Region)
+
+	// RevenueBreakdownType_Business 业务
+	RevenueBreakdownType_Business = int32(qotcommon.RevenueBreakdownType_RevenueBreakdownType_Business)
+)
+
+// 分析师评级
+const (
+	// ResearchRatingType_Unknown 未知
+	ResearchRatingType_Unknown = int32(qotcommon.ResearchRatingType_ResearchRatingType_Unknown)
+
+	// ResearchRatingType_Sell 卖出
+	ResearchRatingType_Sell = int32(qotcommon.ResearchRatingType_ResearchRatingType_Sell)
+
+	// ResearchRatingType_Underperform 跑输大盘
+	ResearchRatingType_Underperform = int32(qotcommon.ResearchRatingType_ResearchRatingType_Underperform)
+
+	// ResearchRatingType_Hold 持有
+	ResearchRatingType_Hold = int32(qotcommon.ResearchRatingType_ResearchRatingType_Hold)
+
+	// ResearchRatingType_Buy 买入
+	ResearchRatingType_Buy = int32(qotcommon.ResearchRatingType_ResearchRatingType_Buy)
+
+	// ResearchRatingType_StrongBuy 强力推荐
+	ResearchRatingType_StrongBuy = int32(qotcommon.ResearchRatingType_ResearchRatingType_StrongBuy)
+)
+
+// 研报评级汇总维度
+const (
+	// ResearchRatingDimensionType_Unknown 未知
+	ResearchRatingDimensionType_Unknown = int32(qotcommon.ResearchRatingDimensionType_ResearchRatingDimensionType_Unknown)
+
+	// ResearchRatingDimensionType_Institution 机构维度
+	ResearchRatingDimensionType_Institution = int32(qotcommon.ResearchRatingDimensionType_ResearchRatingDimensionType_Institution)
+
+	// ResearchRatingDimensionType_Analyst 分析师维度
+	ResearchRatingDimensionType_Analyst = int32(qotcommon.ResearchRatingDimensionType_ResearchRatingDimensionType_Analyst)
+)
+
+// 估值历史区间类型
+const (
+	// ValuationIntervalType_Unknown 未知
+	ValuationIntervalType_Unknown = int32(qotcommon.ValuationIntervalType_ValuationIntervalType_Unknown)
+
+	// ValuationIntervalType_Month3 3个月
+	ValuationIntervalType_Month3 = int32(qotcommon.ValuationIntervalType_ValuationIntervalType_Month3)
+
+	// ValuationIntervalType_Month6 6个月
+	ValuationIntervalType_Month6 = int32(qotcommon.ValuationIntervalType_ValuationIntervalType_Month6)
+
+	// ValuationIntervalType_Year1 1年
+	ValuationIntervalType_Year1 = int32(qotcommon.ValuationIntervalType_ValuationIntervalType_Year1)
+
+	// ValuationIntervalType_Year3 3年
+	ValuationIntervalType_Year3 = int32(qotcommon.ValuationIntervalType_ValuationIntervalType_Year3)
+
+	// ValuationIntervalType_Since2019 从2019年起
+	ValuationIntervalType_Since2019 = int32(qotcommon.ValuationIntervalType_ValuationIntervalType_Since2019)
+
+	// ValuationIntervalType_Year5 5年
+	ValuationIntervalType_Year5 = int32(qotcommon.ValuationIntervalType_ValuationIntervalType_Year5)
+
+	// ValuationIntervalType_Year10 10年
+	ValuationIntervalType_Year10 = int32(qotcommon.ValuationIntervalType_ValuationIntervalType_Year10)
+
+	// ValuationIntervalType_Year2 2年
+	ValuationIntervalType_Year2 = int32(qotcommon.ValuationIntervalType_ValuationIntervalType_Year2)
+
+	// ValuationIntervalType_Year20 20年
+	ValuationIntervalType_Year20 = int32(qotcommon.ValuationIntervalType_ValuationIntervalType_Year20)
+
+	// ValuationIntervalType_Year30 30年
+	ValuationIntervalType_Year30 = int32(qotcommon.ValuationIntervalType_ValuationIntervalType_Year30)
+)
+
+// 持股变动筛选类型
+const (
+	// HoldingChangesFilterType_Unknown 全部
+	HoldingChangesFilterType_Unknown = int32(qotcommon.HoldingChangesFilterType_HoldingChangesFilterType_Unknown)
+
+	// HoldingChangesFilterType_Increase 增持
+	HoldingChangesFilterType_Increase = int32(qotcommon.HoldingChangesFilterType_HoldingChangesFilterType_Increase)
+
+	// HoldingChangesFilterType_Decrease 减持
+	HoldingChangesFilterType_Decrease = int32(qotcommon.HoldingChangesFilterType_HoldingChangesFilterType_Decrease)
+
+	// HoldingChangesFilterType_NewIn 建仓
+	HoldingChangesFilterType_NewIn = int32(qotcommon.HoldingChangesFilterType_HoldingChangesFilterType_NewIn)
+
+	// HoldingChangesFilterType_CloseOut 清仓
+	HoldingChangesFilterType_CloseOut = int32(qotcommon.HoldingChangesFilterType_HoldingChangesFilterType_CloseOut)
+)
+
+// 股东持仓明细机构类型
+const (
+	// HolderDetailType_Default 默认
+	HolderDetailType_Default = int32(qotcommon.HolderDetailType_HolderDetailType_Default)
+
+	// HolderDetailType_All 全部
+	HolderDetailType_All = int32(qotcommon.HolderDetailType_HolderDetailType_All)
+
+	// HolderDetailType_IndividualInsiders 个人
+	HolderDetailType_IndividualInsiders = int32(qotcommon.HolderDetailType_HolderDetailType_IndividualInsiders)
+)
+
+// 期权波动率查询时间周期
+const (
+	// OptionVolatilityTimePeriodType_Unknown 未知
+	OptionVolatilityTimePeriodType_Unknown = int32(qotcommon.OptionVolatilityTimePeriodType_OptionVolatilityTimePeriodType_Unknown)
+
+	// OptionVolatilityTimePeriodType_Week 周
+	OptionVolatilityTimePeriodType_Week = int32(qotcommon.OptionVolatilityTimePeriodType_OptionVolatilityTimePeriodType_Week)
+
+	// OptionVolatilityTimePeriodType_Month 月
+	OptionVolatilityTimePeriodType_Month = int32(qotcommon.OptionVolatilityTimePeriodType_OptionVolatilityTimePeriodType_Month)
+
+	// OptionVolatilityTimePeriodType_Quarter 季度
+	OptionVolatilityTimePeriodType_Quarter = int32(qotcommon.OptionVolatilityTimePeriodType_OptionVolatilityTimePeriodType_Quarter)
+
+	// OptionVolatilityTimePeriodType_HalfYear 半年
+	OptionVolatilityTimePeriodType_HalfYear = int32(qotcommon.OptionVolatilityTimePeriodType_OptionVolatilityTimePeriodType_HalfYear)
+
+	// OptionVolatilityTimePeriodType_Year 年
+	OptionVolatilityTimePeriodType_Year = int32(qotcommon.OptionVolatilityTimePeriodType_OptionVolatilityTimePeriodType_Year)
+)
+
+// 晨星评级类型
+const (
+	// MorningstarRatingType_Unknown 未知
+	MorningstarRatingType_Unknown = int32(qotcommon.MorningstarRatingType_MorningstarRatingType_Unknown)
+
+	// MorningstarRatingType_Quantitative 定量评级
+	MorningstarRatingType_Quantitative = int32(qotcommon.MorningstarRatingType_MorningstarRatingType_Quantitative)
+
+	// MorningstarRatingType_Qualitative 定性评级
+	MorningstarRatingType_Qualitative = int32(qotcommon.MorningstarRatingType_MorningstarRatingType_Qualitative)
 )

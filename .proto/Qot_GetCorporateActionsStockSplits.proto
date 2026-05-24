@@ -1,0 +1,61 @@
+syntax = "proto2";
+package Qot_GetCorporateActionsStockSplits;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetcorporateactionsstocksplits";
+
+import "Qot_Common.proto";
+
+// 拆合股单条记录
+message StockSplitItem
+{
+    // 通用字段
+    optional uint64 dirDeciPubDate        = 1;  // 公告日时间戳（秒）
+    optional string dirDeciPubDateStr     = 2;  // 公告日字符串，格式 YYYY-MM-DD，对应市场时区
+    optional string reformType            = 3;  // 重组方式
+    optional string rate                  = 4;  // 比率
+
+    // 港股专有字段（仅港股的正股与信托有值）
+    optional uint64 exDate                = 5;  // 除权日时间戳（秒）
+    optional string exDateStr             = 6;  // 除权日字符串，格式 YYYY-MM-DD，对应市场时区
+    optional uint64 smDeciDate            = 7;  // 决议日时间戳（秒）
+    optional string smDeciDateStr         = 8;  // 决议日字符串，格式 YYYY-MM-DD，对应市场时区
+    optional uint64 tempTradeBeginDate    = 9; // 临时买卖日时间戳（秒）
+    optional string tempTradeBeginDateStr = 10; // 临时买卖日字符串，格式 YYYY-MM-DD，对应市场时区
+    optional uint64 simulTradeBeginDate   = 11; // 并行买卖开始日时间戳（秒）
+    optional string simulTradeBeginDateStr= 12; // 并行买卖开始日字符串，格式 YYYY-MM-DD，对应市场时区
+    optional uint64 simulTradeEndDate     = 13; // 并行买卖结束日时间戳（秒）
+    optional string simulTradeEndDateStr  = 14; // 并行买卖结束日字符串，格式 YYYY-MM-DD，对应市场时区
+    optional string eventStatus           = 15; // 事件进程（如：方案实施）
+    optional double newParValue           = 16; // 新面值
+    optional string tempShareCode         = 17; // 临时证券代码（如：02988）
+    optional string tempShareAbbrName     = 18; // 临时证券简称（如：腾讯控股）
+    optional int64  newTradeUnit          = 19; // 新买卖单位（如：100）
+    optional double sharesAfterEffect     = 20; // 生效后股数（股）
+}
+
+message C2S
+{
+    required Qot_Common.Security security = 1; // 股票
+    optional string nextKey = 2; // 分页标识，首次不填，续拉时填上次返回的 nextKey；"-1" 表示无更多数据
+    optional int32  num     = 3; // 每页返回数量，默认 10，范围 1~50
+}
+
+message S2C
+{
+    repeated StockSplitItem splitItemList = 1; // 拆合股列表
+    optional string nextKey = 2; // 分页标识，"-1" 表示无更多数据
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32  retType = 1 [default = -400]; //RetType,返回结果
+    optional string retMsg  = 2;
+    optional int32  errCode = 3;
+
+    optional S2C s2c = 4;
+}

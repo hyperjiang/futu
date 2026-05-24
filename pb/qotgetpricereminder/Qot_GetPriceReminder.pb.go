@@ -180,6 +180,7 @@ type C2S struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Security      *qotcommon.Security    `protobuf:"bytes,1,opt,name=security" json:"security,omitempty"` // 查询股票下的到价提醒项，security和market二选一，都存在的情况下security优先。
 	Market        *int32                 `protobuf:"varint,2,opt,name=market" json:"market,omitempty"`    //Qot_Common::QotMarket 市场，查询市场下的到价提醒项，不区分沪深
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`   //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -226,6 +227,13 @@ func (x *C2S) GetMarket() int32 {
 		return *x.Market
 	}
 	return 0
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
 }
 
 type S2C struct {
@@ -405,10 +413,11 @@ const file_Qot_GetPriceReminder_proto_rawDesc = "" +
 	"\rPriceReminder\x120\n" +
 	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12C\n" +
-	"\bitemList\x18\x02 \x03(\v2'.Qot_GetPriceReminder.PriceReminderItemR\bitemList\"O\n" +
+	"\bitemList\x18\x02 \x03(\v2'.Qot_GetPriceReminder.PriceReminderItemR\bitemList\"~\n" +
 	"\x03C2S\x120\n" +
 	"\bsecurity\x18\x01 \x01(\v2\x14.Qot_Common.SecurityR\bsecurity\x12\x16\n" +
-	"\x06market\x18\x02 \x01(\x05R\x06market\"X\n" +
+	"\x06market\x18\x02 \x01(\x05R\x06market\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"X\n" +
 	"\x03S2C\x12Q\n" +
 	"\x11priceReminderList\x18\x01 \x03(\v2#.Qot_GetPriceReminder.PriceReminderR\x11priceReminderList\"6\n" +
 	"\aRequest\x12+\n" +
@@ -434,26 +443,28 @@ func file_Qot_GetPriceReminder_proto_rawDescGZIP() []byte {
 
 var file_Qot_GetPriceReminder_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_Qot_GetPriceReminder_proto_goTypes = []any{
-	(*PriceReminderItem)(nil),  // 0: Qot_GetPriceReminder.PriceReminderItem
-	(*PriceReminder)(nil),      // 1: Qot_GetPriceReminder.PriceReminder
-	(*C2S)(nil),                // 2: Qot_GetPriceReminder.C2S
-	(*S2C)(nil),                // 3: Qot_GetPriceReminder.S2C
-	(*Request)(nil),            // 4: Qot_GetPriceReminder.Request
-	(*Response)(nil),           // 5: Qot_GetPriceReminder.Response
-	(*qotcommon.Security)(nil), // 6: Qot_Common.Security
+	(*PriceReminderItem)(nil),   // 0: Qot_GetPriceReminder.PriceReminderItem
+	(*PriceReminder)(nil),       // 1: Qot_GetPriceReminder.PriceReminder
+	(*C2S)(nil),                 // 2: Qot_GetPriceReminder.C2S
+	(*S2C)(nil),                 // 3: Qot_GetPriceReminder.S2C
+	(*Request)(nil),             // 4: Qot_GetPriceReminder.Request
+	(*Response)(nil),            // 5: Qot_GetPriceReminder.Response
+	(*qotcommon.Security)(nil),  // 6: Qot_Common.Security
+	(*qotcommon.QotHeader)(nil), // 7: Qot_Common.QotHeader
 }
 var file_Qot_GetPriceReminder_proto_depIdxs = []int32{
 	6, // 0: Qot_GetPriceReminder.PriceReminder.security:type_name -> Qot_Common.Security
 	0, // 1: Qot_GetPriceReminder.PriceReminder.itemList:type_name -> Qot_GetPriceReminder.PriceReminderItem
 	6, // 2: Qot_GetPriceReminder.C2S.security:type_name -> Qot_Common.Security
-	1, // 3: Qot_GetPriceReminder.S2C.priceReminderList:type_name -> Qot_GetPriceReminder.PriceReminder
-	2, // 4: Qot_GetPriceReminder.Request.c2s:type_name -> Qot_GetPriceReminder.C2S
-	3, // 5: Qot_GetPriceReminder.Response.s2c:type_name -> Qot_GetPriceReminder.S2C
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	7, // 3: Qot_GetPriceReminder.C2S.header:type_name -> Qot_Common.QotHeader
+	1, // 4: Qot_GetPriceReminder.S2C.priceReminderList:type_name -> Qot_GetPriceReminder.PriceReminder
+	2, // 5: Qot_GetPriceReminder.Request.c2s:type_name -> Qot_GetPriceReminder.C2S
+	3, // 6: Qot_GetPriceReminder.Response.s2c:type_name -> Qot_GetPriceReminder.S2C
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetPriceReminder_proto_init() }

@@ -29,6 +29,7 @@ message C2S
 {
 	optional Qot_Common.Security security = 1; // 查询股票下的到价提醒项，security和market二选一，都存在的情况下security优先。
 	optional int32 market = 2; //Qot_Common::QotMarket 市场，查询市场下的到价提醒项，不区分沪深
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
 message S2C

@@ -10,34 +10,64 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetcapitaldistribution"
 	"github.com/hyperjiang/futu/pb/qotgetcapitalflow"
+	"github.com/hyperjiang/futu/pb/qotgetcompanyexecutivebackground"
+	"github.com/hyperjiang/futu/pb/qotgetcompanyexecutives"
+	"github.com/hyperjiang/futu/pb/qotgetcompanyoperationalefficiency"
+	"github.com/hyperjiang/futu/pb/qotgetcompanyprofile"
+	"github.com/hyperjiang/futu/pb/qotgetcorporateactionsbuybacks"
+	"github.com/hyperjiang/futu/pb/qotgetcorporateactionsdividends"
+	"github.com/hyperjiang/futu/pb/qotgetcorporateactionsstocksplits"
+	"github.com/hyperjiang/futu/pb/qotgetdailyshortvolume"
+	"github.com/hyperjiang/futu/pb/qotgetfinancialrevenuebreakdown"
+	"github.com/hyperjiang/futu/pb/qotgetfinancialsearnpricehist"
+	"github.com/hyperjiang/futu/pb/qotgetfinancialsearnpricemove"
+	"github.com/hyperjiang/futu/pb/qotgetfinancialsstatements"
 	"github.com/hyperjiang/futu/pb/qotgetfutureinfo"
+	"github.com/hyperjiang/futu/pb/qotgetinsiderholderlist"
+	"github.com/hyperjiang/futu/pb/qotgetinsidertradelist"
 	"github.com/hyperjiang/futu/pb/qotgetipolist"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
 	"github.com/hyperjiang/futu/pb/qotgetmarketstate"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
+	"github.com/hyperjiang/futu/pb/qotgetoptionexerciseprobability"
 	"github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate"
+	"github.com/hyperjiang/futu/pb/qotgetoptionvolatility"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
 	"github.com/hyperjiang/futu/pb/qotgetownerplate"
 	"github.com/hyperjiang/futu/pb/qotgetplatesecurity"
 	"github.com/hyperjiang/futu/pb/qotgetplateset"
 	"github.com/hyperjiang/futu/pb/qotgetpricereminder"
 	"github.com/hyperjiang/futu/pb/qotgetreference"
+	"github.com/hyperjiang/futu/pb/qotgetresearchanalystconsensus"
+	"github.com/hyperjiang/futu/pb/qotgetresearchmorningstarrpt"
+	"github.com/hyperjiang/futu/pb/qotgetresearchratingsummary"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
+	"github.com/hyperjiang/futu/pb/qotgetshareholdersholderdetail"
+	"github.com/hyperjiang/futu/pb/qotgetshareholdersholdingchanges"
+	"github.com/hyperjiang/futu/pb/qotgetshareholdersinstitutional"
+	"github.com/hyperjiang/futu/pb/qotgetshareholdersoverview"
+	"github.com/hyperjiang/futu/pb/qotgetshortinterest"
 	"github.com/hyperjiang/futu/pb/qotgetstaticinfo"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
+	"github.com/hyperjiang/futu/pb/qotgettoptenbuysellbrokers"
 	"github.com/hyperjiang/futu/pb/qotgetusersecurity"
 	"github.com/hyperjiang/futu/pb/qotgetusersecuritygroup"
+	"github.com/hyperjiang/futu/pb/qotgetvaluationdetail"
+	"github.com/hyperjiang/futu/pb/qotgetvaluationplatestocklist"
 	"github.com/hyperjiang/futu/pb/qotgetwarrant"
 	"github.com/hyperjiang/futu/pb/qotmodifyusersecurity"
+	"github.com/hyperjiang/futu/pb/qotoptionscreen"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
 	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
 	"github.com/hyperjiang/futu/pb/qotsetpricereminder"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
+	"github.com/hyperjiang/futu/pb/qotstockscreen"
 	"github.com/hyperjiang/futu/pb/qotsub"
+	"github.com/hyperjiang/futu/pb/qotwarrantscreen"
 	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/hyperjiang/futu/pb/trdflowsummary"
 	"github.com/hyperjiang/futu/pb/trdgetacclist"
@@ -918,4 +948,426 @@ func (sdk *SDK) GetOptionExpirationDateWithContext(ctx context.Context, code str
 	}
 
 	return s2c.GetDateList(), nil
+}
+
+// GetFinancialsEarningsPriceMoveWithContext 3225 - gets the financials earnings price move with context.
+//
+// code: security code
+func (sdk *SDK) GetFinancialsEarningsPriceMoveWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetfinancialsearnpricemove.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetfinancialsearnpricemove.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetFinancialsEarningsPriceMove(ctx, &c2s)
+}
+
+// GetFinancialsEarningsPriceHistoryWithContext 3226 - gets the financials earnings price history with context.
+//
+// code: security code
+func (sdk *SDK) GetFinancialsEarningsPriceHistoryWithContext(ctx context.Context, code string) (*qotgetfinancialsearnpricehist.S2C, error) {
+	c2s := &qotgetfinancialsearnpricehist.C2S{
+		Security: adapt.NewSecurity(code),
+	}
+
+	return sdk.cli.QotGetFinancialsEarningsPriceHistory(ctx, c2s)
+}
+
+// GetFinancialsStatementsWithContext 3227 - gets the financial statements with context.
+//
+// code: security code
+//
+// statementType: financial statement type, see adapt.FinancialStatementsType_*
+func (sdk *SDK) GetFinancialsStatementsWithContext(ctx context.Context, code string, statementType int32, opts ...adapt.Option) (*qotgetfinancialsstatements.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+	o["statementType"] = statementType
+
+	var c2s qotgetfinancialsstatements.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetFinancialsStatements(ctx, &c2s)
+}
+
+// GetFinancialsRevenueBreakdownWithContext 3228 - gets the financials revenue breakdown with context.
+//
+// code: security code
+func (sdk *SDK) GetFinancialsRevenueBreakdownWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetfinancialrevenuebreakdown.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetfinancialrevenuebreakdown.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetFinancialsRevenueBreakdown(ctx, &c2s)
+}
+
+// GetResearchAnalystConsensusWithContext 3229 - gets the research analyst consensus with context.
+//
+// code: security code
+func (sdk *SDK) GetResearchAnalystConsensusWithContext(ctx context.Context, code string) (*qotgetresearchanalystconsensus.S2C, error) {
+	c2s := &qotgetresearchanalystconsensus.C2S{
+		Security: adapt.NewSecurity(code),
+	}
+
+	return sdk.cli.QotGetResearchAnalystConsensus(ctx, c2s)
+}
+
+// GetResearchRatingSummaryWithContext 3230 - gets the research rating summary with context.
+//
+// code: security code
+func (sdk *SDK) GetResearchRatingSummaryWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetresearchratingsummary.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetresearchratingsummary.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetResearchRatingSummary(ctx, &c2s)
+}
+
+// GetResearchMorningstarReportWithContext 3231 - gets the research morningstar report with context.
+//
+// code: security code
+func (sdk *SDK) GetResearchMorningstarReportWithContext(ctx context.Context, code string) (*qotgetresearchmorningstarrpt.S2C, error) {
+	c2s := &qotgetresearchmorningstarrpt.C2S{
+		Security: adapt.NewSecurity(code),
+	}
+
+	return sdk.cli.QotGetResearchMorningstarReport(ctx, c2s)
+}
+
+// GetValuationDetailWithContext 3232 - gets the valuation detail with context.
+//
+// code: security code
+//
+// valuationType: valuation type, see adapt.ValuationType_*
+func (sdk *SDK) GetValuationDetailWithContext(ctx context.Context, code string, valuationType int32, opts ...adapt.Option) (*qotgetvaluationdetail.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+	o["valuationType"] = valuationType
+
+	var c2s qotgetvaluationdetail.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetValuationDetail(ctx, &c2s)
+}
+
+// GetValuationPlateStockListWithContext 3233 - gets the valuation plate stock list with context.
+//
+// code: security code (plate code)
+//
+// valuationType: valuation type, see adapt.ValuationType_*
+func (sdk *SDK) GetValuationPlateStockListWithContext(ctx context.Context, code string, valuationType int32, opts ...adapt.Option) (*qotgetvaluationplatestocklist.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+	o["valuationType"] = valuationType
+
+	var c2s qotgetvaluationplatestocklist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetValuationPlateStockList(ctx, &c2s)
+}
+
+// GetCorporateActionsDividendsWithContext 3234 - gets the corporate actions dividends with context.
+//
+// code: security code
+func (sdk *SDK) GetCorporateActionsDividendsWithContext(ctx context.Context, code string) (*qotgetcorporateactionsdividends.S2C, error) {
+	c2s := &qotgetcorporateactionsdividends.C2S{
+		Security: adapt.NewSecurity(code),
+	}
+
+	return sdk.cli.QotGetCorporateActionsDividends(ctx, c2s)
+}
+
+// GetCorporateActionsBuybacksWithContext 3235 - gets the corporate actions buybacks with context.
+//
+// code: security code
+func (sdk *SDK) GetCorporateActionsBuybacksWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetcorporateactionsbuybacks.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetcorporateactionsbuybacks.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetCorporateActionsBuybacks(ctx, &c2s)
+}
+
+// GetCorporateActionsStockSplitsWithContext 3236 - gets the corporate actions stock splits with context.
+//
+// code: security code
+func (sdk *SDK) GetCorporateActionsStockSplitsWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetcorporateactionsstocksplits.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetcorporateactionsstocksplits.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetCorporateActionsStockSplits(ctx, &c2s)
+}
+
+// GetShareholdersOverviewWithContext 3237 - gets the shareholders overview with context.
+//
+// code: security code
+func (sdk *SDK) GetShareholdersOverviewWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetshareholdersoverview.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetshareholdersoverview.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetShareholdersOverview(ctx, &c2s)
+}
+
+// GetShareholdersHoldingChangesWithContext 3238 - gets the shareholders holding changes with context.
+//
+// code: security code
+func (sdk *SDK) GetShareholdersHoldingChangesWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetshareholdersholdingchanges.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetshareholdersholdingchanges.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetShareholdersHoldingChanges(ctx, &c2s)
+}
+
+// GetShareholdersHolderDetailWithContext 3239 - gets the shareholders holder detail with context.
+//
+// code: security code
+func (sdk *SDK) GetShareholdersHolderDetailWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetshareholdersholderdetail.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetshareholdersholderdetail.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetShareholdersHolderDetail(ctx, &c2s)
+}
+
+// GetShareholdersInstitutionalWithContext 3240 - gets the shareholders institutional with context.
+//
+// code: security code
+func (sdk *SDK) GetShareholdersInstitutionalWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetshareholdersinstitutional.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetshareholdersinstitutional.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetShareholdersInstitutional(ctx, &c2s)
+}
+
+// GetInsiderHolderListWithContext 3241 - gets the insider holder list with context.
+//
+// code: security code
+func (sdk *SDK) GetInsiderHolderListWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetinsiderholderlist.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetinsiderholderlist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetInsiderHolderList(ctx, &c2s)
+}
+
+// GetInsiderTradeListWithContext 3242 - gets the insider trade list with context.
+//
+// code: security code
+func (sdk *SDK) GetInsiderTradeListWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetinsidertradelist.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetinsidertradelist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetInsiderTradeList(ctx, &c2s)
+}
+
+// GetCompanyProfileWithContext 3243 - gets the company profile with context.
+//
+// code: security code
+func (sdk *SDK) GetCompanyProfileWithContext(ctx context.Context, code string) (*qotgetcompanyprofile.S2C, error) {
+	c2s := &qotgetcompanyprofile.C2S{
+		Security: adapt.NewSecurity(code),
+	}
+
+	return sdk.cli.QotGetCompanyProfile(ctx, c2s)
+}
+
+// GetCompanyExecutivesWithContext 3244 - gets the company executives with context.
+//
+// code: security code
+func (sdk *SDK) GetCompanyExecutivesWithContext(ctx context.Context, code string) (*qotgetcompanyexecutives.S2C, error) {
+	c2s := &qotgetcompanyexecutives.C2S{
+		Security: adapt.NewSecurity(code),
+	}
+
+	return sdk.cli.QotGetCompanyExecutives(ctx, c2s)
+}
+
+// GetCompanyExecutiveBackgroundWithContext 3245 - gets the company executive background with context.
+//
+// code: security code
+func (sdk *SDK) GetCompanyExecutiveBackgroundWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetcompanyexecutivebackground.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetcompanyexecutivebackground.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetCompanyExecutiveBackground(ctx, &c2s)
+}
+
+// GetCompanyOperationalEfficiencyWithContext 3246 - gets the company operational efficiency with context.
+//
+// code: security code
+func (sdk *SDK) GetCompanyOperationalEfficiencyWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetcompanyoperationalefficiency.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetcompanyoperationalefficiency.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetCompanyOperationalEfficiency(ctx, &c2s)
+}
+
+// GetTopTenBuySellBrokersWithContext 3247 - gets the top ten buy/sell brokers with context.
+//
+// code: security code
+func (sdk *SDK) GetTopTenBuySellBrokersWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgettoptenbuysellbrokers.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgettoptenbuysellbrokers.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetTopTenBuySellBrokers(ctx, &c2s)
+}
+
+// GetDailyShortVolumeWithContext 3248 - gets the daily short volume with context.
+//
+// code: security code
+func (sdk *SDK) GetDailyShortVolumeWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetdailyshortvolume.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetdailyshortvolume.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetDailyShortVolume(ctx, &c2s)
+}
+
+// GetShortInterestWithContext 3249 - gets the short interest with context.
+//
+// code: security code
+func (sdk *SDK) GetShortInterestWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetshortinterest.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetshortinterest.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetShortInterest(ctx, &c2s)
+}
+
+// GetOptionVolatilityWithContext 3250 - gets the option volatility with context.
+//
+// code: security code
+func (sdk *SDK) GetOptionVolatilityWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgetoptionvolatility.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetoptionvolatility.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionVolatility(ctx, &c2s)
+}
+
+// GetOptionExerciseProbabilityWithContext 3251 - gets the option exercise probability with context.
+//
+// code: security code
+func (sdk *SDK) GetOptionExerciseProbabilityWithContext(ctx context.Context, code string) (*qotgetoptionexerciseprobability.S2C, error) {
+	c2s := &qotgetoptionexerciseprobability.C2S{
+		Security: adapt.NewSecurity(code),
+	}
+
+	return sdk.cli.QotGetOptionExerciseProbability(ctx, c2s)
+}
+
+// StockScreenWithContext 3252 - stock screen with context.
+func (sdk *SDK) StockScreenWithContext(ctx context.Context, opts ...adapt.Option) (*qotstockscreen.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotstockscreen.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotStockScreen(ctx, &c2s)
+}
+
+// OptionScreenWithContext 3253 - option screen with context.
+func (sdk *SDK) OptionScreenWithContext(ctx context.Context, opts ...adapt.Option) (*qotoptionscreen.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotoptionscreen.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotOptionScreen(ctx, &c2s)
+}
+
+// WarrantScreenWithContext 3254 - warrant screen with context.
+func (sdk *SDK) WarrantScreenWithContext(ctx context.Context, opts ...adapt.Option) (*qotwarrantscreen.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotwarrantscreen.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotWarrantScreen(ctx, &c2s)
 }

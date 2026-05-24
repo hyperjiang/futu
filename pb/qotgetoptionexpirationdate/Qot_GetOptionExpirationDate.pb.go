@@ -27,6 +27,7 @@ type C2S struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	Owner           *qotcommon.Security    `protobuf:"bytes,1,req,name=owner" json:"owner,omitempty"`                      //期权标的股，目前仅支持传入港美正股以及恒指国指
 	IndexOptionType *int32                 `protobuf:"varint,2,opt,name=indexOptionType" json:"indexOptionType,omitempty"` //Qot_Common.IndexOptionType，指数期权的类型，仅用于恒指国指
+	Header          *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`                  //行情公共参数头
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -73,6 +74,13 @@ func (x *C2S) GetIndexOptionType() int32 {
 		return *x.IndexOptionType
 	}
 	return 0
+}
+
+func (x *C2S) GetHeader() *qotcommon.QotHeader {
+	if x != nil {
+		return x.Header
+	}
+	return nil
 }
 
 type OptionExpirationDate struct {
@@ -308,10 +316,11 @@ var File_Qot_GetOptionExpirationDate_proto protoreflect.FileDescriptor
 
 const file_Qot_GetOptionExpirationDate_proto_rawDesc = "" +
 	"\n" +
-	"!Qot_GetOptionExpirationDate.proto\x12\x1bQot_GetOptionExpirationDate\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"[\n" +
+	"!Qot_GetOptionExpirationDate.proto\x12\x1bQot_GetOptionExpirationDate\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\x8a\x01\n" +
 	"\x03C2S\x12*\n" +
 	"\x05owner\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\x05owner\x12(\n" +
-	"\x0findexOptionType\x18\x02 \x01(\x05R\x0findexOptionType\"\xb2\x01\n" +
+	"\x0findexOptionType\x18\x02 \x01(\x05R\x0findexOptionType\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"\xb2\x01\n" +
 	"\x14OptionExpirationDate\x12\x1e\n" +
 	"\n" +
 	"strikeTime\x18\x01 \x01(\tR\n" +
@@ -350,17 +359,19 @@ var file_Qot_GetOptionExpirationDate_proto_goTypes = []any{
 	(*Request)(nil),              // 3: Qot_GetOptionExpirationDate.Request
 	(*Response)(nil),             // 4: Qot_GetOptionExpirationDate.Response
 	(*qotcommon.Security)(nil),   // 5: Qot_Common.Security
+	(*qotcommon.QotHeader)(nil),  // 6: Qot_Common.QotHeader
 }
 var file_Qot_GetOptionExpirationDate_proto_depIdxs = []int32{
 	5, // 0: Qot_GetOptionExpirationDate.C2S.owner:type_name -> Qot_Common.Security
-	1, // 1: Qot_GetOptionExpirationDate.S2C.dateList:type_name -> Qot_GetOptionExpirationDate.OptionExpirationDate
-	0, // 2: Qot_GetOptionExpirationDate.Request.c2s:type_name -> Qot_GetOptionExpirationDate.C2S
-	2, // 3: Qot_GetOptionExpirationDate.Response.s2c:type_name -> Qot_GetOptionExpirationDate.S2C
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	6, // 1: Qot_GetOptionExpirationDate.C2S.header:type_name -> Qot_Common.QotHeader
+	1, // 2: Qot_GetOptionExpirationDate.S2C.dateList:type_name -> Qot_GetOptionExpirationDate.OptionExpirationDate
+	0, // 3: Qot_GetOptionExpirationDate.Request.c2s:type_name -> Qot_GetOptionExpirationDate.C2S
+	2, // 4: Qot_GetOptionExpirationDate.Response.s2c:type_name -> Qot_GetOptionExpirationDate.S2C
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_Qot_GetOptionExpirationDate_proto_init() }

@@ -30,8 +30,12 @@ type C2S struct {
 	FilterPLRatioMin *float64                       `protobuf:"fixed64,3,opt,name=filterPLRatioMin" json:"filterPLRatioMin,omitempty"` //过滤盈亏百分比下限，高于此比例的会返回，比如传10.0，返回盈亏比例大于10%的持仓
 	FilterPLRatioMax *float64                       `protobuf:"fixed64,4,opt,name=filterPLRatioMax" json:"filterPLRatioMax,omitempty"` //过滤盈亏百分比上限，低于此比例的会返回，比如传20.0，返回盈亏比例小于20%的持仓
 	RefreshCache     *bool                          `protobuf:"varint,5,opt,name=refreshCache" json:"refreshCache,omitempty"`          //立即刷新OpenD缓存的此数据，默认不填。true向服务器获取最新数据更新缓存并返回；flase或没填则返回OpenD缓存的数据，不会向服务器请求。
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	//正常情况下，服务器有更新就会立即推送到OpenD，OpenD缓存着数据，API请求过来，返回同步的缓存数据，一般不需要指定刷新缓存，保证快速返回且减少对服务器的压力
+	//如果遇到丢包等情况，可能出现缓存数据与服务器不一致，用户如果发现数据更新有异样，可指定刷新缓存，解决数据同步的问题。
+	AssetCategory *int32 `protobuf:"varint,6,opt,name=assetCategory" json:"assetCategory,omitempty"` //账户资产类型，JP信用/衍生品账户必填，参考 Trd_Common.TrdAssetCategory
+	Currency      *int32 `protobuf:"varint,7,opt,name=currency" json:"currency,omitempty"`           //货币种类，参见Trd_Common.Currency。加密货币账户必填，其他账户忽略
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *C2S) Reset() {
@@ -97,6 +101,20 @@ func (x *C2S) GetRefreshCache() bool {
 		return *x.RefreshCache
 	}
 	return false
+}
+
+func (x *C2S) GetAssetCategory() int32 {
+	if x != nil && x.AssetCategory != nil {
+		return *x.AssetCategory
+	}
+	return 0
+}
+
+func (x *C2S) GetCurrency() int32 {
+	if x != nil && x.Currency != nil {
+		return *x.Currency
+	}
+	return 0
 }
 
 type S2C struct {
@@ -273,13 +291,15 @@ var File_Trd_GetPositionList_proto protoreflect.FileDescriptor
 
 const file_Trd_GetPositionList_proto_rawDesc = "" +
 	"\n" +
-	"\x19Trd_GetPositionList.proto\x12\x13Trd_GetPositionList\x1a\fCommon.proto\x1a\x10Trd_Common.proto\"\xfd\x01\n" +
+	"\x19Trd_GetPositionList.proto\x12\x13Trd_GetPositionList\x1a\fCommon.proto\x1a\x10Trd_Common.proto\"\xbf\x02\n" +
 	"\x03C2S\x12-\n" +
 	"\x06header\x18\x01 \x02(\v2\x15.Trd_Common.TrdHeaderR\x06header\x12K\n" +
 	"\x10filterConditions\x18\x02 \x01(\v2\x1f.Trd_Common.TrdFilterConditionsR\x10filterConditions\x12*\n" +
 	"\x10filterPLRatioMin\x18\x03 \x01(\x01R\x10filterPLRatioMin\x12*\n" +
 	"\x10filterPLRatioMax\x18\x04 \x01(\x01R\x10filterPLRatioMax\x12\"\n" +
-	"\frefreshCache\x18\x05 \x01(\bR\frefreshCache\"n\n" +
+	"\frefreshCache\x18\x05 \x01(\bR\frefreshCache\x12$\n" +
+	"\rassetCategory\x18\x06 \x01(\x05R\rassetCategory\x12\x1a\n" +
+	"\bcurrency\x18\a \x01(\x05R\bcurrency\"n\n" +
 	"\x03S2C\x12-\n" +
 	"\x06header\x18\x01 \x02(\v2\x15.Trd_Common.TrdHeaderR\x06header\x128\n" +
 	"\fpositionList\x18\x02 \x03(\v2\x14.Trd_Common.PositionR\fpositionList\"5\n" +

@@ -1,0 +1,114 @@
+syntax = "proto2";
+package Qot_GetValuationDetail;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetvaluationdetail";
+
+import "Qot_Common.proto";
+
+// 走势
+message ValuationTrend
+{
+    message ValuationHistoricalItem
+    {
+        optional double value = 1;          // 估值
+        optional uint64 time = 2;           // 时间戳（秒）
+        optional string timeStr = 3;        // 时间字符串，格式 YYYY-MM-DD，对应市场时区
+        optional double plateValue = 4;     // 行业均值
+    }
+    optional double currentValue = 1;            // 当前估值
+    optional double averageValue = 2;            // 历史平均估值
+    optional double avgMinus1Stddev = 3;         // 历史平均 - 1σ
+    optional double avgPlus1Stddev = 4;          // 历史平均 + 1σ
+    optional double valuationPercentile = 5;     // 估值历史分位，百分号前的值，如 12.34 表示 12.34%
+    optional double forwardValue = 6;            // 预测估值，仅 PE / PS 有
+    repeated ValuationHistoricalItem historicalItems = 7; // 历史数据
+}
+
+// 市场分布
+message MarketDistribution
+{
+    // 区间分布
+    message DistributionSection
+    {
+        optional double start = 1;          // 区间开始值
+        optional double end = 2;            // 区间结束值（0 表示无上限）
+        optional int32 number = 3;          // 该区间个股数量
+    }
+    repeated DistributionSection sections = 1;    // 区间分布（降序）
+    optional int32 total = 2;                     // 市场总数 / 成分股总数
+    optional int32 ranking = 3;                   // 该股票估值在市场中的排名（指数无）
+    optional double averageValue = 4;             // 市场估值均值（指数无）
+    optional double medianValue = 5;              // 市场估值中位数（指数无）
+}
+
+// 行业分布
+message PlateDistribution
+{
+    message PlateStockItem
+    {
+        optional Qot_Common.Security security = 1;    // 股票
+        optional string name = 2;                     // 个股名称
+        optional double value = 3;                    // 估值
+        optional double marketCap = 4;                // 市值
+    }
+    optional Qot_Common.Security plate = 1;       // 所属板块
+    optional string plateName = 2;                // 所属板块名称
+    optional double plateAverageValue = 3;        // 板块估值均值
+    optional int32 plateRanking = 4;              // 该股票估值在板块中的排名
+    optional int32 plateStockItemCount = 5;       // 板块个股总数
+    repeated PlateStockItem stockItems = 6;       // 板块成分股估值明细
+}
+
+// 盈利 / 营收增速聚合
+message ProfitGrowthRate
+{
+    message ProfitGrowthItem
+    {
+        optional uint32 financialYear = 1;            // 财报年度
+        optional uint32 financialQuarter = 2;         // 财报季度（FinancialType 1=Q1, 2=Q2, 3=Q3, 4=FY）
+        optional string periodStr = 3;                // 财报周期，如 "2024/Q3"、"2024/FY"
+        optional int64 reportDate = 4;                // 报告日时间戳（秒）
+        optional string reportDateStr = 5;            // 报告日字符串，格式 YYYY-MM-DD，对应市场时区
+        optional double marketCapMultiple = 6;        // 报告日市值倍数（基准期 = 1）
+        optional double financeDataMultiple = 7;      // 盈利 / 营收倍数（基准期 = 1，依 valuationType 而定）
+    }
+    optional double financialTtmMultiple = 1;     // TTM 增长倍数
+    optional double marketCapMultiple = 2;        // 市值增长倍数
+    optional int32 yearCount = 3;                 // 计算增长倍数时实际用到的年份数量
+    repeated ProfitGrowthItem profitData = 4;     // 各期数据
+    optional string conclusionDetailed = 5;       // 估值结论描述（已多语言翻译；仅 label 时为 label，仅 detailed 时为 detailed，两者均有时为 "label : detailed"）
+}
+
+// ===== 请求 / 响应 =====
+message C2S
+{
+    required Qot_Common.Security security = 1;    // 股票
+    optional Qot_Common.ValuationType valuationType = 2;      // 估值类型，详见 Qot_Common.ValuationType 定义，默认 0(Unknown，使用推荐类型)
+    optional Qot_Common.ValuationIntervalType intervalType = 3; // 历史数据时间周期，详见 Qot_Common.ValuationIntervalType 定义
+}
+
+message S2C
+{
+    optional Qot_Common.ValuationType valuationType = 1;      // 实际返回的估值类型，详见 Qot_Common.ValuationType 定义
+    optional uint64 lastUpdateTime = 2;           // 最后更新时间戳（秒）
+    optional string lastUpdateTimeStr = 3;        // 最后更新时间字符串，格式 YYYY-MM-DD HH:MM:SS，对应市场时区
+
+    // 4 个聚合字段
+    optional ValuationTrend trend = 4;                      // 走势（个股 + 指数）
+    optional MarketDistribution marketDistribution = 5;     // 市场分布 / 成分股分布（个股 + 指数）
+    optional PlateDistribution plateDistribution = 6;       // 行业分布（仅个股）
+    optional ProfitGrowthRate profitGrowthRate = 7;         // 盈利 / 营收增速（仅个股，PB 无）
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32 retType = 1 [default = -400]; // RetType，返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

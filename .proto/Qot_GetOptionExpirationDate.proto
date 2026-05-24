@@ -11,6 +11,7 @@ message C2S
 {
 	required Qot_Common.Security owner = 1; //期权标的股，目前仅支持传入港美正股以及恒指国指
 	optional int32 indexOptionType = 2; //Qot_Common.IndexOptionType，指数期权的类型，仅用于恒指国指
+	optional Qot_Common.QotHeader header = 100; //行情公共参数头
 }
 
 message OptionExpirationDate
