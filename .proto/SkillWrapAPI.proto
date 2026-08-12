@@ -1,0 +1,59 @@
+syntax = "proto2";
+package SkillWrapAPI;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/skillwrapapi";
+option py_generic_services = true;
+
+
+// -------------------- message --------------------
+
+// 技术指标异动请求
+message TechnicalUnusualReq {
+  optional string stock_symbol = 1; // 需要根据股票名、股票代码等匹配，必填
+  optional int32 time_range = 2;    // 时间范围天数，默认为7个自然日
+  repeated string indicator_filters = 3; // 可指定具体指标，不传默认全部
+  optional int32 language_id = 4;   // 返回结果语种,0:简中,1:繁中,2:英文,4:泰语,5:日语
+}
+
+// 技术指标异动响应
+message TechnicalUnusualRsp {
+  required int32 retType = 1 [default = -400]; //RetType,返回结果
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+  optional string time_range = 4; // 时间范围，如 "2026.4.2-2026.4.9"
+  optional string content = 5;    // 响应内容
+}
+
+// 财务异动请求
+message FinancialUnusualReq {
+  optional string stock_symbol = 1; // 需要根据股票名、股票代码等匹配，必填
+  optional int32 time_range = 2;          // 时间范围天数，默认为7个自然日
+  repeated string analysis_dimensions = 3; // 可指定具体维度，默认全部
+  optional int32 language_id = 4;         // 返回结果语种,0:简中,1:繁中,2:英文,4:泰语,5:日语
+}
+
+// 财务异动响应
+message FinancialUnusualRsp {
+  required int32 retType = 1 [default = -400]; //RetType,返回结果
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+  optional string time_range = 4; // 时间范围，如 "2026.4.2-2026.4.9"
+  optional string content = 5;    // 响应内容
+}
+
+// 衍生品异动请求
+message DerivativeUnusualReq {
+  optional string stock_symbol = 1; // 需要根据股票名、股票代码等匹配，必填
+  optional int32 time_range = 2;          // 时间范围天数，默认为7个自然日
+  repeated string analysis_dimensions = 3; // 可指定具体维度，默认全部
+  optional int32 language_id = 4;         // 返回结果语种,0:简中,1:繁中,2:英文,4:泰语,5:日语
+}
+
+// 衍生品异动响应
+message DerivativeUnusualRsp {
+  required int32 retType = 1 [default = -400]; //RetType,返回结果
+  optional string retMsg = 2;
+  optional int32 errCode = 3;
+  optional string time_range = 4; // 时间范围，如 "2026.4.2-2026.4.9"
+  optional string content = 5;    // 响应内容
+}

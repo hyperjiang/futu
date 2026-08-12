@@ -45,6 +45,9 @@ type C2S struct {
 	TrailSpread        *float64 `protobuf:"fixed64,17,opt,name=trailSpread" json:"trailSpread,omitempty"`              //指定价差
 	Session            *int32   `protobuf:"varint,18,opt,name=session" json:"session,omitempty"`                       //美股订单时段, 参见Common.Session的枚举定义
 	PositionID         *uint64  `protobuf:"varint,19,opt,name=positionID" json:"positionID,omitempty"`                 //持仓ID，JP券商查询平仓数量时使用
+	ExpireTime         *string  `protobuf:"bytes,20,opt,name=expireTime" json:"expireTime,omitempty"`                  //订单到期时间，仅在timeInForce为GTD时有效
+	Amount             *float64 `protobuf:"fixed64,21,opt,name=amount" json:"amount,omitempty"`                        //订单金额，事件合约下单使用
+	PredSide           *int32   `protobuf:"varint,22,opt,name=predSide" json:"predSide,omitempty"`                     //事件合约预测方向，参见Common.PredSide的枚举定义
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -208,6 +211,27 @@ func (x *C2S) GetSession() int32 {
 func (x *C2S) GetPositionID() uint64 {
 	if x != nil && x.PositionID != nil {
 		return *x.PositionID
+	}
+	return 0
+}
+
+func (x *C2S) GetExpireTime() string {
+	if x != nil && x.ExpireTime != nil {
+		return *x.ExpireTime
+	}
+	return ""
+}
+
+func (x *C2S) GetAmount() float64 {
+	if x != nil && x.Amount != nil {
+		return *x.Amount
+	}
+	return 0
+}
+
+func (x *C2S) GetPredSide() int32 {
+	if x != nil && x.PredSide != nil {
+		return *x.PredSide
 	}
 	return 0
 }
@@ -394,7 +418,7 @@ var File_Trd_PlaceOrder_proto protoreflect.FileDescriptor
 
 const file_Trd_PlaceOrder_proto_rawDesc = "" +
 	"\n" +
-	"\x14Trd_PlaceOrder.proto\x12\x0eTrd_PlaceOrder\x1a\fCommon.proto\x1a\x10Trd_Common.proto\"\xde\x04\n" +
+	"\x14Trd_PlaceOrder.proto\x12\x0eTrd_PlaceOrder\x1a\fCommon.proto\x1a\x10Trd_Common.proto\"\xb2\x05\n" +
 	"\x03C2S\x12,\n" +
 	"\bpacketID\x18\x01 \x02(\v2\x10.Common.PacketIDR\bpacketID\x12-\n" +
 	"\x06header\x18\x02 \x02(\v2\x15.Trd_Common.TrdHeaderR\x06header\x12\x18\n" +
@@ -419,7 +443,12 @@ const file_Trd_PlaceOrder_proto_rawDesc = "" +
 	"\asession\x18\x12 \x01(\x05R\asession\x12\x1e\n" +
 	"\n" +
 	"positionID\x18\x13 \x01(\x04R\n" +
-	"positionID\"l\n" +
+	"positionID\x12\x1e\n" +
+	"\n" +
+	"expireTime\x18\x14 \x01(\tR\n" +
+	"expireTime\x12\x16\n" +
+	"\x06amount\x18\x15 \x01(\x01R\x06amount\x12\x1a\n" +
+	"\bpredSide\x18\x16 \x01(\x05R\bpredSide\"l\n" +
 	"\x03S2C\x12-\n" +
 	"\x06header\x18\x01 \x02(\v2\x15.Trd_Common.TrdHeaderR\x06header\x12\x18\n" +
 	"\aorderID\x18\x02 \x01(\x04R\aorderID\x12\x1c\n" +

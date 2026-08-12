@@ -1,0 +1,79 @@
+syntax = "proto2";
+package Qot_GetOptionQuote;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptionquote";
+
+import "Qot_Common.proto";
+
+message OptionQuote
+{
+	//--- 基础行情 ---
+	optional double price = 1;                   //最新价
+	optional double chg = 2;               //涨跌额
+	optional double chg_rate = 3;              //涨跌幅（百分比字段，如 20 实际对应 20%）
+	optional int64 vol = 4;                   //成交量
+	optional double turnover = 5;                //成交额
+	optional double high = 6;               //最高价
+	optional double low = 7;                //最低价
+	optional double mid = 8;                //中间价（买一与卖一均值）
+	optional double open = 9;              //今开
+	optional double pre_close = 10;         //昨收
+
+	//--- 期权行情衍生数据 ---
+	optional int32 open_interest = 11;            //未平仓合约数
+	optional double premium = 12;               //溢价（百分比字段，如 20 实际对应 20%）
+	optional double IV = 13;      //隐含波动率（百分比字段，如 20 实际对应 20%）
+	optional double delta = 14;                  //希腊值 Delta
+	optional double gamma = 15;                  //希腊值 Gamma
+	optional double vega = 16;                   //希腊值 Vega
+	optional double theta = 17;                  //希腊值 Theta
+	optional double rho = 18;                    //希腊值 Rho
+
+	//--- 期权合约静态属性 ---
+	optional int32 option_type = 19;              //Qot_Common.OptionType，CALL/PUT
+	optional string expire_time = 20;             //到期日
+	optional double strike = 21;            //行权价
+	optional double contract_size = 22;           //合约规模
+	optional double contract_multiplier = 23;     //合约乘数
+	optional int32 exercise_type = 24;            //Qot_Common.OptionAreaType，行权类型（美式/欧式/百慕大）
+	optional int32 days_to_expiry = 25;            //距到期日天数，负数表示已过期
+	optional int32 net_open_interest = 26;         //净未平仓合约数，仅港股期权适用
+	optional double contract_value = 27;          //合约金额，仅港股期权适用
+	optional double equal_underlying = 28;        //相当正股手数，仅港股期权适用
+	optional int32 index_option_type = 29;         //Qot_Common.IndexOptionType，指数期权类型
+
+	//--- 期权专有分析数据 ---
+	optional double intrinsic_value = 30;         //内在价值
+	optional double time_value = 31;              //时间价值
+	repeated double breakeven_point = 32;         //盈亏平衡点列表
+	repeated double dist_to_breakeven = 33;        //与 breakeven_point 同下标一一对应的距离
+	optional double prob_of_profit = 34;           //盈利概率
+	optional double seller_roi = 35;              //卖方回报率（百分比字段）
+	optional double mark_price = 36;              //标记价
+	optional double leverage_ratio = 37;          //杠杆倍数
+	optional double effective_gearing = 38;       //有效杠杆
+}
+
+message C2S
+{
+	repeated Qot_Common.ComboLeg multi_legs = 1; //组合策略合约腿列表
+	optional Qot_Common.QotHeader header = 100;          //行情公共参数头
+}
+
+message S2C
+{
+	repeated OptionQuote optionQuoteList = 1; //期权实时行情列表；单腿时 1 条与 multi_legs 对应，多腿时为按策略聚合后的 1 条记录
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32 retType = 1 [default = -400]; //RetType，返回结果
+	optional string retMsg = 2;
+	optional int32 errCode = 3;
+	optional S2C s2c = 4;
+}

@@ -1,0 +1,43 @@
+syntax = "proto2";
+package Qot_GetEventContractMilestoneList;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgeteventcontractmilestonelist";
+
+import "Qot_Common.proto";
+
+// 里程碑项
+message MilestoneItem {
+    required Qot_Common.Security milestoneSecurity = 1;  // 里程碑标的
+    optional string title = 2;                            // 里程碑名称（多语言）
+    optional string category = 3;                         // 一级分类标识
+    optional Qot_Common.EC_MilestoneType type = 4;        // 里程碑类型
+    optional string startDate = 5;                        // 开始时间（UTC ISO8601，形如 2025-09-26T18:30:00Z）
+    optional string endDate = 6;                          // 结束时间（UTC ISO8601，形如 2025-09-26T18:30:00Z）
+    optional Qot_Common.Security primaryEventSecurity = 7; // 主事件标的
+    repeated Qot_Common.Security relatedEventList = 8;    // 关联事件标的列表
+    optional string notificationMessage = 9;              // 通知消息（多语言）
+}
+
+message C2S {
+    optional string category = 1;                // 一级分类 ("SPORTS")
+    optional string competition = 2;             // 赛事标识
+    optional Qot_Common.Security relatedEvent = 3; // 关联事件标的，本地过滤
+    optional string nextPage = 4;                // 翻页标记（首页不填）
+    optional int32 count = 5;                    // 单页最大返回数（默认200）
+}
+
+message S2C {
+    repeated MilestoneItem milestoneList = 1;
+    optional string nextPage = 2;                         // 为空表示没有下一页
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

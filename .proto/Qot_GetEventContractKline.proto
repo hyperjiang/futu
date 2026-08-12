@@ -1,0 +1,48 @@
+syntax = "proto2";
+package Qot_GetEventContractKline;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgeteventcontractkline";
+
+import "Common.proto";
+import "Qot_Common.proto";
+
+// K线数据点
+message ECKLine {
+    required string time_key = 1;   // K线时间（yyyy-MM-dd HH:mm:ss）
+    optional double open = 2;       // 开盘价
+    optional double high = 3;       // 最高价
+    optional double low = 4;        // 最低价
+    optional double close = 5;      // 收盘价
+    optional double volume = 6;     // 成交量
+}
+
+// 单只合约K线
+message KlineItem {
+    required Qot_Common.Security code = 1;                 // 合约代码
+    optional Common.PredSide pre_side = 2; // 合约方向（合约K线时有值，事件K线以服务端返回为准）
+    optional string name = 3;                              // 合约名称
+    repeated ECKLine klineList = 4;                        // K线数据
+}
+
+message C2S {
+    required Qot_Common.Security security = 1;              // 合约标的（单只，必填，contract_id）
+    optional Qot_Common.EC_KlineSource klineSource = 2;    // K线来源（None/OrderBookYes），优先级高于 preSide
+    optional Common.PredSide preSide = 3;  // 方向（klineSource=None 时必传 YES/NO）
+    optional Qot_Common.KLType ktype = 4;                 // K线类型，复用通用 KLType（仅支持 KLType_1Min/KLType_60Min/KLType_Day，其余报错）
+    optional int32 maxCount = 5;                            // 最大返回条数（上限1000）
+}
+
+message S2C {
+    repeated KlineItem klineList = 1;  // K线列表
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

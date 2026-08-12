@@ -1,0 +1,99 @@
+syntax = "proto2";
+package Qot_GetPeriodChangeRank;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetperiodchangerank";
+
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+
+// 排序方向
+enum SortDir {
+    SortDir_Descending = 0;     // 降序(默认)
+    SortDir_Ascending = 1;      // 升序
+}
+
+// 排序周期
+enum PeriodType {
+    PeriodType_Unknown = 0;
+    PeriodType_5Min = 1;       // 5分钟(默认)
+    PeriodType_1Day = 2;       // 1日
+    PeriodType_5Day = 3;       // 5日
+    PeriodType_20Day = 4;      // 20日
+    PeriodType_60Day = 5;      // 60日
+    PeriodType_120Day = 6;     // 120日
+    PeriodType_250Day = 7;     // 250日
+    PeriodType_YTD = 8;        // 年初至今
+}
+
+// 筛选条件类型
+enum IndicatorType {
+    IndicatorType_Unknown = 0;
+    IndicatorType_Price = 1;            // 最新价区间
+    IndicatorType_MarketCap = 2;        // 市值区间
+    IndicatorType_ChangeRatio = 3;      // 涨跌幅区间(按所选周期)
+    IndicatorType_Volume = 4;           // 成交量区间
+    IndicatorType_Turnover = 5;         // 成交额区间
+    IndicatorType_PE = 6;               // 市盈率TTM区间
+    IndicatorType_PB = 7;               // 市净率区间
+    IndicatorType_TurnoverRatio = 8;    // 换手率区间
+    IndicatorType_VolumeRatio = 9;      // 量比区间
+    IndicatorType_Amplitude = 10;       // 振幅区间
+}
+
+// 筛选条件
+message Indicator {
+    required int32 indicatorType = 1;                       // IndicatorType
+    optional Qot_OptionCommon.Interval indicatorValue = 2;  // 筛选区间
+}
+
+message C2S {
+    required int32 market = 1;             // Qot_Common.QotMarket (HK=1, US=11)
+    optional int32 periodType = 2;         // PeriodType, 排序周期, 默认5分钟
+    optional int32 sortDir = 3;            // SortDir, 排序方向, 默认降序
+    optional int32 offset = 4;             // 起始位置, 默认0
+    optional int32 count = 5;              // 返回数量 [1,200], 默认50
+    repeated Indicator filterList = 6;     // 筛选条件(AND关系)
+}
+
+// 区间涨跌幅数据项
+message PeriodChangeRankItem {
+    required Qot_Common.Security security = 1;  // 股票
+    optional string name = 2;                    // 名称
+
+    optional double curPrice = 10;              // 最新价
+    optional double changeRatio = 11;           // 今日涨跌幅(%)
+    optional double turnover = 12;              // 成交额
+    optional int64 volume = 13;                 // 成交量
+    optional double marketCap = 14;             // 市值
+
+    optional double changeRate5Min = 20;        // 5分钟涨跌幅(%)
+    optional double changeRate5D = 21;          // 5日涨跌幅(%)
+    optional double changeRate10D = 22;         // 10日涨跌幅(%)
+    optional double changeRate20D = 23;         // 20日涨跌幅(%)
+    optional double changeRate60D = 24;         // 60日涨跌幅(%)
+    optional double changeRate120D = 25;        // 120日涨跌幅(%)
+    optional double changeRate250D = 26;        // 250日涨跌幅(%)
+    optional double changeRateYTD = 27;         // 年初至今涨跌幅(%)
+
+    optional double peTTM = 30;                 // 市盈率TTM
+    optional double pb = 31;                    // 市净率
+    optional double turnoverRatio = 32;         // 换手率(%)
+    optional double volumeRatio = 33;           // 量比
+    optional double amplitude = 34;             // 振幅(%)
+}
+
+message S2C {
+    repeated PeriodChangeRankItem dataList = 1;  // 数据列表
+    optional int32 allCount = 2;                  // 符合条件的总数据量
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

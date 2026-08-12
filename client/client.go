@@ -16,9 +16,14 @@ import (
 	"github.com/hyperjiang/futu/pb/initconnect"
 	"github.com/hyperjiang/futu/pb/keepalive"
 	"github.com/hyperjiang/futu/pb/notify"
+	"github.com/hyperjiang/futu/pb/qotpushindicatorcalc"
 	"github.com/hyperjiang/futu/pb/qotupdatebasicqot"
 	"github.com/hyperjiang/futu/pb/qotupdatebroker"
+	"github.com/hyperjiang/futu/pb/qotupdateeventcontractkline"
+	"github.com/hyperjiang/futu/pb/qotupdateeventcontractorderbook"
+	"github.com/hyperjiang/futu/pb/qotupdateeventcontractticker"
 	"github.com/hyperjiang/futu/pb/qotupdatekl"
+	"github.com/hyperjiang/futu/pb/qotupdateoptionevent"
 	"github.com/hyperjiang/futu/pb/qotupdateorderbook"
 	"github.com/hyperjiang/futu/pb/qotupdatepricereminder"
 	"github.com/hyperjiang/futu/pb/qotupdatert"
@@ -218,6 +223,21 @@ func (client *Client) watchNotification() {
 	updatePriceReminder := make(chan *qotupdatepricereminder.Response, 1)
 	client.registerDispatcher(protoid.QotUpdatePriceReminder, 0, infra.NewProtobufChan(updatePriceReminder))
 
+	pushIndicatorCalc := make(chan *qotpushindicatorcalc.Response, 1)
+	client.registerDispatcher(protoid.QotPushIndicatorCalc, 0, infra.NewProtobufChan(pushIndicatorCalc))
+
+	updateOptionEvent := make(chan *qotupdateoptionevent.Response, 1)
+	client.registerDispatcher(protoid.QotUpdateOptionEvent, 0, infra.NewProtobufChan(updateOptionEvent))
+
+	updateEventContractOrderBook := make(chan *qotupdateeventcontractorderbook.Response, 1)
+	client.registerDispatcher(protoid.QotUpdateEventContractOrderBook, 0, infra.NewProtobufChan(updateEventContractOrderBook))
+
+	updateEventContractKline := make(chan *qotupdateeventcontractkline.Response, 1)
+	client.registerDispatcher(protoid.QotUpdateEventContractKline, 0, infra.NewProtobufChan(updateEventContractKline))
+
+	updateEventContractTicker := make(chan *qotupdateeventcontractticker.Response, 1)
+	client.registerDispatcher(protoid.QotUpdateEventContractTicker, 0, infra.NewProtobufChan(updateEventContractTicker))
+
 	for {
 		select {
 		case <-client.closed:
@@ -303,6 +323,46 @@ func (client *Client) watchNotification() {
 			}
 			if err := client.getHandler(protoid.QotUpdatePriceReminder)(resp.GetS2C()); err != nil {
 				log.Error().Err(err).Msg("update price reminder handle error")
+			}
+		case resp, ok := <-pushIndicatorCalc:
+			if !ok {
+				log.Info().Msg("push indicator calc channel closed")
+				break
+			}
+			if err := client.getHandler(protoid.QotPushIndicatorCalc)(resp.GetS2C()); err != nil {
+				log.Error().Err(err).Msg("push indicator calc handle error")
+			}
+		case resp, ok := <-updateOptionEvent:
+			if !ok {
+				log.Info().Msg("update option event channel closed")
+				break
+			}
+			if err := client.getHandler(protoid.QotUpdateOptionEvent)(resp.GetS2C()); err != nil {
+				log.Error().Err(err).Msg("update option event handle error")
+			}
+		case resp, ok := <-updateEventContractOrderBook:
+			if !ok {
+				log.Info().Msg("update event contract order book channel closed")
+				break
+			}
+			if err := client.getHandler(protoid.QotUpdateEventContractOrderBook)(resp.GetS2C()); err != nil {
+				log.Error().Err(err).Msg("update event contract order book handle error")
+			}
+		case resp, ok := <-updateEventContractKline:
+			if !ok {
+				log.Info().Msg("update event contract kline channel closed")
+				break
+			}
+			if err := client.getHandler(protoid.QotUpdateEventContractKline)(resp.GetS2C()); err != nil {
+				log.Error().Err(err).Msg("update event contract kline handle error")
+			}
+		case resp, ok := <-updateEventContractTicker:
+			if !ok {
+				log.Info().Msg("update event contract ticker channel closed")
+				break
+			}
+			if err := client.getHandler(protoid.QotUpdateEventContractTicker)(resp.GetS2C()); err != nil {
+				log.Error().Err(err).Msg("update event contract ticker handle error")
 			}
 		}
 	}

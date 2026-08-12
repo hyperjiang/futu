@@ -17,6 +17,8 @@ message S2C
 	repeated Qot_Common.ConnSubInfo connSubInfoList = 1; //订阅订阅信息
 	required int32 totalUsedQuota = 2; //FutuOpenD已使用的订阅额度
 	required int32 remainQuota = 3; //FutuOpenD剩余订阅额度
+	optional int32 optionUsedQuota = 4; //期权已使用订阅额度
+	optional int32 optionRemainQuota = 5; //期权剩余订阅额度
 }
 
 message Request

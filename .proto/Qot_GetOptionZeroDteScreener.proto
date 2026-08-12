@@ -1,0 +1,66 @@
+syntax = "proto2";
+package Qot_GetOptionZeroDteScreener;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptionzerodtescreener";
+
+import "Common.proto";
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+
+// 期权链标识（用于后续 Contract 请求的上下文传递）
+message OptionChainInfo {
+    optional int64 strikeDateTimestamp = 1;      // 行权日时间戳
+    optional string productCode = 2;             // 产品代码
+    optional double multiplier = 3;              // 合约乘数
+    optional double contractShareSize = 4;       // 合约规模
+    optional int32 expirationType = 5;           // 到期类型
+    optional Qot_Common.Security underlying = 6; // 期权链对应标的
+}
+
+// 标的项
+message ZeroDteScreenerItem {
+    required Qot_Common.Security owner = 1;
+    optional string name = 2;
+    optional double price = 3;              // 标的价格
+    optional double changeRate = 4;         // 涨跌幅（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double marketCap = 5;          // 市值
+    optional double iv = 6;                 // IV(%)
+    optional double ivRank = 7;             // IV Rank(%)
+    optional double ivPercentile = 8;       // IV Percentile(%)
+    optional double hv = 9;                 // HV(%)
+    optional int64 volume = 10;             // 期权总成交量
+    optional int64 openInterest = 11;       // 期权总持仓量
+    optional int64 lastTradingTime = 12;   // 最后交易时间戳(秒)
+    // 财报（若标的即将发财报）
+    optional int64 earningsTimestamp = 13;  // 财报时间戳(秒)
+    optional string earningsTime = 14;      // 财报时间字符串(yyyy-MM-dd HH:mm:ss)
+    optional int32 earningsPubType = 15;    // EarningsPubType
+    // 链标识（传递给 Contract 请求）
+    optional OptionChainInfo chainInfo = 16;
+}
+
+message C2S {
+    required int32 optionMarket = 1;      // Qot_OptionCommon.OptionMarket (仅支持US_Security/US_Index)
+    optional int32 sortType = 2;          // Qot_OptionCommon.ZeroDteSortType (默认 Volume)
+    optional bool isAsc = 3;              // 默认 false(降序)
+    optional int32 count = 4;             // 每页数量[1,500](默认50)
+    optional string page = 5;             // 分页游标，首次请求传空或不传，翻页时传上次返回的nextPage
+    repeated Qot_OptionCommon.ZeroDteIndicator filterList = 6;  // 筛选条件(AND关系)
+}
+
+message S2C {
+    repeated ZeroDteScreenerItem itemList = 1;
+    optional string nextPage = 2;         // 下一页游标（空或不存在=无下一页）
+    optional double updateTimestamp = 3;  // 数据更新时间戳(秒)
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; //RetType，返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

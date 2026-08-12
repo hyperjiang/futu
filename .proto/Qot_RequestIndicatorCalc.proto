@@ -1,0 +1,51 @@
+syntax = "proto2";
+package Qot_RequestIndicatorCalc;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotrequestindicatorcalc";
+
+import "Common.proto";
+import "Qot_Common.proto";
+
+// 单个输入参数覆盖项
+message IndicatorInputItem
+{
+	required int32 index = 1;   // 入参下标，对应 IndicatorInfo.inputs 中的 index，从 0 开始
+	optional string value = 2;  // 入参值（字符串形式，省略则沿用默认值）
+}
+
+// 计算所需的标的与 K 线数据
+message IndicatorCalcData
+{
+	required Qot_Common.Security security = 1;  // 标的
+	required Qot_Common.KLType klType = 2;      // K 线周期
+	repeated Qot_Common.KLine kLine = 3;        // K 线数据
+}
+
+// 异步发起指标计算：先返回 calcId，结果由 Qot_PushIndicatorCalc(3255) 推送
+message C2S
+{
+	required string shortName = 1;                       // 指标短名
+	required Qot_Common.IndicatorLangType langType = 2;  // 语言类型
+	required IndicatorCalcData data = 3;                 // 计算所需数据
+	optional int32 num = 4;                              // 最多取前 N 条 K 线参与计算；不填表示使用全部 K 线，填正整数 N 表示截取前 N 条
+	repeated IndicatorInputItem inputs = 5;              // 入参覆盖（可空，留空则使用云配置）
+}
+
+message S2C
+{
+	required string calcId = 1;  // 计算任务 ID，与推送结果配对
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32 retType = 1 [default = -400];
+	optional string retMsg = 2;
+	optional int32 errCode = 3;
+
+	optional S2C s2c = 4;
+}

@@ -1,0 +1,69 @@
+syntax = "proto2";
+package Qot_GetEventContract;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgeteventcontract";
+
+import "Qot_Common.proto";
+
+// 合约项
+message ContractItem {
+    // ===== 标识 =====
+    required Qot_Common.Security contractSecurity = 1;  // 合约标的
+    optional Qot_Common.Security eventSecurity = 2;     // 所属 Event
+    optional Qot_Common.Security seriesSecurity = 3;    // 所属 Series
+    optional Qot_Common.EC_ContractType contractType = 4; // 合约类型 (Binary/Scalar)
+
+    // ===== 名称 =====
+    optional string title = 5;                          // 合约标题（多语言）
+    optional string yesSubTitle = 6;                    // YES 的子标题（多语言）
+
+    // ===== 时间（UTC ISO8601 字符串，形如 2025-09-26T18:30:00Z）=====
+    optional string openTime = 7;                       // 合约开始时间
+    optional string closeTime = 8;                      // 合约结束时间
+    optional string determinationTime = 9;              // 结果确定时间
+    optional string settledTime = 10;                   // 结算完成时间
+    optional string latestExpirationTime = 11;          // 最新到期时间
+
+    // ===== 状态与结果 =====
+    optional Qot_Common.EC_Status status = 12;          // 合约状态
+    optional string result = 13;                        // 合约结果
+    optional string settlementValue = 14;               // 合约结算价值
+    optional string expirationValue = 15;               // 合约到期结果
+
+    // ===== 交易属性 =====
+    optional string volume = 16;                        // 合约成交量
+    optional bool canCloseEarly = 17;                   // 是否可提早结束交易
+    optional string tickSize = 18;                      // 价位
+
+    // ===== 分类 =====
+    optional string category = 19;                      // 一级分类标识
+    optional string tag = 20;                           // 二级分类标识
+}
+
+// 推荐合约
+message RecommendContract {
+    required Qot_Common.Security contractSecurity = 1;
+}
+
+message C2S {
+    required Qot_Common.Security event = 1;  // Event 标的
+    optional string nextPage = 2;            // 翻页标记（首页不填）
+    optional int32 count = 3;                // 单页最大返回数（默认100，最大1000）
+}
+
+message S2C {
+    repeated ContractItem contractList = 1;             // 合约列表
+    repeated RecommendContract recommendContracts = 2;  // 推荐合约
+    optional string nextPage = 3;                       // 为空表示没有下一页
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

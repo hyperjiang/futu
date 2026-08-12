@@ -1,0 +1,45 @@
+syntax = "proto2";
+package Qot_GetEventContractEventList;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgeteventcontracteventlist";
+
+import "Qot_Common.proto";
+
+// 事件项
+message EventItem {
+    required Qot_Common.Security eventSecurity = 1; // {market=101, code="EC.KXGDP-27JAN30"}
+    optional string eventName = 2;           // 事件名称（多语言）
+    optional string eventSubName = 3;        // 事件副标题（多语言）
+    optional Qot_Common.EC_Status status = 4; // 事件状态
+    optional Qot_Common.Security seriesSecurity = 5; // 所属 Series
+    optional string startDate = 6;           // 开始时间（美东时区，形如 2026-06-28 00:00:00）
+    optional string endDate = 7;             // 结束时间（美东时区，形如 2026-06-28 00:00:00）
+    optional string category = 8;            // 一级分类标识
+    repeated string tags = 9;                // 二级分类标识列表（一个 event 可归属多个 tag）
+    optional bool mutuallyExclusive = 10;    // 合约结果是否互斥
+    optional string competition = 11;        // 赛事名称（多语言）
+    optional string competitionScope = 12;   // 赛事类型/玩法（多语言）
+}
+
+message C2S {
+    required Qot_Common.Security series = 1; // Series 标的 {market=101, code="EC.KXEPLGAME"}
+    optional Qot_Common.EC_Status status = 2; // 事件状态过滤（不填则返回全部）
+    optional string nextPage = 3;            // 翻页标记（首页不填）
+    optional int32 count = 4;                // 单页最大返回数（默认200）
+}
+
+message S2C {
+    repeated EventItem eventList = 1;        // 事件列表
+    optional string nextPage = 2;            // 为空表示没有下一页
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

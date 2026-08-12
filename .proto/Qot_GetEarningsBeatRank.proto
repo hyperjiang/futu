@@ -1,0 +1,115 @@
+syntax = "proto2";
+package Qot_GetEarningsBeatRank;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetearningsbeatrank";
+
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+
+// 盈利超预期类型
+enum BeatType {
+    BeatType_Unknown = 0;
+    BeatType_EPS = 1;       // 每股收益
+    BeatType_REVENUE = 2;   // 营收
+    BeatType_EBIT = 3;      // 息税前利润
+}
+
+// 财报周期
+enum BeatTerm {
+    BeatTerm_Latest = 0;           // 最近一期 (默认)
+    BeatTerm_LatestQuarter = 1;    // 最近一期季报
+    BeatTerm_LatestHalf = 2;       // 最近一期半年报
+    BeatTerm_LatestAnnual = 3;     // 最近一期年报
+    BeatTerm_All = 4;              // 全部（时间一样季报优先，时间不同最近一期）
+}
+
+// 筛选条件类型
+enum IndicatorType {
+    IndicatorType_Unknown = 0;
+    IndicatorType_BeatRatio = 1;         //【范围】超预期比率
+    IndicatorType_ReleasedDate = 2;      //【范围】发布时间(时间戳秒)
+    IndicatorType_MarketCap = 3;         //【范围】市值
+    IndicatorType_Price = 4;             //【范围】最新价
+    IndicatorType_PeTTM = 5;             //【范围】市盈率TTM
+}
+
+// 排序字段 (固定降序)
+enum SortField {
+    SortField_Unknown = 0;               // 默认按市值排序
+    SortField_BeatRatio = 1;             // 超预期比率
+    SortField_EarningDayChg = 2;         // 财报后首日涨幅
+    SortField_ReleasedDate = 3;          // 发布时间
+    SortField_Actual = 4;               // 实际值
+    SortField_Estimate = 5;             // 预测值
+    SortField_Yoy = 6;                  // 去年同期
+    SortField_YoyGrowth = 7;            // 同比增长率
+    SortField_PeTTM = 8;               // 市盈率TTM
+    SortField_DividendsTTM = 9;         // 股息率TTM
+    SortField_Price = 10;               // 价格
+    SortField_ChangeRate = 11;          // 今日涨跌幅
+}
+
+// 财报发布时段
+enum PostPeriodType {
+    PostPeriodType_Regular = 0;          // 当天(未识别出时段)
+    PostPeriodType_Before = 1;           // 盘前
+    PostPeriodType_After = 2;            // 盘后
+    PostPeriodType_IntradayTrading = 3;  // 盘中
+}
+
+// 筛选条件
+message Indicator {
+    required int32 indicatorType = 1;                   // IndicatorType
+    optional Qot_OptionCommon.Interval indicatorValue = 2;  // 筛选区间
+}
+
+message C2S {
+    required int32 market = 1;          // Qot_Common.QotMarket (仅支持 HK=1, US=11, SG=31, JP=41)
+    required int32 beatType = 2;        // BeatType
+    optional int32 count = 3;           // 返回数量 [1,300], 默认30
+    optional int32 term = 4;            // BeatTerm, 默认 All
+    repeated Indicator filterList = 5;  // 可选筛选条件(AND关系), 不传则使用默认值(超预期>0, 时间=最近30天)
+    optional int32 sortField = 6;       // SortField, 排序字段(固定降序), 默认按市值
+}
+
+// 盈利超预期排行数据项
+message EarningsBeatItem {
+    required Qot_Common.Security security = 1;  // 股票
+    optional string name = 2;                    // 名称
+    optional string industry = 3;               // 行业
+
+    // 行情
+    optional double curPrice = 10;              // 最新价
+    optional double lastClosePrice = 11;        // 昨收价
+    optional double changeRate = 12;            // 今日涨跌幅 (%)
+    optional double marketCap = 13;             // 市值
+    optional double peTTM = 14;                 // 市盈率TTM
+    optional double dividendsTTM = 15;          // 股息率TTM (%)
+
+    // 盈利超预期
+    optional string releasedDate = 20;          // 发布日期 (如 "2024-01-15")
+    optional double beatRatio = 21;             // 超预期比率 (%)
+    optional double actual = 22;                // 实际值
+    optional double estimate = 23;              // 预测值
+    optional double yoy = 24;                   // 去年同期
+    optional double yoyGrowth = 25;             // 同比增长率 (%)
+    optional double earningDayChg = 26;         // 财报后首日涨幅 (%)
+    optional string term = 27;                  // 财报周期 (如 "2024/Q1")
+    optional int32 detailPostPeriod = 28;       // PostPeriodType, 发布具体时段
+}
+
+message S2C {
+    repeated EarningsBeatItem dataList = 1;     // 数据列表
+    optional int32 allCount = 2;                // 数据总量
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

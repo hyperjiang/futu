@@ -1,0 +1,59 @@
+syntax = "proto2";
+package Qot_GetInstitutionList;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetinstitutionlist";
+
+import "Qot_Common.proto";
+
+// 排序字段
+enum SortField {
+    SortField_Unknown = 0;               // 默认(持仓市值)
+    SortField_PositionValue = 1;         // 持仓市值
+    SortField_PositionValueChange = 2;   // 增减仓
+    SortField_PositionCount = 3;         // 持仓股数
+    SortField_PositionCountChange = 4;   // 持仓股数变化
+}
+
+// 排序方向
+enum SortDir {
+    SortDir_Descending = 0;     // 降序(默认)
+    SortDir_Ascending = 1;      // 升序
+}
+
+message C2S {
+    required int32 market = 1;              // Qot_Common.QotMarket
+    optional int32 sortField = 2;           // SortField, 默认持仓市值
+    optional int32 sortDir = 3;             // SortDir, 默认降序
+    optional int32 count = 4;               // 条数 [1,200], 默认20
+    optional string page = 5;               // 翻页游标, 首次不传, 续页传S2C返回的nextPage
+    optional string namePart = 6;           // 机构名模糊搜索
+}
+
+// 机构列表数据项
+message InstitutionListItem {
+    required int32 institutionId = 1;       // 机构ID
+    optional string institutionName = 2;    // 机构名称
+    optional double positionValue = 3;      // 持仓市值
+    optional double positionValueChange = 4;// 持仓市值变化
+    optional int32 positionCount = 5;       // 持仓股票数
+    optional int32 positionCountChange = 6; // 持仓股票数变化
+    optional string disclosureDate = 7;     // 披露日期(yyyy-MM-dd)
+}
+
+message S2C {
+    repeated InstitutionListItem dataList = 1;  // 数据列表
+    optional int32 allCount = 2;                // 总数
+    optional string nextPage = 3;               // 下一页游标, 空=无更多
+    optional string currency = 4;               // 币种
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

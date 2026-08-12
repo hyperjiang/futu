@@ -77,6 +77,9 @@ type S2C struct {
 	MarketUSFuture *int32                 `protobuf:"varint,15,opt,name=marketUSFuture" json:"marketUSFuture,omitempty"` //Qot_Common.QotMarketState,美国期货市场状态
 	MarketSGFuture *int32                 `protobuf:"varint,17,opt,name=marketSGFuture" json:"marketSGFuture,omitempty"` //Qot_Common.QotMarketState,新加坡期货市场状态
 	MarketJPFuture *int32                 `protobuf:"varint,18,opt,name=marketJPFuture" json:"marketJPFuture,omitempty"` //Qot_Common.QotMarketState,日本期货市场状态
+	MarketSG       *int32                 `protobuf:"varint,19,opt,name=marketSG" json:"marketSG,omitempty"`             //Qot_Common.QotMarketState,新加坡市场状态
+	MarketMY       *int32                 `protobuf:"varint,20,opt,name=marketMY" json:"marketMY,omitempty"`             //Qot_Common.QotMarketState,马来西亚市场状态
+	MarketJP       *int32                 `protobuf:"varint,21,opt,name=marketJP" json:"marketJP,omitempty"`             //Qot_Common.QotMarketState,日本市场状态
 	QotLogined     *bool                  `protobuf:"varint,6,req,name=qotLogined" json:"qotLogined,omitempty"`          //是否登陆行情服务器
 	TrdLogined     *bool                  `protobuf:"varint,7,req,name=trdLogined" json:"trdLogined,omitempty"`          //是否登陆交易服务器
 	ServerVer      *int32                 `protobuf:"varint,8,req,name=serverVer" json:"serverVer,omitempty"`            //版本号
@@ -173,6 +176,27 @@ func (x *S2C) GetMarketSGFuture() int32 {
 func (x *S2C) GetMarketJPFuture() int32 {
 	if x != nil && x.MarketJPFuture != nil {
 		return *x.MarketJPFuture
+	}
+	return 0
+}
+
+func (x *S2C) GetMarketSG() int32 {
+	if x != nil && x.MarketSG != nil {
+		return *x.MarketSG
+	}
+	return 0
+}
+
+func (x *S2C) GetMarketMY() int32 {
+	if x != nil && x.MarketMY != nil {
+		return *x.MarketMY
+	}
+	return 0
+}
+
+func (x *S2C) GetMarketJP() int32 {
+	if x != nil && x.MarketJP != nil {
+		return *x.MarketJP
 	}
 	return 0
 }
@@ -370,7 +394,7 @@ const file_GetGlobalState_proto_rawDesc = "" +
 	"\n" +
 	"\x14GetGlobalState.proto\x12\x0eGetGlobalState\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\x1d\n" +
 	"\x03C2S\x12\x16\n" +
-	"\x06userID\x18\x01 \x02(\x04R\x06userID\"\xe8\x04\n" +
+	"\x06userID\x18\x01 \x02(\x04R\x06userID\"\xbc\x05\n" +
 	"\x03S2C\x12\x1a\n" +
 	"\bmarketHK\x18\x01 \x02(\x05R\bmarketHK\x12\x1a\n" +
 	"\bmarketUS\x18\x02 \x02(\x05R\bmarketUS\x12\x1a\n" +
@@ -379,7 +403,10 @@ const file_GetGlobalState_proto_rawDesc = "" +
 	"\x0emarketHKFuture\x18\x05 \x02(\x05R\x0emarketHKFuture\x12&\n" +
 	"\x0emarketUSFuture\x18\x0f \x01(\x05R\x0emarketUSFuture\x12&\n" +
 	"\x0emarketSGFuture\x18\x11 \x01(\x05R\x0emarketSGFuture\x12&\n" +
-	"\x0emarketJPFuture\x18\x12 \x01(\x05R\x0emarketJPFuture\x12\x1e\n" +
+	"\x0emarketJPFuture\x18\x12 \x01(\x05R\x0emarketJPFuture\x12\x1a\n" +
+	"\bmarketSG\x18\x13 \x01(\x05R\bmarketSG\x12\x1a\n" +
+	"\bmarketMY\x18\x14 \x01(\x05R\bmarketMY\x12\x1a\n" +
+	"\bmarketJP\x18\x15 \x01(\x05R\bmarketJP\x12\x1e\n" +
 	"\n" +
 	"qotLogined\x18\x06 \x02(\bR\n" +
 	"qotLogined\x12\x1e\n" +

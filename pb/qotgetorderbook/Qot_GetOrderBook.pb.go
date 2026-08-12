@@ -25,9 +25,10 @@ const (
 
 type C2S struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Security      *qotcommon.Security    `protobuf:"bytes,1,req,name=security" json:"security,omitempty"` //股票
-	Num           *int32                 `protobuf:"varint,2,req,name=num" json:"num,omitempty"`          //请求的摆盘个数
-	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`   //行情公共参数头
+	Security      *qotcommon.Security    `protobuf:"bytes,1,req,name=security" json:"security,omitempty"`            //股票
+	Num           *int32                 `protobuf:"varint,2,req,name=num" json:"num,omitempty"`                     //请求的摆盘个数
+	OrderBookType *int32                 `protobuf:"varint,4,opt,name=orderBookType" json:"orderBookType,omitempty"` //Qot_Common.OrderBookType, 摆盘类型，不传默认返回整股盘
+	Header        *qotcommon.QotHeader   `protobuf:"bytes,100,opt,name=header" json:"header,omitempty"`              //行情公共参数头
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -76,6 +77,13 @@ func (x *C2S) GetNum() int32 {
 	return 0
 }
 
+func (x *C2S) GetOrderBookType() int32 {
+	if x != nil && x.OrderBookType != nil {
+		return *x.OrderBookType
+	}
+	return 0
+}
+
 func (x *C2S) GetHeader() *qotcommon.QotHeader {
 	if x != nil {
 		return x.Header
@@ -93,6 +101,7 @@ type S2C struct {
 	SvrRecvTimeBidTimestamp *float64               `protobuf:"fixed64,5,opt,name=svrRecvTimeBidTimestamp" json:"svrRecvTimeBidTimestamp,omitempty"` // 富途服务器从交易所收到数据的时间戳(for bid)
 	SvrRecvTimeAsk          *string                `protobuf:"bytes,6,opt,name=svrRecvTimeAsk" json:"svrRecvTimeAsk,omitempty"`                     // 富途服务器从交易所收到数据的时间(for ask)
 	SvrRecvTimeAskTimestamp *float64               `protobuf:"fixed64,7,opt,name=svrRecvTimeAskTimestamp" json:"svrRecvTimeAskTimestamp,omitempty"` // 富途服务器从交易所收到数据的时间戳(for ask)
+	OrderBookType           *int32                 `protobuf:"varint,9,opt,name=orderBookType" json:"orderBookType,omitempty"`                      //Qot_Common.OrderBookType, 摆盘类型
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
 }
@@ -179,6 +188,13 @@ func (x *S2C) GetSvrRecvTimeAsk() string {
 func (x *S2C) GetSvrRecvTimeAskTimestamp() float64 {
 	if x != nil && x.SvrRecvTimeAskTimestamp != nil {
 		return *x.SvrRecvTimeAskTimestamp
+	}
+	return 0
+}
+
+func (x *S2C) GetOrderBookType() int32 {
+	if x != nil && x.OrderBookType != nil {
+		return *x.OrderBookType
 	}
 	return 0
 }
@@ -304,11 +320,12 @@ var File_Qot_GetOrderBook_proto protoreflect.FileDescriptor
 
 const file_Qot_GetOrderBook_proto_rawDesc = "" +
 	"\n" +
-	"\x16Qot_GetOrderBook.proto\x12\x10Qot_GetOrderBook\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"x\n" +
+	"\x16Qot_GetOrderBook.proto\x12\x10Qot_GetOrderBook\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\x9e\x01\n" +
 	"\x03C2S\x120\n" +
 	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12\x10\n" +
-	"\x03num\x18\x02 \x02(\x05R\x03num\x12-\n" +
-	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"\x95\x03\n" +
+	"\x03num\x18\x02 \x02(\x05R\x03num\x12$\n" +
+	"\rorderBookType\x18\x04 \x01(\x05R\rorderBookType\x12-\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"\xbb\x03\n" +
 	"\x03S2C\x120\n" +
 	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12\x12\n" +
 	"\x04name\x18\b \x01(\tR\x04name\x12A\n" +
@@ -317,7 +334,8 @@ const file_Qot_GetOrderBook_proto_rawDesc = "" +
 	"\x0esvrRecvTimeBid\x18\x04 \x01(\tR\x0esvrRecvTimeBid\x128\n" +
 	"\x17svrRecvTimeBidTimestamp\x18\x05 \x01(\x01R\x17svrRecvTimeBidTimestamp\x12&\n" +
 	"\x0esvrRecvTimeAsk\x18\x06 \x01(\tR\x0esvrRecvTimeAsk\x128\n" +
-	"\x17svrRecvTimeAskTimestamp\x18\a \x01(\x01R\x17svrRecvTimeAskTimestamp\"2\n" +
+	"\x17svrRecvTimeAskTimestamp\x18\a \x01(\x01R\x17svrRecvTimeAskTimestamp\x12$\n" +
+	"\rorderBookType\x18\t \x01(\x05R\rorderBookType\"2\n" +
 	"\aRequest\x12'\n" +
 	"\x03c2s\x18\x01 \x02(\v2\x15.Qot_GetOrderBook.C2SR\x03c2s\"\x85\x01\n" +
 	"\bResponse\x12\x1e\n" +

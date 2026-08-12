@@ -76,6 +76,10 @@ message QotRight
 	optional int32 shQotRight = 21; //上海A股行情权限, Qot_Common.QotRight
 	optional int32 szQotRight = 22; //深圳A股行情权限, Qot_Common.QotRight
 	optional int32 ccQotRight = 23; //加密货币市场行情权限, Qot_Common.QotRight
+	optional int32 sgStockQotRight = 24; //新加坡股票行情权限, Qot_Common.QotRight
+	optional int32 myStockQotRight = 25; //马来西亚股票行情权限, Qot_Common.QotRight
+	optional int32 jpStockQotRight = 26; //日本市场股票行情权限, Qot_Common.QotRight
+	optional int32 ecQotRight = 27; //事件合约(预测市场)行情权限, Qot_Common.QotRight
 }
 
 message APILevel

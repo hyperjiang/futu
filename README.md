@@ -2,7 +2,6 @@
 
 [![GoDoc](https://pkg.go.dev/badge/github.com/hyperjiang/futu)](https://pkg.go.dev/github.com/hyperjiang/futu)
 [![CI](https://github.com/hyperjiang/futu/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hyperjiang/futu/actions/workflows/ci.yml)
-[![](https://goreportcard.com/badge/github.com/hyperjiang/futu)](https://goreportcard.com/report/github.com/hyperjiang/futu)
 [![codecov](https://codecov.io/gh/hyperjiang/futu/graph/badge.svg?token=iI7hyTEenz)](https://codecov.io/gh/hyperjiang/futu)
 [![Release](https://img.shields.io/github/release/hyperjiang/futu.svg)](https://github.com/hyperjiang/futu/releases)
 
@@ -58,6 +57,11 @@ fmt.Println(res)
 - protoid.QotUpdateOrderBook // 3013
 - protoid.QotUpdateBroker // 3015
 - protoid.QotUpdatePriceReminder // 3019
+- protoid.QotPushIndicatorCalc // 3261
+- protoid.QotUpdateOptionEvent // 3310
+- protoid.QotUpdateEventContractOrderBook // 3450
+- protoid.QotUpdateEventContractKline // 3451
+- protoid.QotUpdateEventContractTicker // 3452
 
 设置其他ID没有任何作用，因为永远不可能触发到。
 
@@ -140,6 +144,79 @@ fmt.Println(res)
 - [x] QotStockScreen                       = 3252 // 条件选股
 - [x] QotOptionScreen                      = 3253 // 期权筛选
 - [x] QotWarrantScreen                     = 3254 // 窝轮筛选
+- [x] QotGetOptionQuote                    = 3255 // 获取期权行情
+- [x] QotGetOptionStrategy                 = 3256 // 获取期权策略
+- [x] QotGetOptionStrategyAnalysis         = 3257 // 获取期权策略分析
+- [x] QotGetOptionStrategySpread           = 3258 // 获取期权策略价差
+- [x] QotGetIndicatorList                  = 3259 // 获取指标列表
+- [x] QotRequestIndicatorCalc              = 3260 // 异步发起指标计算
+- [x] QotPushIndicatorCalc                 = 3261 // 指标异步计算结果推送
+- [x] QotGetSearchQuote                    = 3262 // 搜索行情
+- [x] QotGetSearchNews                     = 3263 // 搜索资讯
+- [x] QotGetOptionMarketStatistic          = 3301 // 获取期权市场统计
+- [x] QotGetOptionUnderlyingHisStatistic   = 3302 // 获取期权标的历史统计
+- [x] QotGetOptionUnderlyingOverview       = 3303 // 获取批量标的最新数据
+- [x] QotGetOptionUnderlyingHisVolatility  = 3304 // 获取历史波动率
+- [x] QotGetOptionUnderlyingRank           = 3305 // 获取标的排行
+- [x] QotGetOptionRank                     = 3306 // 获取期权合约排行
+- [x] QotGetOptionEvent                    = 3307 // 获取期权异动列表
+- [x] QotGetOptionEventAlert               = 3308 // 获取期权异动告警设置
+- [x] QotSetOptionEventAlert               = 3309 // 修改期权异动告警条件
+- [x] QotUpdateOptionEvent                 = 3310 // 期权异动推送
+- [x] QotGetOptionZeroDteScreener          = 3311 // 获取末日期权标的列表
+- [x] QotGetOptionZeroDteContract          = 3312 // 获取末日期权合约列表
+- [x] QotGetOptionEarningsScreener         = 3313 // 获取财报期权标的列表
+- [x] QotGetOptionSellerScreener           = 3314 // 获取期权卖方策略列表
+- [x] QotGetEarningsCalendar               = 3401 // 获取财报日历
+- [x] QotGetMacroIndicatorList             = 3402 // 获取宏观指标列表
+- [x] QotGetMacroIndicatorHistory          = 3403 // 获取宏观指标历史数据
+- [x] QotGetFedWatchTargetRate             = 3404 // 获取美联储利率预测
+- [x] QotGetFedWatchDotPlot                = 3405 // 获取CME利率点阵图
+- [x] QotGetEarningsBeatRank               = 3406 // 获取盈利超预期排行
+- [x] QotGetDividendRank                   = 3407 // 获取股息排行
+- [x] QotGetDividendCalendar               = 3408 // 获取派息日历
+- [x] QotGetEconomicCalendar               = 3409 // 获取财经日历
+- [x] QotGetUSPreMarketRank                = 3410 // 获取盘前榜
+- [x] QotGetUSAfterHoursRank               = 3411 // 获取盘后榜
+- [x] QotGetUSOvernightRank                = 3412 // 获取夜盘榜
+- [x] QotGetTopMoversRank                  = 3413 // 获取领涨领跌榜
+- [x] QotGetHotList                        = 3414 // 获取热议榜
+- [x] QotGetShortSellingRank               = 3415 // 获取卖空异动榜
+- [x] QotGetPeriodChangeRank               = 3416 // 获取区间涨跌幅
+- [x] QotGetHighDividendSOERank            = 3417 // 获取破净高股息国央企
+- [x] QotGetInstitutionList                = 3418 // 获取机构持仓列表
+- [x] QotGetInstitutionProfile             = 3419 // 获取机构概况
+- [x] QotGetInstitutionDistribution        = 3420 // 获取机构持仓行业分布
+- [x] QotGetInstitutionHoldingChange       = 3421 // 获取机构持仓变动
+- [x] QotGetInstitutionHoldingList         = 3422 // 获取机构持股列表
+- [x] QotGetArkFundHolding                 = 3423 // 获取ARK基金持仓
+- [x] QotGetArkStockDynamic                = 3424 // 获取ARK个股交易动态
+- [x] QotGetArkActiveTransaction           = 3425 // 获取ARK主动交易聚合
+- [x] QotGetRatingChange                   = 3426 // 获取评级变动
+- [x] QotGetIndustrialChainList            = 3427 // 获取产业链列表
+- [x] QotGetIndustrialChainDetail          = 3428 // 获取产业链详情
+- [x] QotGetIndustrialChainByPlate         = 3429 // 获取板块关联产业链
+- [x] QotGetIndustrialPlateInfo            = 3430 // 获取产业板块信息
+- [x] QotGetIndustrialPlateStock           = 3431 // 获取产业板块成分股
+- [x] QotGetHeatMapData                    = 3432 // 获取热力图数据
+- [x] QotGetRiseFallDistribution           = 3433 // 获取涨跌分布
+- [x] QotGetEventContractCategory          = 3434 // 获取事件合约分类
+- [x] QotFilterCompetition                 = 3435 // 获取赛事筛选选项
+- [x] QotGetEventContractSeriesList        = 3436 // 获取事件合约Series列表
+- [x] QotGetEventContractEventList         = 3437 // 获取事件合约Event列表
+- [x] QotGetEventContract                  = 3438 // 获取事件合约
+- [x] QotGetEventContractMilestoneList     = 3439 // 获取事件合约里程碑列表
+- [x] QotGetEventContractSnapshot          = 3445 // 获取事件合约快照
+- [x] QotGetEventContractOrderBook         = 3446 // 获取事件合约摆盘
+- [x] QotGetEventContractKline             = 3447 // 获取事件合约K线
+- [x] QotGetEventContractTicker            = 3448 // 获取事件合约逐笔
+- [x] QotUpdateEventContractOrderBook      = 3450 // 事件合约摆盘推送
+- [x] QotUpdateEventContractKline          = 3451 // 事件合约K线推送
+- [x] QotUpdateEventContractTicker         = 3452 // 事件合约逐笔推送
+- [x] QotGetEventContractComboList         = 3453 // 获取事件合约可Combo列表
+- [x] QotGetEventContractComboRfq          = 3454 // 事件合约Combo询价
+- [x] QotSubEventContract                  = 3455 // 事件合约订阅/反订阅
+- [x] QotRequestHistoryEventContractKL     = 3456 // 拉取事件合约历史K线
 
 ### 交易接口
 - [x] TrdGetAccList              = 2001 // 获取交易业务账户列表
@@ -148,6 +225,7 @@ fmt.Println(res)
 - [x] TrdGetFunds                = 2101 // 获取账户资金
 - [x] TrdGetPositionList         = 2102 // 获取账户持仓
 - [x] TrdGetMaxTrdQtys           = 2111 // 获取最大交易数量
+- [x] TrdGetComboMaxTrdQtys      = 2112 // 获取组合的可买卖信息
 - [x] TrdGetOrderList            = 2201 // 获取订单列表
 - [x] TrdPlaceOrder              = 2202 // 下单
 - [x] TrdModifyOrder             = 2205 // 修改订单
@@ -159,3 +237,4 @@ fmt.Println(res)
 - [x] TrdGetMarginRatio          = 2223 // 获取融资融券数据
 - [x] TrdGetOrderFee             = 2225 // 获取订单费用
 - [x] TrdFlowSummary             = 2226 // 查询账户现金流水
+- [x] TrdPlaceComboOrder         = 2227 // 组合期权下单

@@ -1,0 +1,78 @@
+syntax = "proto2";
+package Qot_GetArkFundHolding;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetarkfundholding";
+
+import "Qot_Common.proto";
+
+// ARK持仓类型
+enum ArkHoldingType {
+    ArkHoldingType_Position = 0;        // 持仓
+    ArkHoldingType_Increase = 1;        // 增持
+    ArkHoldingType_Decrease = 2;        // 减持
+    ArkHoldingType_New = 3;             // 建仓
+    ArkHoldingType_SoldOut = 4;         // 清仓
+}
+
+// 周期类型
+enum CycleType {
+    CycleType_1Day = 0;                 // 近1天
+    CycleType_5Day = 1;                 // 近5天
+    CycleType_10Day = 2;                // 近10天
+    CycleType_30Day = 3;                // 近30天
+    CycleType_60Day = 4;                // 近60天
+}
+
+// 排序字段
+enum SortField {
+    SortField_Unknown = 0;              // 默认(持仓数量)
+    SortField_Shares = 1;              // 持仓数量
+    SortField_WeightChange = 2;         // 占比变动
+    SortField_SharesChange = 3;         // 持仓变动
+    SortField_MarketValue = 4;          // 市值
+    SortField_Weight = 5;               // ETF占比
+    SortField_Date = 6;                 // 日期
+}
+
+// 排序方向
+enum SortDir {
+    SortDir_Descending = 0;     // 降序(默认)
+    SortDir_Ascending = 1;      // 升序
+}
+
+message C2S {
+    optional int32 holdingType = 1;         // ArkHoldingType, 默认持仓
+    optional int32 cycleType = 2;           // CycleType, 默认近1天(holdingType=持仓时忽略)
+    optional int32 sortField = 3;           // SortField
+    optional int32 sortDir = 4;             // SortDir
+    optional int32 count = 5;               // 条数 [1,200], 默认20
+    optional string page = 6;               // 翻页游标, 首次不传
+}
+
+// ARK基金持仓数据项
+message ArkFundHoldingItem {
+    optional Qot_Common.Security security = 1;  // 股票(stock_id有效时)
+    optional string name = 2;                    // 名称
+    optional int64 shares = 3;                   // 持仓数量
+    optional int64 sharesChange = 4;             // 持仓数量变动
+    optional double marketValue = 5;             // 持仓市值(美元)
+    optional double weight = 6;                  // 持仓占比(%)
+    optional double weightChange = 7;            // 持仓占比变动(%)
+}
+
+message S2C {
+    repeated ArkFundHoldingItem dataList = 1;   // 数据列表
+    optional int32 allCount = 2;                // 总数
+    optional string nextPage = 3;               // 下一页游标, 空=无更多
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

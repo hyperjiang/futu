@@ -1,0 +1,48 @@
+syntax = "proto2";
+package Qot_GetSearchNews;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetsearchnews";
+
+enum NewsSubType
+{
+	NewsSubType_ALL = 0;    //全部
+	NewsSubType_NEWS = 1;   //新闻
+	NewsSubType_NOTICE = 2; //公告
+	NewsSubType_RATING = 3; //评级
+}
+
+message SearchNews
+{
+	optional string title = 1;               //标题（含关键词）
+	optional int32 news_sub_type = 2;        //Qot_GetSearchNews.NewsSubType，资讯子类型
+	optional string source = 3;              //来源，如 富途资讯 / MT Newswires / Benzinga
+	optional string publish_time = 4;        //发布时间戳字符串
+	optional int64 view_count = 5;           //浏览量
+	repeated string related_securities = 6;  //关联标的列表，如 LITE.US，用于跳转
+	optional string url = 7;                 //详情页深链 / H5 链接
+}
+
+message C2S
+{
+	required string keyword = 1;       //搜索词，如 lite
+	optional int32 max_count = 2;      //资讯条数上限，默认 10
+	optional int32 news_sub_type = 3;  //Qot_GetSearchNews.NewsSubType，资讯子类型，默认 NewsSubType_ALL
+}
+
+message S2C
+{
+	repeated SearchNews search_news_list = 1; //搜索资讯列表
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32 retType = 1 [default = -400]; //RetType，返回结果
+	optional string retMsg = 2;
+	optional int32 errCode = 3;
+	optional S2C s2c = 4;
+}

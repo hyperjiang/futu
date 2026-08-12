@@ -1,0 +1,94 @@
+syntax = "proto2";
+package Qot_GetDividendRank;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetdividendrank";
+
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+
+// 股息排行类型
+enum DividendRankType {
+    DividendRankType_Unknown = 0;
+    DividendRankType_HighYield = 1;      // 高股息率
+    DividendRankType_DividendGrowth = 2; // 股息保持增长
+}
+
+// 筛选条件类型
+enum IndicatorType {
+    IndicatorType_Unknown = 0;
+    IndicatorType_DividendYieldTTM = 1;       //【范围】股息率TTM (%)
+    IndicatorType_AvgDividendYield5Y = 2;     //【范围】5年平均股息率 (%)
+    IndicatorType_DistributionFrequency = 3;  //【枚举】派息频率 (1:年派, 2:半年派, 3:季派, 4:月派)
+    IndicatorType_DividendGrowYear = 4;       //【范围】股息连续增长年数
+    IndicatorType_DividendsTTM = 5;           //【范围】股息TTM (金额)
+    IndicatorType_PayoutRatioLFY = 6;         //【范围】股息支付率LFY (%)
+    IndicatorType_NextPayableDate = 7;        //【范围】下次派息日 (相对天数)
+    IndicatorType_Price = 8;                  //【范围】最新价
+    IndicatorType_MarketCap = 9;              //【范围】市值
+}
+
+// 排序字段 (固定降序)
+enum SortField {
+    SortField_Unknown = 0;               // 默认: HighYield→股息率TTM, DividendGrowth→连续增长年数
+    SortField_DividendYieldTTM = 1;      // 股息率TTM
+    SortField_AvgDividendYield5Y = 2;    // 5年平均股息率
+    SortField_DistributionFrequency = 3; // 派息频率
+    SortField_DividendGrowYear = 4;      // 股息连续增长年数
+    SortField_DividendsTTM = 5;          // 股息TTM
+    SortField_PayoutRatioLFY = 6;        // 股息支付率LFY
+    SortField_Price = 7;                 // 价格
+    SortField_MarketCap = 8;             // 市值
+    SortField_ChangeRate = 9;            // 今日涨跌幅
+    SortField_ChangeAmount = 10;         // 今日涨跌额
+}
+
+// 筛选条件
+message Indicator {
+    required int32 indicatorType = 1;                              // IndicatorType
+    optional Qot_OptionCommon.IndicatorValue indicatorValue = 2;   // 筛选值(枚举型用valueList, 范围型用valueInterval)
+}
+
+message C2S {
+    required int32 market = 1;              // Qot_Common.QotMarket (仅支持 HK=1, US=11, MY=61, SG=31, JP=41)
+    required int32 rankType = 2;            // DividendRankType
+    optional int32 count = 3;               // 返回数量 [1,300], 默认10
+    repeated Indicator filterList = 4;      // 可选筛选条件(AND关系)
+    optional int32 sortField = 5;           // SortField, 排序字段(固定降序), 默认由rankType决定
+}
+
+// 股息排行数据项
+message DividendRankItem {
+    required Qot_Common.Security security = 1;  // 股票
+    optional string name = 2;                    // 名称
+    optional string industry = 3;               // 行业
+
+    // 行情
+    optional double curPrice = 10;              // 最新价
+    optional double changeRate = 11;            // 今日涨跌幅 (%)
+    optional double changeAmount = 12;          // 今日涨跌额
+    optional double marketCap = 13;             // 市值
+
+    // 股息
+    optional double dividendYieldTTM = 20;      // 股息率TTM (%)
+    optional double avgDividendYield5Y = 21;    // 5年平均股息率 (%)
+    optional int32 distributionFrequency = 22;  // 派息频率 (1:年派, 2:半年派, 3:季派, 4:月派)，不支持HK市场
+    optional int32 dividendGrowYear = 23;       // 股息连续增长年数
+    optional double dividendsTTM = 24;          // 股息TTM (金额)
+    optional double payoutRatioLFY = 25;        // 股息支付率LFY (%)
+    optional string nextPayableDate = 26;       // 下次派息日 ("YYYY-MM-DD")
+}
+
+message S2C {
+    repeated DividendRankItem dataList = 1;     // 数据列表
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

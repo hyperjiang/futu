@@ -15,6 +15,7 @@ message C2S
 	optional int32 packetEncAlgo = 4; //指定包加密算法，参见Common.PacketEncAlgo的枚举定义
 	optional int32 pushProtoFmt = 5; //指定这条连接上的推送协议格式，若不指定则使用push_proto_type配置项
 	optional string programmingLanguage = 6; //接口编程语言，用于统计语言偏好
+	optional int32 aiType = 7; //AI调用类型，0表示非AI调用，1表示skills
 }
 
 message S2C

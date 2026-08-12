@@ -1,0 +1,43 @@
+syntax = "proto2";
+package Qot_RequestHistoryEventContractKL;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotrequesthistoryeventcontractkl";
+
+import "Common.proto";
+import "Qot_Common.proto";
+import "Qot_GetEventContractKline.proto";   // 复用共享 ECKLine/KlineItem（与实时/推送EC同一数据点结构）
+
+// 事件合约历史K线拉取
+// 与通用 Qot_RequestHistoryKL 的差异：入参多 klineSource/preSide 方向字段，回包结构为 ECKLine(6字段) + KlineItem.pre_side
+// KLType 仅支持 1Min/60Min/Day
+message C2S
+{
+    required Qot_Common.Security security = 1;             // 合约标的（contract_id 或 sub_contract_id）
+    optional Qot_Common.EC_KlineSource klineSource = 2;    // K线来源（None/OrderBookYes）；不填当 None（合约级K线），优先级高于 preSide，与实时EC对齐
+    optional Common.PredSide preSide = 3;  // 方向（Yes/No）；klineSource=None 且入参为合约级标的时生效，默认 Yes
+    required Qot_Common.KLType klType = 4;                 // 通用K线类型，EC仅支持 1Min/60Min/Day
+    required string beginTime = 5;                         // 开始时间字符串
+    required string endTime = 6;                           // 结束时间字符串
+    optional int32 maxAckKLNum = 7;                        // 最多返回K线根数，如果未指定表示不限制
+    optional bytes nextReqKey = 8;                         // 分页请求key
+}
+
+message S2C
+{
+    repeated Qot_GetEventContractKline.KlineItem klineList = 1;  // K线列表（复用共享 KlineItem，含 ECKLine 数据点与 pre_side）
+    optional bytes nextReqKey = 2;  // 分页请求key。一次请求没有返回所有数据时，下次请求带上这个key，会接着请求
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32 retType = 1 [default = -400]; //RetType,返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+
+    optional S2C s2c = 4;
+}

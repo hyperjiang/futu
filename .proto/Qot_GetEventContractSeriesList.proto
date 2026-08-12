@@ -1,0 +1,35 @@
+syntax = "proto2";
+package Qot_GetEventContractSeriesList;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgeteventcontractserieslist";
+
+import "Qot_Common.proto";
+
+// Series 项
+message SeriesItem {
+    required Qot_Common.Security seriesSecurity = 1; // {market=101, code="EC.KXRATECUTCOUNT"}
+    optional string seriesName = 2;          // Series 名称（多语言）
+    optional string category = 3;            // 一级分类标识
+    repeated string tags = 4;                // 二级分类标识列表（一个 series 可归属多个 tag）
+    optional Qot_Common.EC_Frequency frequency = 5; // 频率
+}
+
+message C2S {
+    optional string category = 1;            // 一级分类标识 ("SPORTS")
+    optional string tag = 2;                 // 二级分类标识 ("BASEBALL")
+}
+
+message S2C {
+    repeated SeriesItem seriesList = 1;
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

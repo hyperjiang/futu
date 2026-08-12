@@ -1,0 +1,77 @@
+syntax = "proto2";
+package Qot_GetUSPreMarketRank;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetuspremarketrank";
+
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+
+// 排序方向
+enum SortDir {
+    SortDir_Descending = 0;     // 降序(领涨,默认)
+    SortDir_Ascending = 1;      // 升序(领跌)
+}
+
+// 筛选条件类型
+enum IndicatorType {
+    IndicatorType_Unknown = 0;
+    IndicatorType_Price = 1;           // 价格筛选(枚举, 参考PriceFilter)
+    IndicatorType_MarketCap = 2;       // 市值区间
+    IndicatorType_PE = 3;              // 市盈率区间
+}
+
+// 价格筛选枚举
+enum PriceFilter {
+    PriceFilter_All = 0;              // 所有(默认)
+    PriceFilter_LessThan1 = 1;        // 小于1
+    PriceFilter_Between1And10 = 2;    // 1~10之间
+    PriceFilter_Between10And100 = 3;  // 10~100之间
+    PriceFilter_GreaterThan100 = 4;   // 大于100
+    PriceFilter_Near52WeekHigh = 5;   // 接近52周最高
+    PriceFilter_Near52WeekLow = 6;    // 接近52周最低
+}
+
+// 筛选条件
+message Indicator {
+    required int32 indicatorType = 1;                       // IndicatorType
+    optional Qot_OptionCommon.Interval indicatorValue = 2;  // 筛选区间(MarketCap/PE使用)
+    optional int32 priceFilter = 3;                         // PriceFilter, 价格筛选枚举(IndicatorType_Price时使用)
+}
+
+message C2S {
+    optional int32 sortDir = 1;            // SortDir, 排序方向, 默认降序(领涨)
+    optional int32 offset = 2;             // 起始位置, 默认0
+    optional int32 count = 3;              // 返回数量 [1,200], 默认50
+    repeated Indicator filterList = 4;     // 筛选条件(AND关系)
+}
+
+// 盘前榜数据项
+message PreMarketRankItem {
+    required Qot_Common.Security security = 1;  // 股票
+    optional string name = 2;                    // 名称
+
+    optional double preMarketPrice = 10;          // 盘前价
+    optional double preMarketChangeRatio = 11;    // 盘前涨跌幅(%)
+    optional double preMarketChangeAmount = 12;   // 盘前涨跌额
+    optional double preMarketTurnover = 13;       // 盘前成交额
+    optional int64 preMarketVolume = 14;          // 盘前成交量
+    optional double closePrice = 15;              // 收盘价(上一交易日)
+    optional double changeRatio = 16;             // 盘中涨跌幅(%)
+    optional double changeAmount = 17;            // 盘中涨跌额
+}
+
+message S2C {
+    repeated PreMarketRankItem dataList = 1;    // 数据列表
+    optional int32 allCount = 2;                // 符合条件的总数据量
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

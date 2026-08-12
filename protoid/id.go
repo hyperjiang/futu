@@ -98,4 +98,85 @@ const (
 	QotStockScreen                       = 3252 // 条件选股
 	QotOptionScreen                      = 3253 // 期权筛选
 	QotWarrantScreen                     = 3254 // 窝轮筛选
+
+	// v10.7 新增接口
+	TrdGetComboMaxTrdQtys        = 2112 // 获取组合的可买卖信息
+	TrdPlaceComboOrder           = 2227 // 组合期权下单
+	QotGetOptionQuote            = 3255 // 获取期权行情
+	QotGetOptionStrategy         = 3256 // 获取期权策略
+	QotGetOptionStrategyAnalysis = 3257 // 获取期权策略分析
+	QotGetOptionStrategySpread   = 3258 // 获取期权策略价差
+
+	// v10.8 新增行情接口
+	QotGetIndicatorList                 = 3259 // 获取指标列表
+	QotRequestIndicatorCalc             = 3260 // 异步发起指标计算
+	QotPushIndicatorCalc                = 3261 // 指标异步计算结果推送
+	QotGetSearchQuote                   = 3262 // 搜索行情
+	QotGetSearchNews                    = 3263 // 搜索资讯
+	QotGetOptionMarketStatistic         = 3301 // 获取期权市场统计
+	QotGetOptionUnderlyingHisStatistic  = 3302 // 获取期权标的历史统计
+	QotGetOptionUnderlyingOverview      = 3303 // 获取批量标的最新数据
+	QotGetOptionUnderlyingHisVolatility = 3304 // 获取历史波动率
+	QotGetOptionUnderlyingRank          = 3305 // 获取标的排行
+	QotGetOptionRank                    = 3306 // 获取期权合约排行
+	QotGetOptionEvent                   = 3307 // 获取期权异动列表
+	QotGetOptionEventAlert              = 3308 // 获取期权异动告警设置
+	QotSetOptionEventAlert              = 3309 // 修改期权异动告警条件
+	QotUpdateOptionEvent                = 3310 // 期权异动推送
+	QotGetOptionZeroDteScreener         = 3311 // 获取末日期权标的列表
+	QotGetOptionZeroDteContract         = 3312 // 获取末日期权合约列表
+	QotGetOptionEarningsScreener        = 3313 // 获取财报期权标的列表
+	QotGetOptionSellerScreener          = 3314 // 获取期权卖方策略列表
+	QotGetEarningsCalendar              = 3401 // 获取财报日历
+	QotGetMacroIndicatorList            = 3402 // 获取宏观指标列表
+	QotGetMacroIndicatorHistory         = 3403 // 获取宏观指标历史数据
+	QotGetFedWatchTargetRate            = 3404 // 获取美联储利率预测(FedWatch概率)
+	QotGetFedWatchDotPlot               = 3405 // 获取CME利率点阵图
+	QotGetEarningsBeatRank              = 3406 // 获取盈利超预期排行
+	QotGetDividendRank                  = 3407 // 获取股息排行
+	QotGetDividendCalendar              = 3408 // 获取派息日历
+	QotGetEconomicCalendar              = 3409 // 获取财经日历(经济数据事件)
+	QotGetUSPreMarketRank               = 3410 // 获取盘前榜(美股)
+	QotGetUSAfterHoursRank              = 3411 // 获取盘后榜(美股)
+	QotGetUSOvernightRank               = 3412 // 获取夜盘榜(美股)
+	QotGetTopMoversRank                 = 3413 // 获取领涨/领跌榜(盘中)
+	QotGetHotList                       = 3414 // 获取热议榜
+	QotGetShortSellingRank              = 3415 // 获取卖空异动榜(美股)
+	QotGetPeriodChangeRank              = 3416 // 获取区间涨跌幅
+	QotGetHighDividendSOERank           = 3417 // 获取破净高股息国央企(港股)
+	QotGetInstitutionList               = 3418 // 获取机构持仓列表
+	QotGetInstitutionProfile            = 3419 // 获取机构概况
+	QotGetInstitutionDistribution       = 3420 // 获取机构持仓行业分布
+	QotGetInstitutionHoldingChange      = 3421 // 获取机构持仓变动
+	QotGetInstitutionHoldingList        = 3422 // 获取机构持股列表
+	QotGetArkFundHolding                = 3423 // 获取ARK基金持仓
+	QotGetArkStockDynamic               = 3424 // 获取ARK个股交易动态
+	QotGetArkActiveTransaction          = 3425 // 获取ARK主动交易聚合
+	QotGetRatingChange                  = 3426 // 获取评级变动
+	QotGetIndustrialChainList           = 3427 // 获取产业链列表
+	QotGetIndustrialChainDetail         = 3428 // 获取产业链详情
+	QotGetIndustrialChainByPlate        = 3429 // 获取板块关联产业链
+	QotGetIndustrialPlateInfo           = 3430 // 获取产业板块信息
+	QotGetIndustrialPlateStock          = 3431 // 获取产业板块成分股
+	QotGetHeatMapData                   = 3432 // 获取热力图数据
+	QotGetRiseFallDistribution          = 3433 // 获取涨跌分布
+
+	// v10.9 新增行情接口（预测市场/事件合约）
+	QotGetEventContractCategory      = 3434 // 获取事件合约分类
+	QotFilterCompetition             = 3435 // 获取赛事筛选选项
+	QotGetEventContractSeriesList    = 3436 // 获取事件合约Series列表
+	QotGetEventContractEventList     = 3437 // 获取事件合约Event列表
+	QotGetEventContract              = 3438 // 获取事件合约(合约列表)
+	QotGetEventContractMilestoneList = 3439 // 获取事件合约里程碑列表
+	QotGetEventContractSnapshot      = 3445 // 获取事件合约快照
+	QotGetEventContractOrderBook     = 3446 // 获取事件合约摆盘
+	QotGetEventContractKline         = 3447 // 获取事件合约K线
+	QotGetEventContractTicker        = 3448 // 获取事件合约逐笔
+	QotUpdateEventContractOrderBook  = 3450 // 事件合约摆盘推送
+	QotUpdateEventContractKline      = 3451 // 事件合约K线推送
+	QotUpdateEventContractTicker     = 3452 // 事件合约逐笔推送
+	QotGetEventContractComboList     = 3453 // 获取事件合约可Combo列表
+	QotGetEventContractComboRfq      = 3454 // 事件合约Combo询价
+	QotSubEventContract              = 3455 // 事件合约订阅/反订阅
+	QotRequestHistoryEventContractKL = 3456 // 拉取事件合约历史K线
 )

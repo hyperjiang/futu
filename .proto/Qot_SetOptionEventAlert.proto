@@ -1,0 +1,40 @@
+syntax = "proto2";
+package Qot_SetOptionEventAlert;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotsetoptioneventalert";
+
+import "Common.proto";
+import "Qot_GetOptionEventAlert.proto";
+
+// 告警操作类型
+enum AlertOpType {
+    AlertOpType_Unknown = 0;
+    AlertOpType_Add = 1;         // 新增
+    AlertOpType_Delete = 2;      // 删除
+    AlertOpType_Modify = 3;      // 修改
+    AlertOpType_Enable = 4;      // 启用
+    AlertOpType_Disable = 5;     // 禁用
+    AlertOpType_DeleteAll = 6;   // 删除全部，需先调用 GetOptionEventAlert 获取列表
+}
+
+// ====================== 请求 ======================
+message C2S {
+    required int32 operType = 1;                                     // AlertOpType 操作类型
+    repeated Qot_GetOptionEventAlert.EventAlertItem alertList = 2;   // 告警项列表
+}
+
+// ====================== 响应 ======================
+message S2C {
+    // 空，成功即可
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; //RetType，返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

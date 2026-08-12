@@ -1,0 +1,47 @@
+syntax = "proto2";
+package Qot_GetOptionStrategy;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptionstrategy";
+
+import "Qot_Common.proto";
+
+//单个期权策略组合
+message OptionStrategyItem
+{
+	required string code = 1;                    //组合策略代码
+	required string name = 2;                    //组合策略名称
+	required int32 option_strategy = 3;           //OptionStrategyType，组合策略类型
+	required Qot_Common.Security stock_owner = 4; //标的股
+	repeated Qot_Common.ComboLeg multi_legs = 5;               //组合子订单列表（multi_legs）
+}
+
+message C2S
+{
+	required Qot_Common.Security owner = 1;      //期权标的股，目前仅支持港美正股以及恒指国指
+	required int32 option_strategy = 2;             //OptionStrategyType，期权策略类型
+	optional string expire_time = 3;              //到期日（近端到期日），不填表示不过滤到期日，使用行权日列表中的全部项拉取策略
+	optional string far_expire_time = 4;           //远端到期日，对角策略（DiagonalSpread）时使用
+	optional double spread = 5;                  //价差筛选值，仅对价差类策略有效，不填表示返回所有
+	optional int32 option_type = 6;               //Qot_Common.OptionType，期权类型，不填表示都返回
+	optional double strike_price = 7;             //行权价筛选，不填表示返回所有行权价
+	optional int32 index_option_type = 8;          //Qot_Common.IndexOptionType，指数期权类型，仅用于恒指国指
+	optional Qot_Common.QotHeader header = 100;  //行情公共参数头
+}
+
+message S2C
+{
+	repeated OptionStrategyItem strategyList = 1; //期权策略组合列表
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32 retType = 1 [default = -400]; //RetType，返回结果
+	optional string retMsg = 2;
+	optional int32 errCode = 3;
+	optional S2C s2c = 4;
+}

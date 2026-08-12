@@ -1,0 +1,45 @@
+syntax = "proto2";
+package Qot_GetOptionStrategyAnalysis;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptionstrategyanalysis";
+
+import "Qot_Common.proto";
+import "Qot_GetOptionStrategy.proto";
+
+//接口限制：
+//  1. 不占用期权订阅额度
+//  2. 频率限制：每 30 秒内最多请求 30 次
+
+message C2S
+{
+	repeated Qot_Common.ComboLeg multi_legs = 1; //组合策略合约腿列表，至少传入 1 条
+	optional Qot_Common.QotHeader header = 100;  //行情公共参数头
+}
+
+message S2C
+{
+	required string code = 1;                    //组合策略代码
+	required string name = 2;                    //组合策略名称
+	required int32 option_strategy = 3;           //Qot_GetOptionStrategy.OptionStrategyType，组合策略类型
+	optional double bid1 = 4;                    //买一价
+	optional double ask1 = 5;                    //卖一价
+	optional double max_profit = 6;               //最大盈利，无上限时为 9999999
+	optional double max_loss = 7;                 //最大亏损，无下限时为 9999999
+	repeated double breakeven_points = 8;         //盈亏平衡点列表，可能有多个
+	optional double prob_of_profit = 9;            //盈利概率
+	optional double delta = 10;                  //组合 Delta
+	optional double theta = 11;                  //组合 Theta（每日时间价值损耗）
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32 retType = 1 [default = -400]; //RetType，返回结果
+	optional string retMsg = 2;
+	optional int32 errCode = 3;
+	optional S2C s2c = 4;
+}

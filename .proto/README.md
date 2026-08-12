@@ -2,7 +2,7 @@
 
 The source files are downloaded from https://openapi.futunn.com/futu-api-doc/quick/demo.html
 
-Current version is `v10.6.6608`
+Current version is `v10.9.6908`
 
 ## How to generate go codes on MacOS
 
@@ -23,6 +23,10 @@ brew install protoc-gen-go
 Replace `github.com/futuopen/ftapi4go` with `github.com/hyperjiang/futu` in all the proto files.
 
 Replace `github.com/hyperjiang/futu/pb/getoptionexpirationdate` with `github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate`.
+
+`Trd_PlaceComboOrder.proto` and `Trd_GetComboMaxTrdQtys.proto` share the go package with `Trd_PlaceOrder.proto` and
+`Trd_GetMaxTrdQtys.proto`, which causes duplicated `C2S`/`S2C` declarations, so replace their go packages with
+`github.com/hyperjiang/futu/pb/trdplacecomboorder` and `github.com/hyperjiang/futu/pb/trdgetcombomaxtrdqtys`.
 
 ### 4. Generate the codes
 

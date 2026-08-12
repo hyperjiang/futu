@@ -1,0 +1,67 @@
+syntax = "proto2";
+package Qot_GetInstitutionHoldingChange;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetinstitutionholdingchange";
+
+import "Qot_Common.proto";
+
+// 持仓变动类型
+enum HoldingChangeType {
+    HoldingChangeType_Unknown = 0;
+    HoldingChangeType_New = 1;          // 建仓
+    HoldingChangeType_SoldOut = 2;      // 清仓
+    HoldingChangeType_Increase = 3;     // 增仓
+    HoldingChangeType_Decrease = 4;     // 减仓
+}
+
+// 排序字段
+enum SortField {
+    SortField_Unknown = 0;              // 默认(变动比例)
+    SortField_ChangePct = 1;            // 变动比例
+    SortField_ChangeShares = 2;         // 变动股数
+    SortField_HoldingDate = 3;          // 持仓时间
+}
+
+// 排序方向
+enum SortDir {
+    SortDir_Descending = 0;     // 降序(默认)
+    SortDir_Ascending = 1;      // 升序
+}
+
+message C2S {
+    required int32 market = 1;              // Qot_Common.QotMarket
+    required int32 institutionId = 2;       // 机构ID
+    optional int32 changeType = 3;          // HoldingChangeType, 默认建仓
+    optional int32 sortField = 4;           // SortField
+    optional int32 sortDir = 5;             // SortDir
+    optional int32 count = 6;               // 条数 [1,200], 默认20
+    optional string page = 7;               // 翻页游标, 首次不传
+}
+
+// 持仓变动数据项
+message HoldingChangeItem {
+    required Qot_Common.Security security = 1;  // 股票
+    optional string name = 2;                    // 名称
+    optional double portfolioPct = 3;            // 持股比例(%)
+    optional int64 changeShares = 4;             // 变动股数
+    optional double changePct = 5;               // 变动比例(%)
+    optional string holdingDate = 6;             // 持仓时间(yyyy-MM-dd)
+    optional string source = 7;                  // 披露来源
+}
+
+message S2C {
+    repeated HoldingChangeItem dataList = 1;    // 数据列表
+    optional int32 allCount = 2;                // 总数
+    optional string nextPage = 3;               // 下一页游标, 空=无更多
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

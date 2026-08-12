@@ -1,0 +1,90 @@
+syntax = "proto2";
+package Qot_GetHighDividendSOERank;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgethighdividendsoerank";
+
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+
+// 排序方向
+enum SortDir {
+    SortDir_Descending = 0;     // 降序(默认)
+    SortDir_Ascending = 1;      // 升序
+}
+
+// 排序字段
+enum SortField {
+    SortField_Unknown = 0;              // 默认(市值降序)
+    SortField_DividendYieldTTM = 1;     // 股息率TTM
+    SortField_PB = 2;                   // 市净率
+    SortField_PeTTM = 3;                // 市盈率TTM
+    SortField_Price = 4;                // 最新价
+    SortField_ChangeRatio = 5;          // 今日涨跌幅
+    SortField_MarketCap = 6;            // 市值
+}
+
+// 筛选条件类型
+enum IndicatorType {
+    IndicatorType_Unknown = 0;
+    IndicatorType_Price = 1;                // 价格区间
+    IndicatorType_MarketCap = 2;            // 市值区间
+    IndicatorType_PE = 3;                   // 市盈率TTM区间
+    IndicatorType_DividendYieldTTM = 4;     // 股息率TTM区间
+    IndicatorType_ChangeRatio = 5;          // 涨跌幅区间
+}
+
+// 筛选条件
+message Indicator {
+    required int32 indicatorType = 1;                       // IndicatorType
+    optional Qot_OptionCommon.Interval indicatorValue = 2;  // 筛选区间
+}
+
+message C2S {
+    optional int32 sortField = 1;          // SortField, 排序字段, 默认市值
+    optional int32 sortDir = 2;            // SortDir, 排序方向, 默认降序
+    optional int32 offset = 3;             // 起始位置, 默认0
+    optional int32 count = 4;              // 返回数量 [1,200], 默认50
+    repeated Indicator filterList = 5;     // 筛选条件(可覆盖默认PB/股息率条件)
+}
+
+// 破净高股息国央企数据项
+// 默认固定条件(服务端硬编码): 概念板块=特估国企 + PB<=1 + 股息率TTM>=5% + PE>=0
+message HighDividendSOERankItem {
+    required Qot_Common.Security security = 1;  // 股票
+    optional string name = 2;                    // 名称
+    optional string industry = 3;               // 所属行业
+
+    optional double curPrice = 10;              // 最新价
+    optional double changeRatio = 11;           // 涨跌幅(%)
+    optional double turnover = 12;              // 成交额
+    optional int64 volume = 13;                 // 成交量
+    optional double marketCap = 14;             // 市值
+
+    optional double peTTM = 20;                 // 市盈率TTM
+    optional double pb = 21;                    // 市净率
+    optional double dividendYieldTTM = 22;      // 股息率TTM(%)
+    optional double turnoverRatio = 23;         // 换手率(%)
+
+    optional double changeRate5D = 30;          // 5日涨幅(%)
+    optional double changeRate10D = 31;         // 10日涨幅(%)
+    optional double changeRate20D = 32;         // 20日涨幅(%)
+    optional double changeRate60D = 33;         // 60日涨幅(%)
+    optional double changeRate120D = 34;        // 120日涨幅(%)
+    optional double changeRate250D = 35;        // 250日涨幅(%)
+}
+
+message S2C {
+    repeated HighDividendSOERankItem dataList = 1;  // 数据列表
+    optional int32 allCount = 2;                    // 符合条件的总数据量
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

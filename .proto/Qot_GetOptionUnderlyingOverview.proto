@@ -1,0 +1,57 @@
+syntax = "proto2";
+package Qot_GetOptionUnderlyingOverview;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptionunderlyingoverview";
+
+import "Common.proto";
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+
+//历史波动率数据
+message HVItem
+{
+    required int32 timeRange = 1; //Qot_OptionCommon.OptionHVTimeRange，HV时间范围
+    required double hv = 2; //历史波动率（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double hvPercentile = 3; //HV百分位（该字段为百分比字段，默认不展示%，如20实际对应20%）
+}
+
+//标的最新数据
+message UnderlyingData
+{
+    required Qot_Common.Security owner = 1; //期权标的股
+    optional string code = 2; //股票代码
+    optional string name = 3; //标的名称
+    optional int64 callVolume = 4; //看涨期权成交量
+    optional int64 putVolume = 5; //看跌期权成交量
+    optional int64 callOpenInterest = 6; //看涨期权持仓量（T-1延迟）
+    optional int64 putOpenInterest = 7; //看跌期权持仓量（T-1延迟）
+    optional double iv = 8; //隐含波动率（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double ivRank = 9; //IV排名百分位（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double ivPercentile = 10; //IV百分位（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    repeated HVItem hvList = 11; //历史波动率列表（多个时间范围）
+    optional double preIV = 12; //前一交易日IV（该字段为百分比字段，默认不展示%，如20实际对应20%）
+}
+
+message C2S
+{
+    repeated Qot_Common.Security ownerList = 1; //期权标的股列表，最多500个
+    optional int32 indexOptionType = 2; //Qot_Common.IndexOptionType，指数期权的类型，仅用于恒指国指
+}
+
+message S2C
+{
+    repeated UnderlyingData underlyingDataList = 1; //标的最新数据列表
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32 retType = 1 [default = -400]; //RetType，返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

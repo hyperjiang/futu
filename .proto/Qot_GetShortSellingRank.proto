@@ -1,0 +1,80 @@
+syntax = "proto2";
+package Qot_GetShortSellingRank;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetshortsellingrank";
+
+import "Qot_Common.proto";
+
+// 排序方向
+enum SortDir {
+    SortDir_Descending = 0;     // 降序(默认)
+    SortDir_Ascending = 1;      // 升序
+}
+
+// 排序字段
+enum ShortSellingSortField {
+    ShortSellingSortField_Unknown = 0;                  // 默认(卖空变化量)
+    ShortSellingSortField_ShortNumberChange = 1;        // 卖空变化量
+    ShortSellingSortField_ShortRatioChange = 2;         // 卖空变化比例
+    ShortSellingSortField_ShortNumber = 3;              // 卖空数量
+    ShortSellingSortField_ShortRatio = 4;               // 卖空比例
+    ShortSellingSortField_Volume = 5;                   // 成交量
+    ShortSellingSortField_PositionVolume = 6;           // 空头持仓数量
+    ShortSellingSortField_PositionRatio = 7;            // 空头持仓比例
+    ShortSellingSortField_DaysToCover = 8;              // 回补天数
+    ShortSellingSortField_WeekAvgVolume = 9;            // 近一周日均成交量
+    ShortSellingSortField_WeekAvgShortNumber = 10;      // 近一周日均卖空数量
+    ShortSellingSortField_WeekAvgShortRatio = 11;       // 近一周日均卖空比例
+    ShortSellingSortField_MonthAvgVolume = 12;          // 近一月日均成交量
+    ShortSellingSortField_MonthAvgShortNumber = 13;     // 近一月日均卖空数量
+    ShortSellingSortField_MonthAvgShortRatio = 14;      // 近一月日均卖空比例
+}
+
+message C2S {
+    optional int32 market = 1;             // Qot_Common.QotMarket, 市场(HK=1, US=11), 默认US
+    optional int32 sortField = 2;          // ShortSellingSortField, 排序字段, 默认卖空变化量
+    optional int32 sortDir = 3;            // SortDir, 排序方向, 默认降序
+    optional int32 offset = 4;             // 起始位置, 默认0
+    optional int32 count = 5;              // 返回数量 [1,200], 默认50
+    repeated Qot_Common.Security plateList = 6;  // 行业板块列表, 空=全部
+}
+
+// 卖空异动数据项
+message ShortSellingRankItem {
+    required Qot_Common.Security security = 1;  // 股票
+    optional string name = 2;                    // 名称
+
+    optional double closePrice = 10;               // 收盘价
+    optional double changeRatio = 11;              // 涨跌幅(%)
+    optional double changeRatio5D = 12;            // 5日涨跌幅(%)
+    optional double changeRatio10D = 13;           // 10日涨跌幅(%)
+    optional int64 volume = 14;                    // 成交量
+
+    optional int64 shortNumber = 20;               // 卖空数量
+    optional int64 shortNumberChange = 21;         // 卖空变化量
+    optional double shortRatio = 22;               // 卖空比例(%)
+    optional double shortRatioChange = 23;         // 卖空变化比例(%)
+    optional int64 shortPositionVolume = 24;       // 空头持仓数量
+    optional double shortPositionRatio = 25;       // 空头持仓比例(%)
+    optional double daysToCover = 26;              // 回补天数
+    optional int64 weekAvgShortNumber = 27;        // 近一周日均卖空
+    optional double weekAvgShortRatio = 28;        // 近一周日均卖空比例(%)
+    optional int64 monthAvgShortNumber = 29;       // 近一月日均卖空
+    optional double monthAvgShortRatio = 30;       // 近一月日均卖空比例(%)
+}
+
+message S2C {
+    repeated ShortSellingRankItem dataList = 1;  // 数据列表
+    optional int32 allCount = 2;                 // 符合条件的总数据量
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

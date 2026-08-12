@@ -1,0 +1,41 @@
+syntax = "proto2";
+package Qot_GetEventContractOrderBook;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgeteventcontractorderbook";
+
+import "Qot_Common.proto";
+
+// 摆盘档位
+message OrderBookLevel {
+    required double price = 1;     // 价格
+    required double size = 2;      // 量
+}
+
+// 单只合约摆盘
+message OrderBookItem {
+    required Qot_Common.Security code = 1;        // 合约代码
+    repeated OrderBookLevel yesBids = 2;          // YES 买盘
+    repeated OrderBookLevel yesAsks = 3;          // YES 卖盘
+    repeated OrderBookLevel noBids = 4;           // NO 买盘
+    repeated OrderBookLevel noAsks = 5;           // NO 卖盘
+}
+
+message C2S {
+    required Qot_Common.Security security = 1;  // 合约标的（单只，必填）
+    required int32 num = 2;                     // 请求的摆盘档数（>0，实际返回数量可能少于请求）
+}
+
+message S2C {
+    repeated OrderBookItem orderBookList = 1;  // 摆盘列表
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

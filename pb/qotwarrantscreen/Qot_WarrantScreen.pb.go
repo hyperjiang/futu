@@ -7,6 +7,7 @@
 package qotwarrantscreen
 
 import (
+	qotcommon "github.com/hyperjiang/futu/pb/qotcommon"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -356,8 +357,13 @@ type WarrantItem struct {
 	IwPriceStatus      *uint32  `protobuf:"varint,50,opt,name=iwPriceStatus" json:"iwPriceStatus,omitempty"`            // 界内证价格状态: 0=界内, 1=界外
 	Sensitivity        *float64 `protobuf:"fixed64,51,opt,name=sensitivity" json:"sensitivity,omitempty"`               // 敏感度
 	PriceRecoveryRatio *float64 `protobuf:"fixed64,52,opt,name=priceRecoveryRatio" json:"priceRecoveryRatio,omitempty"` // 正股距收回价 (%)
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// 由 OpenD 根据 stockId / stockOwner 反查后填充, 方便客户端直接拿到带 market 前缀的 code 和名称
+	Security      *qotcommon.Security `protobuf:"bytes,100,opt,name=security" json:"security,omitempty"`           // 窝轮证券 (market + code, 如 HK + "10001")
+	OwnerSecurity *qotcommon.Security `protobuf:"bytes,101,opt,name=ownerSecurity" json:"ownerSecurity,omitempty"` // 正股证券 (market + code, 如 HK + "00700")
+	Name          *string             `protobuf:"bytes,102,opt,name=name" json:"name,omitempty"`                   // 窝轮名称 (按 OpenD 当前语言取中/英)
+	OwnerName     *string             `protobuf:"bytes,103,opt,name=ownerName" json:"ownerName,omitempty"`         // 正股名称
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *WarrantItem) Reset() {
@@ -691,6 +697,34 @@ func (x *WarrantItem) GetPriceRecoveryRatio() float64 {
 	return 0
 }
 
+func (x *WarrantItem) GetSecurity() *qotcommon.Security {
+	if x != nil {
+		return x.Security
+	}
+	return nil
+}
+
+func (x *WarrantItem) GetOwnerSecurity() *qotcommon.Security {
+	if x != nil {
+		return x.OwnerSecurity
+	}
+	return nil
+}
+
+func (x *WarrantItem) GetName() string {
+	if x != nil && x.Name != nil {
+		return *x.Name
+	}
+	return ""
+}
+
+func (x *WarrantItem) GetOwnerName() string {
+	if x != nil && x.OwnerName != nil {
+		return *x.OwnerName
+	}
+	return ""
+}
+
 type C2S struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MarketType    *int32                 `protobuf:"varint,1,opt,name=marketType" json:"marketType,omitempty"` // 市场: 1=HK, 4=SG, 15=MY
@@ -784,12 +818,10 @@ func (x *C2S) GetPageCount() int32 {
 }
 
 type S2C struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// field 1 保留 (ret_code, 由 Response.retType 承担)
-	// field 2 保留 (err_msg, 由 Response.retMsg 承担)
-	Warrants      []*WarrantItem `protobuf:"bytes,3,rep,name=warrants" json:"warrants,omitempty"`  // 窝轮数据列表
-	LastPage      *bool          `protobuf:"varint,4,opt,name=lastPage" json:"lastPage,omitempty"` // 是否最后一页
-	AllCount      *int32         `protobuf:"varint,5,opt,name=allCount" json:"allCount,omitempty"` // 数据总量
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Warrants      []*WarrantItem         `protobuf:"bytes,3,rep,name=warrants" json:"warrants,omitempty"`  // 窝轮数据列表
+	LastPage      *bool                  `protobuf:"varint,4,opt,name=lastPage" json:"lastPage,omitempty"` // 是否最后一页
+	AllCount      *int32                 `protobuf:"varint,5,opt,name=allCount" json:"allCount,omitempty"` // 数据总量
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -966,7 +998,7 @@ var File_Qot_WarrantScreen_proto protoreflect.FileDescriptor
 
 const file_Qot_WarrantScreen_proto_rawDesc = "" +
 	"\n" +
-	"\x17Qot_WarrantScreen.proto\x12\x11Qot_WarrantScreen\"<\n" +
+	"\x17Qot_WarrantScreen.proto\x12\x11Qot_WarrantScreen\x1a\x10Qot_Common.proto\"<\n" +
 	"\bBoundary\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\x01R\x05value\x12\x1a\n" +
 	"\bincludes\x18\x02 \x01(\bR\bincludes\"\x94\x01\n" +
@@ -984,8 +1016,7 @@ const file_Qot_WarrantScreen_proto_rawDesc = "" +
 	"\achoices\x18\x03 \x03(\v2\x19.Qot_WarrantScreen.ChoiceR\achoices\"F\n" +
 	"\x04Sort\x12 \n" +
 	"\vsortFieldId\x18\x01 \x01(\x05R\vsortFieldId\x12\x1c\n" +
-	"\tdirection\x18\x02 \x01(\x05R\tdirection\"\xfd\n" +
-	"\n" +
+	"\tdirection\x18\x02 \x01(\x05R\tdirection\"\x9d\f\n" +
 	"\vWarrantItem\x12\x18\n" +
 	"\astockId\x18\x01 \x01(\x04R\astockId\x12\x1e\n" +
 	"\n" +
@@ -1034,7 +1065,11 @@ const file_Qot_WarrantScreen_proto_rawDesc = "" +
 	"\x10lowerStrikePrice\x181 \x01(\x01R\x10lowerStrikePrice\x12$\n" +
 	"\riwPriceStatus\x182 \x01(\rR\riwPriceStatus\x12 \n" +
 	"\vsensitivity\x183 \x01(\x01R\vsensitivity\x12.\n" +
-	"\x12priceRecoveryRatio\x184 \x01(\x01R\x12priceRecoveryRatio\"\x8c\x02\n" +
+	"\x12priceRecoveryRatio\x184 \x01(\x01R\x12priceRecoveryRatio\x120\n" +
+	"\bsecurity\x18d \x01(\v2\x14.Qot_Common.SecurityR\bsecurity\x12:\n" +
+	"\rownerSecurity\x18e \x01(\v2\x14.Qot_Common.SecurityR\rownerSecurity\x12\x12\n" +
+	"\x04name\x18f \x01(\tR\x04name\x12\x1c\n" +
+	"\townerName\x18g \x01(\tR\townerName\"\x8c\x02\n" +
 	"\x03C2S\x12\x1e\n" +
 	"\n" +
 	"marketType\x18\x01 \x01(\x05R\n" +
@@ -1074,32 +1109,35 @@ func file_Qot_WarrantScreen_proto_rawDescGZIP() []byte {
 
 var file_Qot_WarrantScreen_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_Qot_WarrantScreen_proto_goTypes = []any{
-	(*Boundary)(nil),    // 0: Qot_WarrantScreen.Boundary
-	(*Interval)(nil),    // 1: Qot_WarrantScreen.Interval
-	(*Choice)(nil),      // 2: Qot_WarrantScreen.Choice
-	(*ScreenGroup)(nil), // 3: Qot_WarrantScreen.ScreenGroup
-	(*Sort)(nil),        // 4: Qot_WarrantScreen.Sort
-	(*WarrantItem)(nil), // 5: Qot_WarrantScreen.WarrantItem
-	(*C2S)(nil),         // 6: Qot_WarrantScreen.C2S
-	(*S2C)(nil),         // 7: Qot_WarrantScreen.S2C
-	(*Request)(nil),     // 8: Qot_WarrantScreen.Request
-	(*Response)(nil),    // 9: Qot_WarrantScreen.Response
+	(*Boundary)(nil),           // 0: Qot_WarrantScreen.Boundary
+	(*Interval)(nil),           // 1: Qot_WarrantScreen.Interval
+	(*Choice)(nil),             // 2: Qot_WarrantScreen.Choice
+	(*ScreenGroup)(nil),        // 3: Qot_WarrantScreen.ScreenGroup
+	(*Sort)(nil),               // 4: Qot_WarrantScreen.Sort
+	(*WarrantItem)(nil),        // 5: Qot_WarrantScreen.WarrantItem
+	(*C2S)(nil),                // 6: Qot_WarrantScreen.C2S
+	(*S2C)(nil),                // 7: Qot_WarrantScreen.S2C
+	(*Request)(nil),            // 8: Qot_WarrantScreen.Request
+	(*Response)(nil),           // 9: Qot_WarrantScreen.Response
+	(*qotcommon.Security)(nil), // 10: Qot_Common.Security
 }
 var file_Qot_WarrantScreen_proto_depIdxs = []int32{
-	0, // 0: Qot_WarrantScreen.Interval.filterMin:type_name -> Qot_WarrantScreen.Boundary
-	0, // 1: Qot_WarrantScreen.Interval.filterMax:type_name -> Qot_WarrantScreen.Boundary
-	1, // 2: Qot_WarrantScreen.ScreenGroup.interval:type_name -> Qot_WarrantScreen.Interval
-	2, // 3: Qot_WarrantScreen.ScreenGroup.choices:type_name -> Qot_WarrantScreen.Choice
-	3, // 4: Qot_WarrantScreen.C2S.filterList:type_name -> Qot_WarrantScreen.ScreenGroup
-	4, // 5: Qot_WarrantScreen.C2S.sortList:type_name -> Qot_WarrantScreen.Sort
-	5, // 6: Qot_WarrantScreen.S2C.warrants:type_name -> Qot_WarrantScreen.WarrantItem
-	6, // 7: Qot_WarrantScreen.Request.c2s:type_name -> Qot_WarrantScreen.C2S
-	7, // 8: Qot_WarrantScreen.Response.s2c:type_name -> Qot_WarrantScreen.S2C
-	9, // [9:9] is the sub-list for method output_type
-	9, // [9:9] is the sub-list for method input_type
-	9, // [9:9] is the sub-list for extension type_name
-	9, // [9:9] is the sub-list for extension extendee
-	0, // [0:9] is the sub-list for field type_name
+	0,  // 0: Qot_WarrantScreen.Interval.filterMin:type_name -> Qot_WarrantScreen.Boundary
+	0,  // 1: Qot_WarrantScreen.Interval.filterMax:type_name -> Qot_WarrantScreen.Boundary
+	1,  // 2: Qot_WarrantScreen.ScreenGroup.interval:type_name -> Qot_WarrantScreen.Interval
+	2,  // 3: Qot_WarrantScreen.ScreenGroup.choices:type_name -> Qot_WarrantScreen.Choice
+	10, // 4: Qot_WarrantScreen.WarrantItem.security:type_name -> Qot_Common.Security
+	10, // 5: Qot_WarrantScreen.WarrantItem.ownerSecurity:type_name -> Qot_Common.Security
+	3,  // 6: Qot_WarrantScreen.C2S.filterList:type_name -> Qot_WarrantScreen.ScreenGroup
+	4,  // 7: Qot_WarrantScreen.C2S.sortList:type_name -> Qot_WarrantScreen.Sort
+	5,  // 8: Qot_WarrantScreen.S2C.warrants:type_name -> Qot_WarrantScreen.WarrantItem
+	6,  // 9: Qot_WarrantScreen.Request.c2s:type_name -> Qot_WarrantScreen.C2S
+	7,  // 10: Qot_WarrantScreen.Response.s2c:type_name -> Qot_WarrantScreen.S2C
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_Qot_WarrantScreen_proto_init() }

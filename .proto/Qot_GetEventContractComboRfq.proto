@@ -1,0 +1,30 @@
+syntax = "proto2";
+package Qot_GetEventContractComboRfq;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgeteventcontractcomborfq";
+
+import "Qot_Common.proto";
+
+message C2S {
+    repeated Qot_Common.ComboLeg comboLegList = 1; // 腿列表（用户组合的合约 + 方向）
+    required string mvc = 2;                      // MVC 标的，格式 exchange.origin_symbol（从 combo 列表接口透传）
+}
+
+message S2C {
+    repeated Qot_Common.ComboLeg comboLegList = 1; // 回显腿列表
+    optional double bidPrice = 2;                // yes 买价
+    optional double askPrice = 3;                // yes 卖价
+    optional string quoteId = 4;                 // 报价 ID（下单接口需用到）
+    optional bool shouldRetry = 5;               // 是否建议重试（true 代表可尝试重新询价）
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

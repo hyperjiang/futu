@@ -1,0 +1,48 @@
+syntax = "proto2";
+package Qot_GetMacroIndicatorHistory;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetmacroindicatorhistory";
+
+import "Common.proto";
+import "Qot_Common.proto";
+
+// 宏观数据单位类型
+enum MacroDataUnitType {
+    MacroDataUnitType_Unknown = 0;   //未知
+    MacroDataUnitType_Percent = 1;   //百分比(%)
+    MacroDataUnitType_Value = 2;     //数值
+    MacroDataUnitType_Index = 3;     //指数
+}
+
+// 宏观数据点
+message MacroDataPoint {
+    optional string dataTime = 1;       //数据日期 "yyyy-MM-dd"
+    optional string releaseTime = 2;    //公布日期 "yyyy-MM-dd HH:mm:ss"
+    optional double value = 3;          //公布值(已还原为原始值)
+    optional double predictValue = 4;   //预测值(已还原)
+    optional double previousValue = 5;  //前值(已还原)
+    optional int32 unitType = 6;        //MacroDataUnitType, 单位类型
+}
+
+message C2S {
+    required uint64 indicatorId = 1;  //宏观指标ID(来自Qot_GetMacroIndicatorList返回)
+    optional string time = 2;         //时间节点 "yyyy-MM-dd"，从该时间往前拉取；不传默认当前时间
+    optional int32 maxCount = 3;      //拉取条数，默认100，上限1000
+    optional Qot_Common.QotHeader header = 100; //行情公共参数头
+}
+
+message S2C {
+    optional uint64 indicatorId = 1;           //指标ID(回显)
+    repeated MacroDataPoint dataList = 2;      //历史数据点列表(按时间降序)
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; //RetType,返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

@@ -1,0 +1,37 @@
+syntax = "proto2";
+package Qot_GetArkStockDynamic;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetarkstockdynamic";
+
+import "Qot_Common.proto";
+
+// 交易动态类型
+enum DynamicType {
+    DynamicType_Unknown = 0;
+    DynamicType_ConsecutiveSameDirection = 1;    // 连续同向交易
+    DynamicType_RecentTransaction = 2;           // 近期交易
+    DynamicType_LastTransaction = 3;             // 最近一笔
+    DynamicType_NoDynamic = 4;                   // 无动态
+}
+
+message C2S {
+    required Qot_Common.Security security = 1;   // 股票
+}
+
+message S2C {
+    optional int32 dynamicType = 1;              // DynamicType
+    optional int32 transactionCount = 2;         // 交易次数
+    optional int64 netShares = 3;                // 净交易股数
+    optional string lastTransactionTime = 4;     // 最近交易时间(yyyy-MM-dd)
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

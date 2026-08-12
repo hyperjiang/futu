@@ -1,0 +1,40 @@
+syntax = "proto2";
+package Qot_GetInstitutionProfile;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetinstitutionprofile";
+
+import "Qot_Common.proto";
+
+message C2S {
+    required int32 market = 1;              // Qot_Common.QotMarket
+    required int32 institutionId = 2;       // 机构ID
+}
+
+message S2C {
+    optional string institutionName = 1;    // 机构名称
+    optional string description = 2;        // 机构简介
+    optional double positionValue = 3;      // 持仓市值
+    optional double lastPositionValue = 4;  // 上期持仓市值
+    optional double positionValueChangePct = 5; // 市值变化比例(%)
+    optional int64 totalHoldingCount = 6;   // 总持仓数
+    optional int64 holdingChangeCount = 7;  // 持仓变动数
+    optional int32 newCount = 8;            // 建仓标的数
+    optional int32 soldOutCount = 9;        // 清仓标的数
+    optional int32 increaseCount = 10;      // 增持标的数
+    optional int32 decreaseCount = 11;      // 减持标的数
+    optional double top10Pct = 12;          // Top10持股占比(%)
+    optional double top10PctChange = 13;    // Top10占比变动(%)
+    optional string disclosureDate = 14;    // 披露日期(yyyy-MM-dd)
+    optional string currency = 15;          // 币种
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

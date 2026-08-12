@@ -1,0 +1,32 @@
+syntax = "proto2";
+package Qot_FilterCompetition;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotfiltercompetition";
+
+// 赛事筛选项
+message TagFilterItem {
+    optional string category = 1;            // 一级分类标识 ("SPORTS")
+    required string tag = 2;                 // 二级分类标识 ("Football", "Soccer")
+    repeated string competitionList = 3;     // 赛事名称列表 ("Pro Football", "EPL")
+    repeated string scopeList = 4;           // 该标签下所有available玩法全集 ("Game", "Future", "Awards")
+}
+
+message C2S {
+    optional string category = 1;            // 一级分类标识 ("SPORTS")
+    optional string tag = 2;                 // 二级分类标识 ("BASEBALL")
+}
+
+message S2C {
+    repeated TagFilterItem tagFilterList = 1;
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

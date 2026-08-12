@@ -1,0 +1,364 @@
+syntax = "proto2";
+package Qot_OptionCommon;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotoptioncommon";
+
+import "Qot_Common.proto";
+
+//期权市场类型
+enum OptionMarket
+{
+    OptionMarket_Unknown = 0; //未知
+    OptionMarket_US_Security = 1; //美股股票
+    OptionMarket_US_Index = 2; //美股指数
+    OptionMarket_HK_Security = 3; //港股股票
+    OptionMarket_HK_Index = 4; //港股指数
+}
+
+//期权统计数据类型
+enum OptionStatisticDataType
+{
+    OptionStatisticDataType_Unknown = -1; //未知
+    OptionStatisticDataType_Volume = 0; //成交量
+    OptionStatisticDataType_OpenInterest = 1; //持仓量
+}
+
+//历史波动率时间范围
+enum OptionHVTimeRange
+{
+    OptionHVTimeRange_Unknown = 0; //未知
+    OptionHVTimeRange_30Day = 1; //30日
+    OptionHVTimeRange_60Day = 2; //60日
+    OptionHVTimeRange_90Day = 3; //90日
+    OptionHVTimeRange_120Day = 4; //120日
+    OptionHVTimeRange_365Day = 5; //365日
+}
+
+//期权合约排行类型
+enum OptionRankType
+{
+    OptionRankType_Unknown = 0; //未知
+    OptionRankType_Volume = 1; //成交量排行
+    OptionRankType_Turnover = 2; //成交额排行
+    OptionRankType_OI = 3; //持仓量排行
+    OptionRankType_OIIncrement = 4; //增仓量(日)排行
+    OptionRankType_OIDecrement = 5; //减仓量(日)排行
+    OptionRankType_OIMarketCap = 6; //持仓额排行
+    OptionRankType_OIMarketCapIncrement = 7; //增仓额(日)排行
+    OptionRankType_OIMarketCapDecrement = 8; //减仓额(日)排行
+    OptionRankType_ChangeRate = 9; //涨跌幅排行
+    OptionRankType_IV = 10; //隐含波动率排行
+}
+
+// 末日期权标的排序
+enum ZeroDteSortType {
+    ZeroDteSortType_Unknown = 0;
+    ZeroDteSortType_Volume = 1;       // 期权成交量
+    ZeroDteSortType_IV = 2;           // 隐含波动率
+    ZeroDteSortType_ChangeRate = 3;   // 涨跌幅
+    ZeroDteSortType_OpenInterest = 4; // 持仓量
+    ZeroDteSortType_MarketCap = 5;    // 市值
+}
+
+// 末日期权标的筛选因子类型
+enum ZeroDteIndicatorType {
+    ZeroDteIndicatorType_Unknown = 0;
+    ZeroDteIndicatorType_OwnerList = 1;           //【确切值】自选股列表(securityList)
+    ZeroDteIndicatorType_HasEarningsThisWeek = 2; //【确切值】本周是否有财报(valueList: 0=不限, 1=有, 2=无)
+    ZeroDteIndicatorType_Volume = 3;              //【范围】期权总成交量
+    ZeroDteIndicatorType_OpenInterest = 4;        //【范围】期权总持仓量
+    ZeroDteIndicatorType_IV = 5;                  //【范围】隐含波动率(%)
+    ZeroDteIndicatorType_HV = 6;                  //【范围】历史波动率(%)
+    ZeroDteIndicatorType_IVRank = 7;              //【范围】IV等级(%)
+    ZeroDteIndicatorType_IVPercentile = 8;        //【范围】IV百分位数(%)
+    ZeroDteIndicatorType_Price = 9;               //【范围】最新价
+    ZeroDteIndicatorType_ChangeRate = 10;         //【范围】涨跌幅(%)
+}
+
+// 末日期权标的筛选条件
+message ZeroDteIndicator {
+    required int32 indicatorType = 1;              // ZeroDteIndicatorType
+    optional IndicatorValue indicatorValue = 2;    // 筛选条件
+}
+
+// 末日期权合约排序
+enum ZeroDteContractSortType {
+    ZeroDteContractSortType_Unknown = 0;
+    ZeroDteContractSortType_Volume = 1;       // 成交量
+    ZeroDteContractSortType_OpenInterest = 2; // 持仓量
+    ZeroDteContractSortType_IV = 3;           // 隐含波动率
+    ZeroDteContractSortType_Delta = 4;        // Delta
+}
+
+// 末日期权合约筛选因子类型
+enum ZeroDteContractIndicatorType {
+    ZeroDteContractIndicatorType_Unknown = 0;
+    ZeroDteContractIndicatorType_OptionType = 1;          //【确切值】期权方向(Qot_Common.OptionType: 1=Call, 2=Put)
+    ZeroDteContractIndicatorType_Volume = 2;              //【范围】成交量
+    ZeroDteContractIndicatorType_OpenInterest = 3;        //【范围】未平仓数
+    ZeroDteContractIndicatorType_IV = 4;                  //【范围】隐含波动率(%)
+    ZeroDteContractIndicatorType_Delta = 5;               //【范围】Delta
+    ZeroDteContractIndicatorType_Gamma = 6;               //【范围】Gamma
+    ZeroDteContractIndicatorType_Theta = 7;               //【范围】Theta
+    ZeroDteContractIndicatorType_Vega = 8;                //【范围】Vega
+    ZeroDteContractIndicatorType_Rho = 9;                 //【范围】Rho
+    ZeroDteContractIndicatorType_Price = 10;              //【范围】最新价
+    ZeroDteContractIndicatorType_ChangeRate = 11;         //【范围】涨跌幅(%)
+    ZeroDteContractIndicatorType_BreakEvenPoint = 12;     //【范围】盈亏平衡点
+    ZeroDteContractIndicatorType_ToBep = 13;              //【范围】到盈亏平衡点(%)
+    ZeroDteContractIndicatorType_BuyProfitProbability = 14;  //【范围】买入盈利概率(%)
+    ZeroDteContractIndicatorType_SellProfitProbability = 15; //【范围】卖出盈利概率(%)
+}
+
+// 末日期权合约筛选条件
+message ZeroDteContractIndicator {
+    required int32 indicatorType = 1;              // ZeroDteContractIndicatorType
+    optional IndicatorValue indicatorValue = 2;    // 筛选条件
+}
+
+// 财报排序
+enum EarningsSortType {
+    EarningsSortType_Unknown = 0;
+    EarningsSortType_EarningsDate = 1;          // 财报日期(默认)
+    EarningsSortType_Volume = 2;                // 期权成交量
+    EarningsSortType_IV = 3;                    // 隐含波动率
+    EarningsSortType_MarketCap = 4;             // 市值
+    EarningsSortType_ChangeRate = 5;            // 涨跌幅
+    EarningsSortType_Price = 6;                 // 最新价
+    EarningsSortType_IVRank = 7;                // IV等级
+    EarningsSortType_IVPercentile = 8;          // IV百分位数
+    EarningsSortType_HV = 9;                    // 历史波动率
+    EarningsSortType_OpenInterest = 10;         // 持仓量
+    EarningsSortType_LastReportIvCrush = 11;    // 上次IV Crush
+    EarningsSortType_HistoryReportIvCrush = 12; // 历史IV Crush
+    EarningsSortType_LastReportChgRate = 13;    // 上次财报日涨跌幅
+    EarningsSortType_HistoryReportChgRate = 14; // 历史财报日涨跌幅
+    EarningsSortType_EstimateEpsYoy = 15;       // 预测EPS同比
+    EarningsSortType_EstimateRevenueYoy = 16;   // 预测营收同比
+    EarningsSortType_ExpectedMoveRatio = 17;    // 预测波动
+}
+
+// 标的品类
+enum StockCategory {
+    StockCategory_All = 0;    // 全部
+    StockCategory_Equity = 1; // 股票
+    StockCategory_ETF = 2;    // ETF
+}
+
+// 财报发布类型
+enum EarningsPubType {
+    EarningsPubType_Unknown = 0;
+    EarningsPubType_Before = 1;  // 盘前
+    EarningsPubType_After = 2;   // 盘后
+}
+
+// 财报机会筛选因子类型
+enum EarningsIndicatorType {
+    EarningsIndicatorType_Unknown = 0;
+    EarningsIndicatorType_OwnerList = 1;              //【确切值】自选股列表(securityList)
+    EarningsIndicatorType_IndexComponent = 2;         //【确切值】所属指数(valueList, IndexComponentType)
+    EarningsIndicatorType_Plate = 3;                  //【确切值】所属行业/板块(valueList, 板块ID)
+    EarningsIndicatorType_MarketCap = 4;              //【范围】市值
+    EarningsIndicatorType_ExpirationType = 5;         //【确切值】到期类型(valueList, ExpirationType)
+    EarningsIndicatorType_IV = 6;                     //【范围】隐含波动率(%)
+    EarningsIndicatorType_LastReportIvCrush = 7;      //【范围】上次IV Crush(%)
+    EarningsIndicatorType_HistoryReportIvCrush = 8;   //【范围】历史IV Crush(%)
+    EarningsIndicatorType_IVRank = 9;                 //【范围】IV等级(%)
+    EarningsIndicatorType_IVPercentile = 10;          //【范围】IV百分位数(%)
+    EarningsIndicatorType_Volume = 11;                //【范围】期权成交量
+    EarningsIndicatorType_OpenInterest = 12;          //【范围】期权持仓量
+    EarningsIndicatorType_Price = 13;                 //【范围】最新价
+    EarningsIndicatorType_ChangeRate = 14;            //【范围】涨跌幅(%)
+    EarningsIndicatorType_ExpectedMoveRatio = 15;     //【范围】预测波动(%)
+    EarningsIndicatorType_LastReportChgRate = 16;     //【范围】上次财报日涨跌幅(%)
+    EarningsIndicatorType_HistoryReportChgRate = 17;  //【范围】历史财报日涨跌幅(%)
+    EarningsIndicatorType_EstimateRevenueYoy = 18;    //【范围】预测营收同比(%)
+    EarningsIndicatorType_EstimateEpsYoy = 19;        //【范围】预测EPS同比(%)
+    EarningsIndicatorType_EarningsDayRange = 20;      //【范围】距财报日天数
+}
+
+// 财报机会筛选条件
+message EarningsIndicator {
+    required int32 indicatorType = 1;              // EarningsIndicatorType
+    optional IndicatorValue indicatorValue = 2;    // 筛选条件
+}
+
+// 卖方策略类型
+enum SellerType {
+    SellerType_Unknown = 0;
+    SellerType_CoveredCall = 1;    // 股票担保看涨期权 (Covered Call)
+    SellerType_CashSecuredPut = 2; // 现金担保看跌期权 (Cash Secured Put)
+}
+
+// 卖方专区排序
+enum SellerSortType {
+    SellerSortType_Unknown = 0;
+    SellerSortType_AnnualizedReturn = 1; // 年化收益率(默认)
+    SellerSortType_IntervalReturn = 2;   // 区间收益率
+    SellerSortType_ItmProbability = 3;   // 行权概率
+    SellerSortType_Premium = 4;          // 权利金
+}
+
+// 卖方专区筛选因子类型
+enum SellerIndicatorType {
+    SellerIndicatorType_Unknown = 0;
+    // ---- 标的级 ----
+    SellerIndicatorType_OwnerList = 1;           //【确切值】自选股列表(securityList)
+    SellerIndicatorType_StockCategory = 2;       //【确切值】标的品类(valueList, StockCategory)
+    SellerIndicatorType_Volume = 3;              //【范围】期权总成交量(默认>0)
+    SellerIndicatorType_OpenInterest = 4;        //【范围】期权总持仓量(默认>0)
+    SellerIndicatorType_IV = 5;                  //【范围】标的IV(%)
+    SellerIndicatorType_HV = 6;                  //【范围】标的HV(%)
+    SellerIndicatorType_IVRank = 7;              //【范围】IV等级(%)
+    SellerIndicatorType_IVPercentile = 8;        //【范围】IV百分位数(%)
+    SellerIndicatorType_MarketCap = 9;           //【范围】标的市值(默认>10B)
+    SellerIndicatorType_Price = 10;              //【范围】标的最新价(默认>$1)
+    SellerIndicatorType_ChangeRate = 11;         //【范围】标的涨跌幅(%)
+    SellerIndicatorType_Plate = 12;              //【确切值】板块(valueList, 板块ID)
+    SellerIndicatorType_ExpirationType = 13;     //【确切值】到期类型(valueList, ExpirationType)
+    // ---- 期权级 ----
+    SellerIndicatorType_LeftDays = 14;           //【范围】距到期日(天)(默认>0)
+    SellerIndicatorType_OptionExpirationType = 15;//【确切值】期权到期类型(valueList, ExpirationType)
+    SellerIndicatorType_StrikeDateTimestamp = 16; //【确切值】到期日时间戳(valueList, 秒)
+    SellerIndicatorType_Premium = 17;            //【范围】权利金
+    SellerIndicatorType_AnnualizedReturn = 18;   //【范围】年化收益率(%)
+    SellerIndicatorType_IntervalReturn = 19;     //【范围】区间收益率(%)
+    SellerIndicatorType_OtmDegree = 20;          //【范围】价外程度(%)(默认>0)
+    SellerIndicatorType_OtmProbability = 21;     //【范围】价外概率(%)
+    SellerIndicatorType_OptionIV = 22;           //【范围】期权隐含波动率(%)
+    SellerIndicatorType_BidPrice = 23;           //【范围】期权买价(默认>$0.01)
+    SellerIndicatorType_AskPrice = 24;           //【范围】期权卖价(默认>$0.01)
+    SellerIndicatorType_OptionVolume = 25;       //【范围】期权成交量(默认>0)
+    SellerIndicatorType_OptionOpenInterest = 26; //【范围】期权持仓量(默认>0)
+}
+
+// 卖方专区筛选条件
+message SellerIndicator {
+    required int32 indicatorType = 1;              // SellerIndicatorType
+    optional IndicatorValue indicatorValue = 2;    // 筛选条件
+}
+
+// ==================== 通用筛选结构 ====================
+
+//区间边界
+message Boundary
+{
+    required double value = 1;      //边界值
+    required bool includes = 2;     //是否包含此值(true=闭区间, false=开区间)
+}
+
+//值区间
+message Interval
+{
+    optional Boundary filterMin = 1;    //区间下限
+    optional Boundary filterMax = 2;    //区间上限
+}
+
+//筛选值容器（统一供 OptionEvent / UnderlyingRank 使用）
+message IndicatorValue
+{
+    repeated int64 valueList = 1;                       //确切值列表(枚举值、板块ID、交易所ID等)
+    optional Interval valueInterval = 2;                //值区间(范围型筛选)
+    repeated string stringValueList = 3;                //字符串确切值列表(条件代码等，Event使用)
+    repeated Qot_Common.Security securityList = 4;      //证券列表(标的列表)
+}
+
+// ==================== 标的排行排序类型 ====================
+
+//标的排行排序字段（扩展，覆盖后台 UnderlyingSortField 全部能力）
+enum UnderlyingRankSortType
+{
+    UnderlyingRankSortType_Unknown = 0;
+    UnderlyingRankSortType_Volume = 1;              //总成交量
+    UnderlyingRankSortType_VolumeRatio = 2;         //Put/Call成交量比值
+    UnderlyingRankSortType_OpenInterest = 3;        //总持仓量
+    UnderlyingRankSortType_OpenInterestRatio = 4;   //Put/Call持仓量比值
+    UnderlyingRankSortType_Price = 5;               //最新价
+    UnderlyingRankSortType_PriceChange = 6;         //涨跌幅
+    UnderlyingRankSortType_IV = 7;                  //IV
+    UnderlyingRankSortType_IVChange = 8;            //IV变化率
+    UnderlyingRankSortType_HV = 9;                  //HV
+    UnderlyingRankSortType_HVChange = 10;           //HV变化率
+    UnderlyingRankSortType_IVRank = 11;             //IV Rank
+    UnderlyingRankSortType_IVPercentile = 12;       //IV Percentile
+    UnderlyingRankSortType_MarketCap = 13;          //市值
+}
+
+// ==================== 标的排行筛选因子 ====================
+
+//标的排行筛选因子类型
+enum UnderlyingRankIndicatorType
+{
+    UnderlyingRankIndicatorType_Unknown = 0;
+    UnderlyingRankIndicatorType_OwnerList = 1;       //【确切值】指定标的列表(securityList)
+    UnderlyingRankIndicatorType_StockCategory = 2;   //【确切值】标的品类(valueList, StockCategory)
+    UnderlyingRankIndicatorType_Volume = 3;          //【范围】总成交量
+    UnderlyingRankIndicatorType_OpenInterest = 4;    //【范围】总持仓量
+    UnderlyingRankIndicatorType_IV = 5;              //【范围】IV(%)
+    UnderlyingRankIndicatorType_HV = 6;              //【范围】HV(%)
+    UnderlyingRankIndicatorType_IVRank = 7;          //【范围】IV Rank(%)
+    UnderlyingRankIndicatorType_IVPercentile = 8;    //【范围】IV Percentile(%)
+    UnderlyingRankIndicatorType_IVChange = 9;        //【范围】IV变化率(%)
+    UnderlyingRankIndicatorType_HVChange = 10;       //【范围】HV变化率(%)
+    UnderlyingRankIndicatorType_VolumeRatio = 11;    //【范围】成交量P/C比值(%)
+    UnderlyingRankIndicatorType_OIRatio = 12;        //【范围】持仓量P/C比值(%)
+    UnderlyingRankIndicatorType_MarketCap = 13;      //【范围】市值
+}
+
+//标的排行筛选条件
+message UnderlyingRankIndicator
+{
+    required int32 indicatorType = 1;               //UnderlyingRankIndicatorType
+    optional IndicatorValue indicatorValue = 2;     //筛选条件
+}
+
+//期权合约排行筛选因子类型
+enum OptionRankIndicatorType
+{
+    OptionRankIndicatorType_Unknown = 0; //未知
+    //标的级
+    OptionRankIndicatorType_StockCategory = 1;      //【确切值】品类(StockCategory)
+    OptionRankIndicatorType_MarketCap = 2;           //【范围】市值
+    OptionRankIndicatorType_OwnerList = 3;           //【确切值】股票范围(securityList)
+    OptionRankIndicatorType_UnderlyingIV = 4;        //【范围】正股IV(%)
+    OptionRankIndicatorType_UnderlyingHV = 5;        //【范围】正股HV(%)
+    OptionRankIndicatorType_IVRank = 6;              //【范围】IV等级(%)
+    OptionRankIndicatorType_IVPercentile = 7;        //【范围】IV百分位数(%)
+    //期权级
+    OptionRankIndicatorType_IV = 8;                  //【范围】隐含波动率(%)
+    OptionRankIndicatorType_OptionType = 9;          //【确切值】方向(Call/Put)
+    OptionRankIndicatorType_LeftDays = 10;           //【范围】距到期日
+    OptionRankIndicatorType_InTheMoney = 11;         //【确切值】价内/价外(0=价外,1=价内)
+    OptionRankIndicatorType_Volume = 12;             //【范围】成交量
+    OptionRankIndicatorType_OpenInterest = 13;       //【范围】持仓量
+    OptionRankIndicatorType_Delta = 14;              //【范围】Delta
+    OptionRankIndicatorType_Gamma = 15;              //【范围】Gamma
+    OptionRankIndicatorType_Theta = 16;              //【范围】Theta
+    OptionRankIndicatorType_Vega = 17;               //【范围】Vega
+    OptionRankIndicatorType_Rho = 18;                //【范围】Rho
+}
+
+//期权合约排行筛选条件
+message OptionRankIndicator
+{
+    required int32 indicatorType = 1;               //OptionRankIndicatorType
+    optional IndicatorValue indicatorValue = 2;     //筛选条件
+}
+
+// 到期类型
+enum ExpirationType {
+    ExpirationType_Unknown = 0;       //未知
+    ExpirationType_Monthly = 1;       //月期权
+    ExpirationType_Weekly = 2;        //周期权
+    ExpirationType_EndOfMonth = 3;    //月末期权
+    ExpirationType_Quarterly = 4;     //季度期权
+}
+
+// 指数成分类型
+enum IndexComponentType {
+    IndexComponentType_Unknown = 0;   //未知
+    IndexComponentType_DJI = 1;       //道琼斯指数
+    IndexComponentType_IXIC = 2;      //纳斯达克指数
+    IndexComponentType_NDX = 3;       //纳斯达克100指数
+    IndexComponentType_SPX = 4;       //标普500指数
+}

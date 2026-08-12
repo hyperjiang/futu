@@ -1,0 +1,55 @@
+syntax = "proto2";
+package Qot_GetOptionSellerScreener;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptionsellerscreener";
+
+import "Common.proto";
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+
+// 卖方策略合约项
+message SellerItem {
+    required Qot_Common.Security option = 1;       // 期权合约
+    optional string name = 2;                       // 期权名称
+    optional int32 optionType = 3;                  // Qot_Common.OptionType (CALL/PUT)
+    optional double strikePrice = 4;                // 行权价
+    optional string strikeTime = 5;                 // 到期日("yyyy-MM-dd")
+    optional double strikeTimestamp = 6;            // 到期日时间戳(秒)
+    optional int32 leftDays = 7;                    // 距到期天数
+    optional double optionPrice = 8;                // 期权价格
+    optional double stockPrice = 9;                 // 标的当前价
+    optional double premium = 10;                   // 权利金(=期权价x合约乘数)
+    optional double otmDegree = 11;                 // 价外程度(%)
+    optional double iv = 12;                        // 隐含波动率(%)
+    optional double intervalReturn = 13;            // 区间收益率(%)
+    optional double annualizedReturn = 14;          // 年化收益率(%)
+    optional double itmProbability = 15;            // 行权概率(%)
+    // Covered Call 专属
+    optional double strikedIntervalReturn = 16;     // 被行权区间收益率(%)
+    optional double strikedAnnualizedReturn = 17;   // 被行权年化收益率(%)
+    // 标的信息
+    optional Qot_Common.Security owner = 18;        // 标的证券
+}
+
+message C2S {
+    required int32 optionMarket = 1;      // Qot_OptionCommon.OptionMarket (仅支持US_Security/HK_Security)
+    required int32 sellerType = 2;        // Qot_OptionCommon.SellerType (必填)
+    optional int32 sortType = 3;          // Qot_OptionCommon.SellerSortType (默认 AnnualizedReturn)
+    optional bool isAsc = 4;             // 默认 false(降序)
+    repeated Qot_OptionCommon.SellerIndicator filterList = 5;  // 筛选条件(AND关系)，部分字段有默认值，详见SellerIndicatorType注释
+}
+
+message S2C {
+    repeated SellerItem itemList = 1;     // 合约列表
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; //RetType，返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

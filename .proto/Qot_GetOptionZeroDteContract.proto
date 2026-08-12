@@ -1,0 +1,54 @@
+syntax = "proto2";
+package Qot_GetOptionZeroDteContract;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptionzerodtecontract";
+
+import "Common.proto";
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+import "Qot_GetOptionZeroDteScreener.proto";
+
+// 合约项
+message ZeroDteContractItem {
+    required Qot_Common.Security option = 1;
+    optional string name = 2;
+    optional int32 optionType = 3;             // Qot_Common.OptionType
+    optional double optionPrice = 4;
+    optional double changeRate = 5;            // 涨跌幅（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional int64 volume = 6;
+    optional int64 openInterest = 7;
+    optional double iv = 8;                    // (%)
+    optional double delta = 9;
+    optional double gamma = 10;
+    optional double vega = 11;
+    optional double theta = 12;
+    optional double rho = 13;
+    optional double buyBreakEvenPoint = 14;    // 价格
+    optional double buyToBep = 15;             // (%)
+    optional double buyProfitProbability = 16; // (%)
+    optional double sellProfitProbability = 17;// (%)
+}
+
+message C2S {
+    required Qot_Common.Security owner = 1;                  // 标的
+    required int64 strikeDateTimestamp = 2;                   // 行权日时间戳(秒)
+    required Qot_GetOptionZeroDteScreener.OptionChainInfo chainInfo = 3; // 链标识(来自 Screener 回包)
+    optional int32 sortType = 4;                             // Qot_OptionCommon.ZeroDteContractSortType
+    optional bool isAsc = 5;                                 // 默认 false
+    repeated Qot_OptionCommon.ZeroDteContractIndicator filterList = 6; // 筛选条件(AND关系)
+}
+
+message S2C {
+    repeated ZeroDteContractItem itemList = 1;
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; //RetType，返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

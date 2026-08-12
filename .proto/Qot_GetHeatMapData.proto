@@ -1,0 +1,72 @@
+syntax = "proto2";
+package Qot_GetHeatMapData;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetheatmapdata";
+
+import "Qot_Common.proto";
+
+//热力图板块类型
+enum HeatMapPlateType
+{
+	HeatMapPlateType_Industry = 0; //行业板块(默认)
+	HeatMapPlateType_Concept = 1;  //概念板块
+	HeatMapPlateType_Theme = 2;    //主题板块
+}
+
+//排序字段
+enum SortField
+{
+	SortField_Unknow = 0;
+	SortField_ChangeRate = 1; //涨跌幅
+	SortField_MarketVal = 2; //市值
+	SortField_Turnover = 3; //成交额
+	SortField_Hot = 4; //热度
+}
+
+message C2S
+{
+	required int32 market = 1; //Qot_Common.QotMarket,股票市场
+	optional int32 sortField = 2; //SortField,排序字段,不填默认涨跌幅
+	optional bool ascend = 3; //升序true,降序false,不填默认降序
+	optional int32 count = 4; //返回条数[1,200],不填默认30
+	optional string page = 5; //翻页游标,首次不传,后续传上次返回的nextPage
+	optional int32 plateType = 6; //HeatMapPlateType,板块类型,不填默认行业板块
+}
+
+message HeatMapPlateData
+{
+	optional Qot_Common.Security plate = 1; //板块
+	optional string plateName = 2; //板块名称
+	optional double curPrice = 3; //最新价
+	optional double changeRate = 4; //涨跌幅(%)
+	optional double turnover = 5; //成交额
+	optional int64 volume = 6; //成交量
+	optional double marketVal = 7; //市值
+	optional double peAvg = 8; //平均市盈率
+	optional int32 riseCount = 9; //涨家数
+	optional int32 fallCount = 10; //跌家数
+	optional int32 equalCount = 11; //持平数
+	optional Qot_Common.Security leaderStock = 12; //领涨股
+	optional string description = 13; //板块描述
+}
+
+message S2C
+{
+	repeated HeatMapPlateData plateDataList = 1; //板块数据列表
+	optional int32 allCount = 2; //板块总数
+	optional string nextPage = 3; //下一页游标,空表示最后一页
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32 retType = 1 [default = -400]; //RetType,返回结果
+	optional string retMsg = 2;
+	optional int32 errCode = 3;
+
+	optional S2C s2c = 4;
+}

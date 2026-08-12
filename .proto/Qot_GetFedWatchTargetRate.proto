@@ -1,0 +1,38 @@
+syntax = "proto2";
+package Qot_GetFedWatchTargetRate;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetfedwatchtargetrate";
+
+import "Common.proto";
+import "Qot_Common.proto";
+
+// 目标利率概率项
+message TargetRateItem {
+    required string targetRange = 1;     //目标利率区间，如"4.25% ~ 4.50%"
+    required double probability = 2;     //市场预期概率(%)，如92.13表示92.13%
+}
+
+// 单次 FOMC 会议预测
+message FedMeetingTab {
+    required string meetingDate = 1;               //会议日期 "yyyy-MM-dd"
+    repeated TargetRateItem targetRateList = 2;    //目标利率概率分布(按利率从低到高排列，概率之和=100%)
+}
+
+message C2S {
+    optional Qot_Common.QotHeader header = 100; //行情公共参数头
+}
+
+message S2C {
+    repeated FedMeetingTab meetingList = 1;      //FOMC会议预测列表(按会议日期从近到远排列)
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; //RetType,返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

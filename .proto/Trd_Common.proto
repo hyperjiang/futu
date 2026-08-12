@@ -4,6 +4,7 @@ option java_package = "com.futu.openapi.pb";
 option go_package = "github.com/hyperjiang/futu/pb/trdcommon";
 
 import "Common.proto";
+import "Qot_Common.proto";
 
 //交易环境
 enum TrdEnv
@@ -38,6 +39,7 @@ enum TrdMarket
     TrdMarket_Futures_Simulate_SG = 12;
     TrdMarket_Futures_Simulate_JP = 13;
     TrdMarket_JP = 15;
+    TrdMarket_Prediction = 17;
     TrdMarket_MY = 111;
     TrdMarket_CA = 112;
 	TrdMarket_HK_Fund = 113; //香港基金市场
@@ -62,6 +64,7 @@ enum TrdSecMarket
     TrdSecMarket_CA = 81; // 加拿大
     TrdSecMarket_FX = 91; // 外汇
 	TrdSecMarket_CC = 101; // 加密货币市场
+	TrdSecMarket_EC = 111; // 事件合约 Event Contract
 }
 
 //交易方向
@@ -135,6 +138,7 @@ enum OrderFillStatus
 	OrderFillStatus_OK = 0; //正常
 	OrderFillStatus_Cancelled = 1; //成交被取消
 	OrderFillStatus_Changed = 2; //成交被更改
+	OrderFillStatus_Payout = 3; //赔付（仅事件合约）
 }
 
 //持仓方向类型
@@ -197,6 +201,7 @@ enum Currency
 	Currency_AUD = 6;   // 澳元
     Currency_CAD = 7; // 加拿大元
     Currency_MYR = 8; // 马来西亚林吉特
+    Currency_NZD = 9; // 新西兰元
 }
 
 //账户风险控制等级
@@ -216,6 +221,7 @@ enum TimeInForce
 	TimeInForce_DAY = 0;       // 当日有效
 	TimeInForce_GTC = 1;       // 撤单前有效，最多持续90自然日。
 	TimeInForce_IOC = 2;       // 立即执行，否则取消
+	TimeInForce_GTD = 3;       // 指定日期前有效
 }
 
 //模拟交易账户类型
@@ -297,6 +303,13 @@ enum ExposureLevel
 	ExposureLevel_Moderate = 5;     // 适中
 	ExposureLevel_Warning = 6;      // 预警
 	ExposureLevel_MarginCall = 7;   // 危险
+}
+
+enum PositionType
+{
+	PositionType_Unknown = 0;  //未知
+	PositionType_Combined = 1; //组合汇总持仓
+	PositionType_Leg = 2;      //单腿持仓
 }
 
 //账户现金信息，目前仅用于期货账户
@@ -422,6 +435,13 @@ message Position
     optional double dilutedCostPrice = 32;      //摊薄成本价，仅支持证券账户使用
     optional double averageCostPrice = 33;      //平均成本价，模拟交易证券账户不适用
     optional double averagePlRatio = 34;        //平均成本价的盈亏百分比(如plRatio等于8.8代表涨8.8%)，无精度限制，如果没传，代表此时此值无效
+	
+	optional uint64 comboID = 35;       // 期权策略组合ID
+	optional int32 strategyType = 36;   // 期权策略类型，参见Qot_Common.OptionStrategyType的枚举定义
+	optional int32 positionType = 37;   // 期权组合持仓类型，参见PositionType的枚举定义
+	optional uint64 accID = 38;         // 交易账户ID
+	optional int32 jpAccType = 39;      // JP子账户类型，取值见 TrdSubAccType
+	optional double payoutIfWin = 40;   // 事件合约猜中后的赔付金额，等于持仓数量*1.0，仅事件合约持仓返回
 }
 
 //订单结构
@@ -455,7 +475,10 @@ message Order
 	optional int32 trdMarket = 26;  //交易市场, 参见TrdMarket的枚举定义
 	optional int32 session = 27; //美股订单时段, 参见Common.Session的枚举定义
 	optional int32 jpAccType = 28; //JP子账户类型，取值见 TrdSubAccType
-	
+	optional string expireTime = 29;  //timeInForce为GTD时，表示订单到期时间
+	optional double orderAmount = 30;  // 订单金额
+	optional int32 strategyType = 31;  // 期权策略类型，参见Qot_Common.OptionStrategyType的枚举定义
+	repeated Qot_Common.ComboLeg comboLegs = 32; //组合期权各腿数据
 }
 
 message OrderFeeItem
@@ -506,6 +529,17 @@ message MaxTrdQtys
 	optional double longRequiredIM = 6;         //开多仓每张合约初始保证金。当前仅期货和期权适用（最低 FutuOpenD 版本要求：5.0.1310）
 	optional double shortRequiredIM = 7;        //开空仓每张合约初始保证金。当前仅期货和期权适用（最低 FutuOpenD 版本要求：5.0.1310）
 	optional int32 session = 8;                 //美股订单时段, 参见Common.Session的枚举定义（最低 FutuOpenD 版本要求：9.4.5408）
+}
+
+//组合期权最大可买卖相关字段
+message ComboMaxTrdQtys
+{
+    optional double nlvChange = 1;    //综合净资产
+    optional double initialMarginChange = 2;    //初始保证金
+    optional double maintenanceMarginChange = 3;    //维持保证金
+    optional double optionBuyPower = 4;    //期权购买力
+    optional double maxWithDrawChange = 5;    //最大可提
+    optional double buyPowerDecrease = 6;    //消耗购买力
 }
 
 //过滤条件，条件组合是"与"不是"或"，用于获取订单、成交、持仓等时二次过滤

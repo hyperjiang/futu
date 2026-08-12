@@ -1,0 +1,63 @@
+syntax = "proto2";
+package Qot_GetOptionEarningsScreener;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptionearningsscreener";
+
+import "Common.proto";
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+
+// 财报标的项
+message EarningsItem {
+    required Qot_Common.Security owner = 1;
+    optional string name = 2;
+    optional double price = 3;
+    optional double changeRate = 4;                // 涨跌幅（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double marketCap = 5;
+    optional double iv = 6;                        // (%)
+    optional double ivRank = 7;                    // (%)
+    optional double ivPercentile = 8;              // (%)
+    optional double hv = 9;                        // (%)
+    optional int64 volume = 10;
+    optional int64 openInterest = 11;
+    // 财报
+    optional double earningsTimestamp = 12;         // 财报时间戳(秒)
+    optional string earningsTime = 13;              // 财报时间字符串("yyyy-MM-dd")
+    optional int32 earningsPubType = 14;            // Qot_OptionCommon.EarningsPubType
+    optional string earningsQuarter = 15;           // 如 "2025Q1"
+    // 财报统计
+    optional double lastReportIvCrush = 16;         // (%)
+    optional double historyReportIvCrush = 17;      // (%)
+    optional double lastReportChgRate = 18;         // 上次财报日涨跌幅（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double historyReportChgRate = 19;      // 历史财报日涨跌幅（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double estimateEpsYoy = 20;            // (%)
+    optional double estimateRevenueYoy = 21;        // (%)
+    optional double expectedMoveRatio = 22;         // (%)
+}
+
+message C2S {
+    required int32 optionMarket = 1;      // Qot_OptionCommon.OptionMarket (仅支持US_Security/HK_Security)
+    optional int32 sortType = 2;          // Qot_OptionCommon.EarningsSortType (默认 EarningsDate)
+    optional bool isAsc = 3;              // 默认 true(最近的在前)
+    optional int32 count = 4;             // 每页数量[1,500](默认50)
+    optional string page = 5;             // 分页游标，首次请求传空或不传，翻页时传上次返回的nextPage
+    repeated Qot_OptionCommon.EarningsIndicator filterList = 6;  // 筛选条件(AND关系)
+}
+
+message S2C {
+    repeated EarningsItem itemList = 1;
+    optional string nextPage = 2;         // 下一页游标（空或不存在=无下一页）
+    optional double updateTimestamp = 3;
+    optional int32 allCount = 4;
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; //RetType，返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

@@ -1,0 +1,47 @@
+syntax = "proto2";
+package Qot_GetIndustrialChainList;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetindustrialchainlist";
+
+import "Qot_Common.proto";
+
+// 产业链类型
+enum IndustrialChainType {
+    IndustrialChainType_Chain = 1;      // 串联型
+    IndustrialChainType_Parallel = 2;   // 并列型
+    IndustrialChainType_UpMidDown = 3;  // 上中下游型
+}
+
+message C2S {
+    required int32 market = 1;          // Qot_Common.QotMarket
+    optional string keyword = 2;        // 搜索关键字(可选)
+    optional int32 count = 3;           // 条数 [1,50], 默认20
+    optional string page = 4;           // 翻页游标, 首次不传
+}
+
+message IndustrialChainInfo {
+    optional int64 chainId = 1;                             // 产业链ID
+    optional int32 chainType = 2;                           // IndustrialChainType
+    optional string name = 3;                               // 名称
+    optional string detail = 4;                             // 详情描述
+    optional double marketCap = 5;                          // 市值
+    optional int64 stocksNum = 6;                           // 成分股数量
+    repeated Qot_Common.Security relationSecurityList = 7;  // 相关股票
+}
+
+message S2C {
+    repeated IndustrialChainInfo dataList = 1;
+    optional int32 allCount = 2;
+    optional string nextPage = 3;
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

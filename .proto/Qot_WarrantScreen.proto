@@ -3,8 +3,9 @@ package Qot_WarrantScreen;
 option java_package = "com.futu.openapi.pb";
 option go_package = "github.com/hyperjiang/futu/pb/qotwarrantscreen";
 
+import "Qot_Common.proto";
+
 // =================== 基础消息定义 ===================
-// 说明: 字段编号与后端 wrnt_screener_common.proto / FTCmd20334.proto 完全一致。
 //       值字段使用 double (OpenD 负责与后端 int64 倍率互转)。
 
 // 边界值
@@ -46,7 +47,6 @@ message Sort
 }
 
 // =================== 窝轮数据项 ===================
-// 字段编号与后端 FTCMD20334::WarrantItem 完全一致
 // 带倍率的字段已转为 double (OpenD 层自动转换)
 
 message WarrantItem
@@ -95,10 +95,15 @@ message WarrantItem
     optional uint32 iwPriceStatus = 50;       // 界内证价格状态: 0=界内, 1=界外
     optional double sensitivity = 51;         // 敏感度
     optional double priceRecoveryRatio = 52;  // 正股距收回价 (%)
+
+    // 由 OpenD 根据 stockId / stockOwner 反查后填充, 方便客户端直接拿到带 market 前缀的 code 和名称
+    optional Qot_Common.Security security = 100;       // 窝轮证券 (market + code, 如 HK + "10001")
+    optional Qot_Common.Security ownerSecurity = 101;  // 正股证券 (market + code, 如 HK + "00700")
+    optional string name = 102;                        // 窝轮名称 (按 OpenD 当前语言取中/英)
+    optional string ownerName = 103;                   // 正股名称
 }
 
 // =================== 请求/返回 ===================
-// 字段编号与后端 FetchWarrantListV2Req / FetchWarrantListV2Rsp 完全一致
 
 message C2S
 {
@@ -113,8 +118,6 @@ message C2S
 
 message S2C
 {
-    // field 1 保留 (ret_code, 由 Response.retType 承担)
-    // field 2 保留 (err_msg, 由 Response.retMsg 承担)
     repeated WarrantItem warrants = 3;      // 窝轮数据列表
     optional bool lastPage = 4;             // 是否最后一页
     optional int32 allCount = 5;            // 数据总量

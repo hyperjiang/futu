@@ -24,7 +24,7 @@ enum UnderlyingIndicatorType
     // 标的基本信息
     UnderlyingIndicatorType_StockList = 101; // 【确切值】指定标的范围(股票ID列表)
     // ⚠️ 不支持: 后端 option_screener_svc 未实装, 传入会被 OpenD 入口拦截并返回错误
-    UnderlyingIndicatorType_Plate = 103 [deprecated = true]; // 【已废弃】指定板块, 后端不支持
+    UnderlyingIndicatorType_Plate = 103 ; // 【已废弃】指定板块, 后端不支持
     UnderlyingIndicatorType_IndexList = 106; // 【确切值】指定指数类型
     // 标的期权统计
     UnderlyingIndicatorType_Volume = 201; // 【范围】总成交量
@@ -40,7 +40,7 @@ enum UnderlyingIndicatorType
     // 行情指标
     UnderlyingIndicatorType_MarketCap = 401; // 【范围】标的市值
     UnderlyingIndicatorType_StockPrice = 402; // 【范围】标的最新价
-    UnderlyingIndicatorType_ChangeRatio = 403; // 【范围】涨跌幅
+    UnderlyingIndicatorType_ChangeRate = 403; // 【范围】涨跌幅
 }
 
 // 期权筛选因子类型
@@ -64,7 +64,7 @@ enum OptionIndicatorType
     OptionIndicatorType_BidVolume = 2007; // 【范围】买量
     OptionIndicatorType_AskVolume = 2008; // 【范围】卖量
     OptionIndicatorType_BidAskVolumeRatio = 2009; // 【范围】买卖量比
-    OptionIndicatorType_ChangeRatio = 2010; // 【范围】涨跌幅
+    OptionIndicatorType_ChangeRate = 2010; // 【范围】涨跌幅
     OptionIndicatorType_Volume = 2011; // 【范围】成交量
     OptionIndicatorType_Turnover = 2012; // 【范围】成交额
     OptionIndicatorType_OpenInterest = 2013; // 【范围】持仓量
@@ -96,7 +96,7 @@ enum OptionIndicatorType
     OptionIndicatorType_SellAnnualizedReturn = 3021; // 【范围】卖出年化收益率
     OptionIndicatorType_IntervalReturn = 3022; // 【范围】卖出区间收益率
     // ⚠️ 已废弃: 不支持 filter/sort/retrieve, 传入会报错。新代码请使用 BuyToBep(3011)。
-    OptionIndicatorType_BuyBreakEvenPoint = 3023 [deprecated = true]; // 已废弃, 传入会报错
+    OptionIndicatorType_BuyBreakEvenPoint = 3023 ; // 已废弃, 传入会报错
 }
 
 // =================== 区间和筛选条件 ===================
@@ -170,7 +170,7 @@ message UnderlyingInfo
     optional double ivPercentile = 5; // IV Percentile
     optional double marketCap = 6; // 市值
     optional double price = 7; // 标的价格
-    optional double changeRatio = 8; // 涨跌幅
+    optional double changeRate = 8; // 涨跌幅（该字段为百分比字段，默认不展示%，如20实际对应20%）
 }
 
 // 期权数据项
@@ -193,7 +193,7 @@ message OptionScreenItem
     optional double bidAskSpread = 24; // 买卖价差
     optional int64 bidVolume = 25; // 买量
     optional int64 askVolume = 26; // 卖量
-    optional double changeRatio = 27; // 涨跌幅
+    optional double changeRate = 27; // 涨跌幅（该字段为百分比字段，默认不展示%，如20实际对应20%）
     optional int64 volume = 28; // 成交量
     optional double turnover = 29; // 成交额
     optional int64 openInterest = 30; // 持仓量
@@ -213,7 +213,7 @@ message OptionScreenItem
     optional double itmProbability = 48; // 价内概率
     // ⚠️ 历史字段: 后端未返回对应数据, 已弃用, 始终不填充
     // 新代码请用 buyToBep (字段 53)
-    optional double buyBreakEvenPoint = 49 [deprecated = true]; // 已弃用, 始终为空
+    optional double buyBreakEvenPoint = 49 ; // 已弃用, 始终为空
     // 标的信息
     optional UnderlyingInfo underlyingInfo = 50; // 标的信息
     // 期权分析指标 (续)

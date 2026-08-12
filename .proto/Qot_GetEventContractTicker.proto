@@ -1,0 +1,43 @@
+syntax = "proto2";
+package Qot_GetEventContractTicker;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgeteventcontractticker";
+
+import "Common.proto";
+import "Qot_Common.proto";
+
+// 逐笔数据点
+message TickerPoint {
+    required string time = 1;                             // 成交时间（yyyy-MM-dd HH:mm:ss，不保留毫秒）
+    optional double yesPrice = 2;                         // YES 成交价格
+    optional double noPrice = 3;                          // NO 成交价格
+    optional double volume = 4;                           // 成交数量
+    optional Common.PredSide side = 5;    // Ticker 方向
+    optional string sequence = 6;                         // 逐笔序号
+}
+
+// 单只合约逐笔
+message TickerItem {
+    required Qot_Common.Security code = 1; // 合约代码
+    repeated TickerPoint tickerList = 2;     // 逐笔数据
+}
+
+message C2S {
+    required Qot_Common.Security security = 1;  // 合约标的（单只，必填）
+    optional int32 count = 2;                   // 返回条数（默认30，最大1000）
+}
+
+message S2C {
+    repeated TickerItem tickerList = 1;  // 逐笔列表
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

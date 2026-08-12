@@ -1,0 +1,52 @@
+syntax = "proto2";
+package Qot_GetMacroIndicatorList;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetmacroindicatorlist";
+
+import "Common.proto";
+import "Qot_Common.proto";
+
+// 宏观数据国家/地区
+enum MacroRegion {
+    MacroRegion_Unknown = 0; //未知
+    MacroRegion_HK = 1;     //香港
+    MacroRegion_US = 2;     //美国
+    MacroRegion_JP = 3;     //日本
+    MacroRegion_SG = 4;     //新加坡
+    MacroRegion_AU = 5;     //澳大利亚
+    MacroRegion_CA = 6;     //加拿大
+    MacroRegion_MY = 7;     //马来西亚
+    MacroRegion_CN = 8;     //中国(沪深)
+}
+
+// 宏观指标信息
+message MacroIndicatorInfo {
+    required uint64 indicatorId = 1; //宏观指标ID
+    optional string name = 2;        //指标名称
+}
+
+// 宏观指标分类
+message MacroIndicatorCategory {
+    required string categoryName = 1;                  //分类名称(如"全部"/"就业"/"通胀"/"利率")
+    repeated MacroIndicatorInfo indicatorList = 2;     //该分类下的宏观指标列表
+}
+
+message C2S {
+    required int32 region = 1; //MacroRegion, 国家/地区
+    optional Qot_Common.QotHeader header = 100; //行情公共参数头
+}
+
+message S2C {
+    repeated MacroIndicatorCategory indicatorList = 1; //分类指标列表
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; //RetType,返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}
