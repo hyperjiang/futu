@@ -28,6 +28,9 @@ message C2S
 	optional double trailSpread = 17; //指定价差
 	optional int32 session = 18; //美股订单时段, 参见Common.Session的枚举定义
 	optional uint64 positionID = 19; //持仓ID，JP券商查询平仓数量时使用
+	optional string expireTime = 20; //订单到期时间，仅在timeInForce为GTD时有效
+	optional double amount = 21; //订单金额，事件合约下单使用
+	optional int32 predSide = 22; //事件合约预测方向，参见Common.PredSide的枚举定义
 }
 
 message S2C

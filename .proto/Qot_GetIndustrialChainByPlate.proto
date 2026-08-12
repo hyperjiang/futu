@@ -1,0 +1,31 @@
+syntax = "proto2";
+package Qot_GetIndustrialChainByPlate;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetindustrialchainbyplate";
+
+message C2S {
+    required int64 plateId = 1;             // 产业板块ID
+}
+
+message RelatedChainInfo {
+    optional int64 chainId = 1;             // 产业链ID
+    optional int32 chainType = 2;           // 类型
+    optional string name = 3;               // 名称
+    optional double marketCap = 4;          // 市值
+    optional int64 stocksNum = 5;           // 成分股数量
+}
+
+message S2C {
+    repeated RelatedChainInfo relatedChainList = 1;    // 关联的产业链
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

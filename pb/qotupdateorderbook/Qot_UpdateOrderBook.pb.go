@@ -33,6 +33,7 @@ type S2C struct {
 	SvrRecvTimeBidTimestamp *float64               `protobuf:"fixed64,5,opt,name=svrRecvTimeBidTimestamp" json:"svrRecvTimeBidTimestamp,omitempty"` // 富途服务器从交易所收到数据的时间戳(for bid)
 	SvrRecvTimeAsk          *string                `protobuf:"bytes,6,opt,name=svrRecvTimeAsk" json:"svrRecvTimeAsk,omitempty"`                     // 富途服务器从交易所收到数据的时间(for ask)
 	SvrRecvTimeAskTimestamp *float64               `protobuf:"fixed64,7,opt,name=svrRecvTimeAskTimestamp" json:"svrRecvTimeAskTimestamp,omitempty"` // 富途服务器从交易所收到数据的时间戳(for ask)
+	OrderBookType           *int32                 `protobuf:"varint,9,opt,name=orderBookType" json:"orderBookType,omitempty"`                      //Qot_Common.OrderBookType, 摆盘类型
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
 }
@@ -123,6 +124,13 @@ func (x *S2C) GetSvrRecvTimeAskTimestamp() float64 {
 	return 0
 }
 
+func (x *S2C) GetOrderBookType() int32 {
+	if x != nil && x.OrderBookType != nil {
+		return *x.OrderBookType
+	}
+	return 0
+}
+
 type Response struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	RetType       *int32                 `protobuf:"varint,1,req,name=retType,def=-400" json:"retType,omitempty"` //RetType,返回结果
@@ -200,7 +208,7 @@ var File_Qot_UpdateOrderBook_proto protoreflect.FileDescriptor
 
 const file_Qot_UpdateOrderBook_proto_rawDesc = "" +
 	"\n" +
-	"\x19Qot_UpdateOrderBook.proto\x12\x13Qot_UpdateOrderBook\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\x95\x03\n" +
+	"\x19Qot_UpdateOrderBook.proto\x12\x13Qot_UpdateOrderBook\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"\xbb\x03\n" +
 	"\x03S2C\x120\n" +
 	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12\x12\n" +
 	"\x04name\x18\b \x01(\tR\x04name\x12A\n" +
@@ -209,7 +217,8 @@ const file_Qot_UpdateOrderBook_proto_rawDesc = "" +
 	"\x0esvrRecvTimeBid\x18\x04 \x01(\tR\x0esvrRecvTimeBid\x128\n" +
 	"\x17svrRecvTimeBidTimestamp\x18\x05 \x01(\x01R\x17svrRecvTimeBidTimestamp\x12&\n" +
 	"\x0esvrRecvTimeAsk\x18\x06 \x01(\tR\x0esvrRecvTimeAsk\x128\n" +
-	"\x17svrRecvTimeAskTimestamp\x18\a \x01(\x01R\x17svrRecvTimeAskTimestamp\"\x88\x01\n" +
+	"\x17svrRecvTimeAskTimestamp\x18\a \x01(\x01R\x17svrRecvTimeAskTimestamp\x12$\n" +
+	"\rorderBookType\x18\t \x01(\x05R\rorderBookType\"\x88\x01\n" +
 	"\bResponse\x12\x1e\n" +
 	"\aretType\x18\x01 \x02(\x05:\x04-400R\aretType\x12\x16\n" +
 	"\x06retMsg\x18\x02 \x01(\tR\x06retMsg\x12\x18\n" +

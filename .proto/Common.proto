@@ -87,4 +87,12 @@ enum Session
 	Session_OVERNIGHT = 4;
 }
 
+//事件合约预测方向
+enum PredSide
+{
+	PredSide_Unknown = 0; //未知
+	PredSide_Yes = 1; //Yes
+	PredSide_No = 2; //No
+}
+
 // SecurityFirm 已迁移到 Trd_Common.proto

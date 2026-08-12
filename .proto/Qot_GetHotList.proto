@@ -1,0 +1,82 @@
+syntax = "proto2";
+package Qot_GetHotList;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgethotlist";
+
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+
+// 排序方向
+enum SortDir {
+    SortDir_Descending = 0;     // 降序(默认)
+    SortDir_Ascending = 1;      // 升序
+}
+
+// 排序字段
+enum HotListSortField {
+    HotListSortField_Unknown = 0;       // 默认(综合热度)
+    HotListSortField_TradeHeat = 1;     // 交易热度
+    HotListSortField_SearchHeat = 2;    // 搜索热度
+    HotListSortField_NewsHeat = 3;      // 资讯热度
+    HotListSortField_AverageHeat = 4;   // 综合热度
+}
+
+// 筛选条件类型
+enum IndicatorType {
+    IndicatorType_Unknown = 0;
+    IndicatorType_MarketCap = 1;        // 市值区间
+}
+
+// 筛选条件
+message Indicator {
+    required int32 indicatorType = 1;                       // IndicatorType
+    optional Qot_OptionCommon.Interval indicatorValue = 2;  // 筛选区间
+}
+
+message C2S {
+    required int32 market = 1;             // Qot_Common.QotMarket (HK=1, US=11)
+    optional int32 sortField = 2;          // HotListSortField, 排序字段, 默认综合热度
+    optional int32 sortDir = 3;            // SortDir, 排序方向, 默认降序
+    optional int32 offset = 4;             // 起始位置, 默认0
+    optional int32 count = 5;              // 返回数量 [1,200], 默认50
+    repeated Indicator filterList = 6;     // 筛选条件(市值)
+}
+
+// 热议新闻信息
+message HotNewsInfo {
+    optional int32 newsType = 1;        // 1=社区讨论, 2=资讯
+    optional string title = 2;          // 讨论/资讯标题
+    optional string newsUrl = 3;        // 资讯URL(newsType=2时有效)
+}
+
+// 热议榜数据项
+message HotListItem {
+    required Qot_Common.Security security = 1;  // 股票
+    optional string name = 2;                    // 名称
+
+    optional double tradeHeat = 12;             // 交易热度
+    optional double tradeHeatChange = 13;       // 交易热度变化
+    optional double searchHeat = 14;            // 搜索热度
+    optional double searchHeatChange = 15;      // 搜索热度变化
+    optional double newsHeat = 16;              // 资讯热度
+    optional double newsHeatChange = 17;        // 资讯热度变化
+    optional double averageHeat = 18;           // 综合热度
+    optional double averageHeatChange = 19;     // 综合热度变化
+    optional HotNewsInfo newsInfo = 20;         // 关联新闻
+}
+
+message S2C {
+    repeated HotListItem dataList = 1;         // 数据列表
+    optional int32 allCount = 2;               // 符合条件的总数据量
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

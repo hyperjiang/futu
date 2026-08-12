@@ -102,8 +102,6 @@ const (
 	// 标的基本信息
 	UnderlyingIndicatorType_UnderlyingIndicatorType_StockList UnderlyingIndicatorType = 101 // 【确切值】指定标的范围(股票ID列表)
 	// ⚠️ 不支持: 后端 option_screener_svc 未实装, 传入会被 OpenD 入口拦截并返回错误
-	//
-	// Deprecated: Marked as deprecated in Qot_OptionScreen.proto.
 	UnderlyingIndicatorType_UnderlyingIndicatorType_Plate     UnderlyingIndicatorType = 103 // 【已废弃】指定板块, 后端不支持
 	UnderlyingIndicatorType_UnderlyingIndicatorType_IndexList UnderlyingIndicatorType = 106 // 【确切值】指定指数类型
 	// 标的期权统计
@@ -118,9 +116,9 @@ const (
 	UnderlyingIndicatorType_UnderlyingIndicatorType_IVHVRatio     UnderlyingIndicatorType = 209 // 【范围】标的IV/HV
 	UnderlyingIndicatorType_UnderlyingIndicatorType_IVHVSpread    UnderlyingIndicatorType = 210 // 【范围】标的IV-HV
 	// 行情指标
-	UnderlyingIndicatorType_UnderlyingIndicatorType_MarketCap   UnderlyingIndicatorType = 401 // 【范围】标的市值
-	UnderlyingIndicatorType_UnderlyingIndicatorType_StockPrice  UnderlyingIndicatorType = 402 // 【范围】标的最新价
-	UnderlyingIndicatorType_UnderlyingIndicatorType_ChangeRatio UnderlyingIndicatorType = 403 // 【范围】涨跌幅
+	UnderlyingIndicatorType_UnderlyingIndicatorType_MarketCap  UnderlyingIndicatorType = 401 // 【范围】标的市值
+	UnderlyingIndicatorType_UnderlyingIndicatorType_StockPrice UnderlyingIndicatorType = 402 // 【范围】标的最新价
+	UnderlyingIndicatorType_UnderlyingIndicatorType_ChangeRate UnderlyingIndicatorType = 403 // 【范围】涨跌幅
 )
 
 // Enum value maps for UnderlyingIndicatorType.
@@ -142,7 +140,7 @@ var (
 		210: "UnderlyingIndicatorType_IVHVSpread",
 		401: "UnderlyingIndicatorType_MarketCap",
 		402: "UnderlyingIndicatorType_StockPrice",
-		403: "UnderlyingIndicatorType_ChangeRatio",
+		403: "UnderlyingIndicatorType_ChangeRate",
 	}
 	UnderlyingIndicatorType_value = map[string]int32{
 		"UnderlyingIndicatorType_Unknown":       0,
@@ -161,7 +159,7 @@ var (
 		"UnderlyingIndicatorType_IVHVSpread":    210,
 		"UnderlyingIndicatorType_MarketCap":     401,
 		"UnderlyingIndicatorType_StockPrice":    402,
-		"UnderlyingIndicatorType_ChangeRatio":   403,
+		"UnderlyingIndicatorType_ChangeRate":    403,
 	}
 )
 
@@ -224,7 +222,7 @@ const (
 	OptionIndicatorType_OptionIndicatorType_BidVolume             OptionIndicatorType = 2007 // 【范围】买量
 	OptionIndicatorType_OptionIndicatorType_AskVolume             OptionIndicatorType = 2008 // 【范围】卖量
 	OptionIndicatorType_OptionIndicatorType_BidAskVolumeRatio     OptionIndicatorType = 2009 // 【范围】买卖量比
-	OptionIndicatorType_OptionIndicatorType_ChangeRatio           OptionIndicatorType = 2010 // 【范围】涨跌幅
+	OptionIndicatorType_OptionIndicatorType_ChangeRate            OptionIndicatorType = 2010 // 【范围】涨跌幅
 	OptionIndicatorType_OptionIndicatorType_Volume                OptionIndicatorType = 2011 // 【范围】成交量
 	OptionIndicatorType_OptionIndicatorType_Turnover              OptionIndicatorType = 2012 // 【范围】成交额
 	OptionIndicatorType_OptionIndicatorType_OpenInterest          OptionIndicatorType = 2013 // 【范围】持仓量
@@ -256,8 +254,6 @@ const (
 	OptionIndicatorType_OptionIndicatorType_SellAnnualizedReturn  OptionIndicatorType = 3021 // 【范围】卖出年化收益率
 	OptionIndicatorType_OptionIndicatorType_IntervalReturn        OptionIndicatorType = 3022 // 【范围】卖出区间收益率
 	// ⚠️ 已废弃: 不支持 filter/sort/retrieve, 传入会报错。新代码请使用 BuyToBep(3011)。
-	//
-	// Deprecated: Marked as deprecated in Qot_OptionScreen.proto.
 	OptionIndicatorType_OptionIndicatorType_BuyBreakEvenPoint OptionIndicatorType = 3023 // 已废弃, 传入会报错
 )
 
@@ -280,7 +276,7 @@ var (
 		2007: "OptionIndicatorType_BidVolume",
 		2008: "OptionIndicatorType_AskVolume",
 		2009: "OptionIndicatorType_BidAskVolumeRatio",
-		2010: "OptionIndicatorType_ChangeRatio",
+		2010: "OptionIndicatorType_ChangeRate",
 		2011: "OptionIndicatorType_Volume",
 		2012: "OptionIndicatorType_Turnover",
 		2013: "OptionIndicatorType_OpenInterest",
@@ -328,7 +324,7 @@ var (
 		"OptionIndicatorType_BidVolume":             2007,
 		"OptionIndicatorType_AskVolume":             2008,
 		"OptionIndicatorType_BidAskVolumeRatio":     2009,
-		"OptionIndicatorType_ChangeRatio":           2010,
+		"OptionIndicatorType_ChangeRate":            2010,
 		"OptionIndicatorType_Volume":                2011,
 		"OptionIndicatorType_Turnover":              2012,
 		"OptionIndicatorType_OpenInterest":          2013,
@@ -845,7 +841,7 @@ type UnderlyingInfo struct {
 	IvPercentile  *float64               `protobuf:"fixed64,5,opt,name=ivPercentile" json:"ivPercentile,omitempty"` // IV Percentile
 	MarketCap     *float64               `protobuf:"fixed64,6,opt,name=marketCap" json:"marketCap,omitempty"`       // 市值
 	Price         *float64               `protobuf:"fixed64,7,opt,name=price" json:"price,omitempty"`               // 标的价格
-	ChangeRatio   *float64               `protobuf:"fixed64,8,opt,name=changeRatio" json:"changeRatio,omitempty"`   // 涨跌幅
+	ChangeRate    *float64               `protobuf:"fixed64,8,opt,name=changeRate" json:"changeRate,omitempty"`     // 涨跌幅（该字段为百分比字段，默认不展示%，如20实际对应20%）
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -929,9 +925,9 @@ func (x *UnderlyingInfo) GetPrice() float64 {
 	return 0
 }
 
-func (x *UnderlyingInfo) GetChangeRatio() float64 {
-	if x != nil && x.ChangeRatio != nil {
-		return *x.ChangeRatio
+func (x *UnderlyingInfo) GetChangeRate() float64 {
+	if x != nil && x.ChangeRate != nil {
+		return *x.ChangeRate
 	}
 	return 0
 }
@@ -956,7 +952,7 @@ type OptionScreenItem struct {
 	BidAskSpread          *float64 `protobuf:"fixed64,24,opt,name=bidAskSpread" json:"bidAskSpread,omitempty"`                   // 买卖价差
 	BidVolume             *int64   `protobuf:"varint,25,opt,name=bidVolume" json:"bidVolume,omitempty"`                          // 买量
 	AskVolume             *int64   `protobuf:"varint,26,opt,name=askVolume" json:"askVolume,omitempty"`                          // 卖量
-	ChangeRatio           *float64 `protobuf:"fixed64,27,opt,name=changeRatio" json:"changeRatio,omitempty"`                     // 涨跌幅
+	ChangeRate            *float64 `protobuf:"fixed64,27,opt,name=changeRate" json:"changeRate,omitempty"`                       // 涨跌幅（该字段为百分比字段，默认不展示%，如20实际对应20%）
 	Volume                *int64   `protobuf:"varint,28,opt,name=volume" json:"volume,omitempty"`                                // 成交量
 	Turnover              *float64 `protobuf:"fixed64,29,opt,name=turnover" json:"turnover,omitempty"`                           // 成交额
 	OpenInterest          *int64   `protobuf:"varint,30,opt,name=openInterest" json:"openInterest,omitempty"`                    // 持仓量
@@ -976,8 +972,6 @@ type OptionScreenItem struct {
 	ItmProbability    *float64 `protobuf:"fixed64,48,opt,name=itmProbability" json:"itmProbability,omitempty"`       // 价内概率
 	// ⚠️ 历史字段: 后端未返回对应数据, 已弃用, 始终不填充
 	// 新代码请用 buyToBep (字段 53)
-	//
-	// Deprecated: Marked as deprecated in Qot_OptionScreen.proto.
 	BuyBreakEvenPoint *float64 `protobuf:"fixed64,49,opt,name=buyBreakEvenPoint" json:"buyBreakEvenPoint,omitempty"` // 已弃用, 始终为空
 	// 标的信息
 	UnderlyingInfo *UnderlyingInfo `protobuf:"bytes,50,opt,name=underlyingInfo" json:"underlyingInfo,omitempty"` // 标的信息
@@ -1141,9 +1135,9 @@ func (x *OptionScreenItem) GetAskVolume() int64 {
 	return 0
 }
 
-func (x *OptionScreenItem) GetChangeRatio() float64 {
-	if x != nil && x.ChangeRatio != nil {
-		return *x.ChangeRatio
+func (x *OptionScreenItem) GetChangeRate() float64 {
+	if x != nil && x.ChangeRate != nil {
+		return *x.ChangeRate
 	}
 	return 0
 }
@@ -1260,7 +1254,6 @@ func (x *OptionScreenItem) GetItmProbability() float64 {
 	return 0
 }
 
-// Deprecated: Marked as deprecated in Qot_OptionScreen.proto.
 func (x *OptionScreenItem) GetBuyBreakEvenPoint() float64 {
 	if x != nil && x.BuyBreakEvenPoint != nil {
 		return *x.BuyBreakEvenPoint
@@ -1669,7 +1662,7 @@ const file_Qot_OptionScreen_proto_rawDesc = "" +
 	"\vplateIdList\x18\x02 \x03(\tR\vplateIdList\"J\n" +
 	"\x04Sort\x12$\n" +
 	"\rindicatorType\x18\x01 \x02(\x05R\rindicatorType\x12\x1c\n" +
-	"\tdirection\x18\x02 \x02(\x05R\tdirection\"\xdc\x01\n" +
+	"\tdirection\x18\x02 \x02(\x05R\tdirection\"\xda\x01\n" +
 	"\x0eUnderlyingInfo\x12\x18\n" +
 	"\astockID\x18\x01 \x01(\x04R\astockID\x12\x0e\n" +
 	"\x02iv\x18\x02 \x01(\x01R\x02iv\x12\x0e\n" +
@@ -1677,8 +1670,10 @@ const file_Qot_OptionScreen_proto_rawDesc = "" +
 	"\x06ivRank\x18\x04 \x01(\x01R\x06ivRank\x12\"\n" +
 	"\fivPercentile\x18\x05 \x01(\x01R\fivPercentile\x12\x1c\n" +
 	"\tmarketCap\x18\x06 \x01(\x01R\tmarketCap\x12\x14\n" +
-	"\x05price\x18\a \x01(\x01R\x05price\x12 \n" +
-	"\vchangeRatio\x18\b \x01(\x01R\vchangeRatio\"\xbc\r\n" +
+	"\x05price\x18\a \x01(\x01R\x05price\x12\x1e\n" +
+	"\n" +
+	"changeRate\x18\b \x01(\x01R\n" +
+	"changeRate\"\xb6\r\n" +
 	"\x10OptionScreenItem\x120\n" +
 	"\bsecurity\x18\x01 \x01(\v2\x14.Qot_Common.SecurityR\bsecurity\x12\x1e\n" +
 	"\n" +
@@ -1703,8 +1698,10 @@ const file_Qot_OptionScreen_proto_rawDesc = "" +
 	"\baskPrice\x18\x17 \x01(\x01R\baskPrice\x12\"\n" +
 	"\fbidAskSpread\x18\x18 \x01(\x01R\fbidAskSpread\x12\x1c\n" +
 	"\tbidVolume\x18\x19 \x01(\x03R\tbidVolume\x12\x1c\n" +
-	"\taskVolume\x18\x1a \x01(\x03R\taskVolume\x12 \n" +
-	"\vchangeRatio\x18\x1b \x01(\x01R\vchangeRatio\x12\x16\n" +
+	"\taskVolume\x18\x1a \x01(\x03R\taskVolume\x12\x1e\n" +
+	"\n" +
+	"changeRate\x18\x1b \x01(\x01R\n" +
+	"changeRate\x12\x16\n" +
 	"\x06volume\x18\x1c \x01(\x03R\x06volume\x12\x1a\n" +
 	"\bturnover\x18\x1d \x01(\x01R\bturnover\x12\"\n" +
 	"\fopenInterest\x18\x1e \x01(\x03R\fopenInterest\x12,\n" +
@@ -1722,8 +1719,8 @@ const file_Qot_OptionScreen_proto_rawDesc = "" +
 	"\x03rho\x18- \x01(\x01R\x03rho\x12$\n" +
 	"\rleverageRatio\x18. \x01(\x01R\rleverageRatio\x12*\n" +
 	"\x10effectiveGearing\x18/ \x01(\x01R\x10effectiveGearing\x12&\n" +
-	"\x0eitmProbability\x180 \x01(\x01R\x0eitmProbability\x120\n" +
-	"\x11buyBreakEvenPoint\x181 \x01(\x01B\x02\x18\x01R\x11buyBreakEvenPoint\x12H\n" +
+	"\x0eitmProbability\x180 \x01(\x01R\x0eitmProbability\x12,\n" +
+	"\x11buyBreakEvenPoint\x181 \x01(\x01R\x11buyBreakEvenPoint\x12H\n" +
 	"\x0eunderlyingInfo\x182 \x01(\v2 .Qot_OptionScreen.UnderlyingInfoR\x0eunderlyingInfo\x12,\n" +
 	"\x11historyVolatility\x183 \x01(\x01R\x11historyVolatility\x12\x1c\n" +
 	"\tivHvRatio\x184 \x01(\x01R\tivHvRatio\x12\x1a\n" +
@@ -1766,11 +1763,11 @@ const file_Qot_OptionScreen_proto_rawDesc = "" +
 	"\x17MarketCategory_HK_Stock\x10\x03\x12\x1b\n" +
 	"\x17MarketCategory_HK_Index\x10\x04\x12\x1b\n" +
 	"\x17MarketCategory_JP_Stock\x10\x05\x12\x1b\n" +
-	"\x17MarketCategory_JP_Index\x10\x06*\xb4\x05\n" +
+	"\x17MarketCategory_JP_Index\x10\x06*\xaf\x05\n" +
 	"\x17UnderlyingIndicatorType\x12#\n" +
 	"\x1fUnderlyingIndicatorType_Unknown\x10\x00\x12%\n" +
-	"!UnderlyingIndicatorType_StockList\x10e\x12%\n" +
-	"\x1dUnderlyingIndicatorType_Plate\x10g\x1a\x02\b\x01\x12%\n" +
+	"!UnderlyingIndicatorType_StockList\x10e\x12!\n" +
+	"\x1dUnderlyingIndicatorType_Plate\x10g\x12%\n" +
 	"!UnderlyingIndicatorType_IndexList\x10j\x12#\n" +
 	"\x1eUnderlyingIndicatorType_Volume\x10\xc9\x01\x12)\n" +
 	"$UnderlyingIndicatorType_OpenInterest\x10\xca\x01\x12\x1f\n" +
@@ -1783,8 +1780,8 @@ const file_Qot_OptionScreen_proto_rawDesc = "" +
 	"!UnderlyingIndicatorType_IVHVRatio\x10\xd1\x01\x12'\n" +
 	"\"UnderlyingIndicatorType_IVHVSpread\x10\xd2\x01\x12&\n" +
 	"!UnderlyingIndicatorType_MarketCap\x10\x91\x03\x12'\n" +
-	"\"UnderlyingIndicatorType_StockPrice\x10\x92\x03\x12(\n" +
-	"#UnderlyingIndicatorType_ChangeRatio\x10\x93\x03*\xf9\r\n" +
+	"\"UnderlyingIndicatorType_StockPrice\x10\x92\x03\x12'\n" +
+	"\"UnderlyingIndicatorType_ChangeRate\x10\x93\x03*\xf4\r\n" +
 	"\x13OptionIndicatorType\x12\x1f\n" +
 	"\x1bOptionIndicatorType_Unknown\x10\x00\x12$\n" +
 	"\x1fOptionIndicatorType_StrikePrice\x10\xe9\a\x12 \n" +
@@ -1801,8 +1798,8 @@ const file_Qot_OptionScreen_proto_rawDesc = "" +
 	" OptionIndicatorType_BidAskSpread\x10\xd6\x0f\x12\"\n" +
 	"\x1dOptionIndicatorType_BidVolume\x10\xd7\x0f\x12\"\n" +
 	"\x1dOptionIndicatorType_AskVolume\x10\xd8\x0f\x12*\n" +
-	"%OptionIndicatorType_BidAskVolumeRatio\x10\xd9\x0f\x12$\n" +
-	"\x1fOptionIndicatorType_ChangeRatio\x10\xda\x0f\x12\x1f\n" +
+	"%OptionIndicatorType_BidAskVolumeRatio\x10\xd9\x0f\x12#\n" +
+	"\x1eOptionIndicatorType_ChangeRate\x10\xda\x0f\x12\x1f\n" +
 	"\x1aOptionIndicatorType_Volume\x10\xdb\x0f\x12!\n" +
 	"\x1cOptionIndicatorType_Turnover\x10\xdc\x0f\x12%\n" +
 	" OptionIndicatorType_OpenInterest\x10\xdd\x0f\x12.\n" +
@@ -1830,8 +1827,8 @@ const file_Qot_OptionScreen_proto_rawDesc = "" +
 	"\"OptionIndicatorType_ITMProbability\x10\xcb\x17\x12'\n" +
 	"\"OptionIndicatorType_OTMProbability\x10\xcc\x17\x12-\n" +
 	"(OptionIndicatorType_SellAnnualizedReturn\x10\xcd\x17\x12'\n" +
-	"\"OptionIndicatorType_IntervalReturn\x10\xce\x17\x12.\n" +
-	"%OptionIndicatorType_BuyBreakEvenPoint\x10\xcf\x17\x1a\x02\b\x01BD\n" +
+	"\"OptionIndicatorType_IntervalReturn\x10\xce\x17\x12*\n" +
+	"%OptionIndicatorType_BuyBreakEvenPoint\x10\xcf\x17BD\n" +
 	"\x13com.futu.openapi.pbZ-github.com/hyperjiang/futu/pb/qotoptionscreen"
 
 var (

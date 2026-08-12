@@ -1,0 +1,36 @@
+syntax = "proto2";
+package Qot_SubEventContract;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotsubeventcontract";
+
+import "Qot_Common.proto";
+
+// 事件合约订阅/反订阅
+message C2S
+{
+	repeated Qot_Common.Security securityList = 1;       // 合约标的（market+code），订阅语义与通用订阅一致
+	repeated int32 subTypeList = 2;                     // Qot_Common.SubType，复用通用订阅类型
+	required bool isSubOrUnSub = 3;                     // true订阅/false反订阅
+	optional bool isRegOrUnRegPush = 4;                 // 是否注册/反注册推送
+	optional bool isFirstPush = 5;                      // 注册后是否首推已有数据，默认true
+	optional bool isUnsubAll = 6;                       // true时忽略其他参数，取消该连接所有EC订阅
+	repeated Qot_Common.EC_KlineSource klineSource = 7; // K线来源列表（None/OrderBookYes），订阅KL_*时生效，不填默认[None]
+	optional Qot_Common.QotHeader header = 100;         // 行情公共参数头
+}
+
+message S2C
+{
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32 retType = 1 [default = -400];
+	optional string retMsg = 2;
+	optional int32 errCode = 3;
+	optional S2C s2c = 4;
+}

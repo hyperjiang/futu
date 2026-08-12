@@ -1,0 +1,66 @@
+syntax = "proto2";
+package Qot_GetOptionEventAlert;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptioneventalert";
+
+import "Common.proto";
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+import "Qot_GetOptionEvent.proto";
+
+
+// 告警项
+message EventAlertItem {
+    // ---- 标识 ----
+    optional int64 key = 1;                          // 告警唯一标识（新增时不传，修改/删除时必传）
+    optional bool enable = 2;                        // 告警开关（true=开启, false=暂停）
+
+    // ---- 告警范围（三选一，全不填或填多个后台拒绝） ----
+    optional int32 optionMarket = 10;                // OptionMarket 市场品类
+    optional string watchlistGroupName = 11;          // 自选股分组名称
+    optional Qot_Common.Security underlying = 12;    // 指定标的
+
+    // ---- 枚举筛选条件 ----
+    optional int32 optionType = 20;                  // 期权类型：CALL(1)/PUT(2)，不传默认全部
+    repeated int32 sideTypeList = 21;                // 成交方向：BUY(1)/SELL(2)/NEUTRAL(3)（复用 TickerType），不传默认全部
+    repeated int32 orderTypeList = 22;               // 订单类型（Qot_GetOptionEvent.OptionOrderType），不传默认全部
+
+    // ---- 范围筛选条件（Interval 复用 Qot_GetOptionEvent 定义） ----
+    optional Qot_OptionCommon.Interval marketCapRange = 30;    // 标的市值范围
+    optional Qot_OptionCommon.Interval expiryDaysRange = 31;   // 距到期天数范围
+    optional Qot_OptionCommon.Interval priceRange = 32;        // 异动成交价范围
+    optional Qot_OptionCommon.Interval sizeRange = 33;         // 异动成交量范围（张）
+    optional Qot_OptionCommon.Interval premiumRange = 34;      // 异动成交额范围
+    optional Qot_OptionCommon.Interval ivRange = 35;           // 隐含波动率范围(%)
+
+    // ---- 财报时间筛选（必须同时传入 begin 和 end，且 end >= begin） ----
+    optional string earningsDateBegin = 41;          // 财报时间筛选起始日期，格式 yyyy-MM-dd，必须与 earningsDateEnd 同时传入
+    optional string earningsDateEnd = 42;            // 财报时间筛选截止日期，格式 yyyy-MM-dd，必须与 earningsDateBegin 同时传入，且不能小于起始日期
+
+    // ---- 备注 ----
+    optional string note = 50;                       // 备注（最多 20 字）
+}
+
+// ====================== 请求 ======================
+message C2S {
+    optional int32 count = 1;                // 每页数量，范围 [1, 500]，必传（分页查询时）
+    optional string page = 2;              // 游标分页标记，首次为空字符串
+}
+
+// ====================== 响应 ======================
+message S2C {
+    repeated EventAlertItem alertList = 1;   // 告警项列表（按创建时间降序）
+    optional string nextPage = 2;          // 下一页游标（空字符串=无下一页）
+    optional int32 allCount = 3;                // 告警项总数
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; //RetType，返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

@@ -364,6 +364,10 @@ type QotRight struct {
 	ShQotRight            *int32                 `protobuf:"varint,21,opt,name=shQotRight" json:"shQotRight,omitempty"`                       //上海A股行情权限, Qot_Common.QotRight
 	SzQotRight            *int32                 `protobuf:"varint,22,opt,name=szQotRight" json:"szQotRight,omitempty"`                       //深圳A股行情权限, Qot_Common.QotRight
 	CcQotRight            *int32                 `protobuf:"varint,23,opt,name=ccQotRight" json:"ccQotRight,omitempty"`                       //加密货币市场行情权限, Qot_Common.QotRight
+	SgStockQotRight       *int32                 `protobuf:"varint,24,opt,name=sgStockQotRight" json:"sgStockQotRight,omitempty"`             //新加坡股票行情权限, Qot_Common.QotRight
+	MyStockQotRight       *int32                 `protobuf:"varint,25,opt,name=myStockQotRight" json:"myStockQotRight,omitempty"`             //马来西亚股票行情权限, Qot_Common.QotRight
+	JpStockQotRight       *int32                 `protobuf:"varint,26,opt,name=jpStockQotRight" json:"jpStockQotRight,omitempty"`             //日本市场股票行情权限, Qot_Common.QotRight
+	EcQotRight            *int32                 `protobuf:"varint,27,opt,name=ecQotRight" json:"ecQotRight,omitempty"`                       //事件合约(预测市场)行情权限, Qot_Common.QotRight
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -534,6 +538,34 @@ func (x *QotRight) GetSzQotRight() int32 {
 func (x *QotRight) GetCcQotRight() int32 {
 	if x != nil && x.CcQotRight != nil {
 		return *x.CcQotRight
+	}
+	return 0
+}
+
+func (x *QotRight) GetSgStockQotRight() int32 {
+	if x != nil && x.SgStockQotRight != nil {
+		return *x.SgStockQotRight
+	}
+	return 0
+}
+
+func (x *QotRight) GetMyStockQotRight() int32 {
+	if x != nil && x.MyStockQotRight != nil {
+		return *x.MyStockQotRight
+	}
+	return 0
+}
+
+func (x *QotRight) GetJpStockQotRight() int32 {
+	if x != nil && x.JpStockQotRight != nil {
+		return *x.JpStockQotRight
+	}
+	return 0
+}
+
+func (x *QotRight) GetEcQotRight() int32 {
+	if x != nil && x.EcQotRight != nil {
+		return *x.EcQotRight
 	}
 	return 0
 }
@@ -875,7 +907,7 @@ const file_Notify_proto_rawDesc = "" +
 	"qotLogined\x12\x1e\n" +
 	"\n" +
 	"trdLogined\x18\x02 \x02(\bR\n" +
-	"trdLogined\"\xda\x06\n" +
+	"trdLogined\"\xf8\a\n" +
 	"\bQotRight\x12\x1e\n" +
 	"\n" +
 	"hkQotRight\x18\x04 \x02(\x05R\n" +
@@ -909,7 +941,13 @@ const file_Notify_proto_rawDesc = "" +
 	"szQotRight\x12\x1e\n" +
 	"\n" +
 	"ccQotRight\x18\x17 \x01(\x05R\n" +
-	"ccQotRight\"&\n" +
+	"ccQotRight\x12(\n" +
+	"\x0fsgStockQotRight\x18\x18 \x01(\x05R\x0fsgStockQotRight\x12(\n" +
+	"\x0fmyStockQotRight\x18\x19 \x01(\x05R\x0fmyStockQotRight\x12(\n" +
+	"\x0fjpStockQotRight\x18\x1a \x01(\x05R\x0fjpStockQotRight\x12\x1e\n" +
+	"\n" +
+	"ecQotRight\x18\x1b \x01(\x05R\n" +
+	"ecQotRight\"&\n" +
 	"\bAPILevel\x12\x1a\n" +
 	"\bapiLevel\x18\x03 \x02(\tR\bapiLevel\"N\n" +
 	"\bAPIQuota\x12\x1a\n" +

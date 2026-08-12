@@ -1,0 +1,48 @@
+syntax = "proto2";
+package Qot_GetEventContractSnapshot;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgeteventcontractsnapshot";
+
+import "Qot_Common.proto";
+
+// 快照数据项
+message SnapshotItem {
+    required Qot_Common.Security code = 1;              // 合约代码
+    optional string name = 2;                           // 合约名称（多语言）
+    optional Qot_Common.Security event_code = 3;        // 所属 Event 标的
+    optional string yes_sub_title = 4;                  // YES 子标题（多语言）
+    optional string no_sub_title = 5;                   // NO 子标题（多语言）
+    optional Qot_Common.EC_Status status = 6;           // 合约状态
+    optional double price = 7;                          // 最新价格
+    optional double cumulative_volume = 8;               // 累计成交量
+    optional double yes_bid = 9;                        // YES 买一
+    optional double yes_bid_size = 10;                  // YES 买一量
+    optional double yes_ask = 11;                       // YES 卖一
+    optional double yes_ask_size = 12;                  // YES 卖一量
+    optional double no_bid = 13;                        // NO 买一
+    optional double no_bid_size = 14;                   // NO 买一量
+    optional double no_ask = 15;                        // NO 卖一
+    optional double no_ask_size = 16;                   // NO 卖一量
+    optional string last_trade_time = 17;               // 最新一笔成交时间（yyyy-MM-dd HH:mm:ss）
+    optional double volume_24h = 18;                    // 24h 成交量
+    optional double open_interest = 19;                 // 持仓量
+}
+
+message C2S {
+    repeated Qot_Common.Security securityList = 1;  // 合约标的列表
+}
+
+message S2C {
+    repeated SnapshotItem snapshotList = 1;  // 快照列表
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

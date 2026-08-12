@@ -6,6 +6,10 @@ import (
 	"github.com/hyperjiang/futu/adapt"
 	"github.com/hyperjiang/futu/pb/getglobalstate"
 	"github.com/hyperjiang/futu/pb/qotcommon"
+	"github.com/hyperjiang/futu/pb/qotfiltercompetition"
+	"github.com/hyperjiang/futu/pb/qotgetarkactivetransaction"
+	"github.com/hyperjiang/futu/pb/qotgetarkfundholding"
+	"github.com/hyperjiang/futu/pb/qotgetarkstockdynamic"
 	"github.com/hyperjiang/futu/pb/qotgetbasicqot"
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetcapitaldistribution"
@@ -18,59 +22,124 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetcorporateactionsdividends"
 	"github.com/hyperjiang/futu/pb/qotgetcorporateactionsstocksplits"
 	"github.com/hyperjiang/futu/pb/qotgetdailyshortvolume"
+	"github.com/hyperjiang/futu/pb/qotgetdividendcalendar"
+	"github.com/hyperjiang/futu/pb/qotgetdividendrank"
+	"github.com/hyperjiang/futu/pb/qotgetearningsbeatrank"
+	"github.com/hyperjiang/futu/pb/qotgetearningscalendar"
+	"github.com/hyperjiang/futu/pb/qotgeteconomiccalendar"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontract"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractcategory"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractcombolist"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractcomborfq"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontracteventlist"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractkline"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractmilestonelist"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractorderbook"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractserieslist"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractsnapshot"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractticker"
+	"github.com/hyperjiang/futu/pb/qotgetfedwatchdotplot"
+	"github.com/hyperjiang/futu/pb/qotgetfedwatchtargetrate"
 	"github.com/hyperjiang/futu/pb/qotgetfinancialrevenuebreakdown"
 	"github.com/hyperjiang/futu/pb/qotgetfinancialsearnpricehist"
 	"github.com/hyperjiang/futu/pb/qotgetfinancialsearnpricemove"
 	"github.com/hyperjiang/futu/pb/qotgetfinancialsstatements"
 	"github.com/hyperjiang/futu/pb/qotgetfutureinfo"
+	"github.com/hyperjiang/futu/pb/qotgetheatmapdata"
+	"github.com/hyperjiang/futu/pb/qotgethighdividendsoerank"
+	"github.com/hyperjiang/futu/pb/qotgethotlist"
+	"github.com/hyperjiang/futu/pb/qotgetindicatorlist"
+	"github.com/hyperjiang/futu/pb/qotgetindustrialchainbyplate"
+	"github.com/hyperjiang/futu/pb/qotgetindustrialchaindetail"
+	"github.com/hyperjiang/futu/pb/qotgetindustrialchainlist"
+	"github.com/hyperjiang/futu/pb/qotgetindustrialplateinfo"
+	"github.com/hyperjiang/futu/pb/qotgetindustrialplatestock"
 	"github.com/hyperjiang/futu/pb/qotgetinsiderholderlist"
 	"github.com/hyperjiang/futu/pb/qotgetinsidertradelist"
+	"github.com/hyperjiang/futu/pb/qotgetinstitutiondistribution"
+	"github.com/hyperjiang/futu/pb/qotgetinstitutionholdingchange"
+	"github.com/hyperjiang/futu/pb/qotgetinstitutionholdinglist"
+	"github.com/hyperjiang/futu/pb/qotgetinstitutionlist"
+	"github.com/hyperjiang/futu/pb/qotgetinstitutionprofile"
 	"github.com/hyperjiang/futu/pb/qotgetipolist"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
+	"github.com/hyperjiang/futu/pb/qotgetmacroindicatorhistory"
+	"github.com/hyperjiang/futu/pb/qotgetmacroindicatorlist"
 	"github.com/hyperjiang/futu/pb/qotgetmarketstate"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
+	"github.com/hyperjiang/futu/pb/qotgetoptionearningsscreener"
+	"github.com/hyperjiang/futu/pb/qotgetoptionevent"
+	"github.com/hyperjiang/futu/pb/qotgetoptioneventalert"
 	"github.com/hyperjiang/futu/pb/qotgetoptionexerciseprobability"
 	"github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate"
+	"github.com/hyperjiang/futu/pb/qotgetoptionmarketstatistic"
+	"github.com/hyperjiang/futu/pb/qotgetoptionquote"
+	"github.com/hyperjiang/futu/pb/qotgetoptionrank"
+	"github.com/hyperjiang/futu/pb/qotgetoptionsellerscreener"
+	"github.com/hyperjiang/futu/pb/qotgetoptionstrategy"
+	"github.com/hyperjiang/futu/pb/qotgetoptionstrategyanalysis"
+	"github.com/hyperjiang/futu/pb/qotgetoptionstrategyspreads"
+	"github.com/hyperjiang/futu/pb/qotgetoptionunderlyinghisstatistic"
+	"github.com/hyperjiang/futu/pb/qotgetoptionunderlyinghisvolatility"
+	"github.com/hyperjiang/futu/pb/qotgetoptionunderlyingoverview"
+	"github.com/hyperjiang/futu/pb/qotgetoptionunderlyingrank"
 	"github.com/hyperjiang/futu/pb/qotgetoptionvolatility"
+	"github.com/hyperjiang/futu/pb/qotgetoptionzerodtecontract"
+	"github.com/hyperjiang/futu/pb/qotgetoptionzerodtescreener"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
 	"github.com/hyperjiang/futu/pb/qotgetownerplate"
+	"github.com/hyperjiang/futu/pb/qotgetperiodchangerank"
 	"github.com/hyperjiang/futu/pb/qotgetplatesecurity"
 	"github.com/hyperjiang/futu/pb/qotgetplateset"
 	"github.com/hyperjiang/futu/pb/qotgetpricereminder"
+	"github.com/hyperjiang/futu/pb/qotgetratingchange"
 	"github.com/hyperjiang/futu/pb/qotgetreference"
 	"github.com/hyperjiang/futu/pb/qotgetresearchanalystconsensus"
 	"github.com/hyperjiang/futu/pb/qotgetresearchmorningstarrpt"
 	"github.com/hyperjiang/futu/pb/qotgetresearchratingsummary"
+	"github.com/hyperjiang/futu/pb/qotgetrisefalldistr"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
+	"github.com/hyperjiang/futu/pb/qotgetsearchnews"
+	"github.com/hyperjiang/futu/pb/qotgetsearchquote"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
 	"github.com/hyperjiang/futu/pb/qotgetshareholdersholderdetail"
 	"github.com/hyperjiang/futu/pb/qotgetshareholdersholdingchanges"
 	"github.com/hyperjiang/futu/pb/qotgetshareholdersinstitutional"
 	"github.com/hyperjiang/futu/pb/qotgetshareholdersoverview"
 	"github.com/hyperjiang/futu/pb/qotgetshortinterest"
+	"github.com/hyperjiang/futu/pb/qotgetshortsellingrank"
 	"github.com/hyperjiang/futu/pb/qotgetstaticinfo"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
+	"github.com/hyperjiang/futu/pb/qotgettopmoverrank"
 	"github.com/hyperjiang/futu/pb/qotgettoptenbuysellbrokers"
+	"github.com/hyperjiang/futu/pb/qotgetusafterhoursrank"
 	"github.com/hyperjiang/futu/pb/qotgetusersecurity"
 	"github.com/hyperjiang/futu/pb/qotgetusersecuritygroup"
+	"github.com/hyperjiang/futu/pb/qotgetusovernightrank"
+	"github.com/hyperjiang/futu/pb/qotgetuspremarketrank"
 	"github.com/hyperjiang/futu/pb/qotgetvaluationdetail"
 	"github.com/hyperjiang/futu/pb/qotgetvaluationplatestocklist"
 	"github.com/hyperjiang/futu/pb/qotgetwarrant"
 	"github.com/hyperjiang/futu/pb/qotmodifyusersecurity"
 	"github.com/hyperjiang/futu/pb/qotoptionscreen"
+	"github.com/hyperjiang/futu/pb/qotrequesthistoryeventcontractkl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
+	"github.com/hyperjiang/futu/pb/qotrequestindicatorcalc"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
 	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
+	"github.com/hyperjiang/futu/pb/qotsetoptioneventalert"
 	"github.com/hyperjiang/futu/pb/qotsetpricereminder"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
 	"github.com/hyperjiang/futu/pb/qotstockscreen"
 	"github.com/hyperjiang/futu/pb/qotsub"
+	"github.com/hyperjiang/futu/pb/qotsubeventcontract"
 	"github.com/hyperjiang/futu/pb/qotwarrantscreen"
 	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/hyperjiang/futu/pb/trdflowsummary"
 	"github.com/hyperjiang/futu/pb/trdgetacclist"
+	"github.com/hyperjiang/futu/pb/trdgetcombomaxtrdqtys"
 	"github.com/hyperjiang/futu/pb/trdgetfunds"
 	"github.com/hyperjiang/futu/pb/trdgethistoryorderfilllist"
 	"github.com/hyperjiang/futu/pb/trdgethistoryorderlist"
@@ -81,6 +150,7 @@ import (
 	"github.com/hyperjiang/futu/pb/trdgetorderlist"
 	"github.com/hyperjiang/futu/pb/trdgetpositionlist"
 	"github.com/hyperjiang/futu/pb/trdmodifyorder"
+	"github.com/hyperjiang/futu/pb/trdplacecomboorder"
 	"github.com/hyperjiang/futu/pb/trdplaceorder"
 	"github.com/hyperjiang/futu/pb/trdsubaccpush"
 	"github.com/hyperjiang/futu/pb/trdunlocktrade"
@@ -1370,4 +1440,1081 @@ func (sdk *SDK) WarrantScreenWithContext(ctx context.Context, opts ...adapt.Opti
 	}
 
 	return sdk.cli.QotWarrantScreen(ctx, &c2s)
+}
+
+// GetComboMaxTrdQtysWithContext 2112 - gets the max tradable quantity of a combo order with context.
+//
+// header: trading header
+//
+// qty: quantity
+//
+// orderType: order type, see adapt.OrderType_*
+func (sdk *SDK) GetComboMaxTrdQtysWithContext(ctx context.Context, header *trdcommon.TrdHeader, qty float64, orderType int32, opts ...adapt.Option) (*trdgetcombomaxtrdqtys.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["header"] = header
+	o["qty"] = qty
+	o["orderType"] = orderType
+
+	var c2s trdgetcombomaxtrdqtys.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.TrdGetComboMaxTrdQtys(ctx, &c2s)
+}
+
+// PlaceComboOrderWithContext 2227 - places the combo order with context.
+//
+// header: trading header
+//
+// qty: quantity
+//
+// orderType: order type, see adapt.OrderType_*
+func (sdk *SDK) PlaceComboOrderWithContext(ctx context.Context, header *trdcommon.TrdHeader, qty float64, orderType int32, opts ...adapt.Option) (*trdplacecomboorder.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["header"] = header
+	o["qty"] = qty
+	o["orderType"] = orderType
+
+	var c2s trdplacecomboorder.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.TrdPlaceComboOrder(ctx, &c2s)
+}
+
+// GetOptionQuoteWithContext 3255 - gets the option quote with context.
+func (sdk *SDK) GetOptionQuoteWithContext(ctx context.Context, opts ...adapt.Option) (*qotgetoptionquote.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetoptionquote.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionQuote(ctx, &c2s)
+}
+
+// GetOptionStrategyWithContext 3256 - gets the option strategy with context.
+//
+// code: security code, e.g. HK.00700
+//
+// optionStrategy: option strategy type
+func (sdk *SDK) GetOptionStrategyWithContext(ctx context.Context, code string, optionStrategy int32, opts ...adapt.Option) (*qotgetoptionstrategy.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["owner"] = adapt.NewSecurity(code)
+	o["option_strategy"] = optionStrategy
+
+	var c2s qotgetoptionstrategy.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionStrategy(ctx, &c2s)
+}
+
+// GetOptionStrategyAnalysisWithContext 3257 - gets the option strategy analysis with context.
+func (sdk *SDK) GetOptionStrategyAnalysisWithContext(ctx context.Context, opts ...adapt.Option) (*qotgetoptionstrategyanalysis.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetoptionstrategyanalysis.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionStrategyAnalysis(ctx, &c2s)
+}
+
+// GetOptionStrategySpreadWithContext 3258 - gets the option strategy spread with context.
+//
+// code: security code, e.g. HK.00700
+//
+// optionStrategy: option strategy type
+func (sdk *SDK) GetOptionStrategySpreadWithContext(ctx context.Context, code string, optionStrategy int32, opts ...adapt.Option) (*qotgetoptionstrategyspreads.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["owner"] = adapt.NewSecurity(code)
+	o["option_strategy"] = optionStrategy
+
+	var c2s qotgetoptionstrategyspreads.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionStrategySpread(ctx, &c2s)
+}
+
+// GetIndicatorListWithContext 3259 - gets the indicator list with context.
+func (sdk *SDK) GetIndicatorListWithContext(ctx context.Context, opts ...adapt.Option) (*qotgetindicatorlist.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetindicatorlist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetIndicatorList(ctx, &c2s)
+}
+
+// RequestIndicatorCalcWithContext 3260 - requests an asynchronous indicator calculation with context.
+//
+// shortName: short name of the indicator
+//
+// langType: script language type of the indicator
+//
+// data: indicator calculation data
+func (sdk *SDK) RequestIndicatorCalcWithContext(ctx context.Context, shortName string, langType int32, data *qotrequestindicatorcalc.IndicatorCalcData, opts ...adapt.Option) (*qotrequestindicatorcalc.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["shortName"] = shortName
+	o["langType"] = langType
+	o["data"] = data
+
+	var c2s qotrequestindicatorcalc.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotRequestIndicatorCalc(ctx, &c2s)
+}
+
+// GetSearchQuoteWithContext 3262 - gets the search quote with context.
+//
+// keyword: search keyword
+func (sdk *SDK) GetSearchQuoteWithContext(ctx context.Context, keyword string, opts ...adapt.Option) (*qotgetsearchquote.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["keyword"] = keyword
+
+	var c2s qotgetsearchquote.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetSearchQuote(ctx, &c2s)
+}
+
+// GetSearchNewsWithContext 3263 - gets the search news with context.
+//
+// keyword: search keyword
+func (sdk *SDK) GetSearchNewsWithContext(ctx context.Context, keyword string, opts ...adapt.Option) (*qotgetsearchnews.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["keyword"] = keyword
+
+	var c2s qotgetsearchnews.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetSearchNews(ctx, &c2s)
+}
+
+// GetOptionMarketStatisticWithContext 3301 - gets the option market statistic with context.
+//
+// optionMarket: option market, see adapt.QotMarket_*
+//
+// dataType: statistic data type
+//
+// beginTime: begin time, format: yyyy-MM-dd
+//
+// endTime: end time, format: yyyy-MM-dd
+func (sdk *SDK) GetOptionMarketStatisticWithContext(ctx context.Context, optionMarket int32, dataType int32, beginTime string, endTime string, opts ...adapt.Option) (*qotgetoptionmarketstatistic.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["optionMarket"] = optionMarket
+	o["dataType"] = dataType
+	o["beginTime"] = beginTime
+	o["endTime"] = endTime
+
+	var c2s qotgetoptionmarketstatistic.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionMarketStatistic(ctx, &c2s)
+}
+
+// GetOptionUnderlyingHisStatisticWithContext 3302 - gets the option underlying historical statistic with context.
+//
+// code: security code, e.g. HK.00700
+//
+// beginTime: begin time, format: yyyy-MM-dd
+//
+// endTime: end time, format: yyyy-MM-dd
+func (sdk *SDK) GetOptionUnderlyingHisStatisticWithContext(ctx context.Context, code string, beginTime string, endTime string, opts ...adapt.Option) (*qotgetoptionunderlyinghisstatistic.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["owner"] = adapt.NewSecurity(code)
+	o["beginTime"] = beginTime
+	o["endTime"] = endTime
+
+	var c2s qotgetoptionunderlyinghisstatistic.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionUnderlyingHisStatistic(ctx, &c2s)
+}
+
+// GetOptionUnderlyingOverviewWithContext 3303 - gets the option underlying overview with context.
+func (sdk *SDK) GetOptionUnderlyingOverviewWithContext(ctx context.Context, opts ...adapt.Option) (*qotgetoptionunderlyingoverview.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetoptionunderlyingoverview.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionUnderlyingOverview(ctx, &c2s)
+}
+
+// GetOptionUnderlyingHisVolatilityWithContext 3304 - gets the option underlying historical volatility with context.
+//
+// code: security code, e.g. HK.00700
+//
+// beginTime: begin time, format: yyyy-MM-dd
+//
+// endTime: end time, format: yyyy-MM-dd
+func (sdk *SDK) GetOptionUnderlyingHisVolatilityWithContext(ctx context.Context, code string, beginTime string, endTime string, opts ...adapt.Option) (*qotgetoptionunderlyinghisvolatility.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["owner"] = adapt.NewSecurity(code)
+	o["beginTime"] = beginTime
+	o["endTime"] = endTime
+
+	var c2s qotgetoptionunderlyinghisvolatility.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionUnderlyingHisVolatility(ctx, &c2s)
+}
+
+// GetOptionUnderlyingRankWithContext 3305 - gets the option underlying rank with context.
+//
+// optionMarket: option market, see adapt.QotMarket_*
+//
+// sortType: sort field
+func (sdk *SDK) GetOptionUnderlyingRankWithContext(ctx context.Context, optionMarket int32, sortType int32, opts ...adapt.Option) (*qotgetoptionunderlyingrank.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["optionMarket"] = optionMarket
+	o["sortType"] = sortType
+
+	var c2s qotgetoptionunderlyingrank.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionUnderlyingRank(ctx, &c2s)
+}
+
+// GetOptionRankWithContext 3306 - gets the option rank with context.
+//
+// optionMarket: option market, see adapt.QotMarket_*
+//
+// sortType: sort field
+func (sdk *SDK) GetOptionRankWithContext(ctx context.Context, optionMarket int32, sortType int32, opts ...adapt.Option) (*qotgetoptionrank.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["optionMarket"] = optionMarket
+	o["sortType"] = sortType
+
+	var c2s qotgetoptionrank.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionRank(ctx, &c2s)
+}
+
+// GetOptionEventWithContext 3307 - gets the option event with context.
+//
+// optionMarket: option market, see adapt.QotMarket_*
+func (sdk *SDK) GetOptionEventWithContext(ctx context.Context, optionMarket int32, opts ...adapt.Option) (*qotgetoptionevent.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["optionMarket"] = optionMarket
+
+	var c2s qotgetoptionevent.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionEvent(ctx, &c2s)
+}
+
+// GetOptionEventAlertWithContext 3308 - gets the option event alert with context.
+func (sdk *SDK) GetOptionEventAlertWithContext(ctx context.Context, opts ...adapt.Option) (*qotgetoptioneventalert.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetoptioneventalert.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionEventAlert(ctx, &c2s)
+}
+
+// SetOptionEventAlertWithContext 3309 - sets the option event alert with context.
+//
+// operType: operation type
+func (sdk *SDK) SetOptionEventAlertWithContext(ctx context.Context, operType int32, opts ...adapt.Option) error {
+	o := adapt.NewOptions(opts...)
+	o["operType"] = operType
+
+	var c2s qotsetoptioneventalert.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return err
+	}
+
+	return sdk.cli.QotSetOptionEventAlert(ctx, &c2s)
+}
+
+// GetOptionZeroDteScreenerWithContext 3311 - gets the zero DTE option screener with context.
+//
+// optionMarket: option market, see adapt.QotMarket_*
+func (sdk *SDK) GetOptionZeroDteScreenerWithContext(ctx context.Context, optionMarket int32, opts ...adapt.Option) (*qotgetoptionzerodtescreener.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["optionMarket"] = optionMarket
+
+	var c2s qotgetoptionzerodtescreener.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionZeroDteScreener(ctx, &c2s)
+}
+
+// GetOptionZeroDteContractWithContext 3312 - gets the zero DTE option contract with context.
+//
+// code: security code, e.g. HK.00700
+//
+// strikeDateTimestamp: strike date timestamp in seconds
+//
+// chainInfo: option chain info
+func (sdk *SDK) GetOptionZeroDteContractWithContext(ctx context.Context, code string, strikeDateTimestamp int64, chainInfo *qotgetoptionzerodtescreener.OptionChainInfo, opts ...adapt.Option) (*qotgetoptionzerodtecontract.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["owner"] = adapt.NewSecurity(code)
+	o["strikeDateTimestamp"] = strikeDateTimestamp
+	o["chainInfo"] = chainInfo
+
+	var c2s qotgetoptionzerodtecontract.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionZeroDteContract(ctx, &c2s)
+}
+
+// GetOptionEarningsScreenerWithContext 3313 - gets the option earnings screener with context.
+//
+// optionMarket: option market, see adapt.QotMarket_*
+func (sdk *SDK) GetOptionEarningsScreenerWithContext(ctx context.Context, optionMarket int32, opts ...adapt.Option) (*qotgetoptionearningsscreener.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["optionMarket"] = optionMarket
+
+	var c2s qotgetoptionearningsscreener.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionEarningsScreener(ctx, &c2s)
+}
+
+// GetOptionSellerScreenerWithContext 3314 - gets the option seller screener with context.
+//
+// optionMarket: option market, see adapt.QotMarket_*
+//
+// sellerType: seller strategy type
+func (sdk *SDK) GetOptionSellerScreenerWithContext(ctx context.Context, optionMarket int32, sellerType int32, opts ...adapt.Option) (*qotgetoptionsellerscreener.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["optionMarket"] = optionMarket
+	o["sellerType"] = sellerType
+
+	var c2s qotgetoptionsellerscreener.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetOptionSellerScreener(ctx, &c2s)
+}
+
+// GetEarningsCalendarWithContext 3401 - gets the earnings calendar with context.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetEarningsCalendarWithContext(ctx context.Context, market int32, opts ...adapt.Option) (*qotgetearningscalendar.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["market"] = market
+
+	var c2s qotgetearningscalendar.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetEarningsCalendar(ctx, &c2s)
+}
+
+// GetMacroIndicatorListWithContext 3402 - gets the macro indicator list with context.
+//
+// region: region of the macro indicator
+func (sdk *SDK) GetMacroIndicatorListWithContext(ctx context.Context, region int32, opts ...adapt.Option) (*qotgetmacroindicatorlist.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["region"] = region
+
+	var c2s qotgetmacroindicatorlist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetMacroIndicatorList(ctx, &c2s)
+}
+
+// GetMacroIndicatorHistoryWithContext 3403 - gets the macro indicator history with context.
+//
+// indicatorId: macro indicator ID
+func (sdk *SDK) GetMacroIndicatorHistoryWithContext(ctx context.Context, indicatorId uint64, opts ...adapt.Option) (*qotgetmacroindicatorhistory.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["indicatorId"] = indicatorId
+
+	var c2s qotgetmacroindicatorhistory.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetMacroIndicatorHistory(ctx, &c2s)
+}
+
+// GetFedWatchTargetRateWithContext 3404 - gets the fed watch target rate with context.
+func (sdk *SDK) GetFedWatchTargetRateWithContext(ctx context.Context, opts ...adapt.Option) (*qotgetfedwatchtargetrate.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetfedwatchtargetrate.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetFedWatchTargetRate(ctx, &c2s)
+}
+
+// GetFedWatchDotPlotWithContext 3405 - gets the fed watch dot plot with context.
+func (sdk *SDK) GetFedWatchDotPlotWithContext(ctx context.Context, opts ...adapt.Option) (*qotgetfedwatchdotplot.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetfedwatchdotplot.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetFedWatchDotPlot(ctx, &c2s)
+}
+
+// GetEarningsBeatRankWithContext 3406 - gets the earnings beat rank with context.
+//
+// market: market, see adapt.QotMarket_*
+//
+// beatType: earnings beat type
+func (sdk *SDK) GetEarningsBeatRankWithContext(ctx context.Context, market int32, beatType int32, opts ...adapt.Option) (*qotgetearningsbeatrank.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["market"] = market
+	o["beatType"] = beatType
+
+	var c2s qotgetearningsbeatrank.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetEarningsBeatRank(ctx, &c2s)
+}
+
+// GetDividendRankWithContext 3407 - gets the dividend rank with context.
+//
+// market: market, see adapt.QotMarket_*
+//
+// rankType: dividend rank type
+func (sdk *SDK) GetDividendRankWithContext(ctx context.Context, market int32, rankType int32, opts ...adapt.Option) (*qotgetdividendrank.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["market"] = market
+	o["rankType"] = rankType
+
+	var c2s qotgetdividendrank.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetDividendRank(ctx, &c2s)
+}
+
+// GetDividendCalendarWithContext 3408 - gets the dividend calendar with context.
+//
+// market: market, see adapt.QotMarket_*
+//
+// date: date, format: yyyy-MM-dd
+func (sdk *SDK) GetDividendCalendarWithContext(ctx context.Context, market int32, date string, opts ...adapt.Option) (*qotgetdividendcalendar.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["market"] = market
+	o["date"] = date
+
+	var c2s qotgetdividendcalendar.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetDividendCalendar(ctx, &c2s)
+}
+
+// GetEconomicCalendarWithContext 3409 - gets the economic calendar with context.
+//
+// beginDate: begin date, format: yyyy-MM-dd
+func (sdk *SDK) GetEconomicCalendarWithContext(ctx context.Context, beginDate string, opts ...adapt.Option) (*qotgeteconomiccalendar.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["beginDate"] = beginDate
+
+	var c2s qotgeteconomiccalendar.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetEconomicCalendar(ctx, &c2s)
+}
+
+// GetUSPreMarketRankWithContext 3410 - gets the US pre market rank with context.
+func (sdk *SDK) GetUSPreMarketRankWithContext(ctx context.Context, opts ...adapt.Option) (*qotgetuspremarketrank.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetuspremarketrank.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetUSPreMarketRank(ctx, &c2s)
+}
+
+// GetUSAfterHoursRankWithContext 3411 - gets the US after hours rank with context.
+func (sdk *SDK) GetUSAfterHoursRankWithContext(ctx context.Context, opts ...adapt.Option) (*qotgetusafterhoursrank.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetusafterhoursrank.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetUSAfterHoursRank(ctx, &c2s)
+}
+
+// GetUSOvernightRankWithContext 3412 - gets the US overnight rank with context.
+func (sdk *SDK) GetUSOvernightRankWithContext(ctx context.Context, opts ...adapt.Option) (*qotgetusovernightrank.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetusovernightrank.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetUSOvernightRank(ctx, &c2s)
+}
+
+// GetTopMoversRankWithContext 3413 - gets the top movers rank with context.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetTopMoversRankWithContext(ctx context.Context, market int32, opts ...adapt.Option) (*qotgettopmoverrank.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["market"] = market
+
+	var c2s qotgettopmoverrank.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetTopMoversRank(ctx, &c2s)
+}
+
+// GetHotListWithContext 3414 - gets the hot list with context.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetHotListWithContext(ctx context.Context, market int32, opts ...adapt.Option) (*qotgethotlist.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["market"] = market
+
+	var c2s qotgethotlist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetHotList(ctx, &c2s)
+}
+
+// GetShortSellingRankWithContext 3415 - gets the short selling rank with context.
+func (sdk *SDK) GetShortSellingRankWithContext(ctx context.Context, opts ...adapt.Option) (*qotgetshortsellingrank.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetshortsellingrank.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetShortSellingRank(ctx, &c2s)
+}
+
+// GetPeriodChangeRankWithContext 3416 - gets the period change rank with context.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetPeriodChangeRankWithContext(ctx context.Context, market int32, opts ...adapt.Option) (*qotgetperiodchangerank.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["market"] = market
+
+	var c2s qotgetperiodchangerank.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetPeriodChangeRank(ctx, &c2s)
+}
+
+// GetHighDividendSOERankWithContext 3417 - gets the high dividend SOE rank with context.
+func (sdk *SDK) GetHighDividendSOERankWithContext(ctx context.Context, opts ...adapt.Option) (*qotgethighdividendsoerank.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgethighdividendsoerank.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetHighDividendSOERank(ctx, &c2s)
+}
+
+// GetInstitutionListWithContext 3418 - gets the institution list with context.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetInstitutionListWithContext(ctx context.Context, market int32, opts ...adapt.Option) (*qotgetinstitutionlist.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["market"] = market
+
+	var c2s qotgetinstitutionlist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetInstitutionList(ctx, &c2s)
+}
+
+// GetInstitutionProfileWithContext 3419 - gets the institution profile with context.
+//
+// market: market, see adapt.QotMarket_*
+//
+// institutionId: institution ID
+func (sdk *SDK) GetInstitutionProfileWithContext(ctx context.Context, market int32, institutionId int32) (*qotgetinstitutionprofile.S2C, error) {
+	o := make(adapt.Options)
+	o["market"] = market
+	o["institutionId"] = institutionId
+
+	var c2s qotgetinstitutionprofile.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetInstitutionProfile(ctx, &c2s)
+}
+
+// GetInstitutionDistributionWithContext 3420 - gets the institution distribution with context.
+//
+// market: market, see adapt.QotMarket_*
+//
+// institutionId: institution ID
+func (sdk *SDK) GetInstitutionDistributionWithContext(ctx context.Context, market int32, institutionId int32) (*qotgetinstitutiondistribution.S2C, error) {
+	o := make(adapt.Options)
+	o["market"] = market
+	o["institutionId"] = institutionId
+
+	var c2s qotgetinstitutiondistribution.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetInstitutionDistribution(ctx, &c2s)
+}
+
+// GetInstitutionHoldingChangeWithContext 3421 - gets the institution holding change with context.
+//
+// market: market, see adapt.QotMarket_*
+//
+// institutionId: institution ID
+func (sdk *SDK) GetInstitutionHoldingChangeWithContext(ctx context.Context, market int32, institutionId int32, opts ...adapt.Option) (*qotgetinstitutionholdingchange.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["market"] = market
+	o["institutionId"] = institutionId
+
+	var c2s qotgetinstitutionholdingchange.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetInstitutionHoldingChange(ctx, &c2s)
+}
+
+// GetInstitutionHoldingListWithContext 3422 - gets the institution holding list with context.
+//
+// market: market, see adapt.QotMarket_*
+//
+// institutionId: institution ID
+func (sdk *SDK) GetInstitutionHoldingListWithContext(ctx context.Context, market int32, institutionId int32, opts ...adapt.Option) (*qotgetinstitutionholdinglist.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["market"] = market
+	o["institutionId"] = institutionId
+
+	var c2s qotgetinstitutionholdinglist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetInstitutionHoldingList(ctx, &c2s)
+}
+
+// GetArkFundHoldingWithContext 3423 - gets the ARK fund holding with context.
+func (sdk *SDK) GetArkFundHoldingWithContext(ctx context.Context, opts ...adapt.Option) (*qotgetarkfundholding.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetarkfundholding.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetArkFundHolding(ctx, &c2s)
+}
+
+// GetArkStockDynamicWithContext 3424 - gets the ARK stock dynamic with context.
+//
+// code: security code, e.g. HK.00700
+func (sdk *SDK) GetArkStockDynamicWithContext(ctx context.Context, code string) (*qotgetarkstockdynamic.S2C, error) {
+	o := make(adapt.Options)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgetarkstockdynamic.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetArkStockDynamic(ctx, &c2s)
+}
+
+// GetArkActiveTransactionWithContext 3425 - gets the ARK active transaction with context.
+func (sdk *SDK) GetArkActiveTransactionWithContext(ctx context.Context, opts ...adapt.Option) (*qotgetarkactivetransaction.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetarkactivetransaction.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetArkActiveTransaction(ctx, &c2s)
+}
+
+// GetRatingChangeWithContext 3426 - gets the rating change with context.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetRatingChangeWithContext(ctx context.Context, market int32, opts ...adapt.Option) (*qotgetratingchange.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["market"] = market
+
+	var c2s qotgetratingchange.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetRatingChange(ctx, &c2s)
+}
+
+// GetIndustrialChainListWithContext 3427 - gets the industrial chain list with context.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetIndustrialChainListWithContext(ctx context.Context, market int32, opts ...adapt.Option) (*qotgetindustrialchainlist.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["market"] = market
+
+	var c2s qotgetindustrialchainlist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetIndustrialChainList(ctx, &c2s)
+}
+
+// GetIndustrialChainDetailWithContext 3428 - gets the industrial chain detail with context.
+//
+// chainId: industrial chain ID
+func (sdk *SDK) GetIndustrialChainDetailWithContext(ctx context.Context, chainId int64) (*qotgetindustrialchaindetail.S2C, error) {
+	o := make(adapt.Options)
+	o["chainId"] = chainId
+
+	var c2s qotgetindustrialchaindetail.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetIndustrialChainDetail(ctx, &c2s)
+}
+
+// GetIndustrialChainByPlateWithContext 3429 - gets the industrial chain by plate with context.
+//
+// plateId: industrial plate ID
+func (sdk *SDK) GetIndustrialChainByPlateWithContext(ctx context.Context, plateId int64) (*qotgetindustrialchainbyplate.S2C, error) {
+	o := make(adapt.Options)
+	o["plateId"] = plateId
+
+	var c2s qotgetindustrialchainbyplate.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetIndustrialChainByPlate(ctx, &c2s)
+}
+
+// GetIndustrialPlateInfoWithContext 3430 - gets the industrial plate info with context.
+//
+// plateId: industrial plate ID
+func (sdk *SDK) GetIndustrialPlateInfoWithContext(ctx context.Context, plateId int64) (*qotgetindustrialplateinfo.S2C, error) {
+	o := make(adapt.Options)
+	o["plateId"] = plateId
+
+	var c2s qotgetindustrialplateinfo.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetIndustrialPlateInfo(ctx, &c2s)
+}
+
+// GetIndustrialPlateStockWithContext 3431 - gets the industrial plate stock with context.
+func (sdk *SDK) GetIndustrialPlateStockWithContext(ctx context.Context, opts ...adapt.Option) (*qotgetindustrialplatestock.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetindustrialplatestock.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetIndustrialPlateStock(ctx, &c2s)
+}
+
+// GetHeatMapDataWithContext 3432 - gets the heat map data with context.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetHeatMapDataWithContext(ctx context.Context, market int32, opts ...adapt.Option) (*qotgetheatmapdata.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["market"] = market
+
+	var c2s qotgetheatmapdata.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetHeatMapData(ctx, &c2s)
+}
+
+// GetRiseFallDistributionWithContext 3433 - gets the rise fall distribution with context.
+func (sdk *SDK) GetRiseFallDistributionWithContext(ctx context.Context, opts ...adapt.Option) (*qotgetrisefalldistr.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgetrisefalldistr.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetRiseFallDistribution(ctx, &c2s)
+}
+
+// GetEventContractCategoryWithContext 3434 - gets the event contract category with context.
+func (sdk *SDK) GetEventContractCategoryWithContext(ctx context.Context, opts ...adapt.Option) (*qotgeteventcontractcategory.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgeteventcontractcategory.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetEventContractCategory(ctx, &c2s)
+}
+
+// FilterCompetitionWithContext 3435 - filters the competition with context.
+func (sdk *SDK) FilterCompetitionWithContext(ctx context.Context, opts ...adapt.Option) (*qotfiltercompetition.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotfiltercompetition.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotFilterCompetition(ctx, &c2s)
+}
+
+// GetEventContractSeriesListWithContext 3436 - gets the event contract series list with context.
+func (sdk *SDK) GetEventContractSeriesListWithContext(ctx context.Context, opts ...adapt.Option) (*qotgeteventcontractserieslist.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgeteventcontractserieslist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetEventContractSeriesList(ctx, &c2s)
+}
+
+// GetEventContractEventListWithContext 3437 - gets the event contract event list with context.
+//
+// code: series code of the event contract
+func (sdk *SDK) GetEventContractEventListWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgeteventcontracteventlist.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["series"] = adapt.NewSecurity(code)
+
+	var c2s qotgeteventcontracteventlist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetEventContractEventList(ctx, &c2s)
+}
+
+// GetEventContractWithContext 3438 - gets the event contract with context.
+//
+// code: event code of the event contract
+func (sdk *SDK) GetEventContractWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgeteventcontract.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["event"] = adapt.NewSecurity(code)
+
+	var c2s qotgeteventcontract.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetEventContract(ctx, &c2s)
+}
+
+// GetEventContractMilestoneListWithContext 3439 - gets the event contract milestone list with context.
+func (sdk *SDK) GetEventContractMilestoneListWithContext(ctx context.Context, opts ...adapt.Option) (*qotgeteventcontractmilestonelist.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgeteventcontractmilestonelist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetEventContractMilestoneList(ctx, &c2s)
+}
+
+// GetEventContractSnapshotWithContext 3445 - gets the event contract snapshot with context.
+func (sdk *SDK) GetEventContractSnapshotWithContext(ctx context.Context, opts ...adapt.Option) (*qotgeteventcontractsnapshot.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgeteventcontractsnapshot.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetEventContractSnapshot(ctx, &c2s)
+}
+
+// GetEventContractOrderBookWithContext 3446 - gets the event contract order book with context.
+//
+// code: security code, e.g. HK.00700
+//
+// num: number of the order book levels
+func (sdk *SDK) GetEventContractOrderBookWithContext(ctx context.Context, code string, num int32) (*qotgeteventcontractorderbook.S2C, error) {
+	o := make(adapt.Options)
+	o["security"] = adapt.NewSecurity(code)
+	o["num"] = num
+
+	var c2s qotgeteventcontractorderbook.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetEventContractOrderBook(ctx, &c2s)
+}
+
+// GetEventContractKlineWithContext 3447 - gets the event contract K line with context.
+//
+// code: security code, e.g. HK.00700
+func (sdk *SDK) GetEventContractKlineWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgeteventcontractkline.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgeteventcontractkline.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetEventContractKline(ctx, &c2s)
+}
+
+// GetEventContractTickerWithContext 3448 - gets the event contract ticker with context.
+//
+// code: security code, e.g. HK.00700
+func (sdk *SDK) GetEventContractTickerWithContext(ctx context.Context, code string, opts ...adapt.Option) (*qotgeteventcontractticker.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+
+	var c2s qotgeteventcontractticker.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetEventContractTicker(ctx, &c2s)
+}
+
+// GetEventContractComboListWithContext 3453 - gets the event contract combo list with context.
+func (sdk *SDK) GetEventContractComboListWithContext(ctx context.Context, opts ...adapt.Option) (*qotgeteventcontractcombolist.S2C, error) {
+	o := adapt.NewOptions(opts...)
+
+	var c2s qotgeteventcontractcombolist.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetEventContractComboList(ctx, &c2s)
+}
+
+// GetEventContractComboRfqWithContext 3454 - gets the event contract combo RFQ with context.
+//
+// mvc: combo identifier returned by the valid combo list
+func (sdk *SDK) GetEventContractComboRfqWithContext(ctx context.Context, mvc string, opts ...adapt.Option) (*qotgeteventcontractcomborfq.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["mvc"] = mvc
+
+	var c2s qotgeteventcontractcomborfq.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotGetEventContractComboRfq(ctx, &c2s)
+}
+
+// SubEventContractWithContext 3455 - subscribes or unsubscribes event contract with context.
+//
+// isSubOrUnSub: true to subscribe, false to unsubscribe
+func (sdk *SDK) SubEventContractWithContext(ctx context.Context, isSubOrUnSub bool, opts ...adapt.Option) error {
+	o := adapt.NewOptions(opts...)
+	o["isSubOrUnSub"] = isSubOrUnSub
+
+	var c2s qotsubeventcontract.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return err
+	}
+
+	return sdk.cli.QotSubEventContract(ctx, &c2s)
+}
+
+// RequestHistoryEventContractKLWithContext 3456 - requests the history K line of an event contract with context.
+//
+// code: security code, e.g. HK.00700
+//
+// klType: K line type, see adapt.KLType_*
+//
+// beginTime: begin time, format: yyyy-MM-dd
+//
+// endTime: end time, format: yyyy-MM-dd
+func (sdk *SDK) RequestHistoryEventContractKLWithContext(ctx context.Context, code string, klType int32, beginTime string, endTime string, opts ...adapt.Option) (*qotrequesthistoryeventcontractkl.S2C, error) {
+	o := adapt.NewOptions(opts...)
+	o["security"] = adapt.NewSecurity(code)
+	o["klType"] = klType
+	o["beginTime"] = beginTime
+	o["endTime"] = endTime
+
+	var c2s qotrequesthistoryeventcontractkl.C2S
+	if err := o.ToProto(&c2s); err != nil {
+		return nil, err
+	}
+
+	return sdk.cli.QotRequestHistoryEventContractKL(ctx, &c2s)
 }

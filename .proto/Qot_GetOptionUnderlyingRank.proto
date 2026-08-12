@@ -1,0 +1,63 @@
+syntax = "proto2";
+package Qot_GetOptionUnderlyingRank;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptionunderlyingrank";
+
+import "Common.proto";
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+
+//标的排行项
+message UnderlyingRankItem
+{
+    required Qot_Common.Security owner = 1; //期权标的股
+    optional string name = 2; //标的名称
+    optional int64 totalVolume = 3; //期权总成交量
+    optional int64 totalOpenInterest = 4; //期权总持仓量
+    optional double volumeRatio = 5; //Put/Call成交量比值（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double openInterestRatio = 6; //Put/Call持仓量比值（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double iv = 7; //隐含波动率（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double ivRank = 8; //IV排名百分位（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double ivPercentile = 9; //IV百分位（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double price = 10; //标的最新价
+    optional double changeRate = 11; //标的涨跌幅（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double ivChange = 12; //IV变化率（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double hv = 13; //历史波动率（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double hvChange = 14; //HV变化率（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double marketCap = 15; //市值
+}
+
+message C2S
+{
+    required int32 optionMarket = 1;    //Qot_OptionCommon.OptionMarket，期权市场类型
+    required int32 sortType = 2;        //Qot_OptionCommon.UnderlyingRankSortType，排序字段
+    optional bool isAsc = 3;            //是否升序，默认false(降序)
+    optional int32 count = 4;           //每页数量[1,200]，不指定默认200
+    optional string tradingDate = 5;    //交易日，格式yyyy-MM-dd，不填则返回最新排行
+    repeated Qot_OptionCommon.UnderlyingRankIndicator filterList = 6;  //筛选条件(AND关系)
+    optional string page = 7;           //分页游标，首次请求传空字符串或不传，翻页时传上次返回的nextPage
+}
+
+message S2C
+{
+    required int32 optionMarket = 1;    //Qot_OptionCommon.OptionMarket，期权市场类型
+    required int32 sortType = 2;        //Qot_OptionCommon.UnderlyingRankSortType，排序字段
+    optional string tradingDate = 3;    //排行数据对应的交易日时间字符串
+    optional double tradingTimestamp = 4; //排行数据对应的交易日时间戳
+    repeated UnderlyingRankItem rankList = 5; //排行列表，服务端已排序
+    optional string nextPage = 6;       //下一页游标（空字符串或不存在=无下一页）
+    optional int32 allCount = 7;        //符合条件的总数据量
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32 retType = 1 [default = -400]; //RetType，返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

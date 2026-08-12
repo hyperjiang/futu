@@ -58,20 +58,106 @@ message HKIpoExData
 }
 
 // 美股Ipo列表额外数据
-message USIpoExData  
+message USIpoExData
 {
 	required double ipoPriceMin = 1; // 最低发行价
 	required double ipoPriceMax = 2; // 最高发行价
 	required int64 issueSize = 3; // 发行量
 }
 
+// 新加坡Ipo列表额外数据
+message SGIpoExData
+{
+	required double ipoPriceMin = 1; // 最低发行价
+	required double ipoPriceMax = 2; // 最高发行价
+	required int64 issueSize = 3; // 发行量
+	optional string applyStartTime = 4; // 开始认购日期字符串
+	optional double applyStartTimestamp = 5; // 开始认购日期时间戳
+	optional string applyEndTime = 6; // 截止认购日期字符串
+	optional double applyEndTimestamp = 7; // 截止认购日期时间戳
+	optional string winningTime = 8; // 公布中签日期字符串
+	optional double winningTimestamp = 9; // 公布中签日期时间戳
+}
+
+// 马来西亚Ipo列表额外数据
+message MYIpoExData
+{
+	required double offerPrice = 1; // 发行价
+	required int64 issueSize = 2; // 发行量
+	optional string applyStartTime = 3; // 开始认购日期字符串
+	optional double applyStartTimestamp = 4; // 开始认购日期时间戳
+	optional string applyEndTime = 5; // 截止认购日期字符串
+	optional double applyEndTimestamp = 6; // 截止认购日期时间戳
+	optional string winningTime = 7; // 公布中签日期字符串
+	optional double winningTimestamp = 8; // 公布中签日期时间戳
+}
+
+// JP ETF 简介信息
+message JPETFBriefInfo
+{
+	optional int64 managementFeeRates = 1; // 管理费率（原始值*1000000）
+	optional int64 dividendTimes = 2; // 派息次数
+	optional int32 dividendFrequencyType = 3; // 派息周期类型 1-YEAR 2-QUARTER 3-MONTH
+	optional int32 investingRiskType = 4; // 投资风险类型 1-BOND_LINK 2-FUTURES 3-LEVERAGED 4-ACTIVELY_MANAGE 5-CURRENCY_SWAP 6-INVERSE
+	optional string indexName = 5; // 标的指数名称
+	optional string companyName = 6; // 管理公司名称
+	optional string companyIntroductionLink = 7; // 管理公司简介链接
+	optional string companyInterviewLink = 8; // 企业采访信息链接
+	optional string etfPamphletLink = 9; // 产品手册链接
+	optional string etfIntroductionLink = 10; // 产品简介链接
+}
+
+// 日本Ipo列表额外数据
+message JPIpoExData
+{
+	required double ipoPriceMin = 1; // 最低发行价
+	required double ipoPriceMax = 2; // 最高发行价
+	required int64 issueSize = 3; // 发行量
+
+	// CMD 20751 GetIPOList 扩展字段
+	optional int32 lotSize = 10; // 每手股数
+	optional int64 eqtyIssuedShares = 11; // 总股本
+	optional string isin = 12; // ISIN代码 目前仅支持 JP ETF
+	optional int64 issuedShares = 13; // 已发行股本，本次IPO前股本
+	optional string industry = 14; // 行业板块
+	optional string marketSegment = 15; // 细分市场
+
+	// 时间节点字符串与时间戳成对
+	optional string approvalTime = 20; // 获批上市时间字符串
+	optional double approvalTimestamp = 21; // 获批上市时间戳
+	optional string issueConfirmTime = 22; // 发行条件确定时间字符串
+	optional double issueConfirmTimestamp = 23; // 发行条件确定时间戳
+	optional string priceConfirmStartTime = 24; // 发行价确定开始时间字符串
+	optional double priceConfirmStartTimestamp = 25; // 发行价确定开始时间戳
+	optional string priceConfirmEndTime = 26; // 发行价确定结束时间字符串
+	optional double priceConfirmEndTimestamp = 27; // 发行价确定结束时间戳
+	optional string inquiryStartTime = 28; // 询价期开始时间字符串
+	optional double inquiryStartTimestamp = 29; // 询价期开始时间戳
+	optional string inquiryEndTime = 30; // 询价期结束时间字符串
+	optional double inquiryEndTimestamp = 31; // 询价期结束时间戳
+	optional string applyStartTime = 32; // 申购期开始时间字符串
+	optional double applyStartTimestamp = 33; // 申购期开始时间戳
+	optional string applyEndTime = 34; // 申购期结束时间字符串
+	optional double applyEndTimestamp = 35; // 申购期结束时间戳
+	optional string drawTime = 36; // 抽签时间字符串
+	optional double drawTimestamp = 37; // 抽签时间戳
+	optional string winningTime = 38; // 中签公布时间字符串
+	optional double winningTimestamp = 39; // 中签公布时间戳
+
+	// JP ETF 信息
+	optional JPETFBriefInfo etfInfo = 50; // 仅 JP ETF 下发
+}
+
 // 新股Ipo数据
 message IpoData
-{	
-	required BasicIpoData basic = 1; // IPO基本数据	
+{
+	required BasicIpoData basic = 1; // IPO基本数据
 	optional CNIpoExData cnExData = 2; // A股IPO额外数据
 	optional HKIpoExData hkExData = 3; // 港股IPO额外数据
 	optional USIpoExData usExData = 4; // 美股IPO额外数据
+	optional SGIpoExData sgExData = 5; // 新加坡IPO额外数据
+	optional MYIpoExData myExData = 6; // 马来西亚IPO额外数据
+	optional JPIpoExData jpExData = 7; // 日本IPO额外数据
 }
 
 message C2S

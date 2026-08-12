@@ -76,12 +76,14 @@ func (x *C2S) GetHeader() *qotcommon.QotHeader {
 }
 
 type S2C struct {
-	state           protoimpl.MessageState   `protogen:"open.v1"`
-	ConnSubInfoList []*qotcommon.ConnSubInfo `protobuf:"bytes,1,rep,name=connSubInfoList" json:"connSubInfoList,omitempty"` //订阅订阅信息
-	TotalUsedQuota  *int32                   `protobuf:"varint,2,req,name=totalUsedQuota" json:"totalUsedQuota,omitempty"`  //FutuOpenD已使用的订阅额度
-	RemainQuota     *int32                   `protobuf:"varint,3,req,name=remainQuota" json:"remainQuota,omitempty"`        //FutuOpenD剩余订阅额度
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	state             protoimpl.MessageState   `protogen:"open.v1"`
+	ConnSubInfoList   []*qotcommon.ConnSubInfo `protobuf:"bytes,1,rep,name=connSubInfoList" json:"connSubInfoList,omitempty"`      //订阅订阅信息
+	TotalUsedQuota    *int32                   `protobuf:"varint,2,req,name=totalUsedQuota" json:"totalUsedQuota,omitempty"`       //FutuOpenD已使用的订阅额度
+	RemainQuota       *int32                   `protobuf:"varint,3,req,name=remainQuota" json:"remainQuota,omitempty"`             //FutuOpenD剩余订阅额度
+	OptionUsedQuota   *int32                   `protobuf:"varint,4,opt,name=optionUsedQuota" json:"optionUsedQuota,omitempty"`     //期权已使用订阅额度
+	OptionRemainQuota *int32                   `protobuf:"varint,5,opt,name=optionRemainQuota" json:"optionRemainQuota,omitempty"` //期权剩余订阅额度
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *S2C) Reset() {
@@ -131,6 +133,20 @@ func (x *S2C) GetTotalUsedQuota() int32 {
 func (x *S2C) GetRemainQuota() int32 {
 	if x != nil && x.RemainQuota != nil {
 		return *x.RemainQuota
+	}
+	return 0
+}
+
+func (x *S2C) GetOptionUsedQuota() int32 {
+	if x != nil && x.OptionUsedQuota != nil {
+		return *x.OptionUsedQuota
+	}
+	return 0
+}
+
+func (x *S2C) GetOptionRemainQuota() int32 {
+	if x != nil && x.OptionRemainQuota != nil {
+		return *x.OptionRemainQuota
 	}
 	return 0
 }
@@ -259,11 +275,13 @@ const file_Qot_GetSubInfo_proto_rawDesc = "" +
 	"\x14Qot_GetSubInfo.proto\x12\x0eQot_GetSubInfo\x1a\fCommon.proto\x1a\x10Qot_Common.proto\"X\n" +
 	"\x03C2S\x12\"\n" +
 	"\fisReqAllConn\x18\x01 \x01(\bR\fisReqAllConn\x12-\n" +
-	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"\x92\x01\n" +
+	"\x06header\x18d \x01(\v2\x15.Qot_Common.QotHeaderR\x06header\"\xea\x01\n" +
 	"\x03S2C\x12A\n" +
 	"\x0fconnSubInfoList\x18\x01 \x03(\v2\x17.Qot_Common.ConnSubInfoR\x0fconnSubInfoList\x12&\n" +
 	"\x0etotalUsedQuota\x18\x02 \x02(\x05R\x0etotalUsedQuota\x12 \n" +
-	"\vremainQuota\x18\x03 \x02(\x05R\vremainQuota\"0\n" +
+	"\vremainQuota\x18\x03 \x02(\x05R\vremainQuota\x12(\n" +
+	"\x0foptionUsedQuota\x18\x04 \x01(\x05R\x0foptionUsedQuota\x12,\n" +
+	"\x11optionRemainQuota\x18\x05 \x01(\x05R\x11optionRemainQuota\"0\n" +
 	"\aRequest\x12%\n" +
 	"\x03c2s\x18\x01 \x02(\v2\x13.Qot_GetSubInfo.C2SR\x03c2s\"\x83\x01\n" +
 	"\bResponse\x12\x1e\n" +

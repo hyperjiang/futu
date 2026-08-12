@@ -1,0 +1,48 @@
+syntax = "proto2";
+package Qot_GetOptionMarketStatistic;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptionmarketstatistic";
+
+import "Common.proto";
+import "Qot_OptionCommon.proto";
+
+//每日统计数据
+message StatisticItem
+{
+    required string time = 1; //交易日时间字符串
+    optional double timestamp = 2; //交易日时间戳
+    required int64 callValue = 3; //看涨期权合计值（成交量或持仓量，由请求的dataType决定）
+    required int64 putValue = 4; //看跌期权合计值
+    optional int64 totalValue = 5; //总值（callValue + putValue）
+    optional double ratio = 6; //Put/Call比值（callValue为0时不设置）
+}
+
+message C2S
+{
+    required int32 optionMarket = 1; //Qot_OptionCommon.OptionMarket，期权市场类型
+    required int32 dataType = 2; //Qot_OptionCommon.OptionStatisticDataType，数据类型（成交量或持仓量）
+    required string beginTime = 3; //开始时间字符串
+    required string endTime = 4; //结束时间字符串，时间跨度超过一年时自动分页
+    optional bytes nextPageKey = 5; //分页请求的key，首页不填，续页填入上一页返回的nextPageKey
+}
+
+message S2C
+{
+    required int32 optionMarket = 1; //Qot_OptionCommon.OptionMarket，期权市场类型
+    required int32 dataType = 2; //Qot_OptionCommon.OptionStatisticDataType，数据类型
+    repeated StatisticItem statisticList = 3; //统计数据列表，按交易日降序排列
+    optional bytes nextPageKey = 4; //分页请求的key，有值表示还有更多数据，需要作为下次请求C2S的nextPageKey
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32 retType = 1 [default = -400]; //RetType，返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

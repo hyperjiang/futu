@@ -1,0 +1,70 @@
+syntax = "proto2";
+package Qot_GetArkActiveTransaction;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetarkactivetransaction";
+
+import "Qot_Common.proto";
+
+// 持仓变动类型
+enum HoldingType {
+    HoldingType_Increase = 0;           // 增持(默认)
+    HoldingType_Decrease = 1;           // 减持
+    HoldingType_New = 2;                // 建仓
+    HoldingType_SoldOut = 3;            // 清仓
+}
+
+// 周期类型
+enum CycleType {
+    CycleType_1Day = 0;                 // 近1天
+    CycleType_5Day = 1;                 // 近5天
+    CycleType_10Day = 2;                // 近10天
+    CycleType_30Day = 3;                // 近30天
+    CycleType_60Day = 4;                // 近60天
+}
+
+// 排序字段
+enum SortField {
+    SortField_Unknown = 0;              // 默认(变动金额)
+    SortField_ChangeAmount = 1;         // 变动金额
+    SortField_ChangeShares = 2;         // 变动股数
+}
+
+// 排序方向
+enum SortDir {
+    SortDir_Descending = 0;             // 降序(默认,净买入在前)
+    SortDir_Ascending = 1;              // 升序(净卖出在前)
+}
+
+message C2S {
+    optional int32 holdingType = 1;         // HoldingType, 默认增持
+    optional int32 cycleType = 2;           // CycleType, 默认近1天
+    optional int32 sortField = 3;           // SortField
+    optional int32 sortDir = 4;             // SortDir
+    optional int32 count = 5;              // 条数 [1,200], 默认50
+    optional string page = 6;              // 翻页游标, 首次不传
+}
+
+// ARK主动交易数据项
+message ArkActiveTransactionItem {
+    optional Qot_Common.Security security = 1;  // 股票
+    optional string name = 2;                    // 名称
+    optional double changeAmount = 3;            // 变动金额(美元)
+    optional int64 changeShares = 4;             // 变动数量(股)
+}
+
+message S2C {
+    repeated ArkActiveTransactionItem dataList = 1; // 数据列表
+    optional int32 allCount = 2;                    // 总数
+    optional string nextPage = 3;                   // 下一页游标, 空=无更多
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

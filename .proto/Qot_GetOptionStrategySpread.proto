@@ -1,0 +1,37 @@
+syntax = "proto2";
+package Qot_GetOptionStrategySpread;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptionstrategyspreads";
+
+import "Qot_Common.proto";
+
+//仅支持以下策略类型查询有效价差：
+//  Spread, Strangle, Collar, Butterfly, Condor, IronButterfly, IronCondor, DiagonalSpread
+
+message C2S
+{
+	required Qot_Common.Security owner = 1;      //期权标的股，目前仅支持港美正股以及恒指国指
+	required int32 option_strategy = 2;             //Qot_GetOptionStrategy.OptionStrategyType，期权策略类型
+	optional string expire_time = 3;              //到期日（近端到期日），不填表示取行权日列表中第一条作为近端到期日
+	optional string far_expire_time = 4;           //远端到期日，对角策略（DiagonalSpread）时必传
+	optional int32 index_option_type = 5;          //Qot_Common.IndexOptionType，指数期权类型，仅用于恒指国指
+	optional Qot_Common.QotHeader header = 100;  //行情公共参数头
+}
+
+message S2C
+{
+	repeated double spreadList = 1; //有效价差列表，如 [0.5, 1.0, 2.0]，单位与正股价格一致
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32 retType = 1 [default = -400]; //RetType，返回结果
+	optional string retMsg = 2;
+	optional int32 errCode = 3;
+	optional S2C s2c = 4;
+}

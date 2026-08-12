@@ -1,0 +1,30 @@
+syntax = "proto2";
+package Qot_GetEventContractCategory;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgeteventcontractcategory";
+
+// 分类项
+message CategoryItem {
+    required string category = 1;            // 分类标识 ("SPORTS", "POLITICS")
+    optional string categoryName = 2;        // 多语言名称
+    repeated string tags = 3;                // 子分类标识列表 ("BASEBALL", "FOOTBALL")
+}
+
+message C2S {
+    optional string category = 1;            // 一级分类标识，选填；填写则只返回该分类的内容
+}
+
+message S2C {
+    repeated CategoryItem categoryList = 1;
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

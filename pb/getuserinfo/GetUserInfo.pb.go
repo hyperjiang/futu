@@ -229,6 +229,10 @@ type S2C struct {
 	SzQotRight            *int32                 `protobuf:"varint,32,opt,name=szQotRight" json:"szQotRight,omitempty"`                       //深圳市场行情权限, Qot_Common.QotRight
 	Extra                 *int32                 `protobuf:"varint,33,opt,name=extra" json:"extra,omitempty"`                                 // 透传信息
 	CcQotRight            *int32                 `protobuf:"varint,34,opt,name=ccQotRight" json:"ccQotRight,omitempty"`                       //加密货币市场行情权限, Qot_Common.QotRight
+	SgStockQotRight       *int32                 `protobuf:"varint,35,opt,name=sgStockQotRight" json:"sgStockQotRight,omitempty"`             //新加坡股票行情权限, Qot_Common.QotRight
+	MyStockQotRight       *int32                 `protobuf:"varint,36,opt,name=myStockQotRight" json:"myStockQotRight,omitempty"`             //马来西亚股票行情权限, Qot_Common.QotRight
+	JpStockQotRight       *int32                 `protobuf:"varint,37,opt,name=jpStockQotRight" json:"jpStockQotRight,omitempty"`             //日本市场股票行情权限, Qot_Common.QotRight
+	EcQotRight            *int32                 `protobuf:"varint,38,opt,name=ecQotRight" json:"ecQotRight,omitempty"`                       //事件合约(预测市场)行情权限, Qot_Common.QotRight
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -501,6 +505,34 @@ func (x *S2C) GetCcQotRight() int32 {
 	return 0
 }
 
+func (x *S2C) GetSgStockQotRight() int32 {
+	if x != nil && x.SgStockQotRight != nil {
+		return *x.SgStockQotRight
+	}
+	return 0
+}
+
+func (x *S2C) GetMyStockQotRight() int32 {
+	if x != nil && x.MyStockQotRight != nil {
+		return *x.MyStockQotRight
+	}
+	return 0
+}
+
+func (x *S2C) GetJpStockQotRight() int32 {
+	if x != nil && x.JpStockQotRight != nil {
+		return *x.JpStockQotRight
+	}
+	return 0
+}
+
+func (x *S2C) GetEcQotRight() int32 {
+	if x != nil && x.EcQotRight != nil {
+		return *x.EcQotRight
+	}
+	return 0
+}
+
 type Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	C2S           *C2S                   `protobuf:"bytes,1,req,name=c2s" json:"c2s,omitempty"`
@@ -624,8 +656,7 @@ const file_GetUserInfo_proto_rawDesc = "" +
 	"\n" +
 	"\x11GetUserInfo.proto\x12\vGetUserInfo\x1a\fCommon.proto\"\x19\n" +
 	"\x03C2S\x12\x12\n" +
-	"\x04flag\x18\x02 \x01(\x05R\x04flag\"\xa7\n" +
-	"\n" +
+	"\x04flag\x18\x02 \x01(\x05R\x04flag\"\xc5\v\n" +
 	"\x03S2C\x12\x1a\n" +
 	"\bnickName\x18\x01 \x01(\tR\bnickName\x12\x1c\n" +
 	"\tavatarUrl\x18\x02 \x01(\tR\tavatarUrl\x12\x1a\n" +
@@ -675,7 +706,13 @@ const file_GetUserInfo_proto_rawDesc = "" +
 	"\x05extra\x18! \x01(\x05R\x05extra\x12\x1e\n" +
 	"\n" +
 	"ccQotRight\x18\" \x01(\x05R\n" +
-	"ccQotRight\"-\n" +
+	"ccQotRight\x12(\n" +
+	"\x0fsgStockQotRight\x18# \x01(\x05R\x0fsgStockQotRight\x12(\n" +
+	"\x0fmyStockQotRight\x18$ \x01(\x05R\x0fmyStockQotRight\x12(\n" +
+	"\x0fjpStockQotRight\x18% \x01(\x05R\x0fjpStockQotRight\x12\x1e\n" +
+	"\n" +
+	"ecQotRight\x18& \x01(\x05R\n" +
+	"ecQotRight\"-\n" +
 	"\aRequest\x12\"\n" +
 	"\x03c2s\x18\x01 \x02(\v2\x10.GetUserInfo.C2SR\x03c2s\"\x80\x01\n" +
 	"\bResponse\x12\x1e\n" +

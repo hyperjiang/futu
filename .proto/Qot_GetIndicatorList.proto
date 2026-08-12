@@ -1,0 +1,50 @@
+syntax = "proto2";
+package Qot_GetIndicatorList;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetindicatorlist";
+
+import "Common.proto";
+import "Qot_Common.proto";
+
+// 单一语言下的指标信息
+message IndicatorInfo
+{
+	optional string shortName = 1; // 指标短名，同语言内唯一
+	optional string fullName = 2; // 指标全名
+	repeated Qot_Common.IndicatorInputParam inputs = 3; // 输入参数列表
+	repeated Qot_Common.IndicatorOutputParam outputs = 4; // 输出参数列表
+	optional string script = 5; // 仅 searchMode = Exact 且 searchKey 非空时返回脚本源码
+}
+
+// 同名指标可能同时有 MyLang / Python 两个版本，合并为同一条目返回
+message IndicatorEntry
+{
+	optional IndicatorInfo myLang = 1; // 麦语言版本（无则不返回）
+	optional IndicatorInfo python = 2; // Python 版本（无则不返回）
+}
+
+message C2S
+{
+	optional string searchKey = 1; // 搜索关键词，留空则返回全部
+	optional int32 langType = 2;   // IndicatorLangType；留空或 0 不按语言过滤
+	optional int32 searchMode = 3; // IndicatorSearchMode，默认部分匹配
+}
+
+message S2C
+{
+	repeated IndicatorEntry indicatorList = 1; // 指标列表
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	required int32 retType = 1 [default = -400]; //RetType,返回结果
+	optional string retMsg = 2;
+	optional int32 errCode = 3;
+
+	optional S2C s2c = 4;
+}

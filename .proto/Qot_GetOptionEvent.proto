@@ -1,0 +1,228 @@
+syntax = "proto2";
+package Qot_GetOptionEvent;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptionevent";
+
+import "Common.proto";
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+
+// ==================== 枚举定义 ====================
+
+//异动筛选因子类型
+enum EventIndicatorType
+{
+    EventIndicatorType_Unknown = 0;
+
+    // ---- 标的相关 (1xx) ----
+    EventIndicatorType_OwnerList = 101;          //【确切值】指定标的列表(securityList)
+    EventIndicatorType_IndustryPlate = 102;      //【确切值】行业板块列表(securityList)
+    EventIndicatorType_ConceptPlate = 103;       //【确切值】概念板块列表(securityList)
+    EventIndicatorType_CorporateAction = 104;    //【确切值】公司行动类型(valueList, CorporateActionType)
+    EventIndicatorType_MarketCap = 105;          //【范围】标的市值
+
+    // ---- 期权合约属性 (2xx) ----
+    EventIndicatorType_OptionType = 201;         //【确切值】CALL(1)/PUT(2)(valueList)
+    EventIndicatorType_MoneyType = 202;          //【确切值】价内(1)/价外(2)(valueList)
+    EventIndicatorType_StrikePrice = 203;        //【范围】行权价
+    EventIndicatorType_ExpiryDays = 204;         //【范围】距到期天数
+    EventIndicatorType_OTM = 205;                //【范围】价外比率(%)
+
+    // ---- 成交信息 (3xx) ----
+    EventIndicatorType_TickerType = 301;         //【确切值】成交方向(valueList, TickerType)
+    EventIndicatorType_Volume = 302;             //【范围】成交量(张)
+    EventIndicatorType_Turnover = 303;           //【范围】成交额
+    EventIndicatorType_Price = 304;              //【范围】成交价
+    EventIndicatorType_Time = 305;               //【范围】异动时间(Unix秒)
+    EventIndicatorType_MaxDayNum = 306;          //【确切值】时间范围天数: 0=当天, 1=近2天, ...(valueList)
+
+    // ---- 订单分类 (4xx) ----
+    EventIndicatorType_OrderType = 401;          //【确切值】订单类型(valueList, OptionOrderType)
+    EventIndicatorType_Strategy = 402;           //【确切值】策略类型(valueList, TickerStrategy)
+    EventIndicatorType_Sentiment = 403;          //【确切值】市场情绪(valueList, MarketSentiment)
+
+    // ---- 期权行情统计 (5xx) ----
+    EventIndicatorType_TotalVolume = 501;        //【范围】期权总成交量
+    EventIndicatorType_TotalOI = 502;            //【范围】期权总持仓量
+    EventIndicatorType_VoRatio = 503;            //【范围】量仓比(%)
+    EventIndicatorType_IV = 504;                 //【范围】隐含波动率(%)
+
+    // ---- 希腊值 (6xx) ----
+    EventIndicatorType_Delta = 601;              //【范围】Delta
+    EventIndicatorType_Gamma = 602;              //【范围】Gamma
+    EventIndicatorType_Vega = 603;               //【范围】Vega
+    EventIndicatorType_Theta = 604;              //【范围】Theta
+    EventIndicatorType_Rho = 605;                //【范围】Rho
+}
+
+//成交方向
+enum TickerType
+{
+    TickerType_Unknown = 0;
+    TickerType_Buy = 1;       //主动买入
+    TickerType_Sell = 2;      //主动卖出
+    TickerType_Neutral = 3;   //中性盘
+}
+
+//订单类型 
+enum OptionOrderType
+{
+    OptionOrderType_Normal = 0;     //普通订单
+    OptionOrderType_Sweep = 1;      //扫单
+    OptionOrderType_Cross = 2;      //对敲单
+    OptionOrderType_Floor = 4;      //场内单
+}
+
+//策略类型
+enum TickerStrategy
+{
+    TickerStrategy_Unknown = 0;
+    TickerStrategy_SingleLeg = 1;  //单腿交易
+    TickerStrategy_MultiLeg = 2;   //多腿策略交易
+}
+
+//市场情绪
+enum MarketSentiment
+{
+    MarketSentiment_Unknown = 0;
+    MarketSentiment_Bearish = 1;   //看空
+    MarketSentiment_Bullish = 2;   //看多
+    MarketSentiment_Neutral = 3;   //中性
+}
+
+//公司行动类型
+enum CorporateActionType
+{
+    CorporateActionType_None = 0;            //无/未知
+    CorporateActionType_Split = 1;           //拆股
+    CorporateActionType_Join = 2;            //合股
+    CorporateActionType_BonusStock = 3;      //送股
+    CorporateActionType_IntoShares = 4;      //转增股
+    CorporateActionType_Allot = 5;           //配股
+    CorporateActionType_Add = 6;             //增发股
+    CorporateActionType_Dividend = 7;        //普通派息
+    CorporateActionType_SpecialDividend = 8; //特别派息
+    CorporateActionType_SpinOff = 9;         //公司分立
+}
+
+//价内/价外类型
+enum InTheMoneyType
+{
+    InTheMoneyType_Unknown = 0;
+    InTheMoneyType_In = 1;   //价内(ITM)
+    InTheMoneyType_Out = 2;  //价外(OTM)
+}
+
+// ==================== 筛选结构 ====================
+
+//单个筛选条件
+message EventIndicator
+{
+    required int32 indicatorType = 1;                           //EventIndicatorType
+    optional Qot_OptionCommon.IndicatorValue indicatorValue = 2;   //筛选条件
+}
+
+//排序
+message EventSort
+{
+    required int32 indicatorType = 1;   //EventIndicatorType(排序字段)
+    required bool isAsc = 2;            //是否升序，true=升序, false=降序
+}
+
+// ==================== 数据项 ====================
+
+//公司行动
+message CorporateAction
+{
+    optional int32 actionType = 1;       //CorporateActionType
+    optional string actionTime = 2;      //行动日期("yyyy-MM-dd")
+    optional double actionTimestamp = 3;  //行动日期(Unix秒)
+}
+
+//单条异动记录
+message EventItem
+{
+    // 标识
+    optional Qot_Common.Security option = 1;  //期权合约标识
+    optional Qot_Common.Security owner = 2;   //标的股票标识
+    optional string symbol = 3;               //标的display code（如TSLA）
+
+    // 成交信息
+    optional string fillTime = 10;            //成交时间("yyyy-MM-dd HH:mm:ss")
+    optional double fillTimestamp = 11;       //成交时间(Unix秒，精度到毫秒)
+    optional int32 tickerType = 12;           //TickerType，成交方向
+    optional double price = 13;               //成交价
+    optional int64 volume = 14;               //成交量（张）
+    optional double turnover = 15;            //成交额
+
+    // 期权合约属性
+    optional int32 optionType = 20;           //Qot_Common.OptionType，CALL/PUT
+    optional double strikePrice = 21;         //行权价
+    optional string strikeTime = 22;          //到期日("yyyy-MM-dd")
+    optional double strikeTimestamp = 23;      //到期日(Unix秒)
+    optional int32 dte = 24;                  //距到期天数
+
+    // 行情快照（异动发生时刻）
+    optional double underlyingPrice = 30;     //标的价格
+    optional double otm = 31;                 //价外比率（百分比值，如-17.18表示-17.18%）
+    optional double bidPrice = 32;            //买一价
+    optional double askPrice = 33;            //卖一价
+    optional double iv = 34;                  //隐含波动率（百分比值）
+    optional int64 totalVolume = 35;          //期权当日总成交量
+    optional int64 totalOpenInterest = 36;    //期权当日总持仓量
+    optional double voRatio = 37;             //量仓比（百分比值）
+
+    // 希腊值
+    optional double delta = 40;
+    optional double gamma = 41;
+    optional double vega = 42;
+    optional double theta = 43;
+    optional double rho = 44;
+
+    // 市场情绪与订单分类
+    optional int32 sentiment = 50;            //MarketSentiment
+    repeated int32 orderTypeList = 51;        //OrderType列表
+    optional int32 strategyType = 52;         //TickerStrategy
+
+    // 关联信息
+    optional string earningsTime = 60;        //财报日期("yyyy-MM-dd")
+    optional int32 earningsPubType = 61;      //Qot_OptionCommon.EarningsPubType，财报发布类型（盘前/盘后）
+    repeated CorporateAction corporateActionList = 63;  //公司行动列表
+    repeated Qot_Common.Security industryPlateList = 64;   //行业板块列表
+    repeated Qot_Common.Security conceptPlateList = 65;    //概念板块列表
+}
+
+// ==================== 请求/响应 ====================
+
+message C2S
+{
+    // ---- 市场与分页 ----
+    required int32 optionMarket = 1;             //Qot_OptionCommon.OptionMarket 
+    optional int32 count = 2;                        //每页数量[1,300]，必传
+    optional string page = 3;                      //分页标记，首次为空字符串
+
+    // ---- 筛选与排序 ----
+    repeated EventIndicator filterList = 4;          //筛选条件列表（条件间AND逻辑）
+    optional EventSort sort = 5;                     //排序（默认按时间降序）
+}
+
+message S2C
+{
+    repeated EventItem eventList = 1;                //异动列表
+    optional string nextPage = 2;                  //下一页标记（空字符串=无下一页）
+    optional int32 allCount = 3;                   //总记录数
+    optional double updateTimestamp = 4;             //列表更新时间(Unix秒)
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32 retType = 1 [default = -400]; //RetType，返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

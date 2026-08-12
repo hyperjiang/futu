@@ -1,0 +1,52 @@
+syntax = "proto2";
+package Qot_GetIndustrialPlateStock;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetindustrialplatestock";
+
+import "Qot_Common.proto";
+
+// 排序字段
+enum SortField {
+    SortField_Code = 0;           //代码(默认)
+    SortField_ChangeRate = 1;     //涨跌幅
+    SortField_Turnover = 2;       //成交额
+    SortField_Volume = 3;         //成交量
+    SortField_MarketVal = 4;      //市值
+}
+
+message StockInfo
+{
+    optional Qot_Common.Security security = 1; //股票
+    optional string name = 2; //股票名称
+}
+
+message C2S
+{
+    optional int64 chainId = 1;        //产业链ID (与plateId二选一，plateId优先)
+    optional int64 plateId = 2;        //产业板块ID (优先使用)
+    repeated int32 marketList = 3;     //Qot_Common.QotMarket 市场筛选(支持HK/US/CN/JP/SG/MY，不传默认全部)
+    optional int32 sortField = 4;      //SortField，排序字段，默认MarketVal(市值)
+    optional bool ascend = 5;          //升序true/降序false，默认false(降序)
+    optional int32 count = 6;          //每页数量 [1,200], 默认50
+    optional string page = 7;          //翻页标记，首次不传，后续带上S2C返回的page
+}
+
+message S2C
+{
+    repeated StockInfo stockList = 1;  //成分股列表
+    optional string page = 2;          //翻页标记，有更多数据时返回
+    optional int32 allCount = 3;       //总数量
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32 retType = 1 [default = -400]; //RetType,返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

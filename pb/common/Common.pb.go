@@ -437,6 +437,66 @@ func (Session) EnumDescriptor() ([]byte, []int) {
 	return file_Common_proto_rawDescGZIP(), []int{5}
 }
 
+//事件合约预测方向
+type PredSide int32
+
+const (
+	PredSide_PredSide_Unknown PredSide = 0 //未知
+	PredSide_PredSide_Yes     PredSide = 1 //Yes
+	PredSide_PredSide_No      PredSide = 2 //No
+)
+
+// Enum value maps for PredSide.
+var (
+	PredSide_name = map[int32]string{
+		0: "PredSide_Unknown",
+		1: "PredSide_Yes",
+		2: "PredSide_No",
+	}
+	PredSide_value = map[string]int32{
+		"PredSide_Unknown": 0,
+		"PredSide_Yes":     1,
+		"PredSide_No":      2,
+	}
+)
+
+func (x PredSide) Enum() *PredSide {
+	p := new(PredSide)
+	*p = x
+	return p
+}
+
+func (x PredSide) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (PredSide) Descriptor() protoreflect.EnumDescriptor {
+	return file_Common_proto_enumTypes[6].Descriptor()
+}
+
+func (PredSide) Type() protoreflect.EnumType {
+	return &file_Common_proto_enumTypes[6]
+}
+
+func (x PredSide) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *PredSide) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = PredSide(num)
+	return nil
+}
+
+// Deprecated: Use PredSide.Descriptor instead.
+func (PredSide) EnumDescriptor() ([]byte, []int) {
+	return file_Common_proto_rawDescGZIP(), []int{6}
+}
+
 //包的唯一标识，用于回放攻击的识别和保护
 type PacketID struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -598,7 +658,11 @@ const file_Common_proto_rawDesc = "" +
 	"\vSession_RTH\x10\x01\x12\x0f\n" +
 	"\vSession_ETH\x10\x02\x12\x0f\n" +
 	"\vSession_ALL\x10\x03\x12\x15\n" +
-	"\x11Session_OVERNIGHT\x10\x04B;\n" +
+	"\x11Session_OVERNIGHT\x10\x04*C\n" +
+	"\bPredSide\x12\x14\n" +
+	"\x10PredSide_Unknown\x10\x00\x12\x10\n" +
+	"\fPredSide_Yes\x10\x01\x12\x0f\n" +
+	"\vPredSide_No\x10\x02B;\n" +
 	"\x13com.futu.openapi.pbZ$github.com/hyperjiang/futu/pb/common"
 
 var (
@@ -613,7 +677,7 @@ func file_Common_proto_rawDescGZIP() []byte {
 	return file_Common_proto_rawDescData
 }
 
-var file_Common_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
+var file_Common_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
 var file_Common_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_Common_proto_goTypes = []any{
 	(RetType)(0),           // 0: Common.RetType
@@ -622,8 +686,9 @@ var file_Common_proto_goTypes = []any{
 	(UserAttribution)(0),   // 3: Common.UserAttribution
 	(ProgramStatusType)(0), // 4: Common.ProgramStatusType
 	(Session)(0),           // 5: Common.Session
-	(*PacketID)(nil),       // 6: Common.PacketID
-	(*ProgramStatus)(nil),  // 7: Common.ProgramStatus
+	(PredSide)(0),          // 6: Common.PredSide
+	(*PacketID)(nil),       // 7: Common.PacketID
+	(*ProgramStatus)(nil),  // 8: Common.ProgramStatus
 }
 var file_Common_proto_depIdxs = []int32{
 	4, // 0: Common.ProgramStatus.type:type_name -> Common.ProgramStatusType
@@ -644,7 +709,7 @@ func file_Common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_Common_proto_rawDesc), len(file_Common_proto_rawDesc)),
-			NumEnums:      6,
+			NumEnums:      7,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,

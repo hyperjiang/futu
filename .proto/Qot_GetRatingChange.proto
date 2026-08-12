@@ -1,0 +1,58 @@
+syntax = "proto2";
+package Qot_GetRatingChange;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetratingchange";
+
+import "Qot_Common.proto";
+
+// 评级变动类型
+enum RatingChangeType {
+    RatingChangeType_Upgrade = 1;       // 评级上调
+    RatingChangeType_Downgrade = 2;     // 评级下调
+    RatingChangeType_NewRating = 3;     // 首次评级
+}
+
+// 评级等级
+enum RatingLevel {
+    RatingLevel_Unknown = 0;
+    RatingLevel_Sell = 1;               // 卖出
+    RatingLevel_Hold = 2;               // 持有
+    RatingLevel_Buy = 3;                // 买入
+}
+
+message C2S {
+    required int32 market = 1;              // Qot_Common.QotMarket (仅US)
+    optional int32 changeType = 2;          // RatingChangeType, 默认上调
+    optional int32 count = 3;               // 条数 [1,20], 默认10
+    optional string page = 4;               // 翻页游标, 首次不传
+}
+
+message RatingChangeItem {
+    optional Qot_Common.Security security = 1;  // 股票
+    optional string name = 2;                    // 名称
+    optional int32 rating = 3;                   // 当前评级 RatingLevel
+    optional int32 lastRating = 4;               // 上次评级 RatingLevel
+    optional double targetPrice = 5;             // 当前目标价
+    optional double lastTargetPrice = 6;         // 上次目标价
+    optional int32 changeType = 7;               // RatingChangeType
+    optional string institutionName = 8;         // 机构名称
+    optional string recommendationDate = 9;       // 推荐日期(字符串,如"2025-06-15")
+    optional string lastRecommendationDate = 10;  // 上次推荐日期(字符串,如"2025-06-15")
+}
+
+message S2C {
+    repeated RatingChangeItem dataList = 1;
+    optional int32 allCount = 2;            // 总数
+    optional string nextPage = 3;           // 下一页游标, 空=无更多
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

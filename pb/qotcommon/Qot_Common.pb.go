@@ -25,37 +25,39 @@ const (
 type QotMarket int32
 
 const (
-	QotMarket_QotMarket_Unknown       QotMarket = 0  //未知市场
-	QotMarket_QotMarket_HK_Security   QotMarket = 1  //香港市场
-	QotMarket_QotMarket_HK_Future     QotMarket = 2  //港期货(已废弃，使用QotMarket_HK_Security即可)
-	QotMarket_QotMarket_US_Security   QotMarket = 11 //美国市场
-	QotMarket_QotMarket_CNSH_Security QotMarket = 21 //沪股市场
-	QotMarket_QotMarket_CNSZ_Security QotMarket = 22 //深股市场
-	QotMarket_QotMarket_SG_Security   QotMarket = 31 //新加坡市场
-	QotMarket_QotMarket_JP_Security   QotMarket = 41 //日本市场
-	QotMarket_QotMarket_AU_Security   QotMarket = 51 //澳大利亚市场
-	QotMarket_QotMarket_MY_Security   QotMarket = 61 //马来西亚市场
-	QotMarket_QotMarket_CA_Security   QotMarket = 71 // 加拿大市场
-	QotMarket_QotMarket_FX_Security   QotMarket = 81 // 外汇市场
-	QotMarket_QotMarket_CC_Security   QotMarket = 91 // 加密货币市场
+	QotMarket_QotMarket_Unknown       QotMarket = 0   //未知市场
+	QotMarket_QotMarket_HK_Security   QotMarket = 1   //香港市场
+	QotMarket_QotMarket_HK_Future     QotMarket = 2   //港期货(已废弃，使用QotMarket_HK_Security即可)
+	QotMarket_QotMarket_US_Security   QotMarket = 11  //美国市场
+	QotMarket_QotMarket_CNSH_Security QotMarket = 21  //沪股市场
+	QotMarket_QotMarket_CNSZ_Security QotMarket = 22  //深股市场
+	QotMarket_QotMarket_SG_Security   QotMarket = 31  //新加坡市场
+	QotMarket_QotMarket_JP_Security   QotMarket = 41  //日本市场
+	QotMarket_QotMarket_AU_Security   QotMarket = 51  //澳大利亚市场
+	QotMarket_QotMarket_MY_Security   QotMarket = 61  //马来西亚市场
+	QotMarket_QotMarket_CA_Security   QotMarket = 71  // 加拿大市场
+	QotMarket_QotMarket_FX_Security   QotMarket = 81  // 外汇市场
+	QotMarket_QotMarket_CC_Security   QotMarket = 91  // 加密货币市场
+	QotMarket_QotMarket_EventContract QotMarket = 101 // 事件合约市场
 )
 
 // Enum value maps for QotMarket.
 var (
 	QotMarket_name = map[int32]string{
-		0:  "QotMarket_Unknown",
-		1:  "QotMarket_HK_Security",
-		2:  "QotMarket_HK_Future",
-		11: "QotMarket_US_Security",
-		21: "QotMarket_CNSH_Security",
-		22: "QotMarket_CNSZ_Security",
-		31: "QotMarket_SG_Security",
-		41: "QotMarket_JP_Security",
-		51: "QotMarket_AU_Security",
-		61: "QotMarket_MY_Security",
-		71: "QotMarket_CA_Security",
-		81: "QotMarket_FX_Security",
-		91: "QotMarket_CC_Security",
+		0:   "QotMarket_Unknown",
+		1:   "QotMarket_HK_Security",
+		2:   "QotMarket_HK_Future",
+		11:  "QotMarket_US_Security",
+		21:  "QotMarket_CNSH_Security",
+		22:  "QotMarket_CNSZ_Security",
+		31:  "QotMarket_SG_Security",
+		41:  "QotMarket_JP_Security",
+		51:  "QotMarket_AU_Security",
+		61:  "QotMarket_MY_Security",
+		71:  "QotMarket_CA_Security",
+		81:  "QotMarket_FX_Security",
+		91:  "QotMarket_CC_Security",
+		101: "QotMarket_EventContract",
 	}
 	QotMarket_value = map[string]int32{
 		"QotMarket_Unknown":       0,
@@ -71,6 +73,7 @@ var (
 		"QotMarket_CA_Security":   71,
 		"QotMarket_FX_Security":   81,
 		"QotMarket_CC_Security":   91,
+		"QotMarket_EventContract": 101,
 	}
 )
 
@@ -115,10 +118,10 @@ type SecurityType int32
 
 const (
 	SecurityType_SecurityType_Unknown  SecurityType = 0  //未知
-	SecurityType_SecurityType_Bond     SecurityType = 1  //场内债券
+	SecurityType_SecurityType_Bond     SecurityType = 1  //债券
 	SecurityType_SecurityType_Bwrt     SecurityType = 2  //一揽子权证
 	SecurityType_SecurityType_Eqty     SecurityType = 3  //正股
-	SecurityType_SecurityType_Trust    SecurityType = 4  //信托
+	SecurityType_SecurityType_Trust    SecurityType = 4  //信托,基金
 	SecurityType_SecurityType_Warrant  SecurityType = 5  //窝轮
 	SecurityType_SecurityType_Index    SecurityType = 6  //指数
 	SecurityType_SecurityType_Plate    SecurityType = 7  //板块
@@ -680,27 +683,33 @@ func (QotMarketState) EnumDescriptor() ([]byte, []int) {
 type TradeDateMarket int32
 
 const (
-	TradeDateMarket_TradeDateMarket_Unknown   TradeDateMarket = 0 //未知
-	TradeDateMarket_TradeDateMarket_HK        TradeDateMarket = 1 //港股市场
-	TradeDateMarket_TradeDateMarket_US        TradeDateMarket = 2 //美股市场
-	TradeDateMarket_TradeDateMarket_CN        TradeDateMarket = 3 //A股市场
-	TradeDateMarket_TradeDateMarket_NT        TradeDateMarket = 4 //深（沪）股通
-	TradeDateMarket_TradeDateMarket_ST        TradeDateMarket = 5 //港股通（深、沪）
-	TradeDateMarket_TradeDateMarket_JP_Future TradeDateMarket = 6 //日本期货
-	TradeDateMarket_TradeDateMarket_SG_Future TradeDateMarket = 7 //新加坡期货
+	TradeDateMarket_TradeDateMarket_Unknown   TradeDateMarket = 0  //未知
+	TradeDateMarket_TradeDateMarket_HK        TradeDateMarket = 1  //港股市场
+	TradeDateMarket_TradeDateMarket_US        TradeDateMarket = 2  //美股市场
+	TradeDateMarket_TradeDateMarket_CN        TradeDateMarket = 3  //A股市场
+	TradeDateMarket_TradeDateMarket_NT        TradeDateMarket = 4  //深（沪）股通
+	TradeDateMarket_TradeDateMarket_ST        TradeDateMarket = 5  //港股通（深、沪）
+	TradeDateMarket_TradeDateMarket_JP_Future TradeDateMarket = 6  //日本期货
+	TradeDateMarket_TradeDateMarket_SG_Future TradeDateMarket = 7  //新加坡期货
+	TradeDateMarket_TradeDateMarket_SG        TradeDateMarket = 8  //新加坡证券
+	TradeDateMarket_TradeDateMarket_MY        TradeDateMarket = 9  //马来西亚
+	TradeDateMarket_TradeDateMarket_JP        TradeDateMarket = 10 //日本（正股/ETF）
 )
 
 // Enum value maps for TradeDateMarket.
 var (
 	TradeDateMarket_name = map[int32]string{
-		0: "TradeDateMarket_Unknown",
-		1: "TradeDateMarket_HK",
-		2: "TradeDateMarket_US",
-		3: "TradeDateMarket_CN",
-		4: "TradeDateMarket_NT",
-		5: "TradeDateMarket_ST",
-		6: "TradeDateMarket_JP_Future",
-		7: "TradeDateMarket_SG_Future",
+		0:  "TradeDateMarket_Unknown",
+		1:  "TradeDateMarket_HK",
+		2:  "TradeDateMarket_US",
+		3:  "TradeDateMarket_CN",
+		4:  "TradeDateMarket_NT",
+		5:  "TradeDateMarket_ST",
+		6:  "TradeDateMarket_JP_Future",
+		7:  "TradeDateMarket_SG_Future",
+		8:  "TradeDateMarket_SG",
+		9:  "TradeDateMarket_MY",
+		10: "TradeDateMarket_JP",
 	}
 	TradeDateMarket_value = map[string]int32{
 		"TradeDateMarket_Unknown":   0,
@@ -711,6 +720,9 @@ var (
 		"TradeDateMarket_ST":        5,
 		"TradeDateMarket_JP_Future": 6,
 		"TradeDateMarket_SG_Future": 7,
+		"TradeDateMarket_SG":        8,
+		"TradeDateMarket_MY":        9,
+		"TradeDateMarket_JP":        10,
 	}
 )
 
@@ -1057,27 +1069,28 @@ func (KLFields) EnumDescriptor() ([]byte, []int) {
 type SubType int32
 
 const (
-	SubType_SubType_None       SubType = 0
-	SubType_SubType_Basic      SubType = 1  //基础报价
-	SubType_SubType_OrderBook  SubType = 2  //摆盘
-	SubType_SubType_Ticker     SubType = 4  //逐笔
-	SubType_SubType_RT         SubType = 5  //分时
-	SubType_SubType_KL_Day     SubType = 6  //日K
-	SubType_SubType_KL_5Min    SubType = 7  //5分K
-	SubType_SubType_KL_15Min   SubType = 8  //15分K
-	SubType_SubType_KL_30Min   SubType = 9  //30分K
-	SubType_SubType_KL_60Min   SubType = 10 //60分K
-	SubType_SubType_KL_1Min    SubType = 11 //1分K
-	SubType_SubType_KL_Week    SubType = 12 //周K
-	SubType_SubType_KL_Month   SubType = 13 //月K
-	SubType_SubType_Broker     SubType = 14 //经纪队列
-	SubType_SubType_KL_Qurater SubType = 15 //季K
-	SubType_SubType_KL_Year    SubType = 16 //年K
-	SubType_SubType_KL_3Min    SubType = 17 //3分K
-	SubType_SubType_KL_10Min   SubType = 18 //10分K
-	SubType_SubType_KL_120Min  SubType = 19 //120分K
-	SubType_SubType_KL_180Min  SubType = 20 //180分K
-	SubType_SubType_KL_240Min  SubType = 21 //240分K
+	SubType_SubType_None          SubType = 0
+	SubType_SubType_Basic         SubType = 1  //基础报价
+	SubType_SubType_OrderBook     SubType = 2  //摆盘
+	SubType_SubType_Ticker        SubType = 4  //逐笔
+	SubType_SubType_RT            SubType = 5  //分时
+	SubType_SubType_KL_Day        SubType = 6  //日K
+	SubType_SubType_KL_5Min       SubType = 7  //5分K
+	SubType_SubType_KL_15Min      SubType = 8  //15分K
+	SubType_SubType_KL_30Min      SubType = 9  //30分K
+	SubType_SubType_KL_60Min      SubType = 10 //60分K
+	SubType_SubType_KL_1Min       SubType = 11 //1分K
+	SubType_SubType_KL_Week       SubType = 12 //周K
+	SubType_SubType_KL_Month      SubType = 13 //月K
+	SubType_SubType_Broker        SubType = 14 //经纪队列
+	SubType_SubType_KL_Qurater    SubType = 15 //季K
+	SubType_SubType_KL_Year       SubType = 16 //年K
+	SubType_SubType_KL_3Min       SubType = 17 //3分K
+	SubType_SubType_KL_10Min      SubType = 18 //10分K
+	SubType_SubType_KL_120Min     SubType = 19 //120分K
+	SubType_SubType_KL_180Min     SubType = 20 //180分K
+	SubType_SubType_KL_240Min     SubType = 21 //240分K
+	SubType_SubType_OrderBook_Odd SubType = 22 //碎股摆盘
 )
 
 // Enum value maps for SubType.
@@ -1104,29 +1117,31 @@ var (
 		19: "SubType_KL_120Min",
 		20: "SubType_KL_180Min",
 		21: "SubType_KL_240Min",
+		22: "SubType_OrderBook_Odd",
 	}
 	SubType_value = map[string]int32{
-		"SubType_None":       0,
-		"SubType_Basic":      1,
-		"SubType_OrderBook":  2,
-		"SubType_Ticker":     4,
-		"SubType_RT":         5,
-		"SubType_KL_Day":     6,
-		"SubType_KL_5Min":    7,
-		"SubType_KL_15Min":   8,
-		"SubType_KL_30Min":   9,
-		"SubType_KL_60Min":   10,
-		"SubType_KL_1Min":    11,
-		"SubType_KL_Week":    12,
-		"SubType_KL_Month":   13,
-		"SubType_Broker":     14,
-		"SubType_KL_Qurater": 15,
-		"SubType_KL_Year":    16,
-		"SubType_KL_3Min":    17,
-		"SubType_KL_10Min":   18,
-		"SubType_KL_120Min":  19,
-		"SubType_KL_180Min":  20,
-		"SubType_KL_240Min":  21,
+		"SubType_None":          0,
+		"SubType_Basic":         1,
+		"SubType_OrderBook":     2,
+		"SubType_Ticker":        4,
+		"SubType_RT":            5,
+		"SubType_KL_Day":        6,
+		"SubType_KL_5Min":       7,
+		"SubType_KL_15Min":      8,
+		"SubType_KL_30Min":      9,
+		"SubType_KL_60Min":      10,
+		"SubType_KL_1Min":       11,
+		"SubType_KL_Week":       12,
+		"SubType_KL_Month":      13,
+		"SubType_Broker":        14,
+		"SubType_KL_Qurater":    15,
+		"SubType_KL_Year":       16,
+		"SubType_KL_3Min":       17,
+		"SubType_KL_10Min":      18,
+		"SubType_KL_120Min":     19,
+		"SubType_KL_180Min":     20,
+		"SubType_KL_240Min":     21,
+		"SubType_OrderBook_Odd": 22,
 	}
 )
 
@@ -1167,6 +1182,62 @@ func (SubType) EnumDescriptor() ([]byte, []int) {
 	return file_Qot_Common_proto_rawDescGZIP(), []int{13}
 }
 
+type OrderBookType int32
+
+const (
+	OrderBookType_OrderBookType_Normal OrderBookType = 0 //整股盘(默认)
+	OrderBookType_OrderBookType_Odd    OrderBookType = 1 //碎股盘
+)
+
+// Enum value maps for OrderBookType.
+var (
+	OrderBookType_name = map[int32]string{
+		0: "OrderBookType_Normal",
+		1: "OrderBookType_Odd",
+	}
+	OrderBookType_value = map[string]int32{
+		"OrderBookType_Normal": 0,
+		"OrderBookType_Odd":    1,
+	}
+)
+
+func (x OrderBookType) Enum() *OrderBookType {
+	p := new(OrderBookType)
+	*p = x
+	return p
+}
+
+func (x OrderBookType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (OrderBookType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[14].Descriptor()
+}
+
+func (OrderBookType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[14]
+}
+
+func (x OrderBookType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *OrderBookType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = OrderBookType(num)
+	return nil
+}
+
+// Deprecated: Use OrderBookType.Descriptor instead.
+func (OrderBookType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{14}
+}
+
 type TickerDirection int32
 
 const (
@@ -1203,11 +1274,11 @@ func (x TickerDirection) String() string {
 }
 
 func (TickerDirection) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[14].Descriptor()
+	return file_Qot_Common_proto_enumTypes[15].Descriptor()
 }
 
 func (TickerDirection) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[14]
+	return &file_Qot_Common_proto_enumTypes[15]
 }
 
 func (x TickerDirection) Number() protoreflect.EnumNumber {
@@ -1226,7 +1297,7 @@ func (x *TickerDirection) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TickerDirection.Descriptor instead.
 func (TickerDirection) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{14}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{15}
 }
 
 type TickerType int32
@@ -1349,11 +1420,11 @@ func (x TickerType) String() string {
 }
 
 func (TickerType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[15].Descriptor()
+	return file_Qot_Common_proto_enumTypes[16].Descriptor()
 }
 
 func (TickerType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[15]
+	return &file_Qot_Common_proto_enumTypes[16]
 }
 
 func (x TickerType) Number() protoreflect.EnumNumber {
@@ -1372,7 +1443,7 @@ func (x *TickerType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use TickerType.Descriptor instead.
 func (TickerType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{15}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{16}
 }
 
 type DarkStatus int32
@@ -1408,11 +1479,11 @@ func (x DarkStatus) String() string {
 }
 
 func (DarkStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[16].Descriptor()
+	return file_Qot_Common_proto_enumTypes[17].Descriptor()
 }
 
 func (DarkStatus) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[16]
+	return &file_Qot_Common_proto_enumTypes[17]
 }
 
 func (x DarkStatus) Number() protoreflect.EnumNumber {
@@ -1431,7 +1502,7 @@ func (x *DarkStatus) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use DarkStatus.Descriptor instead.
 func (DarkStatus) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{16}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{17}
 }
 
 type SecurityStatus int32
@@ -1524,11 +1595,11 @@ func (x SecurityStatus) String() string {
 }
 
 func (SecurityStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[17].Descriptor()
+	return file_Qot_Common_proto_enumTypes[18].Descriptor()
 }
 
 func (SecurityStatus) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[17]
+	return &file_Qot_Common_proto_enumTypes[18]
 }
 
 func (x SecurityStatus) Number() protoreflect.EnumNumber {
@@ -1547,7 +1618,7 @@ func (x *SecurityStatus) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SecurityStatus.Descriptor instead.
 func (SecurityStatus) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{17}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{18}
 }
 
 type HolderCategory int32
@@ -1586,11 +1657,11 @@ func (x HolderCategory) String() string {
 }
 
 func (HolderCategory) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[18].Descriptor()
+	return file_Qot_Common_proto_enumTypes[19].Descriptor()
 }
 
 func (HolderCategory) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[18]
+	return &file_Qot_Common_proto_enumTypes[19]
 }
 
 func (x HolderCategory) Number() protoreflect.EnumNumber {
@@ -1609,7 +1680,7 @@ func (x *HolderCategory) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use HolderCategory.Descriptor instead.
 func (HolderCategory) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{18}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{19}
 }
 
 //推送数据的分类，目前只有逐笔在使用
@@ -1649,11 +1720,11 @@ func (x PushDataType) String() string {
 }
 
 func (PushDataType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[19].Descriptor()
+	return file_Qot_Common_proto_enumTypes[20].Descriptor()
 }
 
 func (PushDataType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[19]
+	return &file_Qot_Common_proto_enumTypes[20]
 }
 
 func (x PushDataType) Number() protoreflect.EnumNumber {
@@ -1672,7 +1743,7 @@ func (x *PushDataType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PushDataType.Descriptor instead.
 func (PushDataType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{19}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{20}
 }
 
 //排序
@@ -1890,11 +1961,11 @@ func (x SortField) String() string {
 }
 
 func (SortField) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[20].Descriptor()
+	return file_Qot_Common_proto_enumTypes[21].Descriptor()
 }
 
 func (SortField) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[20]
+	return &file_Qot_Common_proto_enumTypes[21]
 }
 
 func (x SortField) Number() protoreflect.EnumNumber {
@@ -1913,7 +1984,7 @@ func (x *SortField) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SortField.Descriptor instead.
 func (SortField) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{20}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{21}
 }
 
 // 排序方向
@@ -1950,11 +2021,11 @@ func (x SortType) String() string {
 }
 
 func (SortType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[21].Descriptor()
+	return file_Qot_Common_proto_enumTypes[22].Descriptor()
 }
 
 func (SortType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[21]
+	return &file_Qot_Common_proto_enumTypes[22]
 }
 
 func (x SortType) Number() protoreflect.EnumNumber {
@@ -1973,7 +2044,7 @@ func (x *SortType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use SortType.Descriptor instead.
 func (SortType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{21}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{22}
 }
 
 //窝轮发行人
@@ -2088,11 +2159,11 @@ func (x Issuer) String() string {
 }
 
 func (Issuer) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[22].Descriptor()
+	return file_Qot_Common_proto_enumTypes[23].Descriptor()
 }
 
 func (Issuer) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[22]
+	return &file_Qot_Common_proto_enumTypes[23]
 }
 
 func (x Issuer) Number() protoreflect.EnumNumber {
@@ -2111,7 +2182,7 @@ func (x *Issuer) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use Issuer.Descriptor instead.
 func (Issuer) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{22}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{23}
 }
 
 //窝轮上市日
@@ -2157,11 +2228,11 @@ func (x IpoPeriod) String() string {
 }
 
 func (IpoPeriod) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[23].Descriptor()
+	return file_Qot_Common_proto_enumTypes[24].Descriptor()
 }
 
 func (IpoPeriod) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[23]
+	return &file_Qot_Common_proto_enumTypes[24]
 }
 
 func (x IpoPeriod) Number() protoreflect.EnumNumber {
@@ -2180,7 +2251,7 @@ func (x *IpoPeriod) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use IpoPeriod.Descriptor instead.
 func (IpoPeriod) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{23}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{24}
 }
 
 //窝轮价外/内,界内证表示界内界外
@@ -2217,11 +2288,11 @@ func (x PriceType) String() string {
 }
 
 func (PriceType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[24].Descriptor()
+	return file_Qot_Common_proto_enumTypes[25].Descriptor()
 }
 
 func (PriceType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[24]
+	return &file_Qot_Common_proto_enumTypes[25]
 }
 
 func (x PriceType) Number() protoreflect.EnumNumber {
@@ -2240,7 +2311,7 @@ func (x *PriceType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PriceType.Descriptor instead.
 func (PriceType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{24}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{25}
 }
 
 //窝轮状态
@@ -2283,11 +2354,11 @@ func (x WarrantStatus) String() string {
 }
 
 func (WarrantStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[25].Descriptor()
+	return file_Qot_Common_proto_enumTypes[26].Descriptor()
 }
 
 func (WarrantStatus) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[25]
+	return &file_Qot_Common_proto_enumTypes[26]
 }
 
 func (x WarrantStatus) Number() protoreflect.EnumNumber {
@@ -2306,7 +2377,7 @@ func (x *WarrantStatus) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use WarrantStatus.Descriptor instead.
 func (WarrantStatus) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{25}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{26}
 }
 
 type CompanyAct int32
@@ -2363,11 +2434,11 @@ func (x CompanyAct) String() string {
 }
 
 func (CompanyAct) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[26].Descriptor()
+	return file_Qot_Common_proto_enumTypes[27].Descriptor()
 }
 
 func (CompanyAct) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[26]
+	return &file_Qot_Common_proto_enumTypes[27]
 }
 
 func (x CompanyAct) Number() protoreflect.EnumNumber {
@@ -2386,7 +2457,7 @@ func (x *CompanyAct) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use CompanyAct.Descriptor instead.
 func (CompanyAct) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{26}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{27}
 }
 
 //行情权限
@@ -2435,11 +2506,11 @@ func (x QotRight) String() string {
 }
 
 func (QotRight) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[27].Descriptor()
+	return file_Qot_Common_proto_enumTypes[28].Descriptor()
 }
 
 func (QotRight) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[27]
+	return &file_Qot_Common_proto_enumTypes[28]
 }
 
 func (x QotRight) Number() protoreflect.EnumNumber {
@@ -2458,7 +2529,7 @@ func (x *QotRight) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use QotRight.Descriptor instead.
 func (QotRight) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{27}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{28}
 }
 
 // 提醒类型
@@ -2534,11 +2605,11 @@ func (x PriceReminderType) String() string {
 }
 
 func (PriceReminderType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[28].Descriptor()
+	return file_Qot_Common_proto_enumTypes[29].Descriptor()
 }
 
 func (PriceReminderType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[28]
+	return &file_Qot_Common_proto_enumTypes[29]
 }
 
 func (x PriceReminderType) Number() protoreflect.EnumNumber {
@@ -2557,7 +2628,7 @@ func (x *PriceReminderType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PriceReminderType.Descriptor instead.
 func (PriceReminderType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{28}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{29}
 }
 
 // 提醒频率
@@ -2597,11 +2668,11 @@ func (x PriceReminderFreq) String() string {
 }
 
 func (PriceReminderFreq) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[29].Descriptor()
+	return file_Qot_Common_proto_enumTypes[30].Descriptor()
 }
 
 func (PriceReminderFreq) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[29]
+	return &file_Qot_Common_proto_enumTypes[30]
 }
 
 func (x PriceReminderFreq) Number() protoreflect.EnumNumber {
@@ -2620,7 +2691,7 @@ func (x *PriceReminderFreq) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PriceReminderFreq.Descriptor instead.
 func (PriceReminderFreq) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{29}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{30}
 }
 
 // 资产类别
@@ -2669,11 +2740,11 @@ func (x AssetClass) String() string {
 }
 
 func (AssetClass) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[30].Descriptor()
+	return file_Qot_Common_proto_enumTypes[31].Descriptor()
 }
 
 func (AssetClass) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[30]
+	return &file_Qot_Common_proto_enumTypes[31]
 }
 
 func (x AssetClass) Number() protoreflect.EnumNumber {
@@ -2692,7 +2763,7 @@ func (x *AssetClass) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use AssetClass.Descriptor instead.
 func (AssetClass) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{30}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{31}
 }
 
 // 交割周期
@@ -2750,11 +2821,11 @@ func (x ExpirationCycle) String() string {
 }
 
 func (ExpirationCycle) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[31].Descriptor()
+	return file_Qot_Common_proto_enumTypes[32].Descriptor()
 }
 
 func (ExpirationCycle) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[31]
+	return &file_Qot_Common_proto_enumTypes[32]
 }
 
 func (x ExpirationCycle) Number() protoreflect.EnumNumber {
@@ -2773,7 +2844,7 @@ func (x *ExpirationCycle) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ExpirationCycle.Descriptor instead.
 func (ExpirationCycle) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{31}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{32}
 }
 
 // 标准期权链类型
@@ -2810,11 +2881,11 @@ func (x OptionStandardType) String() string {
 }
 
 func (OptionStandardType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[32].Descriptor()
+	return file_Qot_Common_proto_enumTypes[33].Descriptor()
 }
 
 func (OptionStandardType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[32]
+	return &file_Qot_Common_proto_enumTypes[33]
 }
 
 func (x OptionStandardType) Number() protoreflect.EnumNumber {
@@ -2833,7 +2904,7 @@ func (x *OptionStandardType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use OptionStandardType.Descriptor instead.
 func (OptionStandardType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{32}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{33}
 }
 
 // 期权结算方式
@@ -2870,11 +2941,11 @@ func (x OptionSettlementMode) String() string {
 }
 
 func (OptionSettlementMode) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[33].Descriptor()
+	return file_Qot_Common_proto_enumTypes[34].Descriptor()
 }
 
 func (OptionSettlementMode) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[33]
+	return &file_Qot_Common_proto_enumTypes[34]
 }
 
 func (x OptionSettlementMode) Number() protoreflect.EnumNumber {
@@ -2893,7 +2964,7 @@ func (x *OptionSettlementMode) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use OptionSettlementMode.Descriptor instead.
 func (OptionSettlementMode) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{33}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{34}
 }
 
 // 所属交易所
@@ -2920,7 +2991,9 @@ const (
 	ExchType_ExchType_SG_SGX       ExchType = 17 //新交所
 	ExchType_ExchType_JP_OSE       ExchType = 18 //大阪交易所
 	ExchType_ExchType_CC_CRYPTO    ExchType = 19 //加密货币交易所
-	ExchType_ExchType_MY_BMS       ExchType = 20 //马来西亚交易所
+	ExchType_ExchType_MY_MYX       ExchType = 20 //马来西亚交易所
+	ExchType_ExchType_JP_TSE       ExchType = 21 //东京证券交易所
+	ExchType_ExchType_JP_Nikkei    ExchType = 22 //日经指数
 )
 
 // Enum value maps for ExchType.
@@ -2946,7 +3019,9 @@ var (
 		17: "ExchType_SG_SGX",
 		18: "ExchType_JP_OSE",
 		19: "ExchType_CC_CRYPTO",
-		20: "ExchType_MY_BMS",
+		20: "ExchType_MY_MYX",
+		21: "ExchType_JP_TSE",
+		22: "ExchType_JP_Nikkei",
 	}
 	ExchType_value = map[string]int32{
 		"ExchType_Unknown":      0,
@@ -2969,7 +3044,9 @@ var (
 		"ExchType_SG_SGX":       17,
 		"ExchType_JP_OSE":       18,
 		"ExchType_CC_CRYPTO":    19,
-		"ExchType_MY_BMS":       20,
+		"ExchType_MY_MYX":       20,
+		"ExchType_JP_TSE":       21,
+		"ExchType_JP_Nikkei":    22,
 	}
 )
 
@@ -2984,11 +3061,11 @@ func (x ExchType) String() string {
 }
 
 func (ExchType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[34].Descriptor()
+	return file_Qot_Common_proto_enumTypes[35].Descriptor()
 }
 
 func (ExchType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[34]
+	return &file_Qot_Common_proto_enumTypes[35]
 }
 
 func (x ExchType) Number() protoreflect.EnumNumber {
@@ -3007,7 +3084,7 @@ func (x *ExchType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ExchType.Descriptor instead.
 func (ExchType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{34}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{35}
 }
 
 // 周期类型
@@ -3050,11 +3127,11 @@ func (x PeriodType) String() string {
 }
 
 func (PeriodType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[35].Descriptor()
+	return file_Qot_Common_proto_enumTypes[36].Descriptor()
 }
 
 func (PeriodType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[35]
+	return &file_Qot_Common_proto_enumTypes[36]
 }
 
 func (x PeriodType) Number() protoreflect.EnumNumber {
@@ -3073,7 +3150,7 @@ func (x *PeriodType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PeriodType.Descriptor instead.
 func (PeriodType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{35}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{36}
 }
 
 type PriceReminderMarketStatus int32
@@ -3115,11 +3192,11 @@ func (x PriceReminderMarketStatus) String() string {
 }
 
 func (PriceReminderMarketStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[36].Descriptor()
+	return file_Qot_Common_proto_enumTypes[37].Descriptor()
 }
 
 func (PriceReminderMarketStatus) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[36]
+	return &file_Qot_Common_proto_enumTypes[37]
 }
 
 func (x PriceReminderMarketStatus) Number() protoreflect.EnumNumber {
@@ -3138,7 +3215,99 @@ func (x *PriceReminderMarketStatus) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use PriceReminderMarketStatus.Descriptor instead.
 func (PriceReminderMarketStatus) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{36}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{37}
+}
+
+type OptionStrategyType int32
+
+const (
+	OptionStrategyType_OptionStrategyType_Unknown        OptionStrategyType = 0   // 未知
+	OptionStrategyType_OptionStrategyType_SingleOption   OptionStrategyType = 1   // 单个期权
+	OptionStrategyType_OptionStrategyType_Covered        OptionStrategyType = 2   // 股票担保
+	OptionStrategyType_OptionStrategyType_Spread         OptionStrategyType = 4   // 垂直策略
+	OptionStrategyType_OptionStrategyType_Straddle       OptionStrategyType = 6   // 跨式策略
+	OptionStrategyType_OptionStrategyType_Strangle       OptionStrategyType = 7   // 宽跨式策略
+	OptionStrategyType_OptionStrategyType_Collar         OptionStrategyType = 8   // 领式策略
+	OptionStrategyType_OptionStrategyType_Butterfly      OptionStrategyType = 9   // 蝶式策略
+	OptionStrategyType_OptionStrategyType_Condor         OptionStrategyType = 11  // 鹰式策略
+	OptionStrategyType_OptionStrategyType_IronButterfly  OptionStrategyType = 13  // 铁蝶式策略
+	OptionStrategyType_OptionStrategyType_IronCondor     OptionStrategyType = 14  // 铁鹰式策略
+	OptionStrategyType_OptionStrategyType_CalendarSpread OptionStrategyType = 15  // 日历策略
+	OptionStrategyType_OptionStrategyType_DiagonalSpread OptionStrategyType = 16  // 对角策略
+	OptionStrategyType_OptionStrategyType_Customize      OptionStrategyType = 100 // 自定义策略
+)
+
+// Enum value maps for OptionStrategyType.
+var (
+	OptionStrategyType_name = map[int32]string{
+		0:   "OptionStrategyType_Unknown",
+		1:   "OptionStrategyType_SingleOption",
+		2:   "OptionStrategyType_Covered",
+		4:   "OptionStrategyType_Spread",
+		6:   "OptionStrategyType_Straddle",
+		7:   "OptionStrategyType_Strangle",
+		8:   "OptionStrategyType_Collar",
+		9:   "OptionStrategyType_Butterfly",
+		11:  "OptionStrategyType_Condor",
+		13:  "OptionStrategyType_IronButterfly",
+		14:  "OptionStrategyType_IronCondor",
+		15:  "OptionStrategyType_CalendarSpread",
+		16:  "OptionStrategyType_DiagonalSpread",
+		100: "OptionStrategyType_Customize",
+	}
+	OptionStrategyType_value = map[string]int32{
+		"OptionStrategyType_Unknown":        0,
+		"OptionStrategyType_SingleOption":   1,
+		"OptionStrategyType_Covered":        2,
+		"OptionStrategyType_Spread":         4,
+		"OptionStrategyType_Straddle":       6,
+		"OptionStrategyType_Strangle":       7,
+		"OptionStrategyType_Collar":         8,
+		"OptionStrategyType_Butterfly":      9,
+		"OptionStrategyType_Condor":         11,
+		"OptionStrategyType_IronButterfly":  13,
+		"OptionStrategyType_IronCondor":     14,
+		"OptionStrategyType_CalendarSpread": 15,
+		"OptionStrategyType_DiagonalSpread": 16,
+		"OptionStrategyType_Customize":      100,
+	}
+)
+
+func (x OptionStrategyType) Enum() *OptionStrategyType {
+	p := new(OptionStrategyType)
+	*p = x
+	return p
+}
+
+func (x OptionStrategyType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (OptionStrategyType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[38].Descriptor()
+}
+
+func (OptionStrategyType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[38]
+}
+
+func (x OptionStrategyType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *OptionStrategyType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = OptionStrategyType(num)
+	return nil
+}
+
+// Deprecated: Use OptionStrategyType.Descriptor instead.
+func (OptionStrategyType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{38}
 }
 
 // 财报类型
@@ -3199,11 +3368,11 @@ func (x F10Type) String() string {
 }
 
 func (F10Type) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[37].Descriptor()
+	return file_Qot_Common_proto_enumTypes[39].Descriptor()
 }
 
 func (F10Type) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[37]
+	return &file_Qot_Common_proto_enumTypes[39]
 }
 
 func (x F10Type) Number() protoreflect.EnumNumber {
@@ -3222,7 +3391,7 @@ func (x *F10Type) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use F10Type.Descriptor instead.
 func (F10Type) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{37}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{39}
 }
 
 // 财报发布时间类型
@@ -3262,11 +3431,11 @@ func (x EarningsPubTimeType) String() string {
 }
 
 func (EarningsPubTimeType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[38].Descriptor()
+	return file_Qot_Common_proto_enumTypes[40].Descriptor()
 }
 
 func (EarningsPubTimeType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[38]
+	return &file_Qot_Common_proto_enumTypes[40]
 }
 
 func (x EarningsPubTimeType) Number() protoreflect.EnumNumber {
@@ -3285,7 +3454,7 @@ func (x *EarningsPubTimeType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use EarningsPubTimeType.Descriptor instead.
 func (EarningsPubTimeType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{38}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{40}
 }
 
 // 估值类型
@@ -3325,11 +3494,11 @@ func (x ValuationType) String() string {
 }
 
 func (ValuationType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[39].Descriptor()
+	return file_Qot_Common_proto_enumTypes[41].Descriptor()
 }
 
 func (ValuationType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[39]
+	return &file_Qot_Common_proto_enumTypes[41]
 }
 
 func (x ValuationType) Number() protoreflect.EnumNumber {
@@ -3348,7 +3517,7 @@ func (x *ValuationType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ValuationType.Descriptor instead.
 func (ValuationType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{39}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{41}
 }
 
 // 财务报表类型
@@ -3391,11 +3560,11 @@ func (x FinancialStatementsType) String() string {
 }
 
 func (FinancialStatementsType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[40].Descriptor()
+	return file_Qot_Common_proto_enumTypes[42].Descriptor()
 }
 
 func (FinancialStatementsType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[40]
+	return &file_Qot_Common_proto_enumTypes[42]
 }
 
 func (x FinancialStatementsType) Number() protoreflect.EnumNumber {
@@ -3414,7 +3583,7 @@ func (x *FinancialStatementsType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use FinancialStatementsType.Descriptor instead.
 func (FinancialStatementsType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{40}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{42}
 }
 
 // 主营构成维度类型
@@ -3457,11 +3626,11 @@ func (x RevenueBreakdownType) String() string {
 }
 
 func (RevenueBreakdownType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[41].Descriptor()
+	return file_Qot_Common_proto_enumTypes[43].Descriptor()
 }
 
 func (RevenueBreakdownType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[41]
+	return &file_Qot_Common_proto_enumTypes[43]
 }
 
 func (x RevenueBreakdownType) Number() protoreflect.EnumNumber {
@@ -3480,7 +3649,7 @@ func (x *RevenueBreakdownType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use RevenueBreakdownType.Descriptor instead.
 func (RevenueBreakdownType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{41}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{43}
 }
 
 // 分析师评级
@@ -3526,11 +3695,11 @@ func (x ResearchRatingType) String() string {
 }
 
 func (ResearchRatingType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[42].Descriptor()
+	return file_Qot_Common_proto_enumTypes[44].Descriptor()
 }
 
 func (ResearchRatingType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[42]
+	return &file_Qot_Common_proto_enumTypes[44]
 }
 
 func (x ResearchRatingType) Number() protoreflect.EnumNumber {
@@ -3549,7 +3718,7 @@ func (x *ResearchRatingType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ResearchRatingType.Descriptor instead.
 func (ResearchRatingType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{42}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{44}
 }
 
 // 研报评级汇总-评级维度
@@ -3586,11 +3755,11 @@ func (x ResearchRatingDimensionType) String() string {
 }
 
 func (ResearchRatingDimensionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[43].Descriptor()
+	return file_Qot_Common_proto_enumTypes[45].Descriptor()
 }
 
 func (ResearchRatingDimensionType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[43]
+	return &file_Qot_Common_proto_enumTypes[45]
 }
 
 func (x ResearchRatingDimensionType) Number() protoreflect.EnumNumber {
@@ -3609,7 +3778,7 @@ func (x *ResearchRatingDimensionType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ResearchRatingDimensionType.Descriptor instead.
 func (ResearchRatingDimensionType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{43}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{45}
 }
 
 // 晨星评级类型
@@ -3646,11 +3815,11 @@ func (x MorningstarRatingType) String() string {
 }
 
 func (MorningstarRatingType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[44].Descriptor()
+	return file_Qot_Common_proto_enumTypes[46].Descriptor()
 }
 
 func (MorningstarRatingType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[44]
+	return &file_Qot_Common_proto_enumTypes[46]
 }
 
 func (x MorningstarRatingType) Number() protoreflect.EnumNumber {
@@ -3669,7 +3838,7 @@ func (x *MorningstarRatingType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use MorningstarRatingType.Descriptor instead.
 func (MorningstarRatingType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{44}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{46}
 }
 
 // 估值历史区间类型
@@ -3730,11 +3899,11 @@ func (x ValuationIntervalType) String() string {
 }
 
 func (ValuationIntervalType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[45].Descriptor()
+	return file_Qot_Common_proto_enumTypes[47].Descriptor()
 }
 
 func (ValuationIntervalType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[45]
+	return &file_Qot_Common_proto_enumTypes[47]
 }
 
 func (x ValuationIntervalType) Number() protoreflect.EnumNumber {
@@ -3753,7 +3922,7 @@ func (x *ValuationIntervalType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use ValuationIntervalType.Descriptor instead.
 func (ValuationIntervalType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{45}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{47}
 }
 
 // 持股变动筛选类型
@@ -3796,11 +3965,11 @@ func (x HoldingChangesFilterType) String() string {
 }
 
 func (HoldingChangesFilterType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[46].Descriptor()
+	return file_Qot_Common_proto_enumTypes[48].Descriptor()
 }
 
 func (HoldingChangesFilterType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[46]
+	return &file_Qot_Common_proto_enumTypes[48]
 }
 
 func (x HoldingChangesFilterType) Number() protoreflect.EnumNumber {
@@ -3819,7 +3988,7 @@ func (x *HoldingChangesFilterType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use HoldingChangesFilterType.Descriptor instead.
 func (HoldingChangesFilterType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{46}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{48}
 }
 
 // 股东持仓明细机构类型
@@ -3913,11 +4082,11 @@ func (x HolderDetailType) String() string {
 }
 
 func (HolderDetailType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[47].Descriptor()
+	return file_Qot_Common_proto_enumTypes[49].Descriptor()
 }
 
 func (HolderDetailType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[47]
+	return &file_Qot_Common_proto_enumTypes[49]
 }
 
 func (x HolderDetailType) Number() protoreflect.EnumNumber {
@@ -3936,7 +4105,7 @@ func (x *HolderDetailType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use HolderDetailType.Descriptor instead.
 func (HolderDetailType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{47}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{49}
 }
 
 // 公司资料字段类型
@@ -3973,11 +4142,11 @@ func (x CompanyProfileFieldType) String() string {
 }
 
 func (CompanyProfileFieldType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[48].Descriptor()
+	return file_Qot_Common_proto_enumTypes[50].Descriptor()
 }
 
 func (CompanyProfileFieldType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[48]
+	return &file_Qot_Common_proto_enumTypes[50]
 }
 
 func (x CompanyProfileFieldType) Number() protoreflect.EnumNumber {
@@ -3996,7 +4165,7 @@ func (x *CompanyProfileFieldType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use CompanyProfileFieldType.Descriptor instead.
 func (CompanyProfileFieldType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{48}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{50}
 }
 
 // 券商净买卖方向
@@ -4033,11 +4202,11 @@ func (x BuySellType) String() string {
 }
 
 func (BuySellType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[49].Descriptor()
+	return file_Qot_Common_proto_enumTypes[51].Descriptor()
 }
 
 func (BuySellType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[49]
+	return &file_Qot_Common_proto_enumTypes[51]
 }
 
 func (x BuySellType) Number() protoreflect.EnumNumber {
@@ -4056,7 +4225,7 @@ func (x *BuySellType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use BuySellType.Descriptor instead.
 func (BuySellType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{49}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{51}
 }
 
 // 期权波动率查询时间周期
@@ -4102,11 +4271,11 @@ func (x OptionVolatilityTimePeriodType) String() string {
 }
 
 func (OptionVolatilityTimePeriodType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[50].Descriptor()
+	return file_Qot_Common_proto_enumTypes[52].Descriptor()
 }
 
 func (OptionVolatilityTimePeriodType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[50]
+	return &file_Qot_Common_proto_enumTypes[52]
 }
 
 func (x OptionVolatilityTimePeriodType) Number() protoreflect.EnumNumber {
@@ -4125,7 +4294,7 @@ func (x *OptionVolatilityTimePeriodType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use OptionVolatilityTimePeriodType.Descriptor instead.
 func (OptionVolatilityTimePeriodType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{50}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{52}
 }
 
 // 期权隐含波动率状态
@@ -4162,11 +4331,11 @@ func (x OptionImpvolStatusType) String() string {
 }
 
 func (OptionImpvolStatusType) Descriptor() protoreflect.EnumDescriptor {
-	return file_Qot_Common_proto_enumTypes[51].Descriptor()
+	return file_Qot_Common_proto_enumTypes[53].Descriptor()
 }
 
 func (OptionImpvolStatusType) Type() protoreflect.EnumType {
-	return &file_Qot_Common_proto_enumTypes[51]
+	return &file_Qot_Common_proto_enumTypes[53]
 }
 
 func (x OptionImpvolStatusType) Number() protoreflect.EnumNumber {
@@ -4185,7 +4354,735 @@ func (x *OptionImpvolStatusType) UnmarshalJSON(b []byte) error {
 
 // Deprecated: Use OptionImpvolStatusType.Descriptor instead.
 func (OptionImpvolStatusType) EnumDescriptor() ([]byte, []int) {
-	return file_Qot_Common_proto_rawDescGZIP(), []int{51}
+	return file_Qot_Common_proto_rawDescGZIP(), []int{53}
+}
+
+// 指标语言类型
+type IndicatorLangType int32
+
+const (
+	IndicatorLangType_IndicatorLangType_Unknown IndicatorLangType = 0
+	IndicatorLangType_IndicatorLangType_MyLang  IndicatorLangType = 1
+	IndicatorLangType_IndicatorLangType_Python  IndicatorLangType = 2
+)
+
+// Enum value maps for IndicatorLangType.
+var (
+	IndicatorLangType_name = map[int32]string{
+		0: "IndicatorLangType_Unknown",
+		1: "IndicatorLangType_MyLang",
+		2: "IndicatorLangType_Python",
+	}
+	IndicatorLangType_value = map[string]int32{
+		"IndicatorLangType_Unknown": 0,
+		"IndicatorLangType_MyLang":  1,
+		"IndicatorLangType_Python":  2,
+	}
+)
+
+func (x IndicatorLangType) Enum() *IndicatorLangType {
+	p := new(IndicatorLangType)
+	*p = x
+	return p
+}
+
+func (x IndicatorLangType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (IndicatorLangType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[54].Descriptor()
+}
+
+func (IndicatorLangType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[54]
+}
+
+func (x IndicatorLangType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *IndicatorLangType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = IndicatorLangType(num)
+	return nil
+}
+
+// Deprecated: Use IndicatorLangType.Descriptor instead.
+func (IndicatorLangType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{54}
+}
+
+// 指标搜索模式
+type IndicatorSearchMode int32
+
+const (
+	IndicatorSearchMode_IndicatorSearchMode_Partial IndicatorSearchMode = 0 // 部分匹配（默认）
+	IndicatorSearchMode_IndicatorSearchMode_Exact   IndicatorSearchMode = 1 // 完全匹配
+)
+
+// Enum value maps for IndicatorSearchMode.
+var (
+	IndicatorSearchMode_name = map[int32]string{
+		0: "IndicatorSearchMode_Partial",
+		1: "IndicatorSearchMode_Exact",
+	}
+	IndicatorSearchMode_value = map[string]int32{
+		"IndicatorSearchMode_Partial": 0,
+		"IndicatorSearchMode_Exact":   1,
+	}
+)
+
+func (x IndicatorSearchMode) Enum() *IndicatorSearchMode {
+	p := new(IndicatorSearchMode)
+	*p = x
+	return p
+}
+
+func (x IndicatorSearchMode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (IndicatorSearchMode) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[55].Descriptor()
+}
+
+func (IndicatorSearchMode) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[55]
+}
+
+func (x IndicatorSearchMode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *IndicatorSearchMode) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = IndicatorSearchMode(num)
+	return nil
+}
+
+// Deprecated: Use IndicatorSearchMode.Descriptor instead.
+func (IndicatorSearchMode) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{55}
+}
+
+// 指标参数值类型枚举
+type IndicatorParamValueType int32
+
+const (
+	IndicatorParamValueType_IndicatorParamValueType_UNKNOWN IndicatorParamValueType = 0 // 未知
+	IndicatorParamValueType_IndicatorParamValueType_INT     IndicatorParamValueType = 1 // 整数
+	IndicatorParamValueType_IndicatorParamValueType_FLOAT   IndicatorParamValueType = 2 // 浮点
+	IndicatorParamValueType_IndicatorParamValueType_STRING  IndicatorParamValueType = 3 // 字符串
+	IndicatorParamValueType_IndicatorParamValueType_COLOR   IndicatorParamValueType = 4 // 颜色
+	IndicatorParamValueType_IndicatorParamValueType_SHAPE   IndicatorParamValueType = 5 // 形状
+	IndicatorParamValueType_IndicatorParamValueType_LINE    IndicatorParamValueType = 6 // 线型
+	IndicatorParamValueType_IndicatorParamValueType_BOOL    IndicatorParamValueType = 7 // 布尔
+)
+
+// Enum value maps for IndicatorParamValueType.
+var (
+	IndicatorParamValueType_name = map[int32]string{
+		0: "IndicatorParamValueType_UNKNOWN",
+		1: "IndicatorParamValueType_INT",
+		2: "IndicatorParamValueType_FLOAT",
+		3: "IndicatorParamValueType_STRING",
+		4: "IndicatorParamValueType_COLOR",
+		5: "IndicatorParamValueType_SHAPE",
+		6: "IndicatorParamValueType_LINE",
+		7: "IndicatorParamValueType_BOOL",
+	}
+	IndicatorParamValueType_value = map[string]int32{
+		"IndicatorParamValueType_UNKNOWN": 0,
+		"IndicatorParamValueType_INT":     1,
+		"IndicatorParamValueType_FLOAT":   2,
+		"IndicatorParamValueType_STRING":  3,
+		"IndicatorParamValueType_COLOR":   4,
+		"IndicatorParamValueType_SHAPE":   5,
+		"IndicatorParamValueType_LINE":    6,
+		"IndicatorParamValueType_BOOL":    7,
+	}
+)
+
+func (x IndicatorParamValueType) Enum() *IndicatorParamValueType {
+	p := new(IndicatorParamValueType)
+	*p = x
+	return p
+}
+
+func (x IndicatorParamValueType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (IndicatorParamValueType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[56].Descriptor()
+}
+
+func (IndicatorParamValueType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[56]
+}
+
+func (x IndicatorParamValueType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *IndicatorParamValueType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = IndicatorParamValueType(num)
+	return nil
+}
+
+// Deprecated: Use IndicatorParamValueType.Descriptor instead.
+func (IndicatorParamValueType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{56}
+}
+
+// 指标形状
+type IndicatorShape int32
+
+const (
+	IndicatorShape_IndicatorShape_UNKNOWN       IndicatorShape = 0  // 未知
+	IndicatorShape_IndicatorShape_XCROSS        IndicatorShape = 1  // X 形十字
+	IndicatorShape_IndicatorShape_CROSS         IndicatorShape = 2  // 十字
+	IndicatorShape_IndicatorShape_CIRCLE        IndicatorShape = 3  // 圆形
+	IndicatorShape_IndicatorShape_TRIANGLE_UP   IndicatorShape = 4  // 上三角
+	IndicatorShape_IndicatorShape_TRIANGLE_DOWN IndicatorShape = 5  // 下三角
+	IndicatorShape_IndicatorShape_FLAG          IndicatorShape = 6  // 旗帜
+	IndicatorShape_IndicatorShape_ARROW_UP      IndicatorShape = 7  // 上箭头
+	IndicatorShape_IndicatorShape_ARROW_DOWN    IndicatorShape = 8  // 下箭头
+	IndicatorShape_IndicatorShape_SQUARE        IndicatorShape = 9  // 方块
+	IndicatorShape_IndicatorShape_DIAMOND       IndicatorShape = 10 // 菱形
+	IndicatorShape_IndicatorShape_LABEL_UP      IndicatorShape = 11 // 上标签
+	IndicatorShape_IndicatorShape_LABEL_DOWN    IndicatorShape = 12 // 下标签
+)
+
+// Enum value maps for IndicatorShape.
+var (
+	IndicatorShape_name = map[int32]string{
+		0:  "IndicatorShape_UNKNOWN",
+		1:  "IndicatorShape_XCROSS",
+		2:  "IndicatorShape_CROSS",
+		3:  "IndicatorShape_CIRCLE",
+		4:  "IndicatorShape_TRIANGLE_UP",
+		5:  "IndicatorShape_TRIANGLE_DOWN",
+		6:  "IndicatorShape_FLAG",
+		7:  "IndicatorShape_ARROW_UP",
+		8:  "IndicatorShape_ARROW_DOWN",
+		9:  "IndicatorShape_SQUARE",
+		10: "IndicatorShape_DIAMOND",
+		11: "IndicatorShape_LABEL_UP",
+		12: "IndicatorShape_LABEL_DOWN",
+	}
+	IndicatorShape_value = map[string]int32{
+		"IndicatorShape_UNKNOWN":       0,
+		"IndicatorShape_XCROSS":        1,
+		"IndicatorShape_CROSS":         2,
+		"IndicatorShape_CIRCLE":        3,
+		"IndicatorShape_TRIANGLE_UP":   4,
+		"IndicatorShape_TRIANGLE_DOWN": 5,
+		"IndicatorShape_FLAG":          6,
+		"IndicatorShape_ARROW_UP":      7,
+		"IndicatorShape_ARROW_DOWN":    8,
+		"IndicatorShape_SQUARE":        9,
+		"IndicatorShape_DIAMOND":       10,
+		"IndicatorShape_LABEL_UP":      11,
+		"IndicatorShape_LABEL_DOWN":    12,
+	}
+)
+
+func (x IndicatorShape) Enum() *IndicatorShape {
+	p := new(IndicatorShape)
+	*p = x
+	return p
+}
+
+func (x IndicatorShape) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (IndicatorShape) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[57].Descriptor()
+}
+
+func (IndicatorShape) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[57]
+}
+
+func (x IndicatorShape) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *IndicatorShape) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = IndicatorShape(num)
+	return nil
+}
+
+// Deprecated: Use IndicatorShape.Descriptor instead.
+func (IndicatorShape) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{57}
+}
+
+// 指标线型
+type IndicatorLineType int32
+
+const (
+	IndicatorLineType_IndicatorLineType_UNKNOWN        IndicatorLineType = 0 // 未知/未指定
+	IndicatorLineType_IndicatorLineType_SOLID          IndicatorLineType = 1 // 实线
+	IndicatorLineType_IndicatorLineType_DASHED         IndicatorLineType = 2 // 虚线
+	IndicatorLineType_IndicatorLineType_DOT            IndicatorLineType = 3 // 点线
+	IndicatorLineType_IndicatorLineType_CROSS          IndicatorLineType = 4 // 交叉线
+	IndicatorLineType_IndicatorLineType_CIRCLE         IndicatorLineType = 5 // 圆点连线
+	IndicatorLineType_IndicatorLineType_HISTOGRAM      IndicatorLineType = 6 // 柱状图
+	IndicatorLineType_IndicatorLineType_HISTOGRAM_LINE IndicatorLineType = 7 // 柱线混合
+	IndicatorLineType_IndicatorLineType_STEP           IndicatorLineType = 8 // 阶梯线
+	IndicatorLineType_IndicatorLineType_STEP_DIAMONDS  IndicatorLineType = 9 // 阶梯+菱形
+)
+
+// Enum value maps for IndicatorLineType.
+var (
+	IndicatorLineType_name = map[int32]string{
+		0: "IndicatorLineType_UNKNOWN",
+		1: "IndicatorLineType_SOLID",
+		2: "IndicatorLineType_DASHED",
+		3: "IndicatorLineType_DOT",
+		4: "IndicatorLineType_CROSS",
+		5: "IndicatorLineType_CIRCLE",
+		6: "IndicatorLineType_HISTOGRAM",
+		7: "IndicatorLineType_HISTOGRAM_LINE",
+		8: "IndicatorLineType_STEP",
+		9: "IndicatorLineType_STEP_DIAMONDS",
+	}
+	IndicatorLineType_value = map[string]int32{
+		"IndicatorLineType_UNKNOWN":        0,
+		"IndicatorLineType_SOLID":          1,
+		"IndicatorLineType_DASHED":         2,
+		"IndicatorLineType_DOT":            3,
+		"IndicatorLineType_CROSS":          4,
+		"IndicatorLineType_CIRCLE":         5,
+		"IndicatorLineType_HISTOGRAM":      6,
+		"IndicatorLineType_HISTOGRAM_LINE": 7,
+		"IndicatorLineType_STEP":           8,
+		"IndicatorLineType_STEP_DIAMONDS":  9,
+	}
+)
+
+func (x IndicatorLineType) Enum() *IndicatorLineType {
+	p := new(IndicatorLineType)
+	*p = x
+	return p
+}
+
+func (x IndicatorLineType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (IndicatorLineType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[58].Descriptor()
+}
+
+func (IndicatorLineType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[58]
+}
+
+func (x IndicatorLineType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *IndicatorLineType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = IndicatorLineType(num)
+	return nil
+}
+
+// Deprecated: Use IndicatorLineType.Descriptor instead.
+func (IndicatorLineType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{58}
+}
+
+// 事件合约生命周期状态（适用于 Series / Event / Contract）
+type EC_Status int32
+
+const (
+	// ---- 合约级状态 (Contract) ----
+	EC_Status_EC_Status_Initialized          EC_Status = 0 // 初始化（默认值/未知）
+	EC_Status_EC_Status_Inactive             EC_Status = 1 // 未激活
+	EC_Status_EC_Status_Active               EC_Status = 2 // 活跃（可交易）
+	EC_Status_EC_Status_Closed               EC_Status = 3 // 已关闭
+	EC_Status_EC_Status_Halted               EC_Status = 4 // 暂停交易
+	EC_Status_EC_Status_Settled              EC_Status = 5 // 已结算
+	EC_Status_EC_Status_Canceled             EC_Status = 6 // 已取消
+	EC_Status_EC_Status_DeterminationPending EC_Status = 7 // 等待确认结果
+	EC_Status_EC_Status_Determined           EC_Status = 8 // 已确认结果
+	EC_Status_EC_Status_Finalized            EC_Status = 9 // 已完成
+	// ---- 事件级状态 (Event) ----
+	EC_Status_EC_Status_EventAbnormal    EC_Status = 100 // 事件异常
+	EC_Status_EC_Status_EventInitialized EC_Status = 101 // 事件初始化
+	EC_Status_EC_Status_EventActive      EC_Status = 102 // 事件活跃
+	EC_Status_EC_Status_EventClosed      EC_Status = 103 // 事件已关闭
+	EC_Status_EC_Status_EventSettled     EC_Status = 104 // 事件已结算
+	EC_Status_EC_Status_EventCanceled    EC_Status = 105 // 事件已取消
+	EC_Status_EC_Status_EventFinalized   EC_Status = 106 // 事件已完成
+)
+
+// Enum value maps for EC_Status.
+var (
+	EC_Status_name = map[int32]string{
+		0:   "EC_Status_Initialized",
+		1:   "EC_Status_Inactive",
+		2:   "EC_Status_Active",
+		3:   "EC_Status_Closed",
+		4:   "EC_Status_Halted",
+		5:   "EC_Status_Settled",
+		6:   "EC_Status_Canceled",
+		7:   "EC_Status_DeterminationPending",
+		8:   "EC_Status_Determined",
+		9:   "EC_Status_Finalized",
+		100: "EC_Status_EventAbnormal",
+		101: "EC_Status_EventInitialized",
+		102: "EC_Status_EventActive",
+		103: "EC_Status_EventClosed",
+		104: "EC_Status_EventSettled",
+		105: "EC_Status_EventCanceled",
+		106: "EC_Status_EventFinalized",
+	}
+	EC_Status_value = map[string]int32{
+		"EC_Status_Initialized":          0,
+		"EC_Status_Inactive":             1,
+		"EC_Status_Active":               2,
+		"EC_Status_Closed":               3,
+		"EC_Status_Halted":               4,
+		"EC_Status_Settled":              5,
+		"EC_Status_Canceled":             6,
+		"EC_Status_DeterminationPending": 7,
+		"EC_Status_Determined":           8,
+		"EC_Status_Finalized":            9,
+		"EC_Status_EventAbnormal":        100,
+		"EC_Status_EventInitialized":     101,
+		"EC_Status_EventActive":          102,
+		"EC_Status_EventClosed":          103,
+		"EC_Status_EventSettled":         104,
+		"EC_Status_EventCanceled":        105,
+		"EC_Status_EventFinalized":       106,
+	}
+)
+
+func (x EC_Status) Enum() *EC_Status {
+	p := new(EC_Status)
+	*p = x
+	return p
+}
+
+func (x EC_Status) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (EC_Status) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[59].Descriptor()
+}
+
+func (EC_Status) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[59]
+}
+
+func (x EC_Status) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *EC_Status) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = EC_Status(num)
+	return nil
+}
+
+// Deprecated: Use EC_Status.Descriptor instead.
+func (EC_Status) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{59}
+}
+
+// 事件合约类型
+type EC_ContractType int32
+
+const (
+	EC_ContractType_EC_ContractType_None   EC_ContractType = 0 // 未公布/未知
+	EC_ContractType_EC_ContractType_Binary EC_ContractType = 1 // 二元市场（Yes/No）
+	EC_ContractType_EC_ContractType_Scalar EC_ContractType = 2 // 标量市场（Long/Short）
+)
+
+// Enum value maps for EC_ContractType.
+var (
+	EC_ContractType_name = map[int32]string{
+		0: "EC_ContractType_None",
+		1: "EC_ContractType_Binary",
+		2: "EC_ContractType_Scalar",
+	}
+	EC_ContractType_value = map[string]int32{
+		"EC_ContractType_None":   0,
+		"EC_ContractType_Binary": 1,
+		"EC_ContractType_Scalar": 2,
+	}
+)
+
+func (x EC_ContractType) Enum() *EC_ContractType {
+	p := new(EC_ContractType)
+	*p = x
+	return p
+}
+
+func (x EC_ContractType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (EC_ContractType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[60].Descriptor()
+}
+
+func (EC_ContractType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[60]
+}
+
+func (x EC_ContractType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *EC_ContractType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = EC_ContractType(num)
+	return nil
+}
+
+// Deprecated: Use EC_ContractType.Descriptor instead.
+func (EC_ContractType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{60}
+}
+
+// 事件合约 Series 频率
+type EC_Frequency int32
+
+const (
+	EC_Frequency_EC_Frequency_Unknown EC_Frequency = 0 // 未知
+	EC_Frequency_EC_Frequency_Annual  EC_Frequency = 1 // 年度
+	EC_Frequency_EC_Frequency_Monthly EC_Frequency = 2 // 月度
+	EC_Frequency_EC_Frequency_Weekly  EC_Frequency = 3 // 周度
+	EC_Frequency_EC_Frequency_Daily   EC_Frequency = 4 // 日度
+	EC_Frequency_EC_Frequency_Hourly  EC_Frequency = 5 // 小时
+	EC_Frequency_EC_Frequency_Custom  EC_Frequency = 6 // 自定义
+	EC_Frequency_EC_Frequency_OneOff  EC_Frequency = 7 // 一次性
+)
+
+// Enum value maps for EC_Frequency.
+var (
+	EC_Frequency_name = map[int32]string{
+		0: "EC_Frequency_Unknown",
+		1: "EC_Frequency_Annual",
+		2: "EC_Frequency_Monthly",
+		3: "EC_Frequency_Weekly",
+		4: "EC_Frequency_Daily",
+		5: "EC_Frequency_Hourly",
+		6: "EC_Frequency_Custom",
+		7: "EC_Frequency_OneOff",
+	}
+	EC_Frequency_value = map[string]int32{
+		"EC_Frequency_Unknown": 0,
+		"EC_Frequency_Annual":  1,
+		"EC_Frequency_Monthly": 2,
+		"EC_Frequency_Weekly":  3,
+		"EC_Frequency_Daily":   4,
+		"EC_Frequency_Hourly":  5,
+		"EC_Frequency_Custom":  6,
+		"EC_Frequency_OneOff":  7,
+	}
+)
+
+func (x EC_Frequency) Enum() *EC_Frequency {
+	p := new(EC_Frequency)
+	*p = x
+	return p
+}
+
+func (x EC_Frequency) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (EC_Frequency) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[61].Descriptor()
+}
+
+func (EC_Frequency) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[61]
+}
+
+func (x EC_Frequency) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *EC_Frequency) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = EC_Frequency(num)
+	return nil
+}
+
+// Deprecated: Use EC_Frequency.Descriptor instead.
+func (EC_Frequency) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{61}
+}
+
+// 里程碑类型
+type EC_MilestoneType int32
+
+const (
+	EC_MilestoneType_EC_MilestoneType_Unknown                  EC_MilestoneType = 0 // 未知/暂未支持
+	EC_MilestoneType_EC_MilestoneType_FootballGame             EC_MilestoneType = 1 // 橄榄球比赛
+	EC_MilestoneType_EC_MilestoneType_BasketballGame           EC_MilestoneType = 2 // 篮球比赛
+	EC_MilestoneType_EC_MilestoneType_SoccerTournamentMultiLeg EC_MilestoneType = 3 // 足球锦标赛（多回合）
+	EC_MilestoneType_EC_MilestoneType_BaseballTournament       EC_MilestoneType = 4 // 棒球锦标赛
+	EC_MilestoneType_EC_MilestoneType_BaseballGame             EC_MilestoneType = 5 // 棒球比赛
+)
+
+// Enum value maps for EC_MilestoneType.
+var (
+	EC_MilestoneType_name = map[int32]string{
+		0: "EC_MilestoneType_Unknown",
+		1: "EC_MilestoneType_FootballGame",
+		2: "EC_MilestoneType_BasketballGame",
+		3: "EC_MilestoneType_SoccerTournamentMultiLeg",
+		4: "EC_MilestoneType_BaseballTournament",
+		5: "EC_MilestoneType_BaseballGame",
+	}
+	EC_MilestoneType_value = map[string]int32{
+		"EC_MilestoneType_Unknown":                  0,
+		"EC_MilestoneType_FootballGame":             1,
+		"EC_MilestoneType_BasketballGame":           2,
+		"EC_MilestoneType_SoccerTournamentMultiLeg": 3,
+		"EC_MilestoneType_BaseballTournament":       4,
+		"EC_MilestoneType_BaseballGame":             5,
+	}
+)
+
+func (x EC_MilestoneType) Enum() *EC_MilestoneType {
+	p := new(EC_MilestoneType)
+	*p = x
+	return p
+}
+
+func (x EC_MilestoneType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (EC_MilestoneType) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[62].Descriptor()
+}
+
+func (EC_MilestoneType) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[62]
+}
+
+func (x EC_MilestoneType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *EC_MilestoneType) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = EC_MilestoneType(num)
+	return nil
+}
+
+// Deprecated: Use EC_MilestoneType.Descriptor instead.
+func (EC_MilestoneType) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{62}
+}
+
+// 事件合约K线来源（区分合约成交价K线与子合约摆盘K线）
+type EC_KlineSource int32
+
+const (
+	EC_KlineSource_EC_KlineSource_None         EC_KlineSource = 0 // 合约级 Yes/No 成交价K线
+	EC_KlineSource_EC_KlineSource_OrderBookYes EC_KlineSource = 1 // YES 子合约的摆盘K线
+)
+
+// Enum value maps for EC_KlineSource.
+var (
+	EC_KlineSource_name = map[int32]string{
+		0: "EC_KlineSource_None",
+		1: "EC_KlineSource_OrderBookYes",
+	}
+	EC_KlineSource_value = map[string]int32{
+		"EC_KlineSource_None":         0,
+		"EC_KlineSource_OrderBookYes": 1,
+	}
+)
+
+func (x EC_KlineSource) Enum() *EC_KlineSource {
+	p := new(EC_KlineSource)
+	*p = x
+	return p
+}
+
+func (x EC_KlineSource) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (EC_KlineSource) Descriptor() protoreflect.EnumDescriptor {
+	return file_Qot_Common_proto_enumTypes[63].Descriptor()
+}
+
+func (EC_KlineSource) Type() protoreflect.EnumType {
+	return &file_Qot_Common_proto_enumTypes[63]
+}
+
+func (x EC_KlineSource) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Do not use.
+func (x *EC_KlineSource) UnmarshalJSON(b []byte) error {
+	num, err := protoimpl.X.UnmarshalJSONEnum(x.Descriptor(), b)
+	if err != nil {
+		return err
+	}
+	*x = EC_KlineSource(num)
+	return nil
+}
+
+// Deprecated: Use EC_KlineSource.Descriptor instead.
+func (EC_KlineSource) EnumDescriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{63}
 }
 
 //行情协议公共参数头
@@ -6099,13 +6996,14 @@ func (x *SubInfo) GetSecurityList() []*Security {
 }
 
 type ConnSubInfo struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SubInfoList   []*SubInfo             `protobuf:"bytes,1,rep,name=subInfoList" json:"subInfoList,omitempty"`      //该连接订阅信息
-	UsedQuota     *int32                 `protobuf:"varint,2,req,name=usedQuota" json:"usedQuota,omitempty"`         //该连接已经使用的订阅额度
-	IsOwnConnData *bool                  `protobuf:"varint,3,req,name=isOwnConnData" json:"isOwnConnData,omitempty"` //用于区分是否是自己连接的数据
-	SecurityFirm  *int32                 `protobuf:"varint,4,opt,name=securityFirm" json:"securityFirm,omitempty"`   //券商标识，取值见 Trd_Common.SecurityFirm
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	SubInfoList     []*SubInfo             `protobuf:"bytes,1,rep,name=subInfoList" json:"subInfoList,omitempty"`          //该连接订阅信息
+	UsedQuota       *int32                 `protobuf:"varint,2,req,name=usedQuota" json:"usedQuota,omitempty"`             //该连接已经使用的订阅额度
+	IsOwnConnData   *bool                  `protobuf:"varint,3,req,name=isOwnConnData" json:"isOwnConnData,omitempty"`     //用于区分是否是自己连接的数据
+	SecurityFirm    *int32                 `protobuf:"varint,4,opt,name=securityFirm" json:"securityFirm,omitempty"`       //券商标识，取值见 Trd_Common.SecurityFirm
+	OptionUsedQuota *int32                 `protobuf:"varint,5,opt,name=optionUsedQuota" json:"optionUsedQuota,omitempty"` //期权已使用订阅额度
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *ConnSubInfo) Reset() {
@@ -6162,6 +7060,13 @@ func (x *ConnSubInfo) GetIsOwnConnData() bool {
 func (x *ConnSubInfo) GetSecurityFirm() int32 {
 	if x != nil && x.SecurityFirm != nil {
 		return *x.SecurityFirm
+	}
+	return 0
+}
+
+func (x *ConnSubInfo) GetOptionUsedQuota() int32 {
+	if x != nil && x.OptionUsedQuota != nil {
+		return *x.OptionUsedQuota
 	}
 	return 0
 }
@@ -6462,6 +7367,305 @@ func (x *Rehab) GetTimestamp() float64 {
 	return 0
 }
 
+type ComboLeg struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Security      *Security              `protobuf:"bytes,1,req,name=security" json:"security,omitempty"`      //股票/期权
+	Side          *int32                 `protobuf:"varint,2,opt,name=side" json:"side,omitempty"`             //方向，取值见 Trd_Common.TrdSide
+	QtyRatio      *float64               `protobuf:"fixed64,3,opt,name=qtyRatio" json:"qtyRatio,omitempty"`    //数量比例
+	PositionID    *uint64                `protobuf:"varint,4,opt,name=positionID" json:"positionID,omitempty"` //持仓ID，仅 moomoo JP 平仓时使用
+	PredSide      *int32                 `protobuf:"varint,5,opt,name=predSide" json:"predSide,omitempty"`     //事件合约预测方向，取值见 Common.PredSide
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ComboLeg) Reset() {
+	*x = ComboLeg{}
+	mi := &file_Qot_Common_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ComboLeg) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ComboLeg) ProtoMessage() {}
+
+func (x *ComboLeg) ProtoReflect() protoreflect.Message {
+	mi := &file_Qot_Common_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ComboLeg.ProtoReflect.Descriptor instead.
+func (*ComboLeg) Descriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *ComboLeg) GetSecurity() *Security {
+	if x != nil {
+		return x.Security
+	}
+	return nil
+}
+
+func (x *ComboLeg) GetSide() int32 {
+	if x != nil && x.Side != nil {
+		return *x.Side
+	}
+	return 0
+}
+
+func (x *ComboLeg) GetQtyRatio() float64 {
+	if x != nil && x.QtyRatio != nil {
+		return *x.QtyRatio
+	}
+	return 0
+}
+
+func (x *ComboLeg) GetPositionID() uint64 {
+	if x != nil && x.PositionID != nil {
+		return *x.PositionID
+	}
+	return 0
+}
+
+func (x *ComboLeg) GetPredSide() int32 {
+	if x != nil && x.PredSide != nil {
+		return *x.PredSide
+	}
+	return 0
+}
+
+// 指标参数值（类型 + 对应 value 字段）
+type IndicatorParamValue struct {
+	state         protoimpl.MessageState   `protogen:"open.v1"`
+	Type          *IndicatorParamValueType `protobuf:"varint,1,opt,name=type,enum=Qot_Common.IndicatorParamValueType" json:"type,omitempty"`     // 值类型
+	IntValue      *int64                   `protobuf:"varint,2,opt,name=intValue" json:"intValue,omitempty"`                                     // type=INT 时使用
+	FloatValue    *float32                 `protobuf:"fixed32,3,opt,name=floatValue" json:"floatValue,omitempty"`                                // type=FLOAT 时使用
+	StringValue   *string                  `protobuf:"bytes,4,opt,name=stringValue" json:"stringValue,omitempty"`                                // type=STRING 时使用
+	BoolValue     *bool                    `protobuf:"varint,5,opt,name=boolValue" json:"boolValue,omitempty"`                                   // type=BOOL 时使用
+	ColorValue    *string                  `protobuf:"bytes,6,opt,name=colorValue" json:"colorValue,omitempty"`                                  // type=COLOR 时使用，格式为 #RRGGBBAA 或 #RRGGBB
+	ShapeValue    *IndicatorShape          `protobuf:"varint,7,opt,name=shapeValue,enum=Qot_Common.IndicatorShape" json:"shapeValue,omitempty"`  // type=SHAPE 时使用
+	LineValue     *IndicatorLineType       `protobuf:"varint,8,opt,name=lineValue,enum=Qot_Common.IndicatorLineType" json:"lineValue,omitempty"` // type=LINE 时使用
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IndicatorParamValue) Reset() {
+	*x = IndicatorParamValue{}
+	mi := &file_Qot_Common_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IndicatorParamValue) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IndicatorParamValue) ProtoMessage() {}
+
+func (x *IndicatorParamValue) ProtoReflect() protoreflect.Message {
+	mi := &file_Qot_Common_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IndicatorParamValue.ProtoReflect.Descriptor instead.
+func (*IndicatorParamValue) Descriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *IndicatorParamValue) GetType() IndicatorParamValueType {
+	if x != nil && x.Type != nil {
+		return *x.Type
+	}
+	return IndicatorParamValueType_IndicatorParamValueType_UNKNOWN
+}
+
+func (x *IndicatorParamValue) GetIntValue() int64 {
+	if x != nil && x.IntValue != nil {
+		return *x.IntValue
+	}
+	return 0
+}
+
+func (x *IndicatorParamValue) GetFloatValue() float32 {
+	if x != nil && x.FloatValue != nil {
+		return *x.FloatValue
+	}
+	return 0
+}
+
+func (x *IndicatorParamValue) GetStringValue() string {
+	if x != nil && x.StringValue != nil {
+		return *x.StringValue
+	}
+	return ""
+}
+
+func (x *IndicatorParamValue) GetBoolValue() bool {
+	if x != nil && x.BoolValue != nil {
+		return *x.BoolValue
+	}
+	return false
+}
+
+func (x *IndicatorParamValue) GetColorValue() string {
+	if x != nil && x.ColorValue != nil {
+		return *x.ColorValue
+	}
+	return ""
+}
+
+func (x *IndicatorParamValue) GetShapeValue() IndicatorShape {
+	if x != nil && x.ShapeValue != nil {
+		return *x.ShapeValue
+	}
+	return IndicatorShape_IndicatorShape_UNKNOWN
+}
+
+func (x *IndicatorParamValue) GetLineValue() IndicatorLineType {
+	if x != nil && x.LineValue != nil {
+		return *x.LineValue
+	}
+	return IndicatorLineType_IndicatorLineType_UNKNOWN
+}
+
+// 指标输入参数项
+type IndicatorInputParam struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Index         *int32                 `protobuf:"varint,1,opt,name=index" json:"index,omitempty"`    // 从 0 开始
+	Name          *string                `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`       // 参数名
+	Value         *IndicatorParamValue   `protobuf:"bytes,3,opt,name=value" json:"value,omitempty"`     // 当前值
+	VarName       *string                `protobuf:"bytes,4,opt,name=varName" json:"varName,omitempty"` // 脚本原始变量名（如 N/P1/M），仅麦语言指标有效，Python 指标为空
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IndicatorInputParam) Reset() {
+	*x = IndicatorInputParam{}
+	mi := &file_Qot_Common_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IndicatorInputParam) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IndicatorInputParam) ProtoMessage() {}
+
+func (x *IndicatorInputParam) ProtoReflect() protoreflect.Message {
+	mi := &file_Qot_Common_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IndicatorInputParam.ProtoReflect.Descriptor instead.
+func (*IndicatorInputParam) Descriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *IndicatorInputParam) GetIndex() int32 {
+	if x != nil && x.Index != nil {
+		return *x.Index
+	}
+	return 0
+}
+
+func (x *IndicatorInputParam) GetName() string {
+	if x != nil && x.Name != nil {
+		return *x.Name
+	}
+	return ""
+}
+
+func (x *IndicatorInputParam) GetValue() *IndicatorParamValue {
+	if x != nil {
+		return x.Value
+	}
+	return nil
+}
+
+func (x *IndicatorInputParam) GetVarName() string {
+	if x != nil && x.VarName != nil {
+		return *x.VarName
+	}
+	return ""
+}
+
+// 指标输出参数项（即一条输出线）
+type IndicatorOutputParam struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Index         *int32                 `protobuf:"varint,1,opt,name=index" json:"index,omitempty"` // 从 0 开始
+	Name          *string                `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`    // 输出线名
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IndicatorOutputParam) Reset() {
+	*x = IndicatorOutputParam{}
+	mi := &file_Qot_Common_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IndicatorOutputParam) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IndicatorOutputParam) ProtoMessage() {}
+
+func (x *IndicatorOutputParam) ProtoReflect() protoreflect.Message {
+	mi := &file_Qot_Common_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IndicatorOutputParam.ProtoReflect.Descriptor instead.
+func (*IndicatorOutputParam) Descriptor() ([]byte, []int) {
+	return file_Qot_Common_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *IndicatorOutputParam) GetIndex() int32 {
+	if x != nil && x.Index != nil {
+		return *x.Index
+	}
+	return 0
+}
+
+func (x *IndicatorOutputParam) GetName() string {
+	if x != nil && x.Name != nil {
+		return *x.Name
+	}
+	return ""
+}
+
 var File_Qot_Common_proto protoreflect.FileDescriptor
 
 const file_Qot_Common_proto_rawDesc = "" +
@@ -6659,12 +7863,13 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\ttimestamp\x18\a \x01(\x01R\ttimestamp\"]\n" +
 	"\aSubInfo\x12\x18\n" +
 	"\asubType\x18\x01 \x02(\x05R\asubType\x128\n" +
-	"\fsecurityList\x18\x02 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\"\xac\x01\n" +
+	"\fsecurityList\x18\x02 \x03(\v2\x14.Qot_Common.SecurityR\fsecurityList\"\xd6\x01\n" +
 	"\vConnSubInfo\x125\n" +
 	"\vsubInfoList\x18\x01 \x03(\v2\x13.Qot_Common.SubInfoR\vsubInfoList\x12\x1c\n" +
 	"\tusedQuota\x18\x02 \x02(\x05R\tusedQuota\x12$\n" +
 	"\risOwnConnData\x18\x03 \x02(\bR\risOwnConnData\x12\"\n" +
-	"\fsecurityFirm\x18\x04 \x01(\x05R\fsecurityFirm\"i\n" +
+	"\fsecurityFirm\x18\x04 \x01(\x05R\fsecurityFirm\x12(\n" +
+	"\x0foptionUsedQuota\x18\x05 \x01(\x05R\x0foptionUsedQuota\"i\n" +
 	"\tPlateInfo\x12*\n" +
 	"\x05plate\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\x05plate\x12\x12\n" +
 	"\x04name\x18\x02 \x02(\tR\x04name\x12\x1c\n" +
@@ -6709,7 +7914,38 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\n" +
 	"spinOffErt\x18\x19 \x01(\x01R\n" +
 	"spinOffErt\x12\x1c\n" +
-	"\ttimestamp\x18\x17 \x01(\x01R\ttimestamp*\xe8\x02\n" +
+	"\ttimestamp\x18\x17 \x01(\x01R\ttimestamp\"\xa8\x01\n" +
+	"\bComboLeg\x120\n" +
+	"\bsecurity\x18\x01 \x02(\v2\x14.Qot_Common.SecurityR\bsecurity\x12\x12\n" +
+	"\x04side\x18\x02 \x01(\x05R\x04side\x12\x1a\n" +
+	"\bqtyRatio\x18\x03 \x01(\x01R\bqtyRatio\x12\x1e\n" +
+	"\n" +
+	"positionID\x18\x04 \x01(\x04R\n" +
+	"positionID\x12\x1a\n" +
+	"\bpredSide\x18\x05 \x01(\x05R\bpredSide\"\xe3\x02\n" +
+	"\x13IndicatorParamValue\x127\n" +
+	"\x04type\x18\x01 \x01(\x0e2#.Qot_Common.IndicatorParamValueTypeR\x04type\x12\x1a\n" +
+	"\bintValue\x18\x02 \x01(\x03R\bintValue\x12\x1e\n" +
+	"\n" +
+	"floatValue\x18\x03 \x01(\x02R\n" +
+	"floatValue\x12 \n" +
+	"\vstringValue\x18\x04 \x01(\tR\vstringValue\x12\x1c\n" +
+	"\tboolValue\x18\x05 \x01(\bR\tboolValue\x12\x1e\n" +
+	"\n" +
+	"colorValue\x18\x06 \x01(\tR\n" +
+	"colorValue\x12:\n" +
+	"\n" +
+	"shapeValue\x18\a \x01(\x0e2\x1a.Qot_Common.IndicatorShapeR\n" +
+	"shapeValue\x12;\n" +
+	"\tlineValue\x18\b \x01(\x0e2\x1d.Qot_Common.IndicatorLineTypeR\tlineValue\"\x90\x01\n" +
+	"\x13IndicatorInputParam\x12\x14\n" +
+	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x125\n" +
+	"\x05value\x18\x03 \x01(\v2\x1f.Qot_Common.IndicatorParamValueR\x05value\x12\x18\n" +
+	"\avarName\x18\x04 \x01(\tR\avarName\"@\n" +
+	"\x14IndicatorOutputParam\x12\x14\n" +
+	"\x05index\x18\x01 \x01(\x05R\x05index\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name*\x85\x03\n" +
 	"\tQotMarket\x12\x15\n" +
 	"\x11QotMarket_Unknown\x10\x00\x12\x19\n" +
 	"\x15QotMarket_HK_Security\x10\x01\x12\x17\n" +
@@ -6723,7 +7959,8 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x15QotMarket_MY_Security\x10=\x12\x19\n" +
 	"\x15QotMarket_CA_Security\x10G\x12\x19\n" +
 	"\x15QotMarket_FX_Security\x10Q\x12\x19\n" +
-	"\x15QotMarket_CC_Security\x10[*\xcb\x02\n" +
+	"\x15QotMarket_CC_Security\x10[\x12\x1b\n" +
+	"\x17QotMarket_EventContract\x10e*\xcb\x02\n" +
 	"\fSecurityType\x12\x18\n" +
 	"\x14SecurityType_Unknown\x10\x00\x12\x15\n" +
 	"\x11SecurityType_Bond\x10\x01\x12\x15\n" +
@@ -6804,7 +8041,7 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x1cQotMarketState_OVERNIGHT_END\x10\"\x12 \n" +
 	"\x1cQotMarketState_TRADE_AT_LAST\x10#\x12 \n" +
 	"\x1cQotMarketState_TRADE_AUCTION\x10$\x12\x1c\n" +
-	"\x18QotMarketState_OVERNIGHT\x10%*\xe4\x01\n" +
+	"\x18QotMarketState_OVERNIGHT\x10%*\xac\x02\n" +
 	"\x0fTradeDateMarket\x12\x1b\n" +
 	"\x17TradeDateMarket_Unknown\x10\x00\x12\x16\n" +
 	"\x12TradeDateMarket_HK\x10\x01\x12\x16\n" +
@@ -6813,7 +8050,11 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x12TradeDateMarket_NT\x10\x04\x12\x16\n" +
 	"\x12TradeDateMarket_ST\x10\x05\x12\x1d\n" +
 	"\x19TradeDateMarket_JP_Future\x10\x06\x12\x1d\n" +
-	"\x19TradeDateMarket_SG_Future\x10\a*`\n" +
+	"\x19TradeDateMarket_SG_Future\x10\a\x12\x16\n" +
+	"\x12TradeDateMarket_SG\x10\b\x12\x16\n" +
+	"\x12TradeDateMarket_MY\x10\t\x12\x16\n" +
+	"\x12TradeDateMarket_JP\x10\n" +
+	"*`\n" +
 	"\rTradeDateType\x12\x17\n" +
 	"\x13TradeDateType_Whole\x10\x00\x12\x19\n" +
 	"\x15TradeDateType_Morning\x10\x01\x12\x1b\n" +
@@ -6852,7 +8093,7 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x11KLFields_Turnover\x10@\x12\x1a\n" +
 	"\x15KLFields_TurnoverRate\x10\x80\x01\x12\x10\n" +
 	"\vKLFields_PE\x10\x80\x02\x12\x18\n" +
-	"\x13KLFields_ChangeRate\x10\x80\x04*\xc5\x03\n" +
+	"\x13KLFields_ChangeRate\x10\x80\x04*\xe0\x03\n" +
 	"\aSubType\x12\x10\n" +
 	"\fSubType_None\x10\x00\x12\x11\n" +
 	"\rSubType_Basic\x10\x01\x12\x15\n" +
@@ -6876,7 +8117,11 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x10SubType_KL_10Min\x10\x12\x12\x15\n" +
 	"\x11SubType_KL_120Min\x10\x13\x12\x15\n" +
 	"\x11SubType_KL_180Min\x10\x14\x12\x15\n" +
-	"\x11SubType_KL_240Min\x10\x15*}\n" +
+	"\x11SubType_KL_240Min\x10\x15\x12\x19\n" +
+	"\x15SubType_OrderBook_Odd\x10\x16*@\n" +
+	"\rOrderBookType\x12\x18\n" +
+	"\x14OrderBookType_Normal\x10\x00\x12\x15\n" +
+	"\x11OrderBookType_Odd\x10\x01*}\n" +
 	"\x0fTickerDirection\x12\x1b\n" +
 	"\x17TickerDirection_Unknown\x10\x00\x12\x17\n" +
 	"\x13TickerDirection_Bid\x10\x01\x12\x17\n" +
@@ -7141,7 +8386,7 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x14OptionSettlementMode\x12 \n" +
 	"\x1cOptionSettlementMode_Unknown\x10\x00\x12\x1b\n" +
 	"\x17OptionSettlementMode_AM\x10\x01\x12\x1b\n" +
-	"\x17OptionSettlementMode_PM\x10\x02*\xe1\x03\n" +
+	"\x17OptionSettlementMode_PM\x10\x02*\x8e\x04\n" +
 	"\bExchType\x12\x14\n" +
 	"\x10ExchType_Unknown\x10\x00\x12\x19\n" +
 	"\x15ExchType_HK_MainBoard\x10\x01\x12\x18\n" +
@@ -7164,7 +8409,9 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x0fExchType_SG_SGX\x10\x11\x12\x13\n" +
 	"\x0fExchType_JP_OSE\x10\x12\x12\x16\n" +
 	"\x12ExchType_CC_CRYPTO\x10\x13\x12\x13\n" +
-	"\x0fExchType_MY_BMS\x10\x14*|\n" +
+	"\x0fExchType_MY_MYX\x10\x14\x12\x13\n" +
+	"\x0fExchType_JP_TSE\x10\x15\x12\x16\n" +
+	"\x12ExchType_JP_Nikkei\x10\x16*|\n" +
 	"\n" +
 	"PeriodType\x12\x16\n" +
 	"\x12PeriodType_Unknown\x10\x00\x12\x17\n" +
@@ -7177,7 +8424,22 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x1ePriceReminderMarketStatus_Open\x10\x01\x12#\n" +
 	"\x1fPriceReminderMarketStatus_USPre\x10\x02\x12%\n" +
 	"!PriceReminderMarketStatus_USAfter\x10\x03\x12)\n" +
-	"%PriceReminderMarketStatus_USOverNight\x10\x04*\xe0\x01\n" +
+	"%PriceReminderMarketStatus_USOverNight\x10\x04*\xf3\x03\n" +
+	"\x12OptionStrategyType\x12\x1e\n" +
+	"\x1aOptionStrategyType_Unknown\x10\x00\x12#\n" +
+	"\x1fOptionStrategyType_SingleOption\x10\x01\x12\x1e\n" +
+	"\x1aOptionStrategyType_Covered\x10\x02\x12\x1d\n" +
+	"\x19OptionStrategyType_Spread\x10\x04\x12\x1f\n" +
+	"\x1bOptionStrategyType_Straddle\x10\x06\x12\x1f\n" +
+	"\x1bOptionStrategyType_Strangle\x10\a\x12\x1d\n" +
+	"\x19OptionStrategyType_Collar\x10\b\x12 \n" +
+	"\x1cOptionStrategyType_Butterfly\x10\t\x12\x1d\n" +
+	"\x19OptionStrategyType_Condor\x10\v\x12$\n" +
+	" OptionStrategyType_IronButterfly\x10\r\x12!\n" +
+	"\x1dOptionStrategyType_IronCondor\x10\x0e\x12%\n" +
+	"!OptionStrategyType_CalendarSpread\x10\x0f\x12%\n" +
+	"!OptionStrategyType_DiagonalSpread\x10\x10\x12 \n" +
+	"\x1cOptionStrategyType_Customize\x10d*\xe0\x01\n" +
 	"\aF10Type\x12\x13\n" +
 	"\x0fF10Type_Unknown\x10\x00\x12\x0e\n" +
 	"\n" +
@@ -7295,7 +8557,90 @@ const file_Qot_Common_proto_rawDesc = "" +
 	"\x16OptionImpvolStatusType\x12\x15\n" +
 	"\x11ImpvolFluctuating\x10\x00\x12\x14\n" +
 	"\x10ImpvolOvervalued\x10\x01\x12\x15\n" +
-	"\x11ImpvolUndervalued\x10\x02B>\n" +
+	"\x11ImpvolUndervalued\x10\x02*n\n" +
+	"\x11IndicatorLangType\x12\x1d\n" +
+	"\x19IndicatorLangType_Unknown\x10\x00\x12\x1c\n" +
+	"\x18IndicatorLangType_MyLang\x10\x01\x12\x1c\n" +
+	"\x18IndicatorLangType_Python\x10\x02*U\n" +
+	"\x13IndicatorSearchMode\x12\x1f\n" +
+	"\x1bIndicatorSearchMode_Partial\x10\x00\x12\x1d\n" +
+	"\x19IndicatorSearchMode_Exact\x10\x01*\xb0\x02\n" +
+	"\x17IndicatorParamValueType\x12#\n" +
+	"\x1fIndicatorParamValueType_UNKNOWN\x10\x00\x12\x1f\n" +
+	"\x1bIndicatorParamValueType_INT\x10\x01\x12!\n" +
+	"\x1dIndicatorParamValueType_FLOAT\x10\x02\x12\"\n" +
+	"\x1eIndicatorParamValueType_STRING\x10\x03\x12!\n" +
+	"\x1dIndicatorParamValueType_COLOR\x10\x04\x12!\n" +
+	"\x1dIndicatorParamValueType_SHAPE\x10\x05\x12 \n" +
+	"\x1cIndicatorParamValueType_LINE\x10\x06\x12 \n" +
+	"\x1cIndicatorParamValueType_BOOL\x10\a*\x86\x03\n" +
+	"\x0eIndicatorShape\x12\x1a\n" +
+	"\x16IndicatorShape_UNKNOWN\x10\x00\x12\x19\n" +
+	"\x15IndicatorShape_XCROSS\x10\x01\x12\x18\n" +
+	"\x14IndicatorShape_CROSS\x10\x02\x12\x19\n" +
+	"\x15IndicatorShape_CIRCLE\x10\x03\x12\x1e\n" +
+	"\x1aIndicatorShape_TRIANGLE_UP\x10\x04\x12 \n" +
+	"\x1cIndicatorShape_TRIANGLE_DOWN\x10\x05\x12\x17\n" +
+	"\x13IndicatorShape_FLAG\x10\x06\x12\x1b\n" +
+	"\x17IndicatorShape_ARROW_UP\x10\a\x12\x1d\n" +
+	"\x19IndicatorShape_ARROW_DOWN\x10\b\x12\x19\n" +
+	"\x15IndicatorShape_SQUARE\x10\t\x12\x1a\n" +
+	"\x16IndicatorShape_DIAMOND\x10\n" +
+	"\x12\x1b\n" +
+	"\x17IndicatorShape_LABEL_UP\x10\v\x12\x1d\n" +
+	"\x19IndicatorShape_LABEL_DOWN\x10\f*\xcb\x02\n" +
+	"\x11IndicatorLineType\x12\x1d\n" +
+	"\x19IndicatorLineType_UNKNOWN\x10\x00\x12\x1b\n" +
+	"\x17IndicatorLineType_SOLID\x10\x01\x12\x1c\n" +
+	"\x18IndicatorLineType_DASHED\x10\x02\x12\x19\n" +
+	"\x15IndicatorLineType_DOT\x10\x03\x12\x1b\n" +
+	"\x17IndicatorLineType_CROSS\x10\x04\x12\x1c\n" +
+	"\x18IndicatorLineType_CIRCLE\x10\x05\x12\x1f\n" +
+	"\x1bIndicatorLineType_HISTOGRAM\x10\x06\x12$\n" +
+	" IndicatorLineType_HISTOGRAM_LINE\x10\a\x12\x1a\n" +
+	"\x16IndicatorLineType_STEP\x10\b\x12#\n" +
+	"\x1fIndicatorLineType_STEP_DIAMONDS\x10\t*\xd0\x03\n" +
+	"\tEC_Status\x12\x19\n" +
+	"\x15EC_Status_Initialized\x10\x00\x12\x16\n" +
+	"\x12EC_Status_Inactive\x10\x01\x12\x14\n" +
+	"\x10EC_Status_Active\x10\x02\x12\x14\n" +
+	"\x10EC_Status_Closed\x10\x03\x12\x14\n" +
+	"\x10EC_Status_Halted\x10\x04\x12\x15\n" +
+	"\x11EC_Status_Settled\x10\x05\x12\x16\n" +
+	"\x12EC_Status_Canceled\x10\x06\x12\"\n" +
+	"\x1eEC_Status_DeterminationPending\x10\a\x12\x18\n" +
+	"\x14EC_Status_Determined\x10\b\x12\x17\n" +
+	"\x13EC_Status_Finalized\x10\t\x12\x1b\n" +
+	"\x17EC_Status_EventAbnormal\x10d\x12\x1e\n" +
+	"\x1aEC_Status_EventInitialized\x10e\x12\x19\n" +
+	"\x15EC_Status_EventActive\x10f\x12\x19\n" +
+	"\x15EC_Status_EventClosed\x10g\x12\x1a\n" +
+	"\x16EC_Status_EventSettled\x10h\x12\x1b\n" +
+	"\x17EC_Status_EventCanceled\x10i\x12\x1c\n" +
+	"\x18EC_Status_EventFinalized\x10j*c\n" +
+	"\x0fEC_ContractType\x12\x18\n" +
+	"\x14EC_ContractType_None\x10\x00\x12\x1a\n" +
+	"\x16EC_ContractType_Binary\x10\x01\x12\x1a\n" +
+	"\x16EC_ContractType_Scalar\x10\x02*\xd7\x01\n" +
+	"\fEC_Frequency\x12\x18\n" +
+	"\x14EC_Frequency_Unknown\x10\x00\x12\x17\n" +
+	"\x13EC_Frequency_Annual\x10\x01\x12\x18\n" +
+	"\x14EC_Frequency_Monthly\x10\x02\x12\x17\n" +
+	"\x13EC_Frequency_Weekly\x10\x03\x12\x16\n" +
+	"\x12EC_Frequency_Daily\x10\x04\x12\x17\n" +
+	"\x13EC_Frequency_Hourly\x10\x05\x12\x17\n" +
+	"\x13EC_Frequency_Custom\x10\x06\x12\x17\n" +
+	"\x13EC_Frequency_OneOff\x10\a*\xf3\x01\n" +
+	"\x10EC_MilestoneType\x12\x1c\n" +
+	"\x18EC_MilestoneType_Unknown\x10\x00\x12!\n" +
+	"\x1dEC_MilestoneType_FootballGame\x10\x01\x12#\n" +
+	"\x1fEC_MilestoneType_BasketballGame\x10\x02\x12-\n" +
+	")EC_MilestoneType_SoccerTournamentMultiLeg\x10\x03\x12'\n" +
+	"#EC_MilestoneType_BaseballTournament\x10\x04\x12!\n" +
+	"\x1dEC_MilestoneType_BaseballGame\x10\x05*J\n" +
+	"\x0eEC_KlineSource\x12\x17\n" +
+	"\x13EC_KlineSource_None\x10\x00\x12\x1f\n" +
+	"\x1bEC_KlineSource_OrderBookYes\x10\x01B>\n" +
 	"\x13com.futu.openapi.pbZ'github.com/hyperjiang/futu/pb/qotcommon"
 
 var (
@@ -7310,8 +8655,8 @@ func file_Qot_Common_proto_rawDescGZIP() []byte {
 	return file_Qot_Common_proto_rawDescData
 }
 
-var file_Qot_Common_proto_enumTypes = make([]protoimpl.EnumInfo, 52)
-var file_Qot_Common_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
+var file_Qot_Common_proto_enumTypes = make([]protoimpl.EnumInfo, 64)
+var file_Qot_Common_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
 var file_Qot_Common_proto_goTypes = []any{
 	(QotMarket)(0),                      // 0: Qot_Common.QotMarket
 	(SecurityType)(0),                   // 1: Qot_Common.SecurityType
@@ -7327,92 +8672,113 @@ var file_Qot_Common_proto_goTypes = []any{
 	(KLType)(0),                         // 11: Qot_Common.KLType
 	(KLFields)(0),                       // 12: Qot_Common.KLFields
 	(SubType)(0),                        // 13: Qot_Common.SubType
-	(TickerDirection)(0),                // 14: Qot_Common.TickerDirection
-	(TickerType)(0),                     // 15: Qot_Common.TickerType
-	(DarkStatus)(0),                     // 16: Qot_Common.DarkStatus
-	(SecurityStatus)(0),                 // 17: Qot_Common.SecurityStatus
-	(HolderCategory)(0),                 // 18: Qot_Common.HolderCategory
-	(PushDataType)(0),                   // 19: Qot_Common.PushDataType
-	(SortField)(0),                      // 20: Qot_Common.SortField
-	(SortType)(0),                       // 21: Qot_Common.SortType
-	(Issuer)(0),                         // 22: Qot_Common.Issuer
-	(IpoPeriod)(0),                      // 23: Qot_Common.IpoPeriod
-	(PriceType)(0),                      // 24: Qot_Common.PriceType
-	(WarrantStatus)(0),                  // 25: Qot_Common.WarrantStatus
-	(CompanyAct)(0),                     // 26: Qot_Common.CompanyAct
-	(QotRight)(0),                       // 27: Qot_Common.QotRight
-	(PriceReminderType)(0),              // 28: Qot_Common.PriceReminderType
-	(PriceReminderFreq)(0),              // 29: Qot_Common.PriceReminderFreq
-	(AssetClass)(0),                     // 30: Qot_Common.AssetClass
-	(ExpirationCycle)(0),                // 31: Qot_Common.ExpirationCycle
-	(OptionStandardType)(0),             // 32: Qot_Common.OptionStandardType
-	(OptionSettlementMode)(0),           // 33: Qot_Common.OptionSettlementMode
-	(ExchType)(0),                       // 34: Qot_Common.ExchType
-	(PeriodType)(0),                     // 35: Qot_Common.PeriodType
-	(PriceReminderMarketStatus)(0),      // 36: Qot_Common.PriceReminderMarketStatus
-	(F10Type)(0),                        // 37: Qot_Common.F10Type
-	(EarningsPubTimeType)(0),            // 38: Qot_Common.EarningsPubTimeType
-	(ValuationType)(0),                  // 39: Qot_Common.ValuationType
-	(FinancialStatementsType)(0),        // 40: Qot_Common.FinancialStatementsType
-	(RevenueBreakdownType)(0),           // 41: Qot_Common.RevenueBreakdownType
-	(ResearchRatingType)(0),             // 42: Qot_Common.ResearchRatingType
-	(ResearchRatingDimensionType)(0),    // 43: Qot_Common.ResearchRatingDimensionType
-	(MorningstarRatingType)(0),          // 44: Qot_Common.MorningstarRatingType
-	(ValuationIntervalType)(0),          // 45: Qot_Common.ValuationIntervalType
-	(HoldingChangesFilterType)(0),       // 46: Qot_Common.HoldingChangesFilterType
-	(HolderDetailType)(0),               // 47: Qot_Common.HolderDetailType
-	(CompanyProfileFieldType)(0),        // 48: Qot_Common.CompanyProfileFieldType
-	(BuySellType)(0),                    // 49: Qot_Common.BuySellType
-	(OptionVolatilityTimePeriodType)(0), // 50: Qot_Common.OptionVolatilityTimePeriodType
-	(OptionImpvolStatusType)(0),         // 51: Qot_Common.OptionImpvolStatusType
-	(*QotHeader)(nil),                   // 52: Qot_Common.QotHeader
-	(*Security)(nil),                    // 53: Qot_Common.Security
-	(*KLine)(nil),                       // 54: Qot_Common.KLine
-	(*OptionBasicQotExData)(nil),        // 55: Qot_Common.OptionBasicQotExData
-	(*PreAfterMarketData)(nil),          // 56: Qot_Common.PreAfterMarketData
-	(*FutureBasicQotExData)(nil),        // 57: Qot_Common.FutureBasicQotExData
-	(*WarrantBasicQotExData)(nil),       // 58: Qot_Common.WarrantBasicQotExData
-	(*BasicQot)(nil),                    // 59: Qot_Common.BasicQot
-	(*TimeShare)(nil),                   // 60: Qot_Common.TimeShare
-	(*SecurityStaticBasic)(nil),         // 61: Qot_Common.SecurityStaticBasic
-	(*WarrantStaticExData)(nil),         // 62: Qot_Common.WarrantStaticExData
-	(*OptionStaticExData)(nil),          // 63: Qot_Common.OptionStaticExData
-	(*FutureStaticExData)(nil),          // 64: Qot_Common.FutureStaticExData
-	(*SecurityStaticInfo)(nil),          // 65: Qot_Common.SecurityStaticInfo
-	(*Broker)(nil),                      // 66: Qot_Common.Broker
-	(*Ticker)(nil),                      // 67: Qot_Common.Ticker
-	(*OrderBookDetail)(nil),             // 68: Qot_Common.OrderBookDetail
-	(*OrderBook)(nil),                   // 69: Qot_Common.OrderBook
-	(*ShareHoldingChange)(nil),          // 70: Qot_Common.ShareHoldingChange
-	(*SubInfo)(nil),                     // 71: Qot_Common.SubInfo
-	(*ConnSubInfo)(nil),                 // 72: Qot_Common.ConnSubInfo
-	(*PlateInfo)(nil),                   // 73: Qot_Common.PlateInfo
-	(*Rehab)(nil),                       // 74: Qot_Common.Rehab
+	(OrderBookType)(0),                  // 14: Qot_Common.OrderBookType
+	(TickerDirection)(0),                // 15: Qot_Common.TickerDirection
+	(TickerType)(0),                     // 16: Qot_Common.TickerType
+	(DarkStatus)(0),                     // 17: Qot_Common.DarkStatus
+	(SecurityStatus)(0),                 // 18: Qot_Common.SecurityStatus
+	(HolderCategory)(0),                 // 19: Qot_Common.HolderCategory
+	(PushDataType)(0),                   // 20: Qot_Common.PushDataType
+	(SortField)(0),                      // 21: Qot_Common.SortField
+	(SortType)(0),                       // 22: Qot_Common.SortType
+	(Issuer)(0),                         // 23: Qot_Common.Issuer
+	(IpoPeriod)(0),                      // 24: Qot_Common.IpoPeriod
+	(PriceType)(0),                      // 25: Qot_Common.PriceType
+	(WarrantStatus)(0),                  // 26: Qot_Common.WarrantStatus
+	(CompanyAct)(0),                     // 27: Qot_Common.CompanyAct
+	(QotRight)(0),                       // 28: Qot_Common.QotRight
+	(PriceReminderType)(0),              // 29: Qot_Common.PriceReminderType
+	(PriceReminderFreq)(0),              // 30: Qot_Common.PriceReminderFreq
+	(AssetClass)(0),                     // 31: Qot_Common.AssetClass
+	(ExpirationCycle)(0),                // 32: Qot_Common.ExpirationCycle
+	(OptionStandardType)(0),             // 33: Qot_Common.OptionStandardType
+	(OptionSettlementMode)(0),           // 34: Qot_Common.OptionSettlementMode
+	(ExchType)(0),                       // 35: Qot_Common.ExchType
+	(PeriodType)(0),                     // 36: Qot_Common.PeriodType
+	(PriceReminderMarketStatus)(0),      // 37: Qot_Common.PriceReminderMarketStatus
+	(OptionStrategyType)(0),             // 38: Qot_Common.OptionStrategyType
+	(F10Type)(0),                        // 39: Qot_Common.F10Type
+	(EarningsPubTimeType)(0),            // 40: Qot_Common.EarningsPubTimeType
+	(ValuationType)(0),                  // 41: Qot_Common.ValuationType
+	(FinancialStatementsType)(0),        // 42: Qot_Common.FinancialStatementsType
+	(RevenueBreakdownType)(0),           // 43: Qot_Common.RevenueBreakdownType
+	(ResearchRatingType)(0),             // 44: Qot_Common.ResearchRatingType
+	(ResearchRatingDimensionType)(0),    // 45: Qot_Common.ResearchRatingDimensionType
+	(MorningstarRatingType)(0),          // 46: Qot_Common.MorningstarRatingType
+	(ValuationIntervalType)(0),          // 47: Qot_Common.ValuationIntervalType
+	(HoldingChangesFilterType)(0),       // 48: Qot_Common.HoldingChangesFilterType
+	(HolderDetailType)(0),               // 49: Qot_Common.HolderDetailType
+	(CompanyProfileFieldType)(0),        // 50: Qot_Common.CompanyProfileFieldType
+	(BuySellType)(0),                    // 51: Qot_Common.BuySellType
+	(OptionVolatilityTimePeriodType)(0), // 52: Qot_Common.OptionVolatilityTimePeriodType
+	(OptionImpvolStatusType)(0),         // 53: Qot_Common.OptionImpvolStatusType
+	(IndicatorLangType)(0),              // 54: Qot_Common.IndicatorLangType
+	(IndicatorSearchMode)(0),            // 55: Qot_Common.IndicatorSearchMode
+	(IndicatorParamValueType)(0),        // 56: Qot_Common.IndicatorParamValueType
+	(IndicatorShape)(0),                 // 57: Qot_Common.IndicatorShape
+	(IndicatorLineType)(0),              // 58: Qot_Common.IndicatorLineType
+	(EC_Status)(0),                      // 59: Qot_Common.EC_Status
+	(EC_ContractType)(0),                // 60: Qot_Common.EC_ContractType
+	(EC_Frequency)(0),                   // 61: Qot_Common.EC_Frequency
+	(EC_MilestoneType)(0),               // 62: Qot_Common.EC_MilestoneType
+	(EC_KlineSource)(0),                 // 63: Qot_Common.EC_KlineSource
+	(*QotHeader)(nil),                   // 64: Qot_Common.QotHeader
+	(*Security)(nil),                    // 65: Qot_Common.Security
+	(*KLine)(nil),                       // 66: Qot_Common.KLine
+	(*OptionBasicQotExData)(nil),        // 67: Qot_Common.OptionBasicQotExData
+	(*PreAfterMarketData)(nil),          // 68: Qot_Common.PreAfterMarketData
+	(*FutureBasicQotExData)(nil),        // 69: Qot_Common.FutureBasicQotExData
+	(*WarrantBasicQotExData)(nil),       // 70: Qot_Common.WarrantBasicQotExData
+	(*BasicQot)(nil),                    // 71: Qot_Common.BasicQot
+	(*TimeShare)(nil),                   // 72: Qot_Common.TimeShare
+	(*SecurityStaticBasic)(nil),         // 73: Qot_Common.SecurityStaticBasic
+	(*WarrantStaticExData)(nil),         // 74: Qot_Common.WarrantStaticExData
+	(*OptionStaticExData)(nil),          // 75: Qot_Common.OptionStaticExData
+	(*FutureStaticExData)(nil),          // 76: Qot_Common.FutureStaticExData
+	(*SecurityStaticInfo)(nil),          // 77: Qot_Common.SecurityStaticInfo
+	(*Broker)(nil),                      // 78: Qot_Common.Broker
+	(*Ticker)(nil),                      // 79: Qot_Common.Ticker
+	(*OrderBookDetail)(nil),             // 80: Qot_Common.OrderBookDetail
+	(*OrderBook)(nil),                   // 81: Qot_Common.OrderBook
+	(*ShareHoldingChange)(nil),          // 82: Qot_Common.ShareHoldingChange
+	(*SubInfo)(nil),                     // 83: Qot_Common.SubInfo
+	(*ConnSubInfo)(nil),                 // 84: Qot_Common.ConnSubInfo
+	(*PlateInfo)(nil),                   // 85: Qot_Common.PlateInfo
+	(*Rehab)(nil),                       // 86: Qot_Common.Rehab
+	(*ComboLeg)(nil),                    // 87: Qot_Common.ComboLeg
+	(*IndicatorParamValue)(nil),         // 88: Qot_Common.IndicatorParamValue
+	(*IndicatorInputParam)(nil),         // 89: Qot_Common.IndicatorInputParam
+	(*IndicatorOutputParam)(nil),        // 90: Qot_Common.IndicatorOutputParam
 }
 var file_Qot_Common_proto_depIdxs = []int32{
-	53, // 0: Qot_Common.BasicQot.security:type_name -> Qot_Common.Security
-	55, // 1: Qot_Common.BasicQot.optionExData:type_name -> Qot_Common.OptionBasicQotExData
-	56, // 2: Qot_Common.BasicQot.preMarket:type_name -> Qot_Common.PreAfterMarketData
-	56, // 3: Qot_Common.BasicQot.afterMarket:type_name -> Qot_Common.PreAfterMarketData
-	57, // 4: Qot_Common.BasicQot.futureExData:type_name -> Qot_Common.FutureBasicQotExData
-	58, // 5: Qot_Common.BasicQot.warrantExData:type_name -> Qot_Common.WarrantBasicQotExData
-	56, // 6: Qot_Common.BasicQot.overnight:type_name -> Qot_Common.PreAfterMarketData
-	53, // 7: Qot_Common.SecurityStaticBasic.security:type_name -> Qot_Common.Security
-	53, // 8: Qot_Common.WarrantStaticExData.owner:type_name -> Qot_Common.Security
-	53, // 9: Qot_Common.OptionStaticExData.owner:type_name -> Qot_Common.Security
-	61, // 10: Qot_Common.SecurityStaticInfo.basic:type_name -> Qot_Common.SecurityStaticBasic
-	62, // 11: Qot_Common.SecurityStaticInfo.warrantExData:type_name -> Qot_Common.WarrantStaticExData
-	63, // 12: Qot_Common.SecurityStaticInfo.optionExData:type_name -> Qot_Common.OptionStaticExData
-	64, // 13: Qot_Common.SecurityStaticInfo.futureExData:type_name -> Qot_Common.FutureStaticExData
-	68, // 14: Qot_Common.OrderBook.detailList:type_name -> Qot_Common.OrderBookDetail
-	53, // 15: Qot_Common.SubInfo.securityList:type_name -> Qot_Common.Security
-	71, // 16: Qot_Common.ConnSubInfo.subInfoList:type_name -> Qot_Common.SubInfo
-	53, // 17: Qot_Common.PlateInfo.plate:type_name -> Qot_Common.Security
-	18, // [18:18] is the sub-list for method output_type
-	18, // [18:18] is the sub-list for method input_type
-	18, // [18:18] is the sub-list for extension type_name
-	18, // [18:18] is the sub-list for extension extendee
-	0,  // [0:18] is the sub-list for field type_name
+	65, // 0: Qot_Common.BasicQot.security:type_name -> Qot_Common.Security
+	67, // 1: Qot_Common.BasicQot.optionExData:type_name -> Qot_Common.OptionBasicQotExData
+	68, // 2: Qot_Common.BasicQot.preMarket:type_name -> Qot_Common.PreAfterMarketData
+	68, // 3: Qot_Common.BasicQot.afterMarket:type_name -> Qot_Common.PreAfterMarketData
+	69, // 4: Qot_Common.BasicQot.futureExData:type_name -> Qot_Common.FutureBasicQotExData
+	70, // 5: Qot_Common.BasicQot.warrantExData:type_name -> Qot_Common.WarrantBasicQotExData
+	68, // 6: Qot_Common.BasicQot.overnight:type_name -> Qot_Common.PreAfterMarketData
+	65, // 7: Qot_Common.SecurityStaticBasic.security:type_name -> Qot_Common.Security
+	65, // 8: Qot_Common.WarrantStaticExData.owner:type_name -> Qot_Common.Security
+	65, // 9: Qot_Common.OptionStaticExData.owner:type_name -> Qot_Common.Security
+	73, // 10: Qot_Common.SecurityStaticInfo.basic:type_name -> Qot_Common.SecurityStaticBasic
+	74, // 11: Qot_Common.SecurityStaticInfo.warrantExData:type_name -> Qot_Common.WarrantStaticExData
+	75, // 12: Qot_Common.SecurityStaticInfo.optionExData:type_name -> Qot_Common.OptionStaticExData
+	76, // 13: Qot_Common.SecurityStaticInfo.futureExData:type_name -> Qot_Common.FutureStaticExData
+	80, // 14: Qot_Common.OrderBook.detailList:type_name -> Qot_Common.OrderBookDetail
+	65, // 15: Qot_Common.SubInfo.securityList:type_name -> Qot_Common.Security
+	83, // 16: Qot_Common.ConnSubInfo.subInfoList:type_name -> Qot_Common.SubInfo
+	65, // 17: Qot_Common.PlateInfo.plate:type_name -> Qot_Common.Security
+	65, // 18: Qot_Common.ComboLeg.security:type_name -> Qot_Common.Security
+	56, // 19: Qot_Common.IndicatorParamValue.type:type_name -> Qot_Common.IndicatorParamValueType
+	57, // 20: Qot_Common.IndicatorParamValue.shapeValue:type_name -> Qot_Common.IndicatorShape
+	58, // 21: Qot_Common.IndicatorParamValue.lineValue:type_name -> Qot_Common.IndicatorLineType
+	88, // 22: Qot_Common.IndicatorInputParam.value:type_name -> Qot_Common.IndicatorParamValue
+	23, // [23:23] is the sub-list for method output_type
+	23, // [23:23] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_Qot_Common_proto_init() }
@@ -7425,8 +8791,8 @@ func file_Qot_Common_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_Qot_Common_proto_rawDesc), len(file_Qot_Common_proto_rawDesc)),
-			NumEnums:      52,
-			NumMessages:   23,
+			NumEnums:      64,
+			NumMessages:   27,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -1,0 +1,44 @@
+syntax = "proto2";
+package Trd_PlaceComboOrder;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/trdplacecomboorder";
+
+import "Common.proto";
+import "Trd_Common.proto";
+import "Qot_Common.proto";
+
+message C2S
+{
+	required Common.PacketID packetID = 1; //交易写操作防重放攻击
+	required Trd_Common.TrdHeader header = 2; //交易公共参数头
+	
+	repeated Qot_Common.ComboLeg comboLegs = 3; //组合的腿信息
+	required double qty = 4; //数量，实际数量为 qty * 腿的 qty_ratio
+	optional double price = 5; //价格
+	required int32 orderType = 6; //订单类型, 参见Trd_Common.OrderType的枚举定义
+	optional int32 timeInForce = 7; //订单有效期限，参见TrdCommon_TimeInForce的枚举定义
+	optional string expireTime = 8; //订单过期时间，timeInForce 为 GTD 时有效
+	optional string remark = 9; //用户备注字符串，最多只能传64字节。可用于标识订单唯一信息等，下单填上，订单结构就会带上。
+	optional string quoteID = 10; //事件合约Combo询价返回的报价ID
+}
+
+message S2C
+{
+	required Trd_Common.TrdHeader header = 1; //交易公共参数头
+	optional string orderIDEx = 2; //表示服务器订单id
+}
+
+message Request
+{
+	required C2S c2s = 1;
+}
+
+message Response
+{
+	//以下3个字段每条协议都有，注释说明在InitConnect.proto中
+	required int32 retType = 1 [default = -400];
+	optional string retMsg = 2;
+	optional int32 errCode = 3;
+	
+	optional S2C s2c = 4;
+}

@@ -1,0 +1,38 @@
+syntax = "proto2";
+package Qot_GetIndustrialChainDetail;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetindustrialchaindetail";
+
+message C2S {
+    required int64 chainId = 1;         // 产业链ID
+}
+
+message IndustrialChainNode {
+    optional int64 layerSth = 1;            // 节点层级(从1开始)
+    optional string name = 2;               // 节点名称
+    optional int64 plateId = 3;             // 关联板块ID(可选)
+}
+
+message InformationLink {
+    optional string title = 1;          // 资讯标题
+    optional string url = 2;            // 资讯链接
+}
+
+message S2C {
+    optional int64 chainId = 1;                         // 产业链ID
+    optional int32 chainType = 2;                       // 类型
+    optional string name = 3;                           // 名称
+    repeated IndustrialChainNode nodeList = 4;          // 节点列表(按层级分组)
+    repeated InformationLink informationList = 5;       // 资讯链接
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400];
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

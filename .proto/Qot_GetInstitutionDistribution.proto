@@ -1,0 +1,34 @@
+syntax = "proto2";
+package Qot_GetInstitutionDistribution;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetinstitutiondistribution";
+
+import "Qot_Common.proto";
+
+message C2S {
+    required int32 market = 1;              // Qot_Common.QotMarket
+    required int32 institutionId = 2;       // 机构ID
+}
+
+// 行业分布数据项
+message IndustryDistributionItem {
+    optional uint64 industryId = 1;         // 行业ID
+    optional string industryName = 2;       // 行业名称
+    optional double positionValue = 3;      // 持仓市值
+    optional double portfolioPct = 4;       // 行业占比(%)
+}
+
+message S2C {
+    repeated IndustryDistributionItem dataList = 1; // 数据列表
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; // RetType, 返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

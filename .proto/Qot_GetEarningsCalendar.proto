@@ -1,0 +1,123 @@
+syntax = "proto2";
+package Qot_GetEarningsCalendar;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetearningscalendar";
+
+import "Common.proto";
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+
+// 财报日历排序类型
+enum EarningsCalendarSortType {
+    EarningsCalendarSortType_Unknown = 0;         //未知
+    EarningsCalendarSortType_Hot = 1;             //热门(默认)
+    EarningsCalendarSortType_MarketCap = 2;       //历史市值
+    EarningsCalendarSortType_OptionVolume = 3;    //期权成交量(仅港美股)
+    EarningsCalendarSortType_IV = 4;              //隐含波动率(仅港美股)
+    EarningsCalendarSortType_IVRank = 5;          //IV等级(仅港美股)
+    EarningsCalendarSortType_IVPercentile = 6;    //IV百分位数(仅港美股)
+    EarningsCalendarSortType_RtMarketCap = 7;     //实时市值
+}
+
+// 财报日历发布类型
+enum EarningsCalendarPubType {
+    EarningsCalendarPubType_Unknown = -1;  //未知
+    EarningsCalendarPubType_Regular = 0;   //盘中(未识别出时段)
+    EarningsCalendarPubType_Before = 1;    //盘前
+    EarningsCalendarPubType_After = 2;     //盘后
+}
+
+// 财报指标类型
+enum EarningsCalendarEstimateType {
+    EarningsCalendarEstimateType_Unknown = 0;   //未知
+    EarningsCalendarEstimateType_EPS = 1;       //每股收益(EPS GAAP)
+    EarningsCalendarEstimateType_Revenue = 2;   //总收入
+    EarningsCalendarEstimateType_EBIT = 3;      //息税前利润
+}
+
+// 财报周期类型
+enum EarningsCalendarPeriodType {
+    EarningsCalendarPeriodType_Unknown = 0;      //未知
+    EarningsCalendarPeriodType_Quarterly = 1;    //季度
+    EarningsCalendarPeriodType_SemiAnnual = 2;   //半年度
+    EarningsCalendarPeriodType_Annual = 3;       //年度
+}
+
+// 股票列表类型
+enum EarningsCalendarStockListType {
+    EarningsCalendarStockListType_Unknown = 0;    //未知
+    EarningsCalendarStockListType_Watchlist = 1;  //自选股
+    EarningsCalendarStockListType_Position = 2;   //持仓
+    EarningsCalendarStockListType_Special = 3;    //特别关注
+}
+
+// 财报日历筛选因子类型
+enum EarningsCalendarIndicatorType {
+    EarningsCalendarIndicatorType_Unknown = 0;
+    EarningsCalendarIndicatorType_PubType = 1;          //【确切值】发布类型(valueList, EarningsCalendarPubType)
+    EarningsCalendarIndicatorType_EstimateType = 2;     //【确切值】指标类型(valueList, EarningsCalendarEstimateType)
+    EarningsCalendarIndicatorType_MarketCap = 3;        //【范围】市值
+    EarningsCalendarIndicatorType_StockListType = 4;    //【确切值】股票列表类型(valueList, EarningsCalendarStockListType)
+    EarningsCalendarIndicatorType_OptionVolume = 5;     //【范围】期权成交量(仅港美股)
+    EarningsCalendarIndicatorType_IV = 6;               //【范围】隐含波动率(%)(仅港美股)
+    EarningsCalendarIndicatorType_IVRank = 7;           //【范围】IV等级(%)(仅港美股)
+    EarningsCalendarIndicatorType_IVPercentile = 8;     //【范围】IV百分位数(%)(仅港美股)
+    EarningsCalendarIndicatorType_RtMarketCap = 9;      //【范围】实时市值
+}
+
+// 财报日历筛选条件
+message EarningsCalendarIndicator {
+    required int32 indicatorType = 1;                           // EarningsCalendarIndicatorType
+    optional Qot_OptionCommon.IndicatorValue indicatorValue = 2; // 筛选条件
+}
+
+// 财报预测数据
+message EstimateData {
+    optional int32 estimateType = 1;     // EarningsCalendarEstimateType
+    optional double actualValue = 2;     // 实际值(已发布时有值)
+    optional double predictValue = 3;    // 预测值
+    optional string currency = 4;        // 货币单位(ISO 4217)
+    optional int32 periodType = 5;       // EarningsCalendarPeriodType
+}
+
+// 财报日历项
+message EarningsCalendarItem {
+    required Qot_Common.Security security = 1;   // 股票
+    optional string name = 2;                     // 股票名称
+    optional string earningsDate = 3;             // 财报日期("yyyy-MM-dd")
+    optional double earningsTimestamp = 4;        // 财报发布时间戳(秒)
+    optional int32 pubType = 5;                   // EarningsCalendarPubType
+    optional string periodText = 7;               // 财年周期(如"2025Q1")
+    repeated EstimateData estimateList = 8;       // 预测数据列表
+    // 期权字段(仅港美股)
+    optional int64 optionVolume = 10;             // 期权成交量
+    optional double iv = 11;                      // 隐含波动率(%)
+    optional double ivRank = 12;                  // IV等级(%)
+    optional double ivPercentile = 13;            // IV百分位数(%)
+    // 行情字段
+    optional double marketCap = 20;               // 实时市值
+    optional double price = 21;                   // 最新价
+}
+
+message C2S {
+    required int32 market = 1;      // Qot_Common.QotMarket (支持HK/US/CNSH/CNSZ/SG/JP)
+    optional int32 sortType = 2;    // EarningsCalendarSortType (默认 Hot)
+    optional string beginDate = 3;  // 开始日期，格式"yyyy-MM-dd"，不传默认今天(仅拉取当天)
+    optional string endDate = 4;    // 结束日期，格式"yyyy-MM-dd"，不传则仅拉取beginDate当天；与beginDate间隔不超过7天
+    repeated EarningsCalendarIndicator filterList = 5;  // 筛选条件(AND关系)
+}
+
+message S2C {
+    repeated EarningsCalendarItem itemList = 1;
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; //RetType，返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

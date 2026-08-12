@@ -32,6 +32,7 @@ type C2S struct {
 	PacketEncAlgo       *int32  `protobuf:"varint,4,opt,name=packetEncAlgo" json:"packetEncAlgo,omitempty"`            //指定包加密算法，参见Common.PacketEncAlgo的枚举定义
 	PushProtoFmt        *int32  `protobuf:"varint,5,opt,name=pushProtoFmt" json:"pushProtoFmt,omitempty"`              //指定这条连接上的推送协议格式，若不指定则使用push_proto_type配置项
 	ProgrammingLanguage *string `protobuf:"bytes,6,opt,name=programmingLanguage" json:"programmingLanguage,omitempty"` //接口编程语言，用于统计语言偏好
+	AiType              *int32  `protobuf:"varint,7,opt,name=aiType" json:"aiType,omitempty"`                          //AI调用类型，0表示非AI调用，1表示skills
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -106,6 +107,13 @@ func (x *C2S) GetProgrammingLanguage() string {
 		return *x.ProgrammingLanguage
 	}
 	return ""
+}
+
+func (x *C2S) GetAiType() int32 {
+	if x != nil && x.AiType != nil {
+		return *x.AiType
+	}
+	return 0
 }
 
 type S2C struct {
@@ -321,7 +329,7 @@ var File_InitConnect_proto protoreflect.FileDescriptor
 
 const file_InitConnect_proto_rawDesc = "" +
 	"\n" +
-	"\x11InitConnect.proto\x12\vInitConnect\x1a\fCommon.proto\"\xdb\x01\n" +
+	"\x11InitConnect.proto\x12\vInitConnect\x1a\fCommon.proto\"\xf3\x01\n" +
 	"\x03C2S\x12\x1c\n" +
 	"\tclientVer\x18\x01 \x02(\x05R\tclientVer\x12\x1a\n" +
 	"\bclientID\x18\x02 \x02(\tR\bclientID\x12\x1e\n" +
@@ -330,7 +338,8 @@ const file_InitConnect_proto_rawDesc = "" +
 	"recvNotify\x12$\n" +
 	"\rpacketEncAlgo\x18\x04 \x01(\x05R\rpacketEncAlgo\x12\"\n" +
 	"\fpushProtoFmt\x18\x05 \x01(\x05R\fpushProtoFmt\x120\n" +
-	"\x13programmingLanguage\x18\x06 \x01(\tR\x13programmingLanguage\"\xf1\x01\n" +
+	"\x13programmingLanguage\x18\x06 \x01(\tR\x13programmingLanguage\x12\x16\n" +
+	"\x06aiType\x18\a \x01(\x05R\x06aiType\"\xf1\x01\n" +
 	"\x03S2C\x12\x1c\n" +
 	"\tserverVer\x18\x01 \x02(\x05R\tserverVer\x12 \n" +
 	"\vloginUserID\x18\x02 \x02(\x04R\vloginUserID\x12\x16\n" +

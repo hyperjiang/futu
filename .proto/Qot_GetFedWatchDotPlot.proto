@@ -1,0 +1,41 @@
+syntax = "proto2";
+package Qot_GetFedWatchDotPlot;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetfedwatchdotplot";
+
+import "Common.proto";
+import "Qot_Common.proto";
+
+// 点阵分组(同一利率水平的投票)
+message DotGroup {
+    required double rate = 1;        //预期利率(%)，如4.125表示4.125%
+    required int32 voteCount = 2;    //投票人数(在该利率水平投票的委员数)
+    optional bool isMedian = 3;      //是否为该年份的中位数利率
+}
+
+// 单年份点阵数据
+message DotPlotYear {
+    required int32 year = 1;             //年份，如2025、2026、2027
+    repeated DotGroup dotList = 2;       //点阵分布(按利率从低到高排列)
+    optional double medianRate = 3;      //该年份中位数利率(%)，便于快速获取
+}
+
+message C2S {
+    optional Qot_Common.QotHeader header = 100; //行情公共参数头
+}
+
+message S2C {
+    repeated DotPlotYear yearList = 1;       //按年份从近到远排列的点阵数据
+    optional double currentRate = 2;         //当前联邦基金利率(%)，如4.375表示4.375%
+}
+
+message Request {
+    required C2S c2s = 1;
+}
+
+message Response {
+    required int32 retType = 1 [default = -400]; //RetType,返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

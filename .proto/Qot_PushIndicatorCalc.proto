@@ -1,0 +1,31 @@
+syntax = "proto2";
+package Qot_PushIndicatorCalc;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotpushindicatorcalc";
+
+import "Common.proto";
+import "Qot_Common.proto";
+
+// 一行计算结果，对应一个 K 线时刻；values 顺序与 outputs 一一对应
+message IndicatorOutputRow
+{
+	optional string time = 1;    // K 线时间（与请求中的 KLine.time 一致）
+	repeated double values = 2;  // 各输出线在该时刻的值
+}
+
+// 异步指标计算结果推送，与 Qot_RequestIndicatorCalc(3254) 通过 calcId 配对
+message S2C
+{
+	required string calcId = 1;                            // 与发起请求时返回的 calcId 对应
+	repeated Qot_Common.IndicatorOutputParam outputs = 2;  // 输出线元数据
+	repeated IndicatorOutputRow outputRows = 3;            // 计算结果，按时间顺序
+}
+
+message Response
+{
+	required int32 retType = 1 [default = -400];
+	optional string retMsg = 2;
+	optional int32 errCode = 3;
+
+	optional S2C s2c = 4;
+}

@@ -1,0 +1,74 @@
+syntax = "proto2";
+package Qot_GetOptionRank;
+option java_package = "com.futu.openapi.pb";
+option go_package = "github.com/hyperjiang/futu/pb/qotgetoptionrank";
+
+import "Common.proto";
+import "Qot_Common.proto";
+import "Qot_OptionCommon.proto";
+
+//期权合约排行项
+message OptionRankItem
+{
+    //基础标识
+    required Qot_Common.Security option = 1; //期权合约
+    optional string name = 2; //期权名称
+    optional int32 optionType = 3; //Qot_Common.OptionType，期权类型（看涨/看跌）
+    //数据字段
+    optional int64 oiIncrement = 4; //增仓量(>=0)
+    optional int64 oiDecrement = 5; //减仓量(>=0)
+    optional double oiMarketCapIncrement = 6; //增仓额(>=0)
+    optional double oiMarketCapDecrement = 7; //减仓额(>=0)
+    optional int64 volume = 8; //成交量
+    optional double turnover = 9; //成交额
+    optional int64 openInterest = 10; //持仓量
+    optional double openInterestMarketCap = 11; //持仓额
+    optional double iv = 12; //隐含波动率（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double optionPrice = 13; //期权最新价
+    optional double changeRate = 14; //涨跌幅（该字段为百分比字段，默认不展示%，如20实际对应20%）
+    optional double midPrice = 15; //中间价
+    optional double bidPrice = 16; //买入价
+    optional int64 bidVolume = 17; //买量
+    optional double askPrice = 18; //卖出价
+    optional int64 askVolume = 19; //卖量
+    optional double delta = 20; //希腊值 Delta
+    optional double gamma = 21; //希腊值 Gamma
+    optional double theta = 22; //希腊值 Theta
+    optional double vega = 23; //希腊值 Vega
+    optional double rho = 24; //希腊值 Rho
+}
+
+message C2S
+{
+    required int32 optionMarket = 1; //Qot_OptionCommon.OptionMarket，期权市场类型
+    required int32 sortType = 2; //Qot_OptionCommon.OptionRankType，排序类型
+    optional int32 count = 3; //返回数量，[1,200]，默认200
+    optional string tradingDate = 4; //交易日，格式yyyy-MM-dd，不填则返回最新排行
+    optional bool isAsc = 5; //是否升序，默认false(降序)
+    optional string page = 6; //分页游标，首次请求不传，后续传nextPage的值
+    repeated Qot_OptionCommon.OptionRankIndicator filterList = 7; //筛选条件列表，多个条件之间为AND关系
+}
+
+message S2C
+{
+    required int32 optionMarket = 1; //Qot_OptionCommon.OptionMarket，期权市场类型
+    required int32 sortType = 2; //Qot_OptionCommon.OptionRankType，排序类型
+    optional string tradingDate = 3; //排行数据对应的交易日时间字符串
+    optional double tradingTimestamp = 4; //排行数据对应的交易日时间戳
+    repeated OptionRankItem rankList = 5; //排行列表
+    optional string nextPage = 6; //下一页游标，为空表示没有更多数据
+    optional int32 allCount = 7; //满足筛选条件的总数量
+}
+
+message Request
+{
+    required C2S c2s = 1;
+}
+
+message Response
+{
+    required int32 retType = 1 [default = -400]; //RetType，返回结果
+    optional string retMsg = 2;
+    optional int32 errCode = 3;
+    optional S2C s2c = 4;
+}

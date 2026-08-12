@@ -7,6 +7,7 @@ import (
 	"github.com/hyperjiang/futu/pb/common"
 	"github.com/hyperjiang/futu/pb/trdflowsummary"
 	"github.com/hyperjiang/futu/pb/trdgetacclist"
+	"github.com/hyperjiang/futu/pb/trdgetcombomaxtrdqtys"
 	"github.com/hyperjiang/futu/pb/trdgetfunds"
 	"github.com/hyperjiang/futu/pb/trdgethistoryorderfilllist"
 	"github.com/hyperjiang/futu/pb/trdgethistoryorderlist"
@@ -17,6 +18,7 @@ import (
 	"github.com/hyperjiang/futu/pb/trdgetorderlist"
 	"github.com/hyperjiang/futu/pb/trdgetpositionlist"
 	"github.com/hyperjiang/futu/pb/trdmodifyorder"
+	"github.com/hyperjiang/futu/pb/trdplacecomboorder"
 	"github.com/hyperjiang/futu/pb/trdplaceorder"
 	"github.com/hyperjiang/futu/pb/trdsubaccpush"
 	"github.com/hyperjiang/futu/pb/trdunlocktrade"
@@ -400,6 +402,63 @@ func (client *Client) TrdFlowSummary(ctx context.Context, c2s *trdflowsummary.C2
 	ch := make(chan *trdflowsummary.Response, 1)
 	defer close(ch)
 	if err := client.Request(protoid.TrdFlowSummary, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// TrdGetComboMaxTrdQtys 2112 - 获取组合的可买卖信息
+func (client *Client) TrdGetComboMaxTrdQtys(ctx context.Context, c2s *trdgetcombomaxtrdqtys.C2S) (*trdgetcombomaxtrdqtys.S2C, error) {
+	req := &trdgetcombomaxtrdqtys.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *trdgetcombomaxtrdqtys.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.TrdGetComboMaxTrdQtys, req, infra.NewProtobufChan(ch)); err != nil {
+		return nil, err
+	}
+
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case <-client.closed:
+		return nil, ErrInterrupted
+	case resp, ok := <-ch:
+		if !ok {
+			return nil, ErrChannelClosed
+		}
+		return resp.GetS2C(), infra.Error(resp)
+	}
+}
+
+// TrdPlaceComboOrder 2227 - 组合期权下单
+func (client *Client) TrdPlaceComboOrder(ctx context.Context, c2s *trdplacecomboorder.C2S) (*trdplacecomboorder.S2C, error) {
+	if c2s.GetPacketID() == nil {
+		c2s.PacketID = &common.PacketID{
+			ConnID:   proto.Uint64(client.GetConnID()),
+			SerialNo: proto.Uint32(client.nextSN()),
+		}
+	}
+
+	req := &trdplacecomboorder.Request{
+		C2S: c2s,
+	}
+
+	ch := make(chan *trdplacecomboorder.Response, 1)
+	defer close(ch)
+	if err := client.Request(protoid.TrdPlaceComboOrder, req, infra.NewProtobufChan(ch)); err != nil {
 		return nil, err
 	}
 

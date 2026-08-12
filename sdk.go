@@ -8,6 +8,10 @@ import (
 	"github.com/hyperjiang/futu/client"
 	"github.com/hyperjiang/futu/pb/getglobalstate"
 	"github.com/hyperjiang/futu/pb/qotcommon"
+	"github.com/hyperjiang/futu/pb/qotfiltercompetition"
+	"github.com/hyperjiang/futu/pb/qotgetarkactivetransaction"
+	"github.com/hyperjiang/futu/pb/qotgetarkfundholding"
+	"github.com/hyperjiang/futu/pb/qotgetarkstockdynamic"
 	"github.com/hyperjiang/futu/pb/qotgetbroker"
 	"github.com/hyperjiang/futu/pb/qotgetcapitaldistribution"
 	"github.com/hyperjiang/futu/pb/qotgetcapitalflow"
@@ -19,43 +23,105 @@ import (
 	"github.com/hyperjiang/futu/pb/qotgetcorporateactionsdividends"
 	"github.com/hyperjiang/futu/pb/qotgetcorporateactionsstocksplits"
 	"github.com/hyperjiang/futu/pb/qotgetdailyshortvolume"
+	"github.com/hyperjiang/futu/pb/qotgetdividendcalendar"
+	"github.com/hyperjiang/futu/pb/qotgetdividendrank"
+	"github.com/hyperjiang/futu/pb/qotgetearningsbeatrank"
+	"github.com/hyperjiang/futu/pb/qotgetearningscalendar"
+	"github.com/hyperjiang/futu/pb/qotgeteconomiccalendar"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontract"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractcategory"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractcombolist"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractcomborfq"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontracteventlist"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractkline"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractmilestonelist"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractorderbook"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractserieslist"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractsnapshot"
+	"github.com/hyperjiang/futu/pb/qotgeteventcontractticker"
+	"github.com/hyperjiang/futu/pb/qotgetfedwatchdotplot"
+	"github.com/hyperjiang/futu/pb/qotgetfedwatchtargetrate"
 	"github.com/hyperjiang/futu/pb/qotgetfinancialrevenuebreakdown"
 	"github.com/hyperjiang/futu/pb/qotgetfinancialsearnpricehist"
 	"github.com/hyperjiang/futu/pb/qotgetfinancialsearnpricemove"
 	"github.com/hyperjiang/futu/pb/qotgetfinancialsstatements"
 	"github.com/hyperjiang/futu/pb/qotgetfutureinfo"
+	"github.com/hyperjiang/futu/pb/qotgetheatmapdata"
+	"github.com/hyperjiang/futu/pb/qotgethighdividendsoerank"
+	"github.com/hyperjiang/futu/pb/qotgethotlist"
+	"github.com/hyperjiang/futu/pb/qotgetindicatorlist"
+	"github.com/hyperjiang/futu/pb/qotgetindustrialchainbyplate"
+	"github.com/hyperjiang/futu/pb/qotgetindustrialchaindetail"
+	"github.com/hyperjiang/futu/pb/qotgetindustrialchainlist"
+	"github.com/hyperjiang/futu/pb/qotgetindustrialplateinfo"
+	"github.com/hyperjiang/futu/pb/qotgetindustrialplatestock"
 	"github.com/hyperjiang/futu/pb/qotgetinsiderholderlist"
 	"github.com/hyperjiang/futu/pb/qotgetinsidertradelist"
+	"github.com/hyperjiang/futu/pb/qotgetinstitutiondistribution"
+	"github.com/hyperjiang/futu/pb/qotgetinstitutionholdingchange"
+	"github.com/hyperjiang/futu/pb/qotgetinstitutionholdinglist"
+	"github.com/hyperjiang/futu/pb/qotgetinstitutionlist"
+	"github.com/hyperjiang/futu/pb/qotgetinstitutionprofile"
 	"github.com/hyperjiang/futu/pb/qotgetipolist"
 	"github.com/hyperjiang/futu/pb/qotgetkl"
+	"github.com/hyperjiang/futu/pb/qotgetmacroindicatorhistory"
+	"github.com/hyperjiang/futu/pb/qotgetmacroindicatorlist"
 	"github.com/hyperjiang/futu/pb/qotgetmarketstate"
 	"github.com/hyperjiang/futu/pb/qotgetoptionchain"
+	"github.com/hyperjiang/futu/pb/qotgetoptionearningsscreener"
+	"github.com/hyperjiang/futu/pb/qotgetoptionevent"
+	"github.com/hyperjiang/futu/pb/qotgetoptioneventalert"
 	"github.com/hyperjiang/futu/pb/qotgetoptionexerciseprobability"
 	"github.com/hyperjiang/futu/pb/qotgetoptionexpirationdate"
+	"github.com/hyperjiang/futu/pb/qotgetoptionmarketstatistic"
+	"github.com/hyperjiang/futu/pb/qotgetoptionquote"
+	"github.com/hyperjiang/futu/pb/qotgetoptionrank"
+	"github.com/hyperjiang/futu/pb/qotgetoptionsellerscreener"
+	"github.com/hyperjiang/futu/pb/qotgetoptionstrategy"
+	"github.com/hyperjiang/futu/pb/qotgetoptionstrategyanalysis"
+	"github.com/hyperjiang/futu/pb/qotgetoptionstrategyspreads"
+	"github.com/hyperjiang/futu/pb/qotgetoptionunderlyinghisstatistic"
+	"github.com/hyperjiang/futu/pb/qotgetoptionunderlyinghisvolatility"
+	"github.com/hyperjiang/futu/pb/qotgetoptionunderlyingoverview"
+	"github.com/hyperjiang/futu/pb/qotgetoptionunderlyingrank"
 	"github.com/hyperjiang/futu/pb/qotgetoptionvolatility"
+	"github.com/hyperjiang/futu/pb/qotgetoptionzerodtecontract"
+	"github.com/hyperjiang/futu/pb/qotgetoptionzerodtescreener"
 	"github.com/hyperjiang/futu/pb/qotgetorderbook"
 	"github.com/hyperjiang/futu/pb/qotgetownerplate"
+	"github.com/hyperjiang/futu/pb/qotgetperiodchangerank"
 	"github.com/hyperjiang/futu/pb/qotgetpricereminder"
+	"github.com/hyperjiang/futu/pb/qotgetratingchange"
 	"github.com/hyperjiang/futu/pb/qotgetresearchanalystconsensus"
 	"github.com/hyperjiang/futu/pb/qotgetresearchmorningstarrpt"
 	"github.com/hyperjiang/futu/pb/qotgetresearchratingsummary"
+	"github.com/hyperjiang/futu/pb/qotgetrisefalldistr"
 	"github.com/hyperjiang/futu/pb/qotgetrt"
+	"github.com/hyperjiang/futu/pb/qotgetsearchnews"
+	"github.com/hyperjiang/futu/pb/qotgetsearchquote"
 	"github.com/hyperjiang/futu/pb/qotgetsecuritysnapshot"
 	"github.com/hyperjiang/futu/pb/qotgetshareholdersholderdetail"
 	"github.com/hyperjiang/futu/pb/qotgetshareholdersholdingchanges"
 	"github.com/hyperjiang/futu/pb/qotgetshareholdersinstitutional"
 	"github.com/hyperjiang/futu/pb/qotgetshareholdersoverview"
 	"github.com/hyperjiang/futu/pb/qotgetshortinterest"
+	"github.com/hyperjiang/futu/pb/qotgetshortsellingrank"
 	"github.com/hyperjiang/futu/pb/qotgetsubinfo"
 	"github.com/hyperjiang/futu/pb/qotgetticker"
+	"github.com/hyperjiang/futu/pb/qotgettopmoverrank"
 	"github.com/hyperjiang/futu/pb/qotgettoptenbuysellbrokers"
+	"github.com/hyperjiang/futu/pb/qotgetusafterhoursrank"
 	"github.com/hyperjiang/futu/pb/qotgetusersecuritygroup"
+	"github.com/hyperjiang/futu/pb/qotgetusovernightrank"
+	"github.com/hyperjiang/futu/pb/qotgetuspremarketrank"
 	"github.com/hyperjiang/futu/pb/qotgetvaluationdetail"
 	"github.com/hyperjiang/futu/pb/qotgetvaluationplatestocklist"
 	"github.com/hyperjiang/futu/pb/qotgetwarrant"
 	"github.com/hyperjiang/futu/pb/qotoptionscreen"
+	"github.com/hyperjiang/futu/pb/qotrequesthistoryeventcontractkl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistorykl"
 	"github.com/hyperjiang/futu/pb/qotrequesthistoryklquota"
+	"github.com/hyperjiang/futu/pb/qotrequestindicatorcalc"
 	"github.com/hyperjiang/futu/pb/qotrequestrehab"
 	"github.com/hyperjiang/futu/pb/qotrequesttradedate"
 	"github.com/hyperjiang/futu/pb/qotstockfilter"
@@ -63,8 +129,10 @@ import (
 	"github.com/hyperjiang/futu/pb/qotwarrantscreen"
 	"github.com/hyperjiang/futu/pb/trdcommon"
 	"github.com/hyperjiang/futu/pb/trdflowsummary"
+	"github.com/hyperjiang/futu/pb/trdgetcombomaxtrdqtys"
 	"github.com/hyperjiang/futu/pb/trdgetmarginratio"
 	"github.com/hyperjiang/futu/pb/trdmodifyorder"
+	"github.com/hyperjiang/futu/pb/trdplacecomboorder"
 	"github.com/hyperjiang/futu/pb/trdplaceorder"
 )
 
@@ -916,4 +984,722 @@ func (sdk *SDK) WarrantScreen(opts ...adapt.Option) (*qotwarrantscreen.S2C, erro
 	defer cancel()
 
 	return sdk.WarrantScreenWithContext(ctx, opts...)
+}
+
+// GetComboMaxTrdQtys 2112 - gets the max tradable quantity of a combo order.
+//
+// header: trading header
+//
+// qty: quantity
+//
+// orderType: order type, see adapt.OrderType_*
+func (sdk *SDK) GetComboMaxTrdQtys(header *trdcommon.TrdHeader, qty float64, orderType int32, opts ...adapt.Option) (*trdgetcombomaxtrdqtys.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetComboMaxTrdQtysWithContext(ctx, header, qty, orderType, opts...)
+}
+
+// PlaceComboOrder 2227 - places the combo order.
+//
+// header: trading header
+//
+// qty: quantity
+//
+// orderType: order type, see adapt.OrderType_*
+func (sdk *SDK) PlaceComboOrder(header *trdcommon.TrdHeader, qty float64, orderType int32, opts ...adapt.Option) (*trdplacecomboorder.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.PlaceComboOrderWithContext(ctx, header, qty, orderType, opts...)
+}
+
+// GetOptionQuote 3255 - gets the option quote.
+func (sdk *SDK) GetOptionQuote(opts ...adapt.Option) (*qotgetoptionquote.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionQuoteWithContext(ctx, opts...)
+}
+
+// GetOptionStrategy 3256 - gets the option strategy.
+//
+// code: security code, e.g. HK.00700
+//
+// optionStrategy: option strategy type
+func (sdk *SDK) GetOptionStrategy(code string, optionStrategy int32, opts ...adapt.Option) (*qotgetoptionstrategy.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionStrategyWithContext(ctx, code, optionStrategy, opts...)
+}
+
+// GetOptionStrategyAnalysis 3257 - gets the option strategy analysis.
+func (sdk *SDK) GetOptionStrategyAnalysis(opts ...adapt.Option) (*qotgetoptionstrategyanalysis.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionStrategyAnalysisWithContext(ctx, opts...)
+}
+
+// GetOptionStrategySpread 3258 - gets the option strategy spread.
+//
+// code: security code, e.g. HK.00700
+//
+// optionStrategy: option strategy type
+func (sdk *SDK) GetOptionStrategySpread(code string, optionStrategy int32, opts ...adapt.Option) (*qotgetoptionstrategyspreads.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionStrategySpreadWithContext(ctx, code, optionStrategy, opts...)
+}
+
+// GetIndicatorList 3259 - gets the indicator list.
+func (sdk *SDK) GetIndicatorList(opts ...adapt.Option) (*qotgetindicatorlist.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetIndicatorListWithContext(ctx, opts...)
+}
+
+// RequestIndicatorCalc 3260 - requests an asynchronous indicator calculation.
+//
+// shortName: short name of the indicator
+//
+// langType: script language type of the indicator
+//
+// data: indicator calculation data
+func (sdk *SDK) RequestIndicatorCalc(shortName string, langType int32, data *qotrequestindicatorcalc.IndicatorCalcData, opts ...adapt.Option) (*qotrequestindicatorcalc.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.RequestIndicatorCalcWithContext(ctx, shortName, langType, data, opts...)
+}
+
+// GetSearchQuote 3262 - gets the search quote.
+//
+// keyword: search keyword
+func (sdk *SDK) GetSearchQuote(keyword string, opts ...adapt.Option) (*qotgetsearchquote.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetSearchQuoteWithContext(ctx, keyword, opts...)
+}
+
+// GetSearchNews 3263 - gets the search news.
+//
+// keyword: search keyword
+func (sdk *SDK) GetSearchNews(keyword string, opts ...adapt.Option) (*qotgetsearchnews.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetSearchNewsWithContext(ctx, keyword, opts...)
+}
+
+// GetOptionMarketStatistic 3301 - gets the option market statistic.
+//
+// optionMarket: option market, see adapt.QotMarket_*
+//
+// dataType: statistic data type
+//
+// beginTime: begin time, format: yyyy-MM-dd
+//
+// endTime: end time, format: yyyy-MM-dd
+func (sdk *SDK) GetOptionMarketStatistic(optionMarket int32, dataType int32, beginTime string, endTime string, opts ...adapt.Option) (*qotgetoptionmarketstatistic.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionMarketStatisticWithContext(ctx, optionMarket, dataType, beginTime, endTime, opts...)
+}
+
+// GetOptionUnderlyingHisStatistic 3302 - gets the option underlying historical statistic.
+//
+// code: security code, e.g. HK.00700
+//
+// beginTime: begin time, format: yyyy-MM-dd
+//
+// endTime: end time, format: yyyy-MM-dd
+func (sdk *SDK) GetOptionUnderlyingHisStatistic(code string, beginTime string, endTime string, opts ...adapt.Option) (*qotgetoptionunderlyinghisstatistic.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionUnderlyingHisStatisticWithContext(ctx, code, beginTime, endTime, opts...)
+}
+
+// GetOptionUnderlyingOverview 3303 - gets the option underlying overview.
+func (sdk *SDK) GetOptionUnderlyingOverview(opts ...adapt.Option) (*qotgetoptionunderlyingoverview.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionUnderlyingOverviewWithContext(ctx, opts...)
+}
+
+// GetOptionUnderlyingHisVolatility 3304 - gets the option underlying historical volatility.
+//
+// code: security code, e.g. HK.00700
+//
+// beginTime: begin time, format: yyyy-MM-dd
+//
+// endTime: end time, format: yyyy-MM-dd
+func (sdk *SDK) GetOptionUnderlyingHisVolatility(code string, beginTime string, endTime string, opts ...adapt.Option) (*qotgetoptionunderlyinghisvolatility.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionUnderlyingHisVolatilityWithContext(ctx, code, beginTime, endTime, opts...)
+}
+
+// GetOptionUnderlyingRank 3305 - gets the option underlying rank.
+//
+// optionMarket: option market, see adapt.QotMarket_*
+//
+// sortType: sort field
+func (sdk *SDK) GetOptionUnderlyingRank(optionMarket int32, sortType int32, opts ...adapt.Option) (*qotgetoptionunderlyingrank.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionUnderlyingRankWithContext(ctx, optionMarket, sortType, opts...)
+}
+
+// GetOptionRank 3306 - gets the option rank.
+//
+// optionMarket: option market, see adapt.QotMarket_*
+//
+// sortType: sort field
+func (sdk *SDK) GetOptionRank(optionMarket int32, sortType int32, opts ...adapt.Option) (*qotgetoptionrank.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionRankWithContext(ctx, optionMarket, sortType, opts...)
+}
+
+// GetOptionEvent 3307 - gets the option event.
+//
+// optionMarket: option market, see adapt.QotMarket_*
+func (sdk *SDK) GetOptionEvent(optionMarket int32, opts ...adapt.Option) (*qotgetoptionevent.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionEventWithContext(ctx, optionMarket, opts...)
+}
+
+// GetOptionEventAlert 3308 - gets the option event alert.
+func (sdk *SDK) GetOptionEventAlert(opts ...adapt.Option) (*qotgetoptioneventalert.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionEventAlertWithContext(ctx, opts...)
+}
+
+// SetOptionEventAlert 3309 - sets the option event alert.
+//
+// operType: operation type
+func (sdk *SDK) SetOptionEventAlert(operType int32, opts ...adapt.Option) error {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.SetOptionEventAlertWithContext(ctx, operType, opts...)
+}
+
+// GetOptionZeroDteScreener 3311 - gets the zero DTE option screener.
+//
+// optionMarket: option market, see adapt.QotMarket_*
+func (sdk *SDK) GetOptionZeroDteScreener(optionMarket int32, opts ...adapt.Option) (*qotgetoptionzerodtescreener.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionZeroDteScreenerWithContext(ctx, optionMarket, opts...)
+}
+
+// GetOptionZeroDteContract 3312 - gets the zero DTE option contract.
+//
+// code: security code, e.g. HK.00700
+//
+// strikeDateTimestamp: strike date timestamp in seconds
+//
+// chainInfo: option chain info
+func (sdk *SDK) GetOptionZeroDteContract(code string, strikeDateTimestamp int64, chainInfo *qotgetoptionzerodtescreener.OptionChainInfo, opts ...adapt.Option) (*qotgetoptionzerodtecontract.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionZeroDteContractWithContext(ctx, code, strikeDateTimestamp, chainInfo, opts...)
+}
+
+// GetOptionEarningsScreener 3313 - gets the option earnings screener.
+//
+// optionMarket: option market, see adapt.QotMarket_*
+func (sdk *SDK) GetOptionEarningsScreener(optionMarket int32, opts ...adapt.Option) (*qotgetoptionearningsscreener.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionEarningsScreenerWithContext(ctx, optionMarket, opts...)
+}
+
+// GetOptionSellerScreener 3314 - gets the option seller screener.
+//
+// optionMarket: option market, see adapt.QotMarket_*
+//
+// sellerType: seller strategy type
+func (sdk *SDK) GetOptionSellerScreener(optionMarket int32, sellerType int32, opts ...adapt.Option) (*qotgetoptionsellerscreener.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetOptionSellerScreenerWithContext(ctx, optionMarket, sellerType, opts...)
+}
+
+// GetEarningsCalendar 3401 - gets the earnings calendar.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetEarningsCalendar(market int32, opts ...adapt.Option) (*qotgetearningscalendar.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetEarningsCalendarWithContext(ctx, market, opts...)
+}
+
+// GetMacroIndicatorList 3402 - gets the macro indicator list.
+//
+// region: region of the macro indicator
+func (sdk *SDK) GetMacroIndicatorList(region int32, opts ...adapt.Option) (*qotgetmacroindicatorlist.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetMacroIndicatorListWithContext(ctx, region, opts...)
+}
+
+// GetMacroIndicatorHistory 3403 - gets the macro indicator history.
+//
+// indicatorId: macro indicator ID
+func (sdk *SDK) GetMacroIndicatorHistory(indicatorId uint64, opts ...adapt.Option) (*qotgetmacroindicatorhistory.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetMacroIndicatorHistoryWithContext(ctx, indicatorId, opts...)
+}
+
+// GetFedWatchTargetRate 3404 - gets the fed watch target rate.
+func (sdk *SDK) GetFedWatchTargetRate(opts ...adapt.Option) (*qotgetfedwatchtargetrate.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetFedWatchTargetRateWithContext(ctx, opts...)
+}
+
+// GetFedWatchDotPlot 3405 - gets the fed watch dot plot.
+func (sdk *SDK) GetFedWatchDotPlot(opts ...adapt.Option) (*qotgetfedwatchdotplot.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetFedWatchDotPlotWithContext(ctx, opts...)
+}
+
+// GetEarningsBeatRank 3406 - gets the earnings beat rank.
+//
+// market: market, see adapt.QotMarket_*
+//
+// beatType: earnings beat type
+func (sdk *SDK) GetEarningsBeatRank(market int32, beatType int32, opts ...adapt.Option) (*qotgetearningsbeatrank.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetEarningsBeatRankWithContext(ctx, market, beatType, opts...)
+}
+
+// GetDividendRank 3407 - gets the dividend rank.
+//
+// market: market, see adapt.QotMarket_*
+//
+// rankType: dividend rank type
+func (sdk *SDK) GetDividendRank(market int32, rankType int32, opts ...adapt.Option) (*qotgetdividendrank.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetDividendRankWithContext(ctx, market, rankType, opts...)
+}
+
+// GetDividendCalendar 3408 - gets the dividend calendar.
+//
+// market: market, see adapt.QotMarket_*
+//
+// date: date, format: yyyy-MM-dd
+func (sdk *SDK) GetDividendCalendar(market int32, date string, opts ...adapt.Option) (*qotgetdividendcalendar.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetDividendCalendarWithContext(ctx, market, date, opts...)
+}
+
+// GetEconomicCalendar 3409 - gets the economic calendar.
+//
+// beginDate: begin date, format: yyyy-MM-dd
+func (sdk *SDK) GetEconomicCalendar(beginDate string, opts ...adapt.Option) (*qotgeteconomiccalendar.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetEconomicCalendarWithContext(ctx, beginDate, opts...)
+}
+
+// GetUSPreMarketRank 3410 - gets the US pre market rank.
+func (sdk *SDK) GetUSPreMarketRank(opts ...adapt.Option) (*qotgetuspremarketrank.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetUSPreMarketRankWithContext(ctx, opts...)
+}
+
+// GetUSAfterHoursRank 3411 - gets the US after hours rank.
+func (sdk *SDK) GetUSAfterHoursRank(opts ...adapt.Option) (*qotgetusafterhoursrank.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetUSAfterHoursRankWithContext(ctx, opts...)
+}
+
+// GetUSOvernightRank 3412 - gets the US overnight rank.
+func (sdk *SDK) GetUSOvernightRank(opts ...adapt.Option) (*qotgetusovernightrank.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetUSOvernightRankWithContext(ctx, opts...)
+}
+
+// GetTopMoversRank 3413 - gets the top movers rank.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetTopMoversRank(market int32, opts ...adapt.Option) (*qotgettopmoverrank.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetTopMoversRankWithContext(ctx, market, opts...)
+}
+
+// GetHotList 3414 - gets the hot list.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetHotList(market int32, opts ...adapt.Option) (*qotgethotlist.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetHotListWithContext(ctx, market, opts...)
+}
+
+// GetShortSellingRank 3415 - gets the short selling rank.
+func (sdk *SDK) GetShortSellingRank(opts ...adapt.Option) (*qotgetshortsellingrank.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetShortSellingRankWithContext(ctx, opts...)
+}
+
+// GetPeriodChangeRank 3416 - gets the period change rank.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetPeriodChangeRank(market int32, opts ...adapt.Option) (*qotgetperiodchangerank.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetPeriodChangeRankWithContext(ctx, market, opts...)
+}
+
+// GetHighDividendSOERank 3417 - gets the high dividend SOE rank.
+func (sdk *SDK) GetHighDividendSOERank(opts ...adapt.Option) (*qotgethighdividendsoerank.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetHighDividendSOERankWithContext(ctx, opts...)
+}
+
+// GetInstitutionList 3418 - gets the institution list.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetInstitutionList(market int32, opts ...adapt.Option) (*qotgetinstitutionlist.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetInstitutionListWithContext(ctx, market, opts...)
+}
+
+// GetInstitutionProfile 3419 - gets the institution profile.
+//
+// market: market, see adapt.QotMarket_*
+//
+// institutionId: institution ID
+func (sdk *SDK) GetInstitutionProfile(market int32, institutionId int32) (*qotgetinstitutionprofile.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetInstitutionProfileWithContext(ctx, market, institutionId)
+}
+
+// GetInstitutionDistribution 3420 - gets the institution distribution.
+//
+// market: market, see adapt.QotMarket_*
+//
+// institutionId: institution ID
+func (sdk *SDK) GetInstitutionDistribution(market int32, institutionId int32) (*qotgetinstitutiondistribution.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetInstitutionDistributionWithContext(ctx, market, institutionId)
+}
+
+// GetInstitutionHoldingChange 3421 - gets the institution holding change.
+//
+// market: market, see adapt.QotMarket_*
+//
+// institutionId: institution ID
+func (sdk *SDK) GetInstitutionHoldingChange(market int32, institutionId int32, opts ...adapt.Option) (*qotgetinstitutionholdingchange.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetInstitutionHoldingChangeWithContext(ctx, market, institutionId, opts...)
+}
+
+// GetInstitutionHoldingList 3422 - gets the institution holding list.
+//
+// market: market, see adapt.QotMarket_*
+//
+// institutionId: institution ID
+func (sdk *SDK) GetInstitutionHoldingList(market int32, institutionId int32, opts ...adapt.Option) (*qotgetinstitutionholdinglist.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetInstitutionHoldingListWithContext(ctx, market, institutionId, opts...)
+}
+
+// GetArkFundHolding 3423 - gets the ARK fund holding.
+func (sdk *SDK) GetArkFundHolding(opts ...adapt.Option) (*qotgetarkfundholding.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetArkFundHoldingWithContext(ctx, opts...)
+}
+
+// GetArkStockDynamic 3424 - gets the ARK stock dynamic.
+//
+// code: security code, e.g. HK.00700
+func (sdk *SDK) GetArkStockDynamic(code string) (*qotgetarkstockdynamic.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetArkStockDynamicWithContext(ctx, code)
+}
+
+// GetArkActiveTransaction 3425 - gets the ARK active transaction.
+func (sdk *SDK) GetArkActiveTransaction(opts ...adapt.Option) (*qotgetarkactivetransaction.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetArkActiveTransactionWithContext(ctx, opts...)
+}
+
+// GetRatingChange 3426 - gets the rating change.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetRatingChange(market int32, opts ...adapt.Option) (*qotgetratingchange.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetRatingChangeWithContext(ctx, market, opts...)
+}
+
+// GetIndustrialChainList 3427 - gets the industrial chain list.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetIndustrialChainList(market int32, opts ...adapt.Option) (*qotgetindustrialchainlist.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetIndustrialChainListWithContext(ctx, market, opts...)
+}
+
+// GetIndustrialChainDetail 3428 - gets the industrial chain detail.
+//
+// chainId: industrial chain ID
+func (sdk *SDK) GetIndustrialChainDetail(chainId int64) (*qotgetindustrialchaindetail.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetIndustrialChainDetailWithContext(ctx, chainId)
+}
+
+// GetIndustrialChainByPlate 3429 - gets the industrial chain by plate.
+//
+// plateId: industrial plate ID
+func (sdk *SDK) GetIndustrialChainByPlate(plateId int64) (*qotgetindustrialchainbyplate.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetIndustrialChainByPlateWithContext(ctx, plateId)
+}
+
+// GetIndustrialPlateInfo 3430 - gets the industrial plate info.
+//
+// plateId: industrial plate ID
+func (sdk *SDK) GetIndustrialPlateInfo(plateId int64) (*qotgetindustrialplateinfo.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetIndustrialPlateInfoWithContext(ctx, plateId)
+}
+
+// GetIndustrialPlateStock 3431 - gets the industrial plate stock.
+func (sdk *SDK) GetIndustrialPlateStock(opts ...adapt.Option) (*qotgetindustrialplatestock.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetIndustrialPlateStockWithContext(ctx, opts...)
+}
+
+// GetHeatMapData 3432 - gets the heat map data.
+//
+// market: market, see adapt.QotMarket_*
+func (sdk *SDK) GetHeatMapData(market int32, opts ...adapt.Option) (*qotgetheatmapdata.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetHeatMapDataWithContext(ctx, market, opts...)
+}
+
+// GetRiseFallDistribution 3433 - gets the rise fall distribution.
+func (sdk *SDK) GetRiseFallDistribution(opts ...adapt.Option) (*qotgetrisefalldistr.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetRiseFallDistributionWithContext(ctx, opts...)
+}
+
+// GetEventContractCategory 3434 - gets the event contract category.
+func (sdk *SDK) GetEventContractCategory(opts ...adapt.Option) (*qotgeteventcontractcategory.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetEventContractCategoryWithContext(ctx, opts...)
+}
+
+// FilterCompetition 3435 - filters the competition.
+func (sdk *SDK) FilterCompetition(opts ...adapt.Option) (*qotfiltercompetition.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.FilterCompetitionWithContext(ctx, opts...)
+}
+
+// GetEventContractSeriesList 3436 - gets the event contract series list.
+func (sdk *SDK) GetEventContractSeriesList(opts ...adapt.Option) (*qotgeteventcontractserieslist.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetEventContractSeriesListWithContext(ctx, opts...)
+}
+
+// GetEventContractEventList 3437 - gets the event contract event list.
+//
+// code: series code of the event contract
+func (sdk *SDK) GetEventContractEventList(code string, opts ...adapt.Option) (*qotgeteventcontracteventlist.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetEventContractEventListWithContext(ctx, code, opts...)
+}
+
+// GetEventContract 3438 - gets the event contract.
+//
+// code: event code of the event contract
+func (sdk *SDK) GetEventContract(code string, opts ...adapt.Option) (*qotgeteventcontract.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetEventContractWithContext(ctx, code, opts...)
+}
+
+// GetEventContractMilestoneList 3439 - gets the event contract milestone list.
+func (sdk *SDK) GetEventContractMilestoneList(opts ...adapt.Option) (*qotgeteventcontractmilestonelist.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetEventContractMilestoneListWithContext(ctx, opts...)
+}
+
+// GetEventContractSnapshot 3445 - gets the event contract snapshot.
+func (sdk *SDK) GetEventContractSnapshot(opts ...adapt.Option) (*qotgeteventcontractsnapshot.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetEventContractSnapshotWithContext(ctx, opts...)
+}
+
+// GetEventContractOrderBook 3446 - gets the event contract order book.
+//
+// code: security code, e.g. HK.00700
+//
+// num: number of the order book levels
+func (sdk *SDK) GetEventContractOrderBook(code string, num int32) (*qotgeteventcontractorderbook.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetEventContractOrderBookWithContext(ctx, code, num)
+}
+
+// GetEventContractKline 3447 - gets the event contract K line.
+//
+// code: security code, e.g. HK.00700
+func (sdk *SDK) GetEventContractKline(code string, opts ...adapt.Option) (*qotgeteventcontractkline.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetEventContractKlineWithContext(ctx, code, opts...)
+}
+
+// GetEventContractTicker 3448 - gets the event contract ticker.
+//
+// code: security code, e.g. HK.00700
+func (sdk *SDK) GetEventContractTicker(code string, opts ...adapt.Option) (*qotgeteventcontractticker.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetEventContractTickerWithContext(ctx, code, opts...)
+}
+
+// GetEventContractComboList 3453 - gets the event contract combo list.
+func (sdk *SDK) GetEventContractComboList(opts ...adapt.Option) (*qotgeteventcontractcombolist.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetEventContractComboListWithContext(ctx, opts...)
+}
+
+// GetEventContractComboRfq 3454 - gets the event contract combo RFQ.
+//
+// mvc: combo identifier returned by the valid combo list
+func (sdk *SDK) GetEventContractComboRfq(mvc string, opts ...adapt.Option) (*qotgeteventcontractcomborfq.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.GetEventContractComboRfqWithContext(ctx, mvc, opts...)
+}
+
+// SubEventContract 3455 - subscribes or unsubscribes event contract.
+//
+// isSubOrUnSub: true to subscribe, false to unsubscribe
+func (sdk *SDK) SubEventContract(isSubOrUnSub bool, opts ...adapt.Option) error {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.SubEventContractWithContext(ctx, isSubOrUnSub, opts...)
+}
+
+// RequestHistoryEventContractKL 3456 - requests the history K line of an event contract.
+//
+// code: security code, e.g. HK.00700
+//
+// klType: K line type, see adapt.KLType_*
+//
+// beginTime: begin time, format: yyyy-MM-dd
+//
+// endTime: end time, format: yyyy-MM-dd
+func (sdk *SDK) RequestHistoryEventContractKL(code string, klType int32, beginTime string, endTime string, opts ...adapt.Option) (*qotrequesthistoryeventcontractkl.S2C, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), defaultTimeout)
+	defer cancel()
+
+	return sdk.RequestHistoryEventContractKLWithContext(ctx, code, klType, beginTime, endTime, opts...)
 }
