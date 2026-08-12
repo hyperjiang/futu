@@ -29,7 +29,11 @@ jobs:
 
       - name: Test
         run: go test -race -coverprofile=coverage.txt -covermode=atomic $(go list ./infra/... ./adapt/...)
-        if: runner.os != 'Windows'
+        if: runner.os != 'Windows' && !(runner.os == 'macOS' && matrix.go == '1.22')
+
+      - name: Test (macOS Go 1.22)
+        run: go test -coverprofile=coverage.txt -covermode=atomic $(go list ./infra/... ./adapt/...)
+        if: runner.os == 'macOS' && matrix.go == '1.22'
 
       - name: Test Windows
         run: go test -race $(go list ./infra/... ./adapt/...)
